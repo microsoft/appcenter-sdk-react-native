@@ -101,6 +101,6 @@ namespace Microsoft.AppCenter.Push
                 }
             }
         }
-     #endregion
+        #endregion
     }
 }

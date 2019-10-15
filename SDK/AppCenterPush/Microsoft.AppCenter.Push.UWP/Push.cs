@@ -22,6 +22,7 @@ namespace Microsoft.AppCenter.Push
     public partial class Push
     {
         private PushNotificationChannel _channel;
+        private static readonly object UWPPushLock = new object();
 
         // expose for testing
         internal string LatestPushToken { get; set; }
@@ -62,12 +63,15 @@ namespace Microsoft.AppCenter.Push
 
         public void OnUserIdUpdated(object sender, UserIdUpdatedEventArgs e)
         {
-            if (LatestPushToken != null)
+            lock (UWPPushLock)
             {
-                var pushInstallationLog = new PushInstallationLog(null, null, LatestPushToken, Guid.NewGuid(), e.UserId);
+                if (!string.IsNullOrEmpty(LatestPushToken))
+                {
+                    var pushInstallationLog = new PushInstallationLog(null, null, LatestPushToken, Guid.NewGuid(), e.UserId);
 #pragma warning disable CS4014
-                Channel.EnqueueAsync(pushInstallationLog);
+                    Channel.EnqueueAsync(pushInstallationLog);
 #pragma warning restore
+                }
             }
         }
 

@@ -142,7 +142,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
         public void EnableAfterDisabling()
         {
             Analytics.SetEnabledAsync(false).Wait();
-            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty); 
+            Analytics.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Analytics.SetEnabledAsync(true).Wait();
 
             _applicationLifecycleHelper.InvokeSuspended();
@@ -183,7 +183,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
             var eventName = "eventName";
             var key = "key";
             var val = "val";
-            var properties = new Dictionary<string, string> {{key, val}};
+            var properties = new Dictionary<string, string> { { key, val } };
             Analytics.TrackEvent(eventName, properties);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
@@ -228,7 +228,7 @@ namespace Microsoft.AppCenter.Analytics.Test.Windows
             Analytics.TrackEvent("test", new Dictionary<string, string> { { new string('?', 126), "test" } });
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<EventLog>(log =>
                 log.Properties.First().Key.Length == 125)), Times.Once());
-            
+
             // Property value is null
             _mockChannel.ResetCalls();
             Analytics.TrackEvent("test", new Dictionary<string, string> { { "test", null } });

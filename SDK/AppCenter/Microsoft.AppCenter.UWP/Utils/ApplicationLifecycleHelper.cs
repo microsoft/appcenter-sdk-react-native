@@ -20,7 +20,7 @@ namespace Microsoft.AppCenter.Utils
 
         // True if InvokeResuming has been called at least once during the current process
         private static bool _started;
-        
+
         // Considered to be suspended until can verify that has started
         private static bool _suspended = true;
 

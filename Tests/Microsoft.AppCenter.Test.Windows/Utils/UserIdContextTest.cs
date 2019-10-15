@@ -14,7 +14,7 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
         [TestInitialize]
         public void InitializeUserIdContextTest()
         {
-           UserIdContext.Instance = new UserIdContext();
+            UserIdContext.Instance = new UserIdContext();
         }
 
         [TestMethod]
