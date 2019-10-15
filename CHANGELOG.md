@@ -4,15 +4,21 @@
 
 ### App Center
 
+#### Windows
+
+* **[Fix]** Update `Newtonsoft.Json` dependency to version `12.0.2`.
+
 #### .NET Core 3
 
 * **[Fix]** Fix using stable versions of NuGet dependencies for .NET Core 3.0.
 
 ### App Center Crashes
 
+* **[Breaking change]** Remove insecure implementation of the raw `AndroidErrorDetails.Throwable` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin.Android.
+
 #### UWP/WPF/WinForms
 
-* **[Feature]** Allow users to set userId that applies to crashes, error.
+* **[Feature]** Allow users to set userId that applies to crashes and errors.
 ___
 
 ## Version 2.4.0-preview
