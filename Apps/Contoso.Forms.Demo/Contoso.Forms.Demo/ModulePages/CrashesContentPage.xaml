@@ -4,8 +4,21 @@
         <TableSection Title="Crashes Settings">
             <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled" OnColor="{StaticResource SwitchCellOnColor}"  />
             <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell" OnColor="{StaticResource SwitchCellOnColor}" />
-            <TextCell Text="Text Attachment" x:Name="TextAttachmentCell" Tapped="TextAttachment" />
-            <TextCell Text="Binary Attachment" x:Name="FileAttachmentCell" Tapped="FileAttachment" />
+            <ViewCell Tapped="TextAttachment">
+                <Button Text="Text Attachment" x:Name="TextAttachmentButton" Clicked="TextAttachment" />
+            </ViewCell>
+            <ViewCell>
+                <Label Text="" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="TextAttachmentContent"/>
+            </ViewCell>
+            <ViewCell Tapped="FileAttachment">
+                <Button Text="Binary Attachment (Please select from Picture Library to avoid permission issues)" x:Name="FileAttachmentButton" Clicked="FileAttachment" />
+            </ViewCell>
+            <ViewCell>
+                <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+                    <Label Text="Binary Attachment File Path" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
+                    <Label Text="No File Selected" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="BinaryAttachmentFilePathLabel"/>
+                </StackLayout>
+            </ViewCell>
             <ViewCell Tapped="PropertiesCellTapped">
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
                     <Label Text="Properties" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />

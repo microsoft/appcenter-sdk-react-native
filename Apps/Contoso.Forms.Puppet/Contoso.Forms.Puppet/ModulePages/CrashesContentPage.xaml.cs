@@ -84,7 +84,7 @@ namespace Contoso.Forms.Puppet
 
         async void FileAttachment(object sender, EventArgs e)
         {
-            var filePicker = DependencyService.Get<IFilePicker>(); 
+            var filePicker = DependencyService.Get<IFilePicker>();
             if (filePicker == null)
             {
                 Debug.WriteLine("File attachment isn't implemented");
