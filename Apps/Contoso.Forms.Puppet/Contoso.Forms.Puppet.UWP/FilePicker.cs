@@ -36,7 +36,7 @@ namespace Contoso.Forms.Puppet.UWP
             var bufferTask = FileIO.ReadBufferAsync(storageFile).AsTask();
             var buffer = bufferTask.GetAwaiter().GetResult();
             byte[] bytes = buffer.ToArray();
-            return new Tuple<byte[], string, string>(bytes, storageFile.Path, storageFile.ContentType);
+            return new Tuple<byte[], string, string>(bytes, storageFile.Name, storageFile.ContentType);
         }
 
         string IFilePicker.GetFileDescription(string file)
