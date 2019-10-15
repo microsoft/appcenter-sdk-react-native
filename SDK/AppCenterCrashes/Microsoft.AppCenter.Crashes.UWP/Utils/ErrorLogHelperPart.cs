@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using ModelBinary = Microsoft.AppCenter.Crashes.Ingestion.Models.Binary;
 using ModelException = Microsoft.AppCenter.Crashes.Ingestion.Models.Exception;
@@ -90,20 +91,25 @@ namespace Microsoft.AppCenter.Crashes.Utils
         private static unsafe ModelBinary ImageToBinary(IntPtr imageBase)
         {
             var imageSize = GetImageSize(imageBase);
-            var reader = new System.Reflection.PortableExecutable.PEReader((byte*)imageBase.ToPointer(), imageSize, true);
-            var debugdir = reader.ReadDebugDirectory();
-            var codeViewEntry = debugdir.First(entry => entry.Type == System.Reflection.PortableExecutable.DebugDirectoryEntryType.CodeView);
-            var codeView = reader.ReadCodeViewDebugDirectoryData(codeViewEntry);
-            var pdbPath = Path.GetFileName(codeView.Path);
-            var endAddress = imageBase + reader.PEHeaders.PEHeader.SizeOfImage;
-            return new ModelBinary
+            using (var reader = new PEReader((byte*)imageBase.ToPointer(), imageSize, true))
             {
-                StartAddress = string.Format(CultureInfo.InvariantCulture, AddressFormat, imageBase.ToInt64()),
-                EndAddress = string.Format(CultureInfo.InvariantCulture, AddressFormat, endAddress.ToInt64()),
-                Path = pdbPath,
-                Name = string.IsNullOrEmpty(pdbPath) == false ? Path.GetFileNameWithoutExtension(pdbPath) : null,
-                Id = string.Format(CultureInfo.InvariantCulture, "{0:N}-{1}", codeView.Guid, codeView.Age)
-            };
+                var debugdir = reader.ReadDebugDirectory();
+                var codeViewEntry = debugdir.First(entry => entry.Type == DebugDirectoryEntryType.CodeView);
+
+                // When attaching a debugger in release, it will break into MissingRuntimeArtifactException, just click continue as it is actually caught and recovered by the lib.
+                var codeView = reader.ReadCodeViewDebugDirectoryData(codeViewEntry);
+                var pdbPath = Path.GetFileName(codeView.Path);
+                var endAddress = imageBase + reader.PEHeaders.PEHeader.SizeOfImage;
+                return new ModelBinary
+                {
+                    StartAddress = string.Format(CultureInfo.InvariantCulture, AddressFormat, imageBase.ToInt64()),
+                    EndAddress = string.Format(CultureInfo.InvariantCulture, AddressFormat, endAddress.ToInt64()),
+                    Path = pdbPath,
+                    Architecture = "" + reader.PEHeaders.PEHeader.SizeOfImage,
+                    Name = string.IsNullOrEmpty(pdbPath) == false ? Path.GetFileNameWithoutExtension(pdbPath) : null,
+                    Id = string.Format(CultureInfo.InvariantCulture, "{0:N}-{1}", codeView.Guid, codeView.Age)
+                };
+            }
         }
 
         private static int GetImageSize(IntPtr imageBase)
