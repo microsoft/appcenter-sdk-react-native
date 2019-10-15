@@ -188,7 +188,6 @@ namespace Microsoft.AppCenter.Test.UWP
         [TestMethod]
         public void OnUserIdUpdatedToken()
         {
-            Push.Push.SetEnabledAsync(true).Wait();
             Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Push.Push.Instance.LatestPushToken = "token";
             var e = new UserIdUpdatedEventArgs { UserId = "userId" };
