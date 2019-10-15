@@ -9,10 +9,25 @@ namespace Microsoft.AppCenter.Test.UWP
     public class UWPCrashesTest
     {
         [TestMethod]
-        public void VerifyAppLaunchTimestampUTC()
+        public void VerifyManagedErrorLog()
         {
-            ManagedErrorLog managedErrorLog = ErrorLogHelper.CreateErrorLog(new System.Exception("Test Exception"));
-            Assert.AreEqual(managedErrorLog.AppLaunchTimestamp.Value.Kind, DateTimeKind.Utc);
+            try
+            {
+                throw new System.Exception("test exception");
+            }
+            catch (System.Exception e)
+            {
+                // TODO want to check binaries and frames, but this won't be available unless .net native is used.
+                // is there a way to check that? Or should it fail unless on .net native?
+                ManagedErrorLog managedErrorLog = ErrorLogHelper.CreateErrorLog(e);
+                Assert.AreEqual(managedErrorLog.AppLaunchTimestamp.Value.Kind, DateTimeKind.Utc);
+#if RELEASE
+                Assert.IsNotNull(managedErrorLog.Exception.Frames);
+                Assert.IsTrue(managedErrorLog.Exception.Frames.Count > 0);
+                Assert.IsNotNull(managedErrorLog.Binaries);
+                Assert.IsTrue(managedErrorLog.Binaries.Count > 0);
+#endif
+            }
         }
     }
 }
