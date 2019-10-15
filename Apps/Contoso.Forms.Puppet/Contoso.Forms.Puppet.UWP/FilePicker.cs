@@ -14,7 +14,6 @@ namespace Contoso.Forms.Puppet.UWP
 {
     public class FilePicker : IFilePicker
     {
-
         async Task<string> IFilePicker.PickFile()
         {
             FileOpenPicker openPicker = new FileOpenPicker
