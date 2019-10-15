@@ -11,7 +11,7 @@
                 <Label Text="" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="TextAttachmentContent"/>
             </ViewCell>
             <ViewCell Tapped="FileAttachment">
-                <Button Text="Binary Attachment (Please select from Picture Library to avoid permission issues)" x:Name="FileAttachmentButton" Clicked="FileAttachment" />
+                <Button Text="Binary Attachment (use Picture Library)" x:Name="FileAttachmentButton" Clicked="FileAttachment" />
             </ViewCell>
             <ViewCell>
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
