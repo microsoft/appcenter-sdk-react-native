@@ -122,6 +122,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     StartAddress = string.Format(CultureInfo.InvariantCulture, AddressFormat, imageBase.ToInt64()),
                     EndAddress = string.Format(CultureInfo.InvariantCulture, AddressFormat, endAddress.ToInt64()),
                     Path = pdbPath,
+                    Architecture = "unknown", // TODO remove when backend does not need this field anymore.
                     Name = string.IsNullOrEmpty(pdbPath) == false ? Path.GetFileNameWithoutExtension(pdbPath) : null,
                     Id = string.Format(CultureInfo.InvariantCulture, "{0:N}-{1}", codeView.Guid, codeView.Age)
                 };
