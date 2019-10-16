@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   title: Avalanche.Ingestion
   description: Microsoft Avalanche Ingestion REST API.
-  version: '1.0.0-preview20160914'
+  version: '1.0.0'
   "x-private": true
 host: avalanche.com
 schemes:
@@ -75,7 +75,6 @@ definitions:
       timestamp:
         type: string
         format: date-time
-        minimum: '1980-01-01T01:00:00Z'
         description: >
           Log timestamp, example: '2017-03-13T18:05:42Z'.
       sid:
@@ -87,6 +86,10 @@ definitions:
           This attribute is optional, a missing value means the session tracking is disabled (like when using only error reporting feature).
 
           Concrete types like StartSessionLog or PageLog are always part of a session and always include this identifier.
+      userId:
+        type: string
+        description: >
+          optional string used for associating logs with users.
       device:
         $ref: '#/definitions/Device'
     required:
@@ -105,6 +108,95 @@ definitions:
         additionalProperties:
           type: string
 
+  # Define typed properties for events.
+  # Unfortunately incompatible with push custom properties.
+
+  TypedProperty:
+    type: object
+    discriminator: type
+    properties:
+      type:
+        type: string
+      name:
+        type: string
+        minLength: 1
+        maxLength: 125
+        description: Property key.
+    required:
+      - type
+      - name
+
+  StringTypedProperty:
+    type: object
+    description: String property.
+    x-ms-discriminator-value: string
+    allOf:
+      - $ref: '#/definitions/TypedProperty'
+    properties:
+      value:
+        type: string
+        maxLength: 125
+        description: String property value.
+    required:
+      - value
+
+  LongTypedProperty:
+    type: object
+    description: Long property (64 bits signed integer).
+    x-ms-discriminator-value: long
+    allOf:
+      - $ref: '#/definitions/TypedProperty'
+    properties:
+      value:
+        type: integer
+        format: int64
+        description: Long property value.
+    required:
+      - value
+
+  DoubleTypedProperty:
+    type: object
+    description: Double property.
+    x-ms-discriminator-value: double
+    allOf:
+      - $ref: '#/definitions/TypedProperty'
+    properties:
+      value:
+        type: number
+        format: double
+        description: Double property value.
+    required:
+      - value
+
+  BooleanTypedProperty:
+    type: object
+    description: Boolean property.
+    x-ms-discriminator-value: boolean
+    allOf:
+      - $ref: '#/definitions/TypedProperty'
+    properties:
+      value:
+        type: boolean
+        description: Boolean property value.
+    required:
+      - value
+
+  DateTimeTypedProperty:
+    type: object
+    description: Date and time property.
+    x-ms-discriminator-value: dateTime
+    allOf:
+      - $ref: '#/definitions/TypedProperty'
+    properties:
+      value:
+        type: string
+        format: date-time
+        description: Date time property value.
+    required:
+      - value
+
+  # end of event typed properties
+
   Device:
     type: object
     description: Device characteristics.
@@ -112,7 +204,7 @@ definitions:
       sdkName:
         type: string
         description: >
-          Name of the SDK. Consists of the name of the SDK and the platform, e.g. "mobilecenter.ios", "hockeysdk.android".
+          Name of the SDK. Consists of the name of the SDK and the platform, e.g. "appcenter.ios", "hockeysdk.android".
       sdkVersion:
         type: string
         description: >
@@ -125,7 +217,7 @@ definitions:
       wrapperSdkName:
         type: string
         description: >
-         Name of the wrapper SDK. Consists of the name of the SDK and the wrapper platform, e.g. "mobilecenter.xamarin", "hockeysdk.cordova".
+         Name of the wrapper SDK. Consists of the name of the SDK and the wrapper platform, e.g. "appcenter.xamarin", "hockeysdk.cordova".
       model:
         type: string
         description: >
@@ -201,6 +293,10 @@ definitions:
         type: string
         description: >
           Version of the wrapper technology framework (Xamarin runtime version or ReactNative or Cordova etc...). See wrappersdkname to see if this version refers to Xamarin or ReactNative or other.
+      jailbreak:
+        type: boolean
+        description:
+          Flag indicating if the device is jailbroken
     required:
       - sdkName
       - sdkVersion
@@ -213,17 +309,20 @@ definitions:
 
   StartServiceLog:
     type: object
-    description: Describe a MobileCenter.Start API call from the SDK.
+    description: Describe a AppCenter.Start API call from the SDK.
     x-ms-discriminator-value: startService
     allOf:
       - $ref: '#/definitions/Log'
     properties:
       services:
         type: array
-        description: The list of services of the MobileCenter Start API call.
+        description: The list of services of the AppCenter Start API call.
         minItems: 1
         items:
           type : string
+
+  # Start defining custom properties for push.
+  # Unfortunately not compatible with event typed properties.
 
   CustomPropertyLog:
     type: object
@@ -315,12 +414,33 @@ definitions:
     allOf:
       - $ref: '#/definitions/CustomProperty'
 
+  # End of push custom property definitions.
+
   StartSessionLog:
     type: object
     description: Required explicit begin session log (a marker event for analytics service).
     x-ms-discriminator-value: startSession
     allOf:
       - $ref: '#/definitions/Log'
+    properties:
+      distributionGroupId:
+        type: string
+        format: uuid
+        description: Distribution group identifier.
+
+  DistributionStartSessionLog:
+    type: object
+    description: Log is used to update distribution group identifier for session (a marker event for analytics service).
+    x-ms-discriminator-value: distributionStartSession
+    allOf:
+      - $ref: '#/definitions/Log'
+    properties:
+      distributionGroupId:
+        type: string
+        format: uuid
+        description: Distribution group identifier.
+    required:
+      - distributionGroupId
 
   PageLog:
     type: object
@@ -353,6 +473,12 @@ definitions:
         maxLength: 256
         description: >
           Name of the event.
+      typedProperties:
+        type: array
+        description: Typed properties, replacing the generic properties if set.
+        maxItems: 20
+        items:
+          $ref: '#/definitions/TypedProperty'          
     required:
       - id
       - name
@@ -408,7 +534,6 @@ definitions:
       appLaunchTimestamp:
         type: string
         format: date-time
-        minimum: '1980-01-01T01:00:00Z'
         description: >
           Timestamp when the app was launched, example: '2017-03-13T18:05:42Z'.
       architecture:
@@ -469,10 +594,8 @@ definitions:
         type: string
         description: Content of register that might contain last method call.
       threads:
-        description: Thread stack frames associated to the error.
         $ref: '#/definitions/Threads'
       binaries:
-        description: Binaries associated to the error.
         $ref: '#/definitions/Binaries'
       registers:
         type: object
@@ -480,10 +603,6 @@ definitions:
         additionalProperties:
           type: string
       exception:
-        description: >
-          Exception associated to the error.
-
-          This is used for example to send a .NET exception from the Xamarin SDK.
         $ref: '#/definitions/Exception'
     required:
       - primaryArchitectureId
@@ -537,7 +656,7 @@ definitions:
       wrapperSdkName:
         type: string
         description: >
-         Name of the wrapper SDK that emitted this exeption. Consists of the name of the SDK and the wrapper platform, e.g. "mobilecenter.xamarin", "hockeysdk.cordova".
+         Name of the wrapper SDK that emitted this exeption. Consists of the name of the SDK and the wrapper platform, e.g. "appcenter.xamarin", "hockeysdk.cordova".
     required:
       - type
 
@@ -568,7 +687,6 @@ definitions:
     properties:
       id:
         type: string
-        format: uuid
       startAddress:
         type: string
       endAddress:
@@ -601,14 +719,14 @@ definitions:
     allOf:
       - $ref: '#/definitions/AbstractErrorLog'
     properties:
+      binaries:
+        $ref: '#/definitions/Binaries'
       buildId:
         type: string
         description: Unique ID for a Xamarin build or another similar technology.
       exception:
-        description: Exception associated to the error.
         $ref: '#/definitions/Exception'
       threads:
-        description: Thread stack frames associated to the error.
         $ref: '#/definitions/Threads'
     required:
       - exception
@@ -618,15 +736,16 @@ definitions:
     description: Handled Error log for managed platforms (such as Xamarin, Unity, Android Dalvik/ART)
     x-ms-discriminator-value: handledError
     allOf:
-      - $ref: '#/definitions/Log'
+      - $ref: '#/definitions/LogWithProperties'
     properties:
       id:
         type: string
         format: uuid
         description: >
           Unique identifier for this Error.
+      binaries:
+        $ref: '#/definitions/Binaries'
       exception:
-        description: Exception associated to the error.
         $ref: '#/definitions/Exception'
     required:
       - exception

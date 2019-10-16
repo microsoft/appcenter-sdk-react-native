@@ -124,9 +124,6 @@
     <Compile Include="Push.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Properties\Default.rd.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\AppCenter\Microsoft.AppCenter.UWP\Microsoft.AppCenter.UWP.csproj">
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
       <Name>Microsoft.AppCenter.UWP</Name>
