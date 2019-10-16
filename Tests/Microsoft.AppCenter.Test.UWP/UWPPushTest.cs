@@ -27,7 +27,6 @@ namespace Microsoft.AppCenter.Test.UWP
                 .Returns(_mockChannel.Object);
         }
 
-
         /// <summary>
         /// Verify ParseLaunchString works when launch string is null
         /// </summary>

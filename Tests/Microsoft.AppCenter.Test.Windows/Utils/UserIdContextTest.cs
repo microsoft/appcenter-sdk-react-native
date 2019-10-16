@@ -30,7 +30,6 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
             Assert.AreEqual(UserIdContext.Instance.UserId, "");
         }
 
-
         [TestMethod]
         public void SetUserId()
         {
