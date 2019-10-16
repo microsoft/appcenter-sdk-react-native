@@ -14,11 +14,19 @@
 
 ### App Center Crashes
 
-* **[Breaking change]** Remove insecure implementation of the raw `AndroidErrorDetails.Throwable` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin.Android.
+#### UWP
+
+* **[Feature]** App Center now support crashes for UWP applications even when using sideloading and if the application is not published to the Microsoft Store.
+* **[Feature]** APIs in the Crashes module are now implemented for UWP: handled errors, crash attachments, crash callbacks and enabling or disabling the module.
 
 #### UWP/WPF/WinForms
 
 * **[Feature]** Allow users to set userId that applies to crashes and errors.
+
+#### Android
+
+* **[Breaking change]** Remove insecure implementation of the raw `AndroidErrorDetails.Throwable` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin.Android.
+
 ___
 
 ## Version 2.4.0-preview
