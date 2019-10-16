@@ -37,8 +37,6 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop.Utils
             var userId = "userId";
             UserIdContext.Instance.UserId = userId;
             Assert.AreEqual(UserIdContext.Instance.UserId, userId);
-            // how to check if the handler is invoked
-            // UserIdContext.UserIdChangeReceived.Should().NotBeNull();
         }
 
         /// <summary>
