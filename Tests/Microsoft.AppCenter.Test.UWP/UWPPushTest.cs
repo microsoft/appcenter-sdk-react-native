@@ -188,7 +188,7 @@ namespace Microsoft.AppCenter.Test.UWP
         /// Verify OnUserIdUpdated works with userId changes. 
         /// </summary>
         [TestMethod]
-        public void OnUserIdUpdatedUserId()
+        public void OnUserIdUpdated()
         {
             Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Push.Push.Instance.LatestPushToken = "token";
