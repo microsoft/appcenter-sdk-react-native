@@ -17,7 +17,7 @@
 #### UWP
 
 * **[Feature]** App Center now supports crashes for sideloaded UWP applications.
-* **[Feature]** APIs in the Crashes module are now implemented for UWP: handled errors, crash attachments, crash callbacks and enabling or disabling the module.
+* **[Feature]** APIs in the Crashes module are now implemented for UWP: handled errors, crash attachments, crash callbacks, getting crash information about last session, and enabling/disabling the module. Detecting low memory warning is not supported.
 
 #### UWP/WPF/WinForms
 
