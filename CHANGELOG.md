@@ -16,7 +16,7 @@
 
 #### UWP
 
-* **[Feature]** App Center now supports crashes for UWP applications even when using sideloading. Publishing to the Microsoft Store is no longer a requirement.
+* **[Feature]** App Center now supports crashes for sideloaded UWP applications.
 * **[Feature]** APIs in the Crashes module are now implemented for UWP: handled errors, crash attachments, crash callbacks and enabling or disabling the module.
 
 #### UWP/WPF/WinForms
