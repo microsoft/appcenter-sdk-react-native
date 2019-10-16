@@ -67,7 +67,7 @@ namespace Microsoft.AppCenter.Push
             {
                 if (!string.IsNullOrEmpty(LatestPushToken))
                 {
-                    var pushInstallationLog = new PushInstallationLog(null, null, LatestPushToken, Guid.NewGuid(), e.UserId);
+                    var pushInstallationLog = new PushInstallationLog(null, null, LatestPushToken, Guid.NewGuid(), e.userId);
 #pragma warning disable CS4014
                     Channel.EnqueueAsync(pushInstallationLog);
 #pragma warning restore

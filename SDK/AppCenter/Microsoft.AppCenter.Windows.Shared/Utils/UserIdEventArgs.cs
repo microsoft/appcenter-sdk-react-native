@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.AppCenter.Windows.Shared.Utils
 {
@@ -12,6 +10,6 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         /// <summary>
         /// User Id
         /// </summary>
-        public string UserId;
+        public string userId;
     }
 }

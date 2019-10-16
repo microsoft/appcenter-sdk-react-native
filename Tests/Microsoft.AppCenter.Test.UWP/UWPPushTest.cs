@@ -171,8 +171,11 @@ namespace Microsoft.AppCenter.Test.UWP
             Assert.AreEqual(expectedResult.CustomData["key2"], actualResult.CustomData["key2"]);
         }
 
+        /// <summary>
+        /// Verify Push Service can be enabled or disabled correctly.  
+        /// </summary>
         [TestMethod]
-        public void GetEnabled()
+        public void EnabledPushService()
         {
             Push.Push.SetEnabledAsync(false).Wait();
             Assert.IsFalse(Push.Push.IsEnabledAsync().Result);
@@ -185,15 +188,15 @@ namespace Microsoft.AppCenter.Test.UWP
         /// Verify OnUserIdUpdated works with userId changes. 
         /// </summary>
         [TestMethod]
-        public void OnUserIdUpdatedToken()
+        public void OnUserIdUpdatedUserId()
         {
             Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Push.Push.Instance.LatestPushToken = "token";
-            var e = new UserIdUpdatedEventArgs { UserId = "userId" };
+            var e = new UserIdUpdatedEventArgs { userId = "userId" };
             Push.Push.Instance.OnUserIdUpdated(null, e);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
-            string.Equals(log.UserId, e.UserId))), Times.Once());
+            string.Equals(log.UserId, e.userId))), Times.Once());
         }
     }
 }
