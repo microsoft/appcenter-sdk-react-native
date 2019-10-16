@@ -13,6 +13,10 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
     {
         private static readonly object UserIdLock = new object();
         private static UserIdContext _instanceField;
+        private string _userId = "";
+
+        // The lock is static. Instance methods are not necessarily thread safe, but static methods are
+        private static readonly object UserIdContextLock = new object();
 
         internal UserIdContext()
         {
@@ -23,11 +27,6 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         /// Maximum allowed length for user identifier for App Center server.
         /// </summary>
         public static int USER_ID_APP_CENTER_MAX_LENGTH = 256;
-
-        // The lock is static. Instance methods are not necessarily thread safe, but static methods are
-        private static readonly object UserIdContextLock = new object();
-
-        private string _userId = "";
 
         /// <summary>
         /// Event handler to subscribe to the user id update.
