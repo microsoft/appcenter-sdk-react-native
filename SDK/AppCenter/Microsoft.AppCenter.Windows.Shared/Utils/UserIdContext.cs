@@ -69,7 +69,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
             {
                 lock (UserIdContextLock)
                 {
-                    if (_userId == null || !_userId.Equals(value))
+                    if (_userId != value)
                     {
                         _userId = value;
                     }
