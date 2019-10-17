@@ -24,7 +24,7 @@ namespace Microsoft.AppCenter.Push
         private PushNotificationChannel _channel;
         private static readonly object UWPPushLock = new object();
 
-        // Expose for testing
+        // Expose for testing.
         internal string LatestPushToken { get; set; }
 
         protected override int TriggerCount => 1;
