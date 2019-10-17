@@ -25,7 +25,7 @@
 
 #### UWP
 
-* **[Feature]** Allow users to push notifications to a specific userId.
+* **[Feature]** Allow developers to push notifications to a specific userId.
 ___
 
 ## Version 2.4.0-preview
