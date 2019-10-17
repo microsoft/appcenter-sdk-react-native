@@ -192,11 +192,11 @@ namespace Microsoft.AppCenter.Test.UWP
         {
             Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
             Push.Push.Instance.LatestPushToken = "token";
-            var e = new UserIdUpdatedEventArgs { userId = "userId" };
+            var e = new UserIdUpdatedEventArgs { UserId = "userId" };
             Push.Push.Instance.OnUserIdUpdated(null, e);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
-            string.Equals(log.UserId, e.userId))), Times.Once());
+            string.Equals(log.UserId, e.UserId))), Times.Once());
         }
     }
 }

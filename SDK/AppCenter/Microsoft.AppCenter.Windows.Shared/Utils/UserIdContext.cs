@@ -74,7 +74,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
                         _userId = value;
                     }
                 }
-                UserIdUpdated?.Invoke(this, new UserIdUpdatedEventArgs { userId = value });
+                UserIdUpdated?.Invoke(this, new UserIdUpdatedEventArgs { UserId = value });
             }
         }
 
