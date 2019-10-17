@@ -25,7 +25,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         /// <summary>
         /// Maximum allowed length for user identifier for App Center server.
         /// </summary>
-        public static int USER_ID_APP_CENTER_MAX_LENGTH = 256;
+        public static int UserIdMaxLength = 256;
 
         /// <summary>
         /// Event handler to subscribe to the user id update.
