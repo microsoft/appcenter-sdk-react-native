@@ -8,7 +8,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
     public class UserIdUpdatedEventArgs : EventArgs
     {
         /// <summary>
-        /// User Id
+        /// User Id.
         /// </summary>
         public string userId;
     }
