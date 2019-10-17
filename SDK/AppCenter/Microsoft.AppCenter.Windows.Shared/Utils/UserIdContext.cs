@@ -13,7 +13,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
     {
         private static readonly object UserIdLock = new object();
         private static UserIdContext _instanceField;
-        private string _userId = "";
+        private string _userId = default(string);
 
         private static readonly object UserIdContextLock = new object();
 
@@ -72,9 +72,9 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
                     if (_userId == null || !_userId.Equals(value))
                     {
                         _userId = value;
-                        UserIdUpdated?.Invoke(this, new UserIdUpdatedEventArgs { userId = value });
                     }
                 }
+                UserIdUpdated?.Invoke(this, new UserIdUpdatedEventArgs { userId = value });
             }
         }
 
@@ -85,9 +85,9 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         /// <returns>true if valid, false otherwise.</returns>
         public static bool CheckUserIdValidForAppCenter(String userId)
         {
-            if (userId != null && userId.Length > USER_ID_APP_CENTER_MAX_LENGTH)
+            if (userId != null && userId.Length > UserIdMaxLength)
             {
-                AppCenterLog.Error(AppCenterLog.LogTag, "userId is limited to " + USER_ID_APP_CENTER_MAX_LENGTH + " characters.");
+                AppCenterLog.Error(AppCenterLog.LogTag, "userId is limited to " + UserIdMaxLength + " characters.");
                 return false;
             }
             return true;

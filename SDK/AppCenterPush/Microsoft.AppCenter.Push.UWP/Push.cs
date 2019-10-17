@@ -22,7 +22,7 @@ namespace Microsoft.AppCenter.Push
     public partial class Push
     {
         private PushNotificationChannel _channel;
-        private static readonly object UWPPushLock = new object();
+        private static readonly object Lock = new object();
 
         // Expose for testing.
         internal string LatestPushToken { get; set; }
@@ -63,7 +63,7 @@ namespace Microsoft.AppCenter.Push
 
         public void OnUserIdUpdated(object sender, UserIdUpdatedEventArgs e)
         {
-            lock (UWPPushLock)
+            lock (Lock)
             {
                 if (!string.IsNullOrEmpty(LatestPushToken))
                 {
