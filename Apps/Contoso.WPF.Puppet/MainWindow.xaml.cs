@@ -282,7 +282,9 @@ namespace Contoso.WPF.Puppet
             {
                 properties = null;
             }
-            Crashes.TrackError(e, properties);
+
+            // TODO: uncomment attachments when API will be added
+            Crashes.TrackError(e, properties/*, App.GetErrorAttachments()*/);
         }
 
         void HandleOrThrow(Action action)
