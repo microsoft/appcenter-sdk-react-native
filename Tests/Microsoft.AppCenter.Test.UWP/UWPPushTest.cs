@@ -196,7 +196,27 @@ namespace Microsoft.AppCenter.Test.UWP
             Push.Push.Instance.OnUserIdUpdated(null, e);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
-            string.Equals(log.PushToken, Push.Push.Instance.LatestPushToken) && string.Equals(log.UserId, e.UserId))), Times.Once());
+            string.Equals(log.UserId, e.UserId))), Times.Once());
+        }
+
+        /// <summary>
+        /// Verify OnUserIdUpdated can still listen for userId changes when push service is disabled and then enabled. 
+        /// </summary>
+        [TestMethod]
+        public void VerifyUserIdChangeWhenPushDisabledAndThenEnabled()
+        {
+            Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Push.Push.SetEnabledAsync(true).Wait();
+            Push.Push.Instance.LatestPushToken = "token";
+
+            Push.Push.SetEnabledAsync(false).Wait();
+            var e = new UserIdUpdatedEventArgs { UserId = "newUserId" };
+            Push.Push.Instance.OnUserIdUpdated(null, e);
+
+            Push.Push.SetEnabledAsync(true).Wait();
+            Push.Push.Instance.LatestPushToken = "token";
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
+            string.Equals(log.UserId, e.UserId))), Times.Once());
         }
     }
 }

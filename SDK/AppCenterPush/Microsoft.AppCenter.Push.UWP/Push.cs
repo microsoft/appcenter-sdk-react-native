@@ -128,7 +128,6 @@ namespace Microsoft.AppCenter.Push
             }
             else if (_channel != null)
             {
-                LatestPushToken = null;
                 UserIdContext.UserIdUpdated -= OnUserIdUpdated;
                 _channel.PushNotificationReceived -= OnPushNotificationReceivedHandler;
             }
