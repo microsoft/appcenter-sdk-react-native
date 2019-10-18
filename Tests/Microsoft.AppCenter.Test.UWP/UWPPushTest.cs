@@ -175,7 +175,7 @@ namespace Microsoft.AppCenter.Test.UWP
         /// Verify Push Service can be enabled or disabled correctly.  
         /// </summary>
         [TestMethod]
-        public void EnabledPushService()
+        public void SetEnabledAsync()
         {
             Push.Push.SetEnabledAsync(false).Wait();
             Assert.IsFalse(Push.Push.IsEnabledAsync().Result);
@@ -196,7 +196,7 @@ namespace Microsoft.AppCenter.Test.UWP
             Push.Push.Instance.OnUserIdUpdated(null, e);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
-            string.Equals(log.UserId, e.UserId))), Times.Once());
+            string.Equals(log.PushToken, Push.Push.Instance.LatestPushToken) && string.Equals(log.UserId, e.UserId))), Times.Once());
         }
     }
 }

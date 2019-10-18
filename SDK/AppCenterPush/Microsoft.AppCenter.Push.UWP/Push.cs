@@ -22,7 +22,6 @@ namespace Microsoft.AppCenter.Push
     public partial class Push
     {
         private PushNotificationChannel _channel;
-        private static readonly object Lock = new object();
 
         // Expose for testing.
         internal string LatestPushToken { get; set; }
@@ -63,7 +62,7 @@ namespace Microsoft.AppCenter.Push
 
         public void OnUserIdUpdated(object sender, UserIdUpdatedEventArgs e)
         {
-            lock (Lock)
+            using (_mutex.GetLock(_mutex.State))
             {
                 if (!string.IsNullOrEmpty(LatestPushToken))
                 {
@@ -129,6 +128,7 @@ namespace Microsoft.AppCenter.Push
             }
             else if (_channel != null)
             {
+                LatestPushToken = null;
                 UserIdContext.UserIdUpdated -= OnUserIdUpdated;
                 _channel.PushNotificationReceived -= OnPushNotificationReceivedHandler;
             }

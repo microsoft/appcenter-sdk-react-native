@@ -10,10 +10,6 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         /// <summary>
         /// User Id.
         /// </summary>
-        public string UserId
-        {
-            get;
-            internal set;
-        }
+        public string UserId { get; internal set; }
     }
 }
