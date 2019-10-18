@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading;
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Http;
@@ -11,27 +15,34 @@ using Microsoft.AppCenter.Windows.Shared.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace Microsoft.AppCenter.Crashes.Test.Windows
 {
     [TestClass]
     public class HandledErrorTest
     {
+        private Storage.Storage storage;
+
         private IHttpNetworkAdapter _mockNetworkAdapter;
+
+        private const int MaxAttachmentsPerCrash = 2;
 
         [TestInitialize]
         public void InitializeTest()
         {
             _mockNetworkAdapter = Mock.Of<IHttpNetworkAdapter>();
-            var storage = new Storage.Storage(new StorageAdapter("test.db"));
+            storage = new Storage.Storage(new StorageAdapter("test.db"));
             var ingestion = new IngestionHttp(_mockNetworkAdapter);
             var channelGroup = new ChannelGroup(ingestion, storage, "app secret");
             Crashes.Instance = new Crashes();
             Crashes.SetEnabledAsync(true).Wait();
             Crashes.Instance.OnChannelGroupReady(channelGroup, "app secret");
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            storage.DeleteLogs("crashes");
         }
 
         [TestMethod]
@@ -59,6 +70,86 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
             CollectionAssert.AreEquivalent(properties, actualLog.Properties as Dictionary<string, string>);
+        }
+
+        [TestMethod]
+        public void TrackErrorWithAttachments()
+        {
+            var semaphore = new SemaphoreSlim(0);
+            HandledErrorLog actualLog = null;
+            ErrorAttachmentLog actualErrorAttachmentLog = null;
+            _mockNetworkAdapter.Dispose();
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
+                .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
+                {
+                    var log = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs[0];
+                    if (log.GetType() == typeof(ErrorAttachmentLog))
+                    {
+                        actualErrorAttachmentLog = log as ErrorAttachmentLog;
+                    }
+                    else
+                    {
+                        actualLog = log as HandledErrorLog;
+                    }
+                    if (actualLog != null && actualErrorAttachmentLog != null)
+                    {
+                        semaphore.Release();
+                    }
+                });
+
+            var exception = new System.Exception("Something went wrong.");
+            var properties = new Dictionary<string, string> { { "k1", "v1" }, { "p2", "v2" } };
+            var attachmentLog = GetValidErrorAttachmentLog();
+            Crashes.TrackError(exception, properties, attachmentLog);
+
+            // Wait until the http layer sends the log.
+            semaphore.Wait(2000);
+            Assert.IsNotNull(actualLog);
+            Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+            Assert.AreEqual(actualLog.Id, actualErrorAttachmentLog.ErrorId);
+            CollectionAssert.AreEquivalent(attachmentLog.Data, actualErrorAttachmentLog.Data);
+            CollectionAssert.AreEquivalent(properties, actualLog.Properties as Dictionary<string, string>);
+        }
+
+        [TestMethod]
+        public void TrackErrorWithTooManyAttachments()
+        {
+            var semaphore = new SemaphoreSlim(0);
+            HandledErrorLog actualLog = null;
+            ErrorAttachmentLog actualErrorAttachmentLog = null;
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
+                .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
+                {
+                    var log = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs[0];
+                    if (log.GetType() == typeof(ErrorAttachmentLog))
+                    {
+                        actualErrorAttachmentLog = log as ErrorAttachmentLog;
+                    }
+                    else
+                    {
+                        actualLog = log as HandledErrorLog;
+                    }
+                    if (actualLog != null && actualErrorAttachmentLog != null)
+                    {
+                        semaphore.Release();
+                    }
+                });
+
+            var exception = new System.Exception("Something went wrong.");
+            var properties = new Dictionary<string, string> { { "k1", "v1" }, { "p2", "v2" } };
+            var attachmentLog = GetValidErrorAttachmentLog();
+            //var errorAttachemntLogs = Enumerable.Repeat(0, MaxAttachmentsPerCrash + 1).Select(log => new GetValidErrorAttachmentLog()).ToArray();
+
         }
 
         [TestMethod]
@@ -255,5 +346,18 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(dummyUser, actualLog.UserId);
         }
+
+        private ErrorAttachmentLog GetValidErrorAttachmentLog()
+        {
+            var device = new Microsoft.AppCenter.Ingestion.Models.Device("sdkName", "sdkVersion", "osName", "osVersion", "locale", 1,
+                "appVersion", "appBuild", null, null, "model", "oemName", "osBuild", null, "screenSize", null, null, "appNamespace", null, null, null, null);
+            return new ErrorAttachmentLog()
+            {
+                ContentType = "contenttype",
+                Data = new byte[] { 1 },
+                Device = device
+            };
+        }
+
     }
 }
