@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,17 +22,16 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
     [TestClass]
     public class HandledErrorTest
     {
-        private Storage.Storage storage;
+        private string storagePath;
 
         private IHttpNetworkAdapter _mockNetworkAdapter;
-
-        private const int MaxAttachmentsPerCrash = 2;
 
         [TestInitialize]
         public void InitializeTest()
         {
             _mockNetworkAdapter = Mock.Of<IHttpNetworkAdapter>();
-            storage = new Storage.Storage(new StorageAdapter("test.db"));
+            storagePath = $"{Guid.NewGuid()}.db";
+            var storage = new Storage.Storage(new StorageAdapter(storagePath));
             var ingestion = new IngestionHttp(_mockNetworkAdapter);
             var channelGroup = new ChannelGroup(ingestion, storage, "app secret");
             Crashes.Instance = new Crashes();
@@ -42,7 +42,16 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         [TestCleanup]
         public void TestCleanup()
         {
-            storage.DeleteLogs("crashes");
+            try
+            {
+                // Try to clean up resources but don't fail the test if that throws an error.
+                SQLite.SQLiteAsyncConnection.ResetPool();
+                File.Delete(storagePath);
+            }
+            catch
+            {
+                /* No-op */
+            }
         }
 
         [TestMethod]
@@ -73,12 +82,11 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void TrackErrorWithAttachments()
+        public void TrackErrorWithPropertiesAndAttachments()
         {
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
             ErrorAttachmentLog actualErrorAttachmentLog = null;
-            _mockNetworkAdapter.Dispose();
             Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
                 It.IsAny<string>(),
                 It.IsAny<string>(),
@@ -117,7 +125,39 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         }
 
         [TestMethod]
-        public void TrackErrorWithTooManyAttachments()
+        public void TrackErrorWithMultipleAttachments()
+        {
+            var semaphore = new SemaphoreSlim(0);
+            var ExpectedLogCount = 3;
+            var count = 0;
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
+                .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
+                {
+                    count++;
+                    if (count == ExpectedLogCount)
+                    {
+                        semaphore.Release();
+                    }
+                });
+
+            var exception = new System.Exception("Something went wrong.");
+            var properties = new Dictionary<string, string> { { "k1", "v1" }, { "p2", "v2" } };
+            var attachmentLog = GetValidErrorAttachmentLog();
+            var attachmentLog2 = GetValidErrorAttachmentLog();
+            Crashes.TrackError(exception, properties, attachmentLog, attachmentLog2);
+
+            // Wait until the http layer sends the log.
+            semaphore.Wait(4000);
+            Assert.AreEqual(ExpectedLogCount, count);
+        }
+
+        [TestMethod]
+        public void TrackErrorWithoutPropertiesWithAttachments()
         {
             var semaphore = new SemaphoreSlim(0);
             HandledErrorLog actualLog = null;
@@ -146,10 +186,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 });
 
             var exception = new System.Exception("Something went wrong.");
-            var properties = new Dictionary<string, string> { { "k1", "v1" }, { "p2", "v2" } };
             var attachmentLog = GetValidErrorAttachmentLog();
-            //var errorAttachemntLogs = Enumerable.Repeat(0, MaxAttachmentsPerCrash + 1).Select(log => new GetValidErrorAttachmentLog()).ToArray();
+            Crashes.TrackError(exception, null, attachmentLog);
 
+            // Wait until the http layer sends the log.
+            semaphore.Wait(2000);
+            Assert.IsNotNull(actualLog);
+            Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+            Assert.AreEqual(actualLog.Id, actualErrorAttachmentLog.ErrorId);
+            CollectionAssert.AreEquivalent(attachmentLog.Data, actualErrorAttachmentLog.Data);
         }
 
         [TestMethod]
