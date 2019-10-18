@@ -242,7 +242,9 @@ namespace Contoso.Forms.Demo
             }
             Properties.Clear();
             RefreshPropCount();
-            Crashes.TrackError(e, properties);
+            // TODO: uncomment this when API will be added.
+            Crashes.TrackError(e, properties /*, App.GetErrorAttachments() */);
+
         }
 
         void ClearCrashUserConfirmation(object sender, EventArgs e)
