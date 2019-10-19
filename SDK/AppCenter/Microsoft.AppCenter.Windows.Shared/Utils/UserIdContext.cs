@@ -67,18 +67,16 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
             }
             set
             {
-                var userIdChanged = _userId != value;
+                EventHandler<UserIdUpdatedEventArgs> callback = null;
                 lock (UserIdContextLock)
                 {
-                    if (userIdChanged)
+                    if (_userId != value)
                     {
                         _userId = value;
+                        callback = UserIdUpdated;
                     }
                 }
-                if (userIdChanged)
-                {
-                    UserIdUpdated?.Invoke(this, new UserIdUpdatedEventArgs { UserId = value });
-                }
+                callback?.Invoke(this, new UserIdUpdatedEventArgs { UserId = value });
             }
         }
 

@@ -3,7 +3,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
+using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Windows.Shared.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -185,18 +188,27 @@ namespace Microsoft.AppCenter.Test.UWP
         }
 
         /// <summary>
-        /// Verify OnUserIdUpdated works with userId changes. 
+        /// Verify OnUserIdUpdated works with userId changes.
         /// </summary>
         [TestMethod]
         public void VerifyEnqueueAsyncIsCalledOnceOnUserIdUpdatedInvocation()
         {
             Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
+            Push.Push.SetEnabledAsync(true).Wait();
             Push.Push.Instance.LatestPushToken = "token";
-            var e = new UserIdUpdatedEventArgs { UserId = "userId" };
-            Push.Push.Instance.OnUserIdUpdated(null, e);
+            var userId = "userId";
+
+            var semaphore = new SemaphoreSlim(0);
+            _mockChannel.Setup(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
+            string.Equals(log.UserId, userId)))).Callback(() =>
+            {
+                semaphore.Release();
+            });
+            UserIdContext.Instance.UserId = userId;
+            semaphore.Wait(10000);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
-            string.Equals(log.UserId, e.UserId))), Times.Once());
+            string.Equals(log.UserId, userId))), Times.AtLeastOnce());
         }
 
         /// <summary>
@@ -206,17 +218,40 @@ namespace Microsoft.AppCenter.Test.UWP
         public void VerifyUserIdChangeWhenPushDisabledAndThenEnabled()
         {
             Push.Push.Instance.OnChannelGroupReady(_mockChannelGroup.Object, string.Empty);
-            Push.Push.SetEnabledAsync(true).Wait();
-            Push.Push.Instance.LatestPushToken = "token";
 
+            // Disable the push service, should not listen for userId changes. 
             Push.Push.SetEnabledAsync(false).Wait();
             var e = new UserIdUpdatedEventArgs { UserId = "newUserId" };
-            Push.Push.Instance.OnUserIdUpdated(null, e);
+            var userId = "userId1";
+            UserIdContext.Instance.UserId = userId;
+            var semaphore = new SemaphoreSlim(0);
+            _mockChannel.Setup(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
+            string.Equals(log.UserId, userId)))).Callback(() =>
+            {
+                semaphore.Release();
+            });
+            UserIdContext.Instance.UserId = userId;
+            semaphore.Wait(10000);
 
+            _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
+            string.Equals(log.UserId, userId))), Times.Never());
+
+            // Enable the push service, should start listen for userId changes. 
             Push.Push.SetEnabledAsync(true).Wait();
             Push.Push.Instance.LatestPushToken = "token";
+            userId = "userId2";
+            UserIdContext.Instance.UserId = userId;
+            semaphore = new SemaphoreSlim(0);
+            _mockChannel.Setup(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
+            string.Equals(log.UserId, userId)))).Callback(() =>
+            {
+                semaphore.Release();
+            });
+            UserIdContext.Instance.UserId = userId;
+            semaphore.Wait(10000);
+
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
-            string.Equals(log.UserId, e.UserId))), Times.Once());
+            string.Equals(log.UserId, userId))), Times.AtLeastOnce());
         }
     }
 }
