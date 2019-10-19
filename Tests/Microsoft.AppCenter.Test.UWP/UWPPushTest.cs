@@ -4,9 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AppCenter.Channel;
-using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Windows.Shared.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
