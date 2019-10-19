@@ -195,6 +195,7 @@ namespace Microsoft.AppCenter.Test.UWP
             Push.Push.SetEnabledAsync(true).Wait();
             Push.Push.Instance.LatestPushToken = "token";
             var userId = "userId";
+            UserIdContext.Instance.UserId = userId;
 
             var semaphore = new SemaphoreSlim(0);
             _mockChannel.Setup(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
@@ -202,7 +203,6 @@ namespace Microsoft.AppCenter.Test.UWP
             {
                 semaphore.Release();
             });
-            UserIdContext.Instance.UserId = userId;
             semaphore.Wait(10000);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
@@ -222,13 +222,13 @@ namespace Microsoft.AppCenter.Test.UWP
             var e = new UserIdUpdatedEventArgs { UserId = "newUserId" };
             var userId = "userId1";
             UserIdContext.Instance.UserId = userId;
+
             var semaphore = new SemaphoreSlim(0);
             _mockChannel.Setup(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
             string.Equals(log.UserId, userId)))).Callback(() =>
             {
                 semaphore.Release();
             });
-            UserIdContext.Instance.UserId = userId;
             semaphore.Wait(10000);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
@@ -239,13 +239,13 @@ namespace Microsoft.AppCenter.Test.UWP
             Push.Push.Instance.LatestPushToken = "token";
             userId = "userId2";
             UserIdContext.Instance.UserId = userId;
+
             semaphore = new SemaphoreSlim(0);
             _mockChannel.Setup(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
             string.Equals(log.UserId, userId)))).Callback(() =>
             {
                 semaphore.Release();
             });
-            UserIdContext.Instance.UserId = userId;
             semaphore.Wait(10000);
 
             _mockChannel.Verify(channel => channel.EnqueueAsync(It.Is<Push.Ingestion.Models.PushInstallationLog>(log =>
