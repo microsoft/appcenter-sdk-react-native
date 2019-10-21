@@ -101,6 +101,7 @@ namespace Microsoft.AppCenter.Push
                                 _channel = channel;
 
                                 // Subscribe to UserId Change.
+                                UserIdContext.UserIdUpdated -= OnUserIdUpdated;
                                 UserIdContext.UserIdUpdated += OnUserIdUpdated;
 
                                 // Subscribe to push.
