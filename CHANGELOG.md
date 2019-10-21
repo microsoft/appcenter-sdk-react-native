@@ -1,16 +1,28 @@
 # App Center SDK for React Native Change Log
 
-## Version 2.5.0 (Under development)
+## Version 2.5.0
 
 ### App Center
 
 * **[Fix]** Fix dependency vulnerabilities in all App Center packages.
+
+#### iOS
+
+* **[Fix]** Fix header issues with projects not using clang modules.
 
 ### App Center Crashes
 
 #### Android
 
 * **[Behavior change]** Fix a security issue in the way native Android crashes are processed. The exception message is now `null` and the exception stack trace is the raw Java stack trace.
+
+### App Center Data
+
+* **[Fix]** Reduced retries on Data-related operations to fail fast and avoid the perception of calls "hanging".
+
+#### iOS
+
+* **[Fix]** Fix an issue where the optional delegate method `data:didCompletePendingOperation:forDocument:withError:` would throw an exception if not implemented (when using `MSData.setRemoteOperationDelegate`).
 
 ___
 
