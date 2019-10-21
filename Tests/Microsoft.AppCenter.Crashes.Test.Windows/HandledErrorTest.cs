@@ -69,7 +69,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 {
                     actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
                     semaphore.Release();
-                });
+                }).ReturnsAsync("");
             var exception = new System.Exception("Something went wrong.");
             var properties = new Dictionary<string, string> { { "k1", "v1" }, { "p2", "v2" } };
             Crashes.TrackError(exception, properties);
@@ -153,7 +153,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Crashes.TrackError(exception, properties, attachmentLog, attachmentLog2);
 
             // Wait until the http layer sends the log.
-            semaphore.Wait(4000);
+            semaphore.Wait(2000);
             Assert.AreEqual(ExpectedLogCount, count);
         }
 
@@ -214,7 +214,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 {
                     actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
                     semaphore.Release();
-                });
+                }).ReturnsAsync("");
             var exception = new System.Exception("Something went wrong.");
             var properties = new Dictionary<string, string>();
             for (int i = 0; i < PropertyValidator.MaxProperties + 5; ++i)
@@ -246,7 +246,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 {
                     actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
                     semaphore.Release();
-                });
+                }).ReturnsAsync("");
             var exception = new System.Exception("Something went wrong.");
             Crashes.TrackError(exception);
 
@@ -271,7 +271,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 {
                     Assert.Fail("This callback should not have been invoked.");
                     semaphore.Release();
-                });
+                }).ReturnsAsync("");
             Crashes.TrackError(null);
 
             // Check no log sent.
@@ -293,7 +293,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 {
                     actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
                     semaphore.Release();
-                });
+                }).ReturnsAsync("");
             var exception = new System.Exception("Something went wrong.");
             var properties = new Dictionary<string, string>
             {
@@ -338,7 +338,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                     actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
                     ++logCount;
                     semaphore.Release();
-                });
+                }).ReturnsAsync("");
 
             // If we disable the SDK.
             Crashes.SetEnabledAsync(false).Wait();
@@ -384,7 +384,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 {
                     actualLog = JsonConvert.DeserializeObject<LogContainer>(content, LogSerializer.SerializationSettings).Logs.Single() as HandledErrorLog;
                     semaphore.Release();
-                });
+                }).ReturnsAsync("");
             var exception = new System.Exception("Something went wrong.");
             Crashes.TrackError(exception);
 
