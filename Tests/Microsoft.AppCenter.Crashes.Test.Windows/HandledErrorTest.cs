@@ -119,6 +119,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             semaphore.Wait(2000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+            Assert.IsNotNull(actualErrorAttachmentLog);
             Assert.AreEqual(actualLog.Id, actualErrorAttachmentLog.ErrorId);
             CollectionAssert.AreEquivalent(attachmentLog.Data, actualErrorAttachmentLog.Data);
             CollectionAssert.AreEquivalent(properties, actualLog.Properties as Dictionary<string, string>);
@@ -193,6 +194,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             semaphore.Wait(2000);
             Assert.IsNotNull(actualLog);
             Assert.AreEqual(exception.Message, actualLog.Exception.Message);
+            Assert.IsNotNull(actualErrorAttachmentLog);
             Assert.AreEqual(actualLog.Id, actualErrorAttachmentLog.ErrorId);
             CollectionAssert.AreEquivalent(attachmentLog.Data, actualErrorAttachmentLog.Data);
         }
