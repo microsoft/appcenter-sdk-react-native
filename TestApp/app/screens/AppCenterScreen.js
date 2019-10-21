@@ -18,18 +18,33 @@ const USER_ID_KEY = 'USER_ID_KEY';
 
 const SecretStrings = {
   ios: {
-    appSecret: 'e59c0968-b7e3-474d-85ad-6dcfaffb8bf5',
+    appSecrets: {
+      AAD: 'a9ee0bf2-831a-4f83-93a2-4786d8cb5f23',
+      B2C: '6c4207ab-6816-47b9-a692-e59d0f012938'
+    },
     target: 'target=c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906'
   },
   android: {
-    appSecret: '32fcfc69-d576-41dc-8d49-4be159e3d7b2',
+    appSecrets: {
+      AAD: 'be23fc61-f73b-4feb-8815-c8ad31804202',
+      B2C: 'ec226b05-8eb0-4af7-a908-bfc9e153791d'
+    },
     target: 'target=4dacd24d0b1b42db9894926d0db2f4c7-39311d37-fb55-479c-b7b6-9893b53d0186-7306'
   }
 };
-SecretStrings.ios.both = `appsecret=${SecretStrings.ios.appSecret};${SecretStrings.ios.target}`;
-SecretStrings.android.both = `appsecret=${SecretStrings.android.appSecret};${SecretStrings.android.target}`;
+
+const B2C = 'B2C';
+const AAD = 'AAD';
+SecretStrings.ios.both = {};
+SecretStrings.ios.both[AAD] = `appsecret=${SecretStrings.ios.appSecrets.AAD};${SecretStrings.ios.target}`;
+SecretStrings.ios.both[B2C] = `appsecret=${SecretStrings.ios.appSecrets.B2C};${SecretStrings.ios.target}`;
+
+SecretStrings.android.both = {};
+SecretStrings.android.both[AAD] = `appsecret=${SecretStrings.android.appSecrets.AAD};${SecretStrings.android.target}`;
+SecretStrings.android.both[B2C] = `appsecret=${SecretStrings.android.appSecrets.B2C};${SecretStrings.android.target}`;
 
 const STARTUP_MODE = 'STARTUP_MODE';
+const APP_SECRET = 'APP_SECRET';
 
 const StartupModes = [
   {
@@ -54,6 +69,17 @@ const StartupModes = [
   }
 ];
 
+const AppSecrets = [
+  {
+    label: B2C,
+    key: B2C
+  },
+  {
+    label: AAD,
+    key: AAD
+  }
+];
+
 export default class AppCenterScreen extends Component {
   static navigationOptions = {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DialsTabBarIcon} />,
@@ -75,6 +101,7 @@ export default class AppCenterScreen extends Component {
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
+    appSecret: AppSecrets[0],
     userId: '',
     accountId: '',
     authStatus: 'Authentication status unknown'
@@ -90,6 +117,16 @@ export default class AppCenterScreen extends Component {
         break;
       }
     }
+
+    const appSecretKey = await AsyncStorage.getItem(APP_SECRET);
+    for (let index = 0; index < AppSecrets.length; index++) {
+      const appSecret = AppSecrets[index];
+      if (appSecret.key === appSecretKey) {
+        this.state.appSecret = appSecret;
+        break;
+      }
+    }
+
     const userId = await AsyncStorage.getItem(USER_ID_KEY);
     if (userId !== null) {
       this.state.userId = userId;
@@ -134,16 +171,16 @@ export default class AppCenterScreen extends Component {
     console.log('Relaunch app for changes to be applied.');
   }
 
-  async selectStartup(key) {
-    switch (key) {
+  async selectStartup() {
+    switch (this.state.startupMode.key) {
       case 'APPCENTER':
-        await this.configureStartup(SecretStrings[Platform.OS].appSecret, true);
+        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[this.state.appSecret.key], true);
         break;
       case 'TARGET':
         await this.configureStartup(SecretStrings[Platform.OS].target, true);
         break;
       case 'BOTH':
-        await this.configureStartup(SecretStrings[Platform.OS].both, true);
+        await this.configureStartup(SecretStrings[Platform.OS].both[this.state.appSecret.key], true);
         break;
       case 'NONE':
         await this.configureStartup(null, true);
@@ -152,9 +189,8 @@ export default class AppCenterScreen extends Component {
         await this.configureStartup(null, false);
         break;
       default:
-        throw new Error(`Unexpected startup type=${key}`);
+        throw new Error(`Unexpected startup type=${this.state.startupMode.key}`);
     }
-    await AsyncStorage.setItem(STARTUP_MODE, key);
   }
 
   render() {
@@ -180,13 +216,31 @@ export default class AppCenterScreen extends Component {
       </TouchableOpacity>
     );
 
-    const pickerRenderItem = ({ item: { startupModes } }) => (
+    const startupModeRenderItem = ({ item: { startupModes } }) => (
       <ModalSelector
         data={startupModes}
         initValue={this.state.startupMode.label}
         style={SharedStyles.modalSelector}
         selectTextStyle={SharedStyles.itemButton}
-        onChange={({ key }) => this.selectStartup(key)}
+        onChange={async ({ key }) => {
+            await AsyncStorage.setItem(STARTUP_MODE, key);
+            this.setState({ startupMode: startupModes.filter(m => m.key === key)[0] }, this.selectStartup);
+          }
+        }
+      />
+    );
+
+    const appSecretRenderItem = ({ item: { appSecrets } }) => (
+      <ModalSelector
+        data={appSecrets}
+        initValue={this.state.appSecret.label}
+        style={SharedStyles.modalSelector}
+        selectTextStyle={SharedStyles.itemButton}
+        onChange={async ({ key }) => {
+            await AsyncStorage.setItem(APP_SECRET, key);
+            this.setState({ appSecret: appSecrets.filter(s => s.key === key)[0] }, this.selectStartup);
+          }
+        }
       />
     );
 
@@ -239,7 +293,16 @@ export default class AppCenterScreen extends Component {
                   startupModes: StartupModes
                 }
               ],
-              renderItem: pickerRenderItem
+              renderItem: startupModeRenderItem
+            },
+            {
+              title: 'Change App Secret',
+              data: [
+                {
+                  appSecrets: AppSecrets
+                }
+              ],
+              renderItem: appSecretRenderItem
             },
             {
               title: 'Actions',

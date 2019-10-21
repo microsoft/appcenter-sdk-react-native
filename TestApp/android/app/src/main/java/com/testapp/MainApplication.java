@@ -12,6 +12,8 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.auth.Auth;
+import com.microsoft.appcenter.data.Data;
 
 import java.util.List;
 
@@ -26,8 +28,6 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
-
-            @SuppressWarnings("UnnecessaryLocalVariable")
             List<ReactPackage> packages = new PackageList(this).getPackages();
             packages.add(new TestAppNativePackage());
             return packages;
@@ -48,6 +48,10 @@ public class MainApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
         AppCenter.setLogLevel(Log.VERBOSE);
+        AppCenter.setLogUrl("https://in-integration.dev.avalanch.es");
+        Data.setTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
+        Auth.setConfigUrl("https://config-integration.dev.avalanch.es");
+        TestAppNativeModule.initSecrets(this);
         SoLoader.init(this, /* native exopackage */ false);
     }
 }

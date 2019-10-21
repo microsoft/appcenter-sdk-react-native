@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
+import { Alert, Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Data from 'appcenter-data';
 
@@ -16,9 +16,9 @@ export default class DataScreen extends Component {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DataTabBarIcon} />,
     tabBarOnPress: ({ defaultHandler, navigation }) => {
       // Allow consequent presses to refresh the screen.
-      const refreshScreen = navigation.getParam('refreshData');
-      if (refreshScreen) {
-        refreshScreen();
+      const refreshData = navigation.getParam('refreshData');
+      if (refreshData) {
+        refreshData();
       }
       defaultHandler();
     }
@@ -28,6 +28,7 @@ export default class DataScreen extends Component {
   state = {
     dataEnabled: false,
     createDocModalVisible: false,
+    canCreateDocument: false,
     docTtl: 60,
     docId: '',
     docType: '',
@@ -44,7 +45,7 @@ export default class DataScreen extends Component {
 
     // Add a way to refresh the screen when the tab is pressed.
     this.props.navigation.setParams({
-      refreshScreen: this.refreshToggle.bind(this)
+      refreshData: this.refreshToggle.bind(this)
     });
     const documents = await this.listDocuments(this.state.partition);
     this.setState({ documents, loadingData: false });
@@ -75,8 +76,18 @@ export default class DataScreen extends Component {
         });
       }
       /* eslint-enable no-await-in-loop */
+
+      if (partition === Data.DefaultPartitions.USER_DOCUMENTS) {
+        this.setState({ canCreateDocument: true });
+      } else {
+        this.setState({ canCreateDocument: false });
+      }
       return documents;
     } catch (err) {
+      if (partition === Data.DefaultPartitions.USER_DOCUMENTS) {
+        this.setState({ canCreateDocument: false });
+      }
+      Alert.alert('Unable to list user partition.', err.message);
       console.log(err);
     }
     return documents;
@@ -103,10 +114,9 @@ export default class DataScreen extends Component {
               this.setState({ docTtl: itemValue })
             }
           >
-            <Picker.Item label="Default" value="-1" />
-            <Picker.Item label="No Cache" value="0" />
-            <Picker.Item label="2 seconds" value="2" />
-            <Picker.Item label="Infinite" value="-1" />
+            <Picker.Item label="Infinite(Default)" value={Data.TimeToLive.DEFAULT} />
+            <Picker.Item label="No Cache" value={Data.TimeToLive.NO_CACHE} />
+            <Picker.Item label="2 seconds" value={2} />
           </Picker>
         </View>
       </View>
@@ -178,12 +188,12 @@ export default class DataScreen extends Component {
     );
 
    const actionRenderItem = ({ item: { title, action } }) => (
-     <TouchableOpacity style={SharedStyles.item} onPress={action}>
+     <TouchableOpacity disabled={this.state.partition === Data.DefaultPartitions.APP_DOCUMENTS} style={SharedStyles.item} onPress={action}>
        <Text style={SharedStyles.itemButton}>{title}</Text>
        <Modal
          animationType="slide"
          transparent={false}
-         visible={this.state.createDocModalVisible}
+         visible={this.state.createDocModalVisible && this.state.canCreateDocument}
        >
          <View style={{ marginTop: 22 }}>
            <SectionList
@@ -247,7 +257,7 @@ export default class DataScreen extends Component {
                               this.state.value,
                               Data.DefaultPartitions.USER_DOCUMENTS,
                               new Data.WriteOptions(this.state.docTtl)
-);
+                            );
                     console.log('Successful create', createResult);
                     this.setCreateDocModalVisible(!this.state.createDocModalVisible);
                   }}
@@ -326,8 +336,9 @@ export default class DataScreen extends Component {
                 {
                   title: 'Create a new document',
                   value: 'createNewDocument',
-                  action: () => {
-                    this.setCreateDocModalVisible(true);
+                  action: async () => {
+                    this.setCreateDocModalVisible(this.state.dataEnabled &&
+                      this.state.canCreateDocument);
                   }
                 },
               ],

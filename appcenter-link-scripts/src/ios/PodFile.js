@@ -163,7 +163,7 @@ Podfile.prototype.scopeRanges = function (content) {
         if (keywordMatch.keyword === targetKeyword) {
             currentRange.end = keywordMatch.index - 1;
             if (targetsStack.length === 0) {
-                result.push(Object.assign({}, currentRange));
+                result.push({ ...currentRange });
             }
             targetsStack.push(keywordMatch.index);
         } else {
@@ -176,7 +176,7 @@ Podfile.prototype.scopeRanges = function (content) {
         keywordMatch = this.nextKeyword(content, currentOffset);
     }
     currentRange.end = content.length;
-    result.push(Object.assign({}, currentRange));
+    result.push({ ...currentRange });
     return result;
 };
 
@@ -217,24 +217,24 @@ Podfile.prototype.nextKeyword = function (content, offset, reverse = false) {
     const targetKeyword = 'target';
     const endKeyword = 'end';
 
-    const targetIndex = reverse ?
-        content.lastIndexOf(targetKeyword, offset) :
-        content.indexOf(targetKeyword, offset);
-    const endIndex = reverse ?
-        content.lastIndexOf(endKeyword, offset) :
-        content.indexOf(endKeyword, offset);
+    const targetIndex = reverse
+        ? content.lastIndexOf(targetKeyword, offset)
+        : content.indexOf(targetKeyword, offset);
+    const endIndex = reverse
+        ? content.lastIndexOf(endKeyword, offset)
+        : content.indexOf(endKeyword, offset);
 
     if (reverse) {
-        return targetIndex < endIndex ?
-            { keyword: endKeyword, index: endIndex } :
-            { keyword: targetKeyword, index: targetIndex };
+        return targetIndex < endIndex
+            ? { keyword: endKeyword, index: endIndex }
+            : { keyword: targetKeyword, index: targetIndex };
     }
     if (targetIndex < 0) {
         return { keyword: endKeyword, index: endIndex };
     }
-    return targetIndex < endIndex ?
-        { keyword: targetKeyword, index: targetIndex } :
-        { keyword: endKeyword, index: endIndex };
+    return targetIndex < endIndex
+        ? { keyword: targetKeyword, index: targetIndex }
+        : { keyword: endKeyword, index: endIndex };
 };
 
 Podfile.prototype.save = function () {

@@ -41,13 +41,11 @@ class AppCenterReactNativeCrashesUtils {
         errorReportMap.putString("threadName", errorReport.getThreadName());
         errorReportMap.putString("appErrorTime", "" + errorReport.getAppErrorTime().getTime());
         errorReportMap.putString("appStartTime", "" + errorReport.getAppStartTime().getTime());
-        
-        //noinspection ThrowableResultOfMethodCallIgnored
-        Throwable error = errorReport.getThrowable();
-        if (error != null) {
-            errorReportMap.putString("exception", Log.getStackTraceString(error));
-            errorReportMap.putString("exceptionReason", error.getMessage());
+        String stackTrace = errorReport.getStackTrace();
+        if (stackTrace != null) {
+            errorReportMap.putString("exception", stackTrace);
         }
+        
         /* Convert device info. */
         Device deviceInfo = errorReport.getDevice();
         WritableMap deviceInfoMap;

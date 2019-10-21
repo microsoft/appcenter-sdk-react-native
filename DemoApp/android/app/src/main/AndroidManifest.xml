@@ -31,10 +31,12 @@
 
               <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-
               <data
                 android:host="auth"
                 android:scheme="msale65c7490-1f58-4e93-bb55-a2e11dac4368" />
+              <data
+                android:host="auth"
+                android:scheme="msalf0ac54aa-6e53-4018-98f6-37d60ff7649a" />
         </intent-filter>
       </activity>
     </application>

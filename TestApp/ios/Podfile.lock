@@ -1,40 +1,40 @@
 PODS:
-  - appcenter (2.4.0):
+  - appcenter (2.5.0):
     - AppCenterReactNativeShared
     - React
-  - appcenter-analytics (2.4.0):
+  - appcenter-analytics (2.5.0):
     - AppCenter/Analytics
     - AppCenterReactNativeShared
     - React
-  - appcenter-auth (2.4.0):
+  - appcenter-auth (2.5.0):
     - AppCenter/Auth
     - AppCenterReactNativeShared
     - React
-  - appcenter-crashes (2.4.0):
+  - appcenter-crashes (2.5.0):
     - AppCenter/Crashes
     - AppCenterReactNativeShared
     - React
-  - appcenter-data (2.4.0):
+  - appcenter-data (2.5.0):
     - AppCenter/Data
     - AppCenterReactNativeShared
     - React
-  - appcenter-push (2.4.0):
+  - appcenter-push (2.5.0):
     - AppCenter/Push
     - AppCenterReactNativeShared
     - React
-  - AppCenter/Analytics (2.4.0):
+  - AppCenter/Analytics (2.5.0):
     - AppCenter/Core
-  - AppCenter/Auth (2.4.0):
+  - AppCenter/Auth (2.5.0):
     - AppCenter/Core
-  - AppCenter/Core (2.4.0)
-  - AppCenter/Crashes (2.4.0):
+  - AppCenter/Core (2.5.0)
+  - AppCenter/Crashes (2.5.0):
     - AppCenter/Core
-  - AppCenter/Data (2.4.0):
+  - AppCenter/Data (2.5.0):
     - AppCenter/Core
-  - AppCenter/Push (2.4.0):
+  - AppCenter/Push (2.5.0):
     - AppCenter/Core
-  - AppCenterReactNativeShared (2.4.0):
-    - AppCenter/Core (= 2.4.0)
+  - AppCenterReactNativeShared (2.5.0):
+    - AppCenter/Core (= 2.5.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - Folly (2018.10.22.00):
@@ -119,7 +119,7 @@ PODS:
   - React-RCTWebSocket (0.60.3):
     - React-Core (= 0.60.3)
     - React-fishhook (= 0.60.3)
-  - RNCAsyncStorage (1.6.1):
+  - RNCAsyncStorage (1.6.2):
     - React
   - RNFS (2.14.1):
     - React
@@ -236,14 +236,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 49a9ffe114c00e2bf5374aeda816d47eabf1978a
-  appcenter: 4072e79b8d037d99056e6fc6556224b4525b5829
-  appcenter-analytics: 94be52eca805d586207d710aac95e0ddca8b3ddb
-  appcenter-auth: beffa7d6671514ab878cfb65dfa79fa9c1aec93c
-  appcenter-crashes: 30caece47856aee7c4c7449d4f4dae2d69795bd6
-  appcenter-data: 6c7d575e404314a7e082b81e5857d8e251728921
-  appcenter-push: f6c62e8e55cf09f53076674c185df72f68ea9dd7
-  AppCenterReactNativeShared: 39d0b7402c6e00ceceb5155aa508267fd78ce901
+  AppCenter: 637f180deefc61e8ab3f94223869ee50f61dabea
+  appcenter: bde9923b687332a25607fc1aa9577c9361cfed85
+  appcenter-analytics: 0ee7a35def715d4bce58ec435f54161770195166
+  appcenter-auth: defc647aad5a8bf27b4835e23b90c34975bb55e1
+  appcenter-crashes: 9f9c5647dba19026ff09509576fb7233f69697ff
+  appcenter-data: c4080ab83489c6276e573ef9ae8b0e365b950320
+  appcenter-push: 683b98fcde542864128c828a61751ce8ab39b53d
+  AppCenterReactNativeShared: dab7f9216c8dc1f2552b5a314ff2d2337517552d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
@@ -267,11 +267,11 @@ SPEC CHECKSUMS:
   React-RCTText: b026f8350c2cbe0daeb9880dd9c6e018fce0daf7
   React-RCTVibration: 5d9ed4a968e9d42880ddcc7c29bee3417c745408
   React-RCTWebSocket: 69d8565d66043f244b4129f3d7154c5689fb7d3e
-  RNCAsyncStorage: 621bad7a889b5bf1583a52547f2dcd3a4d1ff15e
+  RNCAsyncStorage: 5ae4d57458804e99f73d427214442a6b10a53856
   RNFS: a8fbe7060fa49157d819466404794ad9c58e58cf
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
   yoga: 843fe25849b56131275bf3e5da2c468e96f68aff
 
 PODFILE CHECKSUM: aa799989050601e16f05421c7ef07e0f979eec5f
 
-COCOAPODS: 1.8.0
+COCOAPODS: 1.8.4
