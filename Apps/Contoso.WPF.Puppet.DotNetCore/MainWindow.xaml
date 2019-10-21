@@ -98,7 +98,7 @@
                             <DataGridTextColumn Header="Property Value" Width="*" Binding="{Binding Value}"/>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <GroupBox Header="Error attachment" IsEnabled="{Binding ElementName=HandleExceptions, Path=IsChecked}">
+                    <GroupBox Header="Error attachment">
                         <StackPanel Orientation="Vertical">
                             <DockPanel LastChildFill="True">
                                 <Label Content="Text attachment"/>
