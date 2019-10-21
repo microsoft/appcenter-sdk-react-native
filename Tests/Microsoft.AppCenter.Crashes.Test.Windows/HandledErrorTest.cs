@@ -108,7 +108,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                     {
                         semaphore.Release();
                     }
-                });
+                }).ReturnsAsync("");
 
             var exception = new System.Exception("Something went wrong.");
             var properties = new Dictionary<string, string> { { "k1", "v1" }, { "p2", "v2" } };
@@ -144,7 +144,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                     {
                         semaphore.Release();
                     }
-                });
+                }).ReturnsAsync("");
 
             var exception = new System.Exception("Something went wrong.");
             var properties = new Dictionary<string, string> { { "k1", "v1" }, { "p2", "v2" } };
@@ -184,7 +184,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                     {
                         semaphore.Release();
                     }
-                });
+                }).ReturnsAsync("");
 
             var exception = new System.Exception("Something went wrong.");
             var attachmentLog = GetValidErrorAttachmentLog();
