@@ -73,14 +73,24 @@ namespace Microsoft.AppCenter.Crashes
             MSCrashes.NotifyWithUserConfirmation(iosUserConfirmation);
         }
 
-        static void PlatformTrackError(Exception exception, IDictionary<string, string> properties)
+        static void PlatformTrackError(Exception exception, IDictionary<string, string> properties, params ErrorAttachmentLog[] attachments)
         {
-            if (properties != null)
+            var attachmentArray = new NSMutableArray();
+            if (attachments != null)
             {
-                MSCrashes.TrackModelException(GenerateiOSException(exception, false), StringDictToNSDict(properties));
-                return;
+                foreach (var attachment in attachments)
+                {
+                    if (attachment != null)
+                    {
+                        attachmentArray.Add(attachment.internalAttachment);
+                    }
+                    else
+                    {
+                        AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.TrackError.");
+                    }
+                }
             }
-            MSCrashes.TrackModelException(GenerateiOSException(exception, false));
+            MSCrashes.TrackModelException(GenerateiOSException(exception, false), StringDictToNSDict(properties), attachmentArray);
         }
 
         /// <summary>
