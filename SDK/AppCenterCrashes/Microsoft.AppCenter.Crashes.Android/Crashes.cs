@@ -86,9 +86,10 @@ namespace Microsoft.AppCenter.Crashes
             return Task.Run(() => (bool)future.Get());
         }
 
-        static void PlatformTrackError(Exception exception, IDictionary<string, string> properties, params ErrorAttachmentLog[] attachments)
+        static void PlatformTrackError(Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
-            WrapperSdkExceptionManager.TrackException(GenerateModelException(exception, false), properties, new ArrayList(attachments));
+            ArrayList attachmentArray = attachments != null ? new ArrayList(attachments) : null;
+            WrapperSdkExceptionManager.TrackException(GenerateModelException(exception, false), properties, attachmentArray);
         }
 
         // Empty model stack frame used for comparison to optimize JSON payload.
