@@ -22,7 +22,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
     [TestClass]
     public class HandledErrorTest
     {
-        private string storagePath;
+        private string _storagePath;
 
         private IHttpNetworkAdapter _mockNetworkAdapter;
 
@@ -30,8 +30,8 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
         public void InitializeTest()
         {
             _mockNetworkAdapter = Mock.Of<IHttpNetworkAdapter>();
-            storagePath = $"{Guid.NewGuid()}.db";
-            var storage = new Storage.Storage(new StorageAdapter(storagePath));
+            _storagePath = $"{Guid.NewGuid()}.db";
+            var storage = new Storage.Storage(new StorageAdapter(_storagePath));
             var ingestion = new IngestionHttp(_mockNetworkAdapter);
             var channelGroup = new ChannelGroup(ingestion, storage, "app secret");
             Crashes.Instance = new Crashes();
@@ -46,7 +46,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             {
                 // Try to clean up resources but don't fail the test if that throws an error.
                 SQLite.SQLiteAsyncConnection.ResetPool();
-                File.Delete(storagePath);
+                File.Delete(_storagePath);
             }
             catch
             {
