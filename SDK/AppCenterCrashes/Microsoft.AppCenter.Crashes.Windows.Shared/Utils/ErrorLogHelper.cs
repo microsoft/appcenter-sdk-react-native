@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
@@ -16,7 +17,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
     /// <summary>
     /// ErrorLogHelper to help constructing, serializing, and de-serializing locally stored error logs.
     /// </summary>
-    public class ErrorLogHelper
+    public partial class ErrorLogHelper
     {
         /// <summary>
         /// Error log file extension for the JSON schema.
@@ -162,6 +163,7 @@ namespace Microsoft.AppCenter.Crashes.Utils
 
         private ManagedErrorLog InstanceCreateErrorLog(System.Exception exception)
         {
+            var exceptionAndBinaries = CreateModelExceptionAndBinaries(exception);
             return new ManagedErrorLog
             {
                 Id = Guid.NewGuid(),
@@ -174,9 +176,10 @@ namespace Microsoft.AppCenter.Crashes.Utils
                 AppLaunchTimestamp = _processInformation.ProcessStartTime?.ToUniversalTime(),
                 Architecture = _processInformation.ProcessArchitecture,
                 Fatal = true,
-                Exception = CreateModelException(exception),
+                Exception = exceptionAndBinaries.Exception,
                 Sid = SessionContext.SessionId,
-                UserId = UserIdContext.Instance.UserId
+                UserId = UserIdContext.Instance.UserId,
+                Binaries = exceptionAndBinaries.Binaries
             };
         }
 
@@ -351,33 +354,6 @@ namespace Microsoft.AppCenter.Crashes.Utils
                     AppCenterLog.Debug(Crashes.LogTag, "Deleted crashes local files.");
                 }
             }
-        }
-
-        internal static ModelException CreateModelException(System.Exception exception)
-        {
-            var modelException = new ModelException
-            {
-                Type = exception.GetType().ToString(),
-                Message = exception.Message,
-                StackTrace = exception.StackTrace
-            };
-            if (exception is AggregateException aggregateException)
-            {
-                if (aggregateException.InnerExceptions.Count != 0)
-                {
-                    modelException.InnerExceptions = new List<ModelException>();
-                    foreach (var innerException in aggregateException.InnerExceptions)
-                    {
-                        modelException.InnerExceptions.Add(CreateModelException(innerException));
-                    }
-                }
-            }
-            if (exception.InnerException != null)
-            {
-                modelException.InnerExceptions = modelException.InnerExceptions ?? new List<ModelException>();
-                modelException.InnerExceptions.Add(CreateModelException(exception.InnerException));
-            }
-            return modelException;
         }
 
         /// <summary>

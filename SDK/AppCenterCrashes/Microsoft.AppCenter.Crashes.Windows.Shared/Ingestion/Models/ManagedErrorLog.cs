@@ -1,6 +1,6 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// Copyright (c) Microsoft Corporation.  All rights reserved.
 
+using System.Collections.Generic;
 using Microsoft.AppCenter.Ingestion.Models;
 using Newtonsoft.Json;
 
@@ -10,7 +10,7 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
     /// Error log for managed platforms (such as Android Dalvik/ART).
     /// </summary>
     [JsonObject(JsonIdentifier)]
-    public class ManagedErrorLog : AbstractErrorLog
+    public partial class ManagedErrorLog : AbstractErrorLog
     {
         internal const string JsonIdentifier = "managedError";
 
@@ -19,6 +19,7 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
         /// </summary>
         public ManagedErrorLog()
         {
+            CustomInit();
         }
 
         /// <summary>
@@ -55,12 +56,24 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
         /// <param name="architecture">CPU architecture.</param>
         /// <param name="buildId">Unique ID for a Xamarin build or another
         /// similar technology.</param>
-        public ManagedErrorLog(Microsoft.AppCenter.Ingestion.Models.Device device, System.Guid id, int processId, string processName, bool fatal, Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), System.DateTime? appLaunchTimestamp = default(System.DateTime?), string architecture = default(string), string buildId = default(string))
+        public ManagedErrorLog(Microsoft.AppCenter.Ingestion.Models.Device device, System.Guid id, int processId, string processName, bool fatal, Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), int? parentProcessId = default(int?), string parentProcessName = default(string), long? errorThreadId = default(long?), string errorThreadName = default(string), System.DateTime? appLaunchTimestamp = default(System.DateTime?), string architecture = default(string), IList<Binary> binaries = default(IList<Binary>), string buildId = default(string))
             : base(device, id, processId, processName, fatal, timestamp, sid, userId, parentProcessId, parentProcessName, errorThreadId, errorThreadName, appLaunchTimestamp, architecture)
         {
+            Binaries = binaries;
             BuildId = buildId;
             Exception = exception;
+            CustomInit();
         }
+
+        /// <summary>
+        /// An initialization method that performs custom operations like setting defaults
+        /// </summary>
+        partial void CustomInit();
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "binaries")]
+        public IList<Binary> Binaries { get; set; }
 
         /// <summary>
         /// Gets or sets unique ID for a Xamarin build or another similar
@@ -70,7 +83,6 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
         public string BuildId { get; set; }
 
         /// <summary>
-        /// Gets or sets the exception
         /// </summary>
         [JsonProperty(PropertyName = "exception")]
         public Exception Exception { get; set; }
@@ -87,6 +99,16 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
             if (Exception == null)
             {
                 throw new ValidationException(ValidationException.Rule.CannotBeNull, "Exception");
+            }
+            if (Binaries != null)
+            {
+                foreach (var element in Binaries)
+                {
+                    if (element != null)
+                    {
+                        element.Validate();
+                    }
+                }
             }
             if (Exception != null)
             {

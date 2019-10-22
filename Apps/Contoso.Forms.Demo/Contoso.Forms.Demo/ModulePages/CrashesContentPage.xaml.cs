@@ -52,7 +52,7 @@ namespace Contoso.Forms.Demo
             if (Application.Current.Properties.TryGetValue(TextAttachmentKey, out var textAttachment) &&
                 textAttachment is string text)
             {
-                TextAttachmentCell.Detail = text;
+                TextAttachmentContent.Text = text;
             }
             if (Application.Current.Properties.TryGetValue(FileAttachmentKey, out var fileAttachment) &&
                 fileAttachment is string file)
@@ -60,18 +60,13 @@ namespace Contoso.Forms.Demo
                 var filePicker = DependencyService.Get<IFilePicker>();
                 try
                 {
-                    FileAttachmentCell.Detail = filePicker?.GetFileDescription(file);
+                    BinaryAttachmentFilePathLabel.Text = file;
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Couldn't read file attachment: {0}", e.Message);
                     Application.Current.Properties.Remove(FileAttachmentKey);
                 }
-            }
-            if (XamarinDevice.RuntimePlatform == XamarinDevice.UWP)
-            {
-                TextAttachmentCell.IsEnabled = false;
-                FileAttachmentCell.IsEnabled = false;
             }
         }
 
@@ -83,7 +78,7 @@ namespace Contoso.Forms.Demo
         async void TextAttachment(object sender, EventArgs e)
         {
             var text = await TextAttachmentView.Show(Navigation);
-            ((TextCell)sender).Detail = text;
+            TextAttachmentContent.Text = text;
             Application.Current.Properties[TextAttachmentKey] = text;
             await Application.Current.SavePropertiesAsync();
         }
@@ -96,9 +91,9 @@ namespace Contoso.Forms.Demo
                 Debug.WriteLine("File attachment isn't implemented");
                 return;
             }
-            var file = await filePicker.PickFile();
-            ((TextCell)sender).Detail = filePicker.GetFileDescription(file);
-            Application.Current.Properties[FileAttachmentKey] = file;
+            var filePath = await filePicker.PickFile();
+            BinaryAttachmentFilePathLabel.Text = filePath;
+            Application.Current.Properties[FileAttachmentKey] = filePath;
             await Application.Current.SavePropertiesAsync();
         }
 

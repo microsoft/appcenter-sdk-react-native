@@ -4,22 +4,28 @@
 
 ### App Center
 
+#### Windows
+
+* **[Fix]** Update `Newtonsoft.Json` dependency to version `12.0.2`.
+
 #### .NET Core 3
 
 * **[Fix]** Fix using stable versions of NuGet dependencies for .NET Core 3.0.
 
-### App Center Auth
-
-* **[Feature]** Add authentication support for Azure Active Directory (AAD) applications. Users can now connect an AAD tenant with [AAD single-tenant or multi-tenant apps](https://docs.microsoft.com/azure/active-directory/develop/single-and-multi-tenant-apps) with the following audiences:
-  - Accounts in this directory only
-  - Accounts in any Azure AD directory
-  - Accounts in any Azure AD directory and personal Microsoft accounts
-
 ### App Center Crashes
+
+#### UWP
+
+* **[Feature]** App Center now supports crashes for sideloaded UWP applications.
+* **[Feature]** APIs in the Crashes module are now implemented for UWP: handled errors, crash attachments, crash callbacks, getting crash information about last session, and enabling/disabling the module. Detecting low memory warning is not supported.
 
 #### UWP/WPF/WinForms
 
-* **[Feature]** Allow users to set userId that applies to crashes, error.
+* **[Feature]** Allow users to set userId that applies to crashes and errors.
+
+#### Android
+
+* **[Breaking change]** Remove insecure implementation of the raw `AndroidErrorDetails.Throwable` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin.Android.
 
 ### App Center Push
 
