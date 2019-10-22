@@ -157,6 +157,42 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Assert.AreEqual(ExpectedLogCount, count);
         }
 
+
+        [TestMethod]
+        public void TrackErrorWithAnInvalidAttachment()
+        {
+            var semaphore = new SemaphoreSlim(0);
+            var ExpectedLogCount = 2;
+            var count = 0;
+            Mock.Get(_mockNetworkAdapter).Setup(adapter => adapter.SendAsync(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<IDictionary<string, string>>(),
+                It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
+                .Callback((string uri, string method, IDictionary<string, string> headers, string content, CancellationToken cancellation) =>
+                {
+                    count++;
+                    if (count == ExpectedLogCount)
+                    {
+                        semaphore.Release();
+                    }
+                }).ReturnsAsync("");
+
+            var exception = new System.Exception("Something went wrong.");
+            var properties = new Dictionary<string, string> { { "k1", "v1" }, { "p2", "v2" } };
+            var attachmentLog = GetValidErrorAttachmentLog();
+            var invalidAttachmentLog = GetValidErrorAttachmentLog();
+
+            // Make the error log invalid.
+            invalidAttachmentLog.Data = null;
+            Crashes.TrackError(exception, properties, attachmentLog, invalidAttachmentLog);
+
+            // Wait until the http layer sends the log.
+            semaphore.Wait(2000);
+            Assert.AreEqual(ExpectedLogCount, count);
+        }
+
         [TestMethod]
         public void TrackErrorWithoutPropertiesWithAttachments()
         {
