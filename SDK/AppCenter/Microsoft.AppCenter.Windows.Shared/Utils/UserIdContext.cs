@@ -13,7 +13,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
     {
         private static readonly object UserIdLock = new object();
         private static UserIdContext _instanceField;
-        private string _userId = default(string);
+        private string _userId;
 
         private static readonly object UserIdContextLock = new object();
 
