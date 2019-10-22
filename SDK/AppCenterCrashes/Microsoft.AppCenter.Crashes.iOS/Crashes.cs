@@ -75,21 +75,17 @@ namespace Microsoft.AppCenter.Crashes
 
         static void PlatformTrackError(Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
-            NSDictionary propertyDictionary = properties != null ? StringDictToNSDict(properties) : null;
-            NSMutableArray attachmentArray = null;
-            if (attachments != null)
+            NSDictionary propertyDictionary = properties != null ? StringDictToNSDict(properties) : new NSDictionary();
+            NSMutableArray attachmentArray = new NSMutableArray();
+            foreach (var attachment in attachments)
             {
-                attachmentArray = new NSMutableArray();
-                foreach (var attachment in attachments)
+                if (attachment?.internalAttachment != null)
                 {
-                    if (attachment?.internalAttachment != null)
-                    {
-                        attachmentArray.Add(attachment.internalAttachment);
-                    }
-                    else
-                    {
-                        AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.TrackError.");
-                    }
+                    attachmentArray.Add(attachment.internalAttachment);
+                }
+                else
+                {
+                    AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.TrackError.");
                 }
             }
             MSCrashes.TrackModelException(GenerateiOSException(exception, false), propertyDictionary, attachmentArray);
