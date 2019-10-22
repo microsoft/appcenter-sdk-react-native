@@ -387,7 +387,7 @@ namespace Microsoft.AppCenter.Crashes
                 properties = PropertyValidator.ValidateProperties(properties, "HandledError");
                 var exceptionAndBinaries = ErrorLogHelper.CreateModelExceptionAndBinaries(exception);
                 var errorId = Guid.NewGuid();
-                var log = new HandledErrorLog(exception: exceptionAndBinaries.Exception, binaries: exceptionAndBinaries.Binaries, properties: properties, id: errorId, userId: UserIdContext.Instance.UserId);
+                var log = new HandledErrorLog(exception: exceptionAndBinaries.Exception, binaries:exceptionAndBinaries.Binaries, properties: properties, id: errorId, device: null, userId: UserIdContext.Instance.UserId);
                 Channel.EnqueueAsync(log);
                 SendErrorAttachmentsAsync(errorId, attachments);
             }
