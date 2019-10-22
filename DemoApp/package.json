@@ -18,7 +18,7 @@
     "metro": "^0.54.1",
     "react": "16.8.3",
     "react-native": "0.59.9",
-    "react-native-fs": "2.9.10",
+    "react-native-fs": "2.9.12",
     "react-native-gesture-handler": "~1.1.0",
     "react-native-image-picker": "^0.28.0",
     "react-native-modal-selector": "^1.0.2",
