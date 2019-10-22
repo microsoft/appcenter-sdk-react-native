@@ -88,7 +88,15 @@ namespace Microsoft.AppCenter.Crashes
 
         static void PlatformTrackError(Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
-            ArrayList attachmentArray = attachments != null ? new ArrayList(attachments) : null;
+            ArrayList attachmentArray = null;
+            if (attachments != null)
+            {
+                attachmentArray = new ArrayList();
+                foreach (var attachment in attachments)
+                {
+                    attachmentArray.Add(attachment.internalAttachment);
+                }
+            }
             WrapperSdkExceptionManager.TrackException(GenerateModelException(exception, false), properties, attachmentArray);
         }
 
