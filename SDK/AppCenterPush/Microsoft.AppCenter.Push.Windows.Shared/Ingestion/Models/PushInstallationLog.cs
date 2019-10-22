@@ -39,8 +39,11 @@ namespace Microsoft.AppCenter.Push.Ingestion.Models
         /// Concrete types like StartSessionLog or PageLog are always part of a
         /// session and always include this identifier.
         /// </param>
-        public PushInstallationLog(System.DateTime? timestamp, Device device, string pushToken, System.Guid? sid = default(System.Guid?))
-            : base(device, timestamp, sid)
+        /// <param name="userId">optional string used for associating logs with
+        /// users.
+        /// </param>
+        public PushInstallationLog(Device device, string pushToken, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string))
+            : base(device, timestamp, sid, userId)
         {
             PushToken = pushToken;
         }

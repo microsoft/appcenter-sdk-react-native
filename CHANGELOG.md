@@ -20,6 +20,12 @@
 #### UWP/WPF/WinForms
 
 * **[Feature]** Allow users to set userId that applies to crashes, error.
+
+### App Center Push
+
+#### UWP
+
+* **[Feature]** Allow developers to push notifications to a specific userId.
 ___
 
 ## Version 2.4.0-preview

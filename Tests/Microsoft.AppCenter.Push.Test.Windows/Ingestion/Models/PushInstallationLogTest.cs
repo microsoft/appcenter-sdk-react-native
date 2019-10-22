@@ -21,15 +21,17 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
         {
             var mockDevice = new Mock<Device>();
 
-            PushInstallationLog log = new PushInstallationLog(Timestamp, mockDevice.Object, "token1");
+            PushInstallationLog log = new PushInstallationLog(mockDevice.Object, "token1", Timestamp, default(System.Guid?), "userId1");
             Assert.IsNotNull(log);
             Assert.AreEqual(default(System.Guid?), log.Sid);
             Assert.AreEqual("token1", log.PushToken);
+            Assert.AreEqual("userId1", log.UserId);
 
-            PushInstallationLog log2 = new PushInstallationLog(Timestamp, mockDevice.Object, "token2", System.Guid.NewGuid());
+            PushInstallationLog log2 = new PushInstallationLog(mockDevice.Object, "token2", Timestamp, System.Guid.NewGuid(), "userId2");
             Assert.IsNotNull(log2);
             Assert.IsNotNull(log2.Sid);
             Assert.AreEqual("token2", log2.PushToken);
+            Assert.AreEqual("userId2", log2.UserId);
         }
 
         [TestMethod]
@@ -37,7 +39,7 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Models
         {
             var mockDevice = new Mock<Device>();
 
-            PushInstallationLog log = new PushInstallationLog(Timestamp, mockDevice.Object, null);
+            PushInstallationLog log = new PushInstallationLog(mockDevice.Object, null, Timestamp, null, null);
             Assert.ThrowsException<ValidationException>(() => log.Validate());
         }
     }
