@@ -94,7 +94,15 @@ namespace Microsoft.AppCenter.Crashes
                 attachmentArray = new ArrayList();
                 foreach (var attachment in attachments)
                 {
-                    attachmentArray.Add(attachment.internalAttachment);
+                    if (attachment?.internalAttachment != null)
+                    {
+
+                        attachmentArray.Add(attachment.internalAttachment);
+                    }
+                    else
+                    {
+                        AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.TrackError.");
+                    }
                 }
             }
             WrapperSdkExceptionManager.TrackException(GenerateModelException(exception, false), properties, attachmentArray);

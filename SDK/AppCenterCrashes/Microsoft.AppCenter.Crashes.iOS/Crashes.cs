@@ -82,7 +82,7 @@ namespace Microsoft.AppCenter.Crashes
                 attachmentArray = new NSMutableArray();
                 foreach (var attachment in attachments)
                 {
-                    if (attachment.internalAttachment != null)
+                    if (attachment?.internalAttachment != null)
                     {
                         attachmentArray.Add(attachment.internalAttachment);
                     }
