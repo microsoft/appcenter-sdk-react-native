@@ -127,7 +127,7 @@ namespace Microsoft.AppCenter.Crashes
         /// </summary>
         /// <param name="exception">The .NET exception describing the handled error.</param>
         /// <param name="properties">Optional properties.</param>
-        /// <param name="attachments">Attachment Logs.</param>
+        /// <param name="attachments">Optional attachments.</param>
         public static void TrackError(Exception exception, IDictionary<string, string> properties = null, params ErrorAttachmentLog[] attachments)
         {
             if (exception == null)
