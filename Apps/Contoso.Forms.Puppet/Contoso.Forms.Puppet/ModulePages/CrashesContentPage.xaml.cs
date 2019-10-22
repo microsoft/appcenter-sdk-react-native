@@ -243,7 +243,7 @@ namespace Contoso.Forms.Puppet
             RefreshPropCount();
 
             // TODO: uncomment this when API will be added.
-            Crashes.TrackError(e, properties /*, App.GetErrorAttachments() */);
+            Crashes.TrackError(e, properties /*, App.GetErrorAttachments().ToArray() */);
         }
 
         void ClearCrashUserConfirmation(object sender, EventArgs e)
