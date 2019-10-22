@@ -15,7 +15,7 @@ namespace Microsoft.AppCenter.Windows.Shared.Utils
         private static UserIdContext _instanceField;
         private string _userId;
 
-        private static readonly object UserIdContextLock = new object();
+        private readonly object UserIdContextLock = new object();
 
         internal UserIdContext()
         {
