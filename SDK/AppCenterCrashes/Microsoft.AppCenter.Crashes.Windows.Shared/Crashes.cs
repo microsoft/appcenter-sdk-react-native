@@ -98,7 +98,7 @@ namespace Microsoft.AppCenter.Crashes
             Instance.InstanceHandlerUserConfirmation(userConfirmation);
         }
 
-        private static void PlatformTrackError(System.Exception exception, IDictionary<string, string> properties, params ErrorAttachmentLog[] attachments)
+        private static void PlatformTrackError(System.Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
             Instance.InstanceTrackError(exception, properties, attachments);
         }
@@ -376,7 +376,7 @@ namespace Microsoft.AppCenter.Crashes
             return Task.WhenAll(tasks);
         }
 
-        private void InstanceTrackError(System.Exception exception, IDictionary<string, string> properties, params ErrorAttachmentLog[] attachments)
+        private void InstanceTrackError(System.Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
             lock (_serviceLock)
             {
