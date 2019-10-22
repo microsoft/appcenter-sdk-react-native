@@ -6,7 +6,7 @@
 
 #### UWP/WPF/WinForms
 
-* **[Feature]** Support for attachments with handled errors.
+* **[Feature]** Support sending attachments in handled errors.
 
 ## Version 2.5.0 (Under development)
 
