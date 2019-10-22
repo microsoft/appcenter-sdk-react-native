@@ -55,6 +55,36 @@ namespace Microsoft.AppCenter.Crashes.Ingestion.Models
         }
 
         /// <summary>
+        /// Initializes a new instance of the HandledErrorLog class.
+        /// </summary>
+        /// <param name="timestamp">Log timestamp, example:
+        /// '2017-03-13T18:05:42Z'.
+        /// </param>
+        /// <param name="sid">When tracking an analytics session, logs can be
+        /// part of the session by specifying this identifier.
+        /// This attribute is optional, a missing value means the session
+        /// tracking is disabled (like when using only error reporting
+        /// feature).
+        /// Concrete types like StartSessionLog or PageLog are always part of a
+        /// session and always include this identifier.
+        /// </param>
+        /// <param name="userId">optional string used for associating logs with
+        /// users.
+        /// </param>
+        /// <param name="properties">Additional key/value pair parameters.
+        /// </param>
+        /// <param name="id">Unique identifier for this Error.
+        /// </param>
+        public HandledErrorLog(Exception exception, System.DateTime? timestamp = default(System.DateTime?), System.Guid? sid = default(System.Guid?), string userId = default(string), IDictionary<string, string> properties = default(IDictionary<string, string>), System.Guid? id = default(System.Guid?), IList<Binary> binaries = default(IList<Binary>))
+            : base(null, timestamp, sid, userId, properties)
+        {
+            Id = id;
+            Binaries = binaries;
+            Exception = exception;
+            CustomInit();
+        }
+
+        /// <summary>
         /// An initialization method that performs custom operations like setting defaults
         /// </summary>
         partial void CustomInit();
