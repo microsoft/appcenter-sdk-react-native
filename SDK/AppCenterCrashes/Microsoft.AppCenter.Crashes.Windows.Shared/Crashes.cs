@@ -389,10 +389,7 @@ namespace Microsoft.AppCenter.Crashes
                 var errorId = Guid.NewGuid();
                 var log = new HandledErrorLog(exception: exceptionAndBinaries.Exception, binaries:exceptionAndBinaries.Binaries, properties: properties, id: errorId, device: null, userId: UserIdContext.Instance.UserId);
                 Channel.EnqueueAsync(log);
-                if (attachments?.Length > 0)
-                {
-                    SendErrorAttachmentsAsync(errorId, attachments);
-                }
+                SendErrorAttachmentsAsync(errorId, attachments);
             }
         }
 
