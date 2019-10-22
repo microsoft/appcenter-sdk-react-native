@@ -96,7 +96,6 @@ namespace Microsoft.AppCenter.Crashes
                 {
                     if (attachment?.internalAttachment != null)
                     {
-
                         attachmentArray.Add(attachment.internalAttachment);
                     }
                     else
