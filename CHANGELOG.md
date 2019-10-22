@@ -27,6 +27,11 @@
 
 * **[Breaking change]** Remove insecure implementation of the raw `AndroidErrorDetails.Throwable` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin.Android.
 
+### App Center Push
+
+#### UWP
+
+* **[Feature]** Allow developers to push notifications to a specific userId.
 ___
 
 ## Version 2.4.0-preview
