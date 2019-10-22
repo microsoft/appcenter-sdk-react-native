@@ -50,7 +50,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             }
             catch
             {
-                /* No-op */
+                // No-op.
             }
         }
 

@@ -1,6 +1,6 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.5.1 (Under development)
+## Version 2.6.0 (Under development)
 
 ### App Center Crashes
 
