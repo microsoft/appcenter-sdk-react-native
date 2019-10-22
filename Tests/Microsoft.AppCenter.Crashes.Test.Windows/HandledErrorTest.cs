@@ -441,6 +441,5 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
                 Device = device
             };
         }
-
     }
 }
