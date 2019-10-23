@@ -307,8 +307,8 @@ namespace Contoso.WPF.Demo
                 properties = null;
             }
 
-            // TODO: uncomment attachments when API will be added
-            Crashes.TrackError(e, properties/*, App.GetErrorAttachments()*/);
+            // TODO: uncomment App.GetErrorAttachments().ToArray() when the sdk is released
+            Crashes.TrackError(e, properties/*, App.GetErrorAttachments().ToArray() */);
         }
 
         void HandleOrThrow(Action action)

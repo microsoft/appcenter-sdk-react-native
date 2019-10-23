@@ -244,8 +244,8 @@ namespace Contoso.WinForms.Demo
         {
             Dictionary<string, string> properties = null;
 
-            // TODO: uncomment attachments when API will be added
-            Crashes.TrackError(e, properties/*, Program.GetErrorAttachments()*/);
+            // TODO: uncomment Program.GetErrorAttachments().ToArray() when the sdk is released.
+            Crashes.TrackError(e, properties/*, Program.GetErrorAttachments().ToArray() */);
         }
 
         private void HandleOrThrow(Action action)

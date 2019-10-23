@@ -243,9 +243,7 @@ namespace Contoso.WinForms.Puppet
         private void TrackException(Exception e)
         {
             Dictionary<string, string> properties = null;
-
-            // TODO: uncomment attachments when API will be added
-            Crashes.TrackError(e, properties/*, Program.GetErrorAttachments()*/);
+            Crashes.TrackError(e, properties, Program.GetErrorAttachments().ToArray());
         }
 
         private void HandleOrThrow(Action action)
