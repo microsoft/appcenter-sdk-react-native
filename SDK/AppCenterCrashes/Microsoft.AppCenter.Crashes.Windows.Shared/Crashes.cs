@@ -98,9 +98,9 @@ namespace Microsoft.AppCenter.Crashes
             Instance.InstanceHandlerUserConfirmation(userConfirmation);
         }
 
-        private static void PlatformTrackError(System.Exception exception, IDictionary<string, string> properties)
+        private static void PlatformTrackError(System.Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
-            Instance.InstanceTrackError(exception, properties);
+            Instance.InstanceTrackError(exception, properties, attachments);
         }
 
         /// <summary>
@@ -376,7 +376,7 @@ namespace Microsoft.AppCenter.Crashes
             return Task.WhenAll(tasks);
         }
 
-        private void InstanceTrackError(System.Exception exception, IDictionary<string, string> properties)
+        private void InstanceTrackError(System.Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
             lock (_serviceLock)
             {
@@ -386,8 +386,10 @@ namespace Microsoft.AppCenter.Crashes
                 }
                 properties = PropertyValidator.ValidateProperties(properties, "HandledError");
                 var exceptionAndBinaries = ErrorLogHelper.CreateModelExceptionAndBinaries(exception);
-                var log = new HandledErrorLog(exception: exceptionAndBinaries.Exception, binaries:exceptionAndBinaries.Binaries, properties: properties, id: Guid.NewGuid(), device: null, userId: UserIdContext.Instance.UserId); ;
+                var errorId = Guid.NewGuid();
+                var log = new HandledErrorLog(exception: exceptionAndBinaries.Exception, binaries:exceptionAndBinaries.Binaries, properties: properties, id: errorId, device: null, userId: UserIdContext.Instance.UserId);
                 Channel.EnqueueAsync(log);
+                SendErrorAttachmentsAsync(errorId, attachments);
             }
         }
 
@@ -413,7 +415,7 @@ namespace Microsoft.AppCenter.Crashes
                 }
                 else
                 {
-                    AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.GetErrorAttachments.");
+                    AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog.");
                 }
             }
             if (totalErrorAttachments > MaxAttachmentsPerCrash)

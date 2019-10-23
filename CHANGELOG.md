@@ -1,5 +1,13 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.6.0 (Under development)
+
+### App Center Crashes
+
+#### UWP/WPF/WinForms
+
+* **[Feature]** Support sending attachments in handled errors.
+
 ## Version 2.5.0 (Under development)
 
 ### App Center

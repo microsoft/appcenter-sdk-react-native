@@ -86,9 +86,25 @@ namespace Microsoft.AppCenter.Crashes
             return Task.Run(() => (bool)future.Get());
         }
 
-        static void PlatformTrackError(Exception exception, IDictionary<string, string> properties)
+        static void PlatformTrackError(Exception exception, IDictionary<string, string> properties, ErrorAttachmentLog[] attachments)
         {
-            WrapperSdkExceptionManager.TrackException(GenerateModelException(exception, false), properties);
+            ArrayList attachmentArray = null;
+            if (attachments != null)
+            {
+                attachmentArray = new ArrayList();
+                foreach (var attachment in attachments)
+                {
+                    if (attachment?.internalAttachment != null)
+                    {
+                        attachmentArray.Add(attachment.internalAttachment);
+                    }
+                    else
+                    {
+                        AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.TrackError.");
+                    }
+                }
+            }
+            WrapperSdkExceptionManager.TrackException(GenerateModelException(exception, false), properties, attachmentArray);
         }
 
         // Empty model stack frame used for comparison to optimize JSON payload.
