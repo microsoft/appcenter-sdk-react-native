@@ -12,7 +12,7 @@ namespace Microsoft.AppCenter
     public partial class AppCenter
     {
         const char Delimiter = ';';
-        const string PlatformIndicator = '=';
+        const char PlatformIndicator = '=';
         const string TargetPostfix = "Target";
         const string SecretPostfix = "appSecret";
 
