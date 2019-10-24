@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.AppCenter.Distribute" Version="2.5.0" />
     <PackageReference Include="Microsoft.AppCenter.Push" Version="2.5.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.1.0.673156" />
+    <PackageReference Include="Xamarin.Forms" Version="4.3.0.908675" />
     <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.5.0" />
     <PackageReference Include="Microsoft.AppCenter.Data" Version="2.5.0" />
   </ItemGroup>
