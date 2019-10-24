@@ -572,6 +572,7 @@ namespace Microsoft.AppCenter.Test
         {
             var targetToken = Guid.NewGuid().ToString();
             var secrets = $"target={targetToken};";
+            var platformId = "ios";
             var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
             Assert.AreEqual(secrets, parsedSecret);
         }
