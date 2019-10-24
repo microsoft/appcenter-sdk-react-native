@@ -11,14 +11,17 @@ namespace Microsoft.AppCenter
     /// </summary>
     public partial class AppCenter
     {
-        const char delimiter = ';';
-        const string targetKeyword = "Target";
+        const char Delimiter = ';';
+        const string PlatformIndicator = '=';
+        const string TargetPostfix = "Target";
+        const string SecretPostfix = "appSecret";
 
         // Gets the first instance of an app sceret and/or target token corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
         internal static string GetSecretAndTargetForPlatform(string secrets, string platformIdentifier)
         {
-            var platformTargetIdentifier = platformIdentifier + targetKeyword;
+            var platformTargetIdentifier = platformIdentifier + TargetPostfix
+    ;
             if (string.IsNullOrEmpty(secrets))
             {
                 throw new AppCenterException("App secrets string is null or empty");
@@ -26,7 +29,7 @@ namespace Microsoft.AppCenter
 
             // If there are no equals signs, then there are no named identifiers, but log a message in case the developer made 
             // a typing error.
-            if (!secrets.Contains("="))
+            if (!secrets.Contains(PlatformIndicator))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "No named identifier found in appSecret; using as-is");
                 return secrets;
@@ -34,11 +37,11 @@ namespace Microsoft.AppCenter
 
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
 
-            var platformIndicator = platformIdentifier + "=";
-            var platformTargetIdicator = platformTargetIdentifier + "=";
+            var platformIndicator = platformIdentifier + PlatformIndicator;
+            var platformTargetIdicator = platformTargetIdentifier + PlatformIndicator;
             var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
             var targetTokenIdx = secrets.IndexOf(platformTargetIdicator, StringComparison.Ordinal);
-            var targetIdx = secrets.IndexOf(targetKeyword.ToLower(), StringComparison.Ordinal);
+            var targetIdx = secrets.IndexOf(TargetPostfix.ToLower(), StringComparison.Ordinal);
             if (secretIdx == -1 && targetTokenIdx == -1 && targetIdx == -1)
             {
                 throw new AppCenterException(parseErrorMessage);
@@ -58,7 +61,7 @@ namespace Microsoft.AppCenter
             }
             var platformSecret = FindTheKey(secretIdx, secrets);
             var platformTargetToken = FindTheKey(targetTokenIdx, secrets);
-            if (platformSecret == string.Empty && platformTargetToken == string.Empty)
+            if (string.IsNullOrEmpty(platformSecret) && string.IsNullOrEmpty(platformTargetToken))
             {
                 throw new AppCenterException(parseErrorMessage);
             }
@@ -69,9 +72,9 @@ namespace Microsoft.AppCenter
                 //If there is an app secret
                 if (platformSecret.Length > 0)
                 {
-                    platformSecret = "appSecret=" + platformSecret + ";";
+                    platformSecret = SecretPostfix + PlatformIndicator + platformSecret + Delimiter;
                 }
-                platformSecret += "target=" + platformTargetToken;
+                platformSecret += TargetPostfix.toLower() + PlatformIndicator + platformTargetToken;
             }
             return platformSecret;
         }
@@ -84,7 +87,7 @@ namespace Microsoft.AppCenter
                 while (keyIdx < secrets.Length)
                 {
                     var nextChar = secrets[keyIdx++];
-                    if (nextChar == delimiter)
+                    if (nextChar == Delimiter)
                     {
                         break;
                     }
