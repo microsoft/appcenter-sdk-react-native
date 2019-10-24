@@ -20,8 +20,7 @@ namespace Microsoft.AppCenter
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
         internal static string GetSecretAndTargetForPlatform(string secrets, string platformIdentifier)
         {
-            var platformTargetIdentifier = platformIdentifier + TargetPostfix
-    ;
+            var platformTargetIdentifier = platformIdentifier + TargetPostfix;
             if (string.IsNullOrEmpty(secrets))
             {
                 throw new AppCenterException("App secrets string is null or empty");
