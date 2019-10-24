@@ -40,8 +40,14 @@ namespace Microsoft.AppCenter
             {
                 throw new AppCenterException(parseErrorMessage);
             }
-            secretIdx += platformIndicator.Length;
-            targetTokenIdx += platformTargetIdicator.Length;
+            if (secretIdx >= 0)
+            {
+                secretIdx += platformIndicator.Length;
+            }
+            if (targetTokenIdx >= 0)
+            {
+                targetTokenIdx += platformTargetIdicator.Length;
+            }
             var platformSecret = string.Empty;
             var platformTargetToken = string.Empty;
             if (secretIdx >= 0)
