@@ -38,7 +38,7 @@ namespace Microsoft.AppCenter
             var platformTargetIdicator = platformTargetIdentifier + "=";
             var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
             var targetTokenIdx = secrets.IndexOf(platformTargetIdicator, StringComparison.Ordinal);
-            var targetIdx = secrets.IndexOf(targetKeyword.toLowerCase(), StringComparison.Ordinal);
+            var targetIdx = secrets.IndexOf(targetKeyword.ToLower(), StringComparison.Ordinal);
             if (secretIdx == -1 && targetTokenIdx == -1 && targetIdx == -1)
             {
                 throw new AppCenterException(parseErrorMessage);
