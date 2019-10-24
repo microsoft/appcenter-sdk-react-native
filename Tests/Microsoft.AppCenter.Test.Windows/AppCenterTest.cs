@@ -565,6 +565,18 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
+        /// Verify parse when there is only token
+        /// </summary>
+        [TestMethod]
+        public void NotParseTargetString()
+        {
+            var targetToken = Guid.NewGuid().ToString();
+            var secrets = $"target={targetToken};";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
+            Assert.AreEqual(secrets, parsedSecret);
+        }
+
+        /// <summary>
         /// Verify parse when the platform is one of two
         /// </summary>
         [TestMethod]

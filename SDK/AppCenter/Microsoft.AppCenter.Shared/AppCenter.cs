@@ -11,12 +11,14 @@ namespace Microsoft.AppCenter
     /// </summary>
     public partial class AppCenter
     {
+        const char delimiter = ';';
+        const string targetKeyword = "Target";
 
         // Gets the first instance of an app sceret and/or target token corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
         internal static string GetSecretAndTargetForPlatform(string secrets, string platformIdentifier)
         {
-            var platformTargetIdentifier = platformIdentifier + "Target";
+            var platformTargetIdentifier = platformIdentifier + targetKeyword;
             if (string.IsNullOrEmpty(secrets))
             {
                 throw new AppCenterException("App secrets string is null or empty");
@@ -36,9 +38,15 @@ namespace Microsoft.AppCenter
             var platformTargetIdicator = platformTargetIdentifier + "=";
             var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
             var targetTokenIdx = secrets.IndexOf(platformTargetIdicator, StringComparison.Ordinal);
-            if (secretIdx == -1 && targetTokenIdx == -1)
+            var targetIdx = secrets.IndexOf(targetKeyword.toLowerCase(), StringComparison.Ordinal);
+            if (secretIdx == -1 && targetTokenIdx == -1 && targetIdx == -1)
             {
                 throw new AppCenterException(parseErrorMessage);
+            }
+            if (targetIdx >= 0 && secretIdx == -1 && targetTokenIdx == -1) 
+            {
+                AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier 'target' in the secret. Returning as-is.");
+                return secrets;
             }
             if (secretIdx >= 0)
             {
@@ -48,55 +56,42 @@ namespace Microsoft.AppCenter
             {
                 targetTokenIdx += platformTargetIdicator.Length;
             }
-            var platformSecret = string.Empty;
-            var platformTargetToken = string.Empty;
-            if (secretIdx >= 0)
-            {
-                while (secretIdx < secrets.Length)
-                {
-                    var nextChar = secrets[secretIdx++];
-                    if (nextChar == ';')
-                    {
-                        break;
-                    }
-
-                    platformSecret += nextChar;
-                }
-            }
-            if (targetTokenIdx >= 0)
-            {
-                while (targetTokenIdx < secrets.Length)
-                {
-                    var nextChar = secrets[targetTokenIdx++];
-                    if (nextChar == ';')
-                    {
-                        break;
-                    }
-
-                    platformTargetToken += nextChar;
-                }
-            }
-
-
+            var platformSecret = FindTheKey(secretIdx, secrets);
+            var platformTargetToken = FindTheKey(targetTokenIdx, secrets);
             if (platformSecret == string.Empty && platformTargetToken == string.Empty)
             {
                 throw new AppCenterException(parseErrorMessage);
             }
 
             // Format the string as "appSecret={};target={}" or "target={}" if needed.
-            var parsedSecret = platformSecret;
-
             if (platformTargetToken.Length > 0)
             {
                 //If there is an app secret
-                if (parsedSecret.Length > 0)
+                if (platformSecret.Length > 0)
                 {
-                    parsedSecret = "appSecret=" + parsedSecret + ";";
+                    platformSecret = "appSecret=" + platformSecret + ";";
                 }
-                parsedSecret += "target=" + platformTargetToken;
+                platformSecret += "target=" + platformTargetToken;
             }
+            return platformSecret;
+        }
 
-            return parsedSecret;
+        private static string FindTheKey(int keyIdx, string secrets) 
+        {
+            var key = string.Empty;
+            if (keyIdx >= 0)
+            {
+                while (keyIdx < secrets.Length)
+                {
+                    var nextChar = secrets[keyIdx++];
+                    if (nextChar == delimiter)
+                    {
+                        break;
+                    }
+                    key += nextChar;
+                }
+            }
+            return key;
         }
 
         /// <summary>
