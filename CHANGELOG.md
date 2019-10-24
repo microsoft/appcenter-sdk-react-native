@@ -1,5 +1,47 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.5.0
+
+### App Center
+
+#### Windows
+
+* **[Fix]** Update `Newtonsoft.Json` dependency to version `12.0.2`.
+
+#### .NET Core 3
+
+* **[Fix]** Fix using stable versions of NuGet dependencies for .NET Core 3.0.
+
+### App Center Crashes
+
+#### UWP
+
+* **[Feature]** App Center now supports crashes for sideloaded UWP applications.
+* **[Feature]** APIs in the Crashes module are now implemented for UWP: handled errors, crash attachments, crash callbacks, getting crash information about last session, and enabling/disabling the module. Detecting low memory warning is not supported.
+
+#### UWP/WPF/WinForms
+
+* **[Feature]** Allow users to set userId that applies to crashes and errors.
+
+#### Android
+
+* **[Breaking change]** Remove insecure implementation of the raw `AndroidErrorDetails.Throwable` property (now always returns `null` and marked as obsolete), and provide `string StackTrace` property as an alternative on Xamarin.Android.
+
+### App Center Push
+
+#### UWP
+
+* **[Feature]** Allow developers to push notifications to a specific userId.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Downloading in-app update APK file has been failing on Android 4.x since TLS 1.2 has been enforced early September. The file is now downloaded using HTTPS direct connection when running on Android 4 instead of relying on system's download manager.
+* **[Fix]** Fix a crash and improve logging when downloading an update fails on Android 5+.
+* **[Breaking change]** If your minSdkVersion is lower than 19, Android requires the WRITE_EXTERNAL_STORAGE permission to store new downloaded updates. Please refer to the updated documentation site for detailed instructions. This is related to the download fix.
+___
+
 ## Version 2.4.0-preview
 
 ### App Center

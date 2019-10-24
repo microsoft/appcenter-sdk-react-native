@@ -16,22 +16,13 @@ namespace Microsoft.AppCenter.Crashes
             AppStartTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppStartTime.Time);
             AppErrorTime = DateTimeOffset.FromUnixTimeMilliseconds(androidReport.AppErrorTime.Time);
             Device = androidReport.Device == null ? null : new Device(androidReport.Device);
-            object androidThrowable;
-            try
-            {
-                androidThrowable = androidReport.Throwable;
-            }
-            catch (Exception e)
-            {
-                AppCenterLog.Debug(Crashes.LogTag, "Cannot read throwable from java point of view, probably a .NET exception", e);
-                androidThrowable = null;
-            }
-            AndroidDetails = new AndroidErrorDetails(androidThrowable, androidReport.ThreadName);
+            var androidStackTrace = androidReport.StackTrace;
+            AndroidDetails = new AndroidErrorDetails(androidStackTrace, androidReport.ThreadName);
             iOSDetails = null;
-            byte[] exceptionBytes = AndroidExceptionDataManager.LoadWrapperExceptionData(Java.Util.UUID.FromString(Id));
-            if (exceptionBytes != null)
+            string exceptionString = AndroidExceptionDataManager.LoadWrapperExceptionData(Java.Util.UUID.FromString(Id));
+            if (exceptionString != null)
             {
-                StackTrace = CrashesUtils.DeserializeException(exceptionBytes);
+                StackTrace = exceptionString;
             }
         }
     }

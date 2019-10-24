@@ -11,6 +11,7 @@ using Microsoft.AppCenter.Ingestion.Http;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Windows.Shared.Utils;
 
 namespace Microsoft.AppCenter
 {
@@ -135,6 +136,15 @@ namespace Microsoft.AppCenter
             {
                 return Task.FromResult(Instance.InstanceEnabled);
             }
+        }
+
+        static void PlatformSetUserId(string userId)
+        {
+            if (userId != null && !UserIdContext.CheckUserIdValidForAppCenter(userId))
+            {
+                return;
+            }
+            UserIdContext.Instance.UserId = userId;
         }
 
         static Task PlatformSetEnabledAsync(bool enabled)

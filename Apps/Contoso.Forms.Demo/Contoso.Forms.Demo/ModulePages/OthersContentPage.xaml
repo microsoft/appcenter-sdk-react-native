@@ -9,6 +9,9 @@
         </TableSection>
         <TableSection Title="Auth">
             <SwitchCell Text="Auth Enabled" On="true" x:Name="AuthEnabledSwitchCell" OnChanged="UpdateAuthEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
+            <ViewCell>
+                <Picker x:Name="AuthTypePicker" Title="Auth Type" PropertyChanged="ChangeAuthType"/>
+            </ViewCell>
         </TableSection>
         <TableSection Title="EventFilter">
             <SwitchCell Text="EventFilter Enabled" x:Name="EventFilterEnabledSwitchCell" OnChanged="UpdateEventFilterEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
