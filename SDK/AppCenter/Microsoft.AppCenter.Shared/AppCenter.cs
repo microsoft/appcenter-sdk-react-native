@@ -11,10 +11,12 @@ namespace Microsoft.AppCenter
     /// </summary>
     public partial class AppCenter
     {
-        // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
+
+        // Gets the first instance of an app sceret and/or target token corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
-        internal static string GetSecretForPlatform(string secrets, string platformIdentifier)
+        internal static string GetSecretAndTargetForPlatform(string secrets, string platformIdentifier)
         {
+            var platformTargetIdentifier = platformIdentifier + "Target";
             if (string.IsNullOrEmpty(secrets))
             {
                 throw new AppCenterException("App secrets string is null or empty");
@@ -31,31 +33,64 @@ namespace Microsoft.AppCenter
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
 
             var platformIndicator = platformIdentifier + "=";
+            var platformTargetIdicator = platformTargetIdentifier + "=";
             var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
-            if (secretIdx == -1)
+            var targetTokenIdx = secrets.IndexOf(platformTargetIdicator, StringComparison.Ordinal);
+            if (secretIdx == -1 && targetTokenIdx == -1)
             {
                 throw new AppCenterException(parseErrorMessage);
             }
             secretIdx += platformIndicator.Length;
+            targetTokenIdx += platformTargetIdicator.Length;
             var platformSecret = string.Empty;
-
-            while (secretIdx < secrets.Length)
+            var platformTargetToken = string.Empty;
+            if (secretIdx >= 0)
             {
-                var nextChar = secrets[secretIdx++];
-                if (nextChar == ';')
+                while (secretIdx < secrets.Length)
                 {
-                    break;
-                }
+                    var nextChar = secrets[secretIdx++];
+                    if (nextChar == ';')
+                    {
+                        break;
+                    }
 
-                platformSecret += nextChar;
+                    platformSecret += nextChar;
+                }
+            }
+            if (targetTokenIdx >= 0)
+            {
+                while (targetTokenIdx < secrets.Length)
+                {
+                    var nextChar = secrets[targetTokenIdx++];
+                    if (nextChar == ';')
+                    {
+                        break;
+                    }
+
+                    platformTargetToken += nextChar;
+                }
             }
 
-            if (platformSecret == string.Empty)
+
+            if (platformSecret == string.Empty && platformTargetToken == string.Empty)
             {
                 throw new AppCenterException(parseErrorMessage);
             }
 
-            return platformSecret;
+            // Format the string as "appSecret={};target={}" or "target={}" if needed.
+            var parsedSecret = platformSecret;
+
+            if (platformTargetToken.Length > 0)
+            {
+                //If there is an app secret
+                if (parsedSecret.Length > 0)
+                {
+                    parsedSecret = "appSecret=" + parsedSecret + ";";
+                }
+                parsedSecret += "target=" + platformTargetToken;
+            }
+
+            return parsedSecret;
         }
 
         /// <summary>
