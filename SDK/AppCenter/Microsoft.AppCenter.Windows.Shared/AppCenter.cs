@@ -338,7 +338,7 @@ namespace Microsoft.AppCenter
                 AppCenterLog.Warn(AppCenterLog.LogTag, "App Center may only be configured once.");
                 return;
             }
-            _appSecret = GetSecretForPlatform(appSecretOrSecrets, PlatformIdentifier);
+            _appSecret = GetSecretAndTargetForPlatform(appSecretOrSecrets, PlatformIdentifier);
 
             // If a factory has been supplied, use it to construct the channel group - this is useful for wrapper SDKs and testing.
             _networkStateAdapter = new NetworkStateAdapter();

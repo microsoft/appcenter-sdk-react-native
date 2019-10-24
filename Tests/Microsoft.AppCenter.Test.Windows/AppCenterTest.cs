@@ -489,7 +489,7 @@ namespace Microsoft.AppCenter.Test
         public void ParseAppSecretNoEquals()
         {
             var appSecret = Guid.NewGuid().ToString();
-            var parsedSecret = AppCenter.GetSecretForPlatform(appSecret, "uwp");
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(appSecret, "uwp");
             Assert.AreEqual(appSecret, parsedSecret);
         }
 
@@ -502,7 +502,7 @@ namespace Microsoft.AppCenter.Test
             var appSecret = Guid.NewGuid().ToString();
             var platformId = "uwp";
             var secrets = $"{platformId}={appSecret}";
-            var parsedSecret = AppCenter.GetSecretForPlatform(secrets, platformId);
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
             Assert.AreEqual(appSecret, parsedSecret);
         }
 
@@ -515,8 +515,53 @@ namespace Microsoft.AppCenter.Test
             var appSecret = Guid.NewGuid().ToString();
             var platformId = "uwp";
             var secrets = $"{platformId}={appSecret};";
-            var parsedSecret = AppCenter.GetSecretForPlatform(secrets, platformId);
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
             Assert.AreEqual(appSecret, parsedSecret);
+        }
+
+        /// <summary>
+        /// Verify parse when there is only one platform and both app secret and token
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretAndTargetOnePlatformTerminatingSemicolon()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var targetToken = Guid.NewGuid().ToString();
+            var platformId = "ios";
+            var secrets = $"{platformId}={appSecret};{platformId}Target={targetToken}";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
+            var expected = $"appSecret={appSecret};target={targetToken}";
+            Assert.AreEqual(expected, parsedSecret);
+        }
+
+        /// <summary>
+        /// Verify parse when there is several platforms and both app secret and token
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretAndTargetMultiplePlatformTerminatingSemicolon()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var anotherAppSecret = Guid.NewGuid().ToString();
+            var targetToken = Guid.NewGuid().ToString();
+            var platformId = "android";
+            var secrets = $"{platformId}={appSecret};ios={anotherAppSecret};{platformId}Target={targetToken};iosTarget={anotherAppSecret}";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
+            var expected = $"appSecret={appSecret};target={targetToken}";
+            Assert.AreEqual(expected, parsedSecret);
+        }
+
+        /// <summary>
+        /// Verify parse when there is only token
+        /// </summary>
+        [TestMethod]
+        public void ParseTargetTerminatingSemicolon()
+        {
+            var targetToken = Guid.NewGuid().ToString();
+            var platformId = "android";
+            var secrets = $"{platformId}Target={targetToken};";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
+            var expected = $"target={targetToken}";
+            Assert.AreEqual(expected, parsedSecret);
         }
 
         /// <summary>
@@ -528,7 +573,7 @@ namespace Microsoft.AppCenter.Test
             var appSecret = Guid.NewGuid().ToString();
             var platformId = "uwp";
             var secrets = $"{platformId}={appSecret}; ios=anotherstring";
-            var parsedSecret = AppCenter.GetSecretForPlatform(secrets, platformId);
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
             Assert.AreEqual(appSecret, parsedSecret);
         }
 
@@ -541,7 +586,7 @@ namespace Microsoft.AppCenter.Test
             var appSecret = Guid.NewGuid().ToString();
             var platformId = "uwp";
             var secrets = $"ios=anotherstring; {platformId}={appSecret}";
-            var parsedSecret = AppCenter.GetSecretForPlatform(secrets, platformId);
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
             Assert.AreEqual(appSecret, parsedSecret);
         }
 
@@ -554,7 +599,7 @@ namespace Microsoft.AppCenter.Test
             var appSecret = Guid.NewGuid().ToString();
             var platformId = "uwp";
             var secrets = $"ios=anotherstring;;;;{platformId}={appSecret};;;;";
-            var parsedSecret = AppCenter.GetSecretForPlatform(secrets, platformId);
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
             Assert.AreEqual(appSecret, parsedSecret);
         }
 
@@ -580,7 +625,7 @@ namespace Microsoft.AppCenter.Test
             var platformId = "uwp";
             var secrets = $"ios=anotherstring;{platformId}={appSecret};";
             Assert.ThrowsException<AppCenterException>(
-                () => AppCenter.GetSecretForPlatform(secrets, platformId + platformId));
+                () => AppCenter.GetSecretAndTargetForPlatform(secrets, platformId + platformId));
         }
 
         /// <summary>
