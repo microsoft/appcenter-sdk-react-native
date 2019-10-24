@@ -1,6 +1,6 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.5.0 (Under development)
+## Version 2.5.0
 
 ### App Center
 
@@ -32,6 +32,14 @@
 #### UWP
 
 * **[Feature]** Allow developers to push notifications to a specific userId.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Downloading in-app update APK file has been failing on Android 4.x since TLS 1.2 has been enforced early September. The file is now downloaded using HTTPS direct connection when running on Android 4 instead of relying on system's download manager.
+* **[Fix]** Fix a crash and improve logging when downloading an update fails on Android 5+.
+* **[Breaking change]** If your minSdkVersion is lower than 19, Android requires the WRITE_EXTERNAL_STORAGE permission to store new downloaded updates. Please refer to the updated documentation site for detailed instructions. This is related to the download fix.
 ___
 
 ## Version 2.4.0-preview
