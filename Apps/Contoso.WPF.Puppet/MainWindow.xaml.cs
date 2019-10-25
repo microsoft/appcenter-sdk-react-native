@@ -56,6 +56,7 @@ namespace Contoso.WPF.Puppet
             if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
             {
                 CountryCodeEnableCheckbox.IsChecked = true;
+                CountryCodeText.Text = Settings.Default.CountryCode;
             }
             if (!string.IsNullOrEmpty(Settings.Default.UserId))
             {
@@ -143,7 +144,7 @@ namespace Contoso.WPF.Puppet
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
-            InfoLable.Visibility = Visibility.Visible;
+            CountryCodeNotice.Visibility = Visibility.Visible;
             Settings.Default.CountryCode = CountryCodeText.Text;
             Settings.Default.Save();
             AppCenter.SetCountryCode(string.IsNullOrEmpty(Settings.Default.CountryCode) ? null : Settings.Default.CountryCode);

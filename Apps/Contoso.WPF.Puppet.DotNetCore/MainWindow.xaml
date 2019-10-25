@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Contoso.WPF.Puppet.DotNetCore"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="335">
+        Title="MainWindow" Height="493" Width="335">
     <StackPanel>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="App Center">
@@ -133,6 +132,7 @@
                                 <TextBox Name="CountryCodeText"  VerticalAlignment="Center"></TextBox>
                             </DockPanel>
                             <Button Name="SaveCountryCodeButton" Click="CountryCodeSave_ClickListener">Save</Button>
+                            <TextBlock Visibility="Collapsed" Foreground="Red" Name="CountryCodeNotice" TextWrapping="Wrap">Country code has been updated. This value will only be applied to the following sessions.</TextBlock>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>

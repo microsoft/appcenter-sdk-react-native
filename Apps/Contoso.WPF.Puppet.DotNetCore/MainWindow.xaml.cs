@@ -53,7 +53,11 @@ namespace Contoso.WPF.Puppet.DotNetCore
             textAttachments = Settings.Default.TextErrorAttachments;
             TextAttachmentTextBox.Text = textAttachments;
             FileAttachmentLabel.Content = fileAttachments;
-
+            if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
+            {
+                CountryCodeEnableCheckbox.IsChecked = true;
+                CountryCodeText.Text = Settings.Default.CountryCode;
+            }
             if (!string.IsNullOrEmpty(Settings.Default.UserId))
             {
                 UserId.Text = Settings.Default.UserId;
@@ -123,18 +127,26 @@ namespace Contoso.WPF.Puppet.DotNetCore
             if (!CountryCodeEnableCheckbox.IsChecked.Value)
             {
                 CountryCodeText.Text = "";
-                AppCenter.SetCountryCode(null);
             }
             else
             {
-                CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
-                AppCenter.SetCountryCode(CountryCodeText.Text);
+                if (string.IsNullOrEmpty(Settings.Default.UserId))
+                {
+                    CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                }
+                else
+                {
+                    CountryCodeText.Text = Settings.Default.UserId;
+                }
             }
             CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
         }
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
+            CountryCodeNotice.Visibility = Visibility.Visible;
+            Settings.Default.CountryCode = CountryCodeText.Text;
+            Settings.Default.Save();
             AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
         }
 

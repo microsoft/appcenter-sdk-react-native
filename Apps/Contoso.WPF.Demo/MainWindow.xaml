@@ -8,7 +8,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="App Center WPF Demo App" Height="300" Width="335">
+        Title="App Center WPF Demo App" Height="494.797" Width="335">
     <StackPanel>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem Header="App Center">
@@ -138,7 +138,7 @@
                                 </DockPanel>
                             </StackPanel>
                             <Button Name="SaveCountryCodeButton" Click="CountryCodeSave_ClickListener">Save</Button>
-                            <TextBlock Visibility="Collapsed" Foreground="Red" Name="InfoLable" TextWrapping="Wrap">Country code has been updated. This value will only be applied to the following sessions.</TextBlock>
+                            <TextBlock Visibility="Collapsed" Foreground="Red" Name="CountryCodeNotice" TextWrapping="Wrap">Country code has been updated. This value will only be applied to the following sessions.</TextBlock>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
