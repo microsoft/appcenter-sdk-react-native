@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter
@@ -12,7 +14,7 @@ namespace Microsoft.AppCenter
     public partial class AppCenter
     {
         const char SecretDelimiter = ';';
-        const string PlatformKeyValueDelimiter = "=";
+        const char PlatformKeyValueDelimiter = '=';
         const string TargetPostfix = "Target";
         const string SecretPostfix = "appSecret";
 
@@ -28,39 +30,38 @@ namespace Microsoft.AppCenter
 
             // If there are no equals signs, then there are no named identifiers, but log a message in case the developer made 
             // a typing error.
-            if (!secrets.Contains(PlatformKeyValueDelimiter))
+            if (!secrets.Contains(PlatformKeyValueDelimiter.ToString()))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "No named identifier found in appSecret; using as-is");
                 return secrets;
             }
 
-            var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
+            Dictionary<string, string> secretsDictionary = secrets.Split(SecretDelimiter)
+            .Select(value => value.Split(PlatformKeyValueDelimiter))
+            .GroupBy(p => p[0], StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(pair => pair.Key, pair => pair.Last()[1], StringComparer.OrdinalIgnoreCase);
 
-            var PlatformKeyValueDelimiter = platformIdentifier + PlatformKeyValueDelimiter;
-            var platformTargetIdicator = platformTargetIdentifier + PlatformKeyValueDelimiter;
-            var secretIdx = secrets.IndexOf(PlatformKeyValueDelimiter, StringComparison.Ordinal);
-            var targetTokenIdx = secrets.IndexOf(platformTargetIdicator, StringComparison.Ordinal);
-            var targetIdx = secrets.IndexOf(TargetPostfix.ToLower(), StringComparison.Ordinal);
-            if (secretIdx == -1 && targetTokenIdx == -1 && targetIdx == -1)
-            {
-                throw new AppCenterException(parseErrorMessage);
-            }
-            if (targetIdx >= 0 && secretIdx == -1 && targetTokenIdx == -1) 
+            var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
+            if (secretsDictionary.ContainsKey(TargetPostfix.ToLower()) || secretsDictionary.ContainsKey(SecretPostfix.ToLower()))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier 'target' in the secret. Returning as-is.");
                 return secrets;
             }
-            if (secretIdx >= 0)
+
+            var platformSecret = string.Empty;
+            var platformTargetToken = string.Empty;
+            bool foundSecret = false;
+            bool foundTarget = false;
+            if (secretsDictionary.ContainsKey(platformIdentifier))
             {
-                secretIdx += PlatformKeyValueDelimiter.Length;
+                foundSecret = secretsDictionary.TryGetValue(platformIdentifier, out platformSecret);
             }
-            if (targetTokenIdx >= 0)
+            if (secretsDictionary.ContainsKey(platformTargetIdentifier))
             {
-                targetTokenIdx += platformTargetIdicator.Length;
+                foundTarget = secretsDictionary.TryGetValue(platformTargetIdentifier, out platformTargetToken);
             }
-            var platformSecret = FindTheKey(secretIdx, secrets);
-            var platformTargetToken = FindTheKey(targetTokenIdx, secrets);
-            if (string.IsNullOrEmpty(platformSecret) && string.IsNullOrEmpty(platformTargetToken))
+
+            if ((!foundSecret && !foundTarget) || (string.IsNullOrEmpty(platformSecret) && string.IsNullOrEmpty(platformTargetToken)))
             {
                 throw new AppCenterException(parseErrorMessage);
             }
@@ -76,24 +77,6 @@ namespace Microsoft.AppCenter
                 platformSecret += TargetPostfix.ToLower() + PlatformKeyValueDelimiter + platformTargetToken;
             }
             return platformSecret;
-        }
-
-        private static string FindTheKey(int keyIdx, string secrets) 
-        {
-            var key = string.Empty;
-            if (keyIdx >= 0)
-            {
-                while (keyIdx < secrets.Length)
-                {
-                    var nextChar = secrets[keyIdx++];
-                    if (nextChar == SecretDelimiter)
-                    {
-                        break;
-                    }
-                    key += nextChar;
-                }
-            }
-            return key;
         }
 
         /// <summary>
