@@ -92,7 +92,7 @@
     <PackageReference Include="Microsoft.AppCenter.Push" Version="2.5.0" />
     <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.5.0" />
     <PackageReference Include="Microsoft.AppCenter.Data" Version="2.5.0" />
-    <PackageReference Include="Xamarin.Forms" Version="4.3.0.908675" />
+    <PackageReference Include="Xamarin.Forms" Version="4.1.0.778454" />
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">

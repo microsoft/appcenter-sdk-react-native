@@ -63,7 +63,7 @@
     <PackageReference Include="Microsoft.AppCenter.Push" Version="2.5.0" />
     <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.5.0" />
     <PackageReference Include="Microsoft.AppCenter.Data" Version="2.5.0" />
-    <PackageReference Include="Xamarin.Forms" Version="4.1.0.673156" />
+    <PackageReference Include="Xamarin.Forms" Version="4.1.0.778454" />
     <Reference Include="Xamarin.GooglePlayServices.Basement">
       <HintPath>..\..\..\packages\Xamarin.GooglePlayServices.Basement.71.1620.0\lib\monoandroid90\Xamarin.GooglePlayServices.Basement.dll</HintPath>
     </Reference>
