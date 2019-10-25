@@ -38,8 +38,8 @@ namespace Microsoft.AppCenter
 
             var secretsDictionary = secrets.Split(SecretDelimiter)
                                            .Select(value => value.Split(PlatformKeyValueDelimiter))
-                                           .GroupBy(p => p[0] ?? "", StringComparer.OrdinalIgnoreCase)
-                                           .ToDictionary(pair => pair.Key, pair => pair.Last().Last(), StringComparer.OrdinalIgnoreCase);
+                                           .GroupBy(p => p[0].Trim() ?? "", StringComparer.OrdinalIgnoreCase)
+                                           .ToDictionary(pair => pair.Key.Trim(), pair => pair.Last().Last().Trim(), StringComparer.OrdinalIgnoreCase);
 
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
             if (secretsDictionary.ContainsKey(TargetPostfix.ToLower()) || secretsDictionary.ContainsKey(SecretPostfix.ToLower()))
