@@ -57,7 +57,6 @@ namespace Contoso.Forms.Demo
             if (Application.Current.Properties.TryGetValue(FileAttachmentKey, out var fileAttachment) &&
                 fileAttachment is string file)
             {
-                var filePicker = DependencyService.Get<IFilePicker>();
                 try
                 {
                     BinaryAttachmentFilePathLabel.Text = file;
