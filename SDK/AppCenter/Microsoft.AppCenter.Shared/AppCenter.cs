@@ -11,8 +11,8 @@ namespace Microsoft.AppCenter
     /// </summary>
     public partial class AppCenter
     {
-        const char Delimiter = ';';
-        const string PlatformIndicator = "=";
+        const char SecretDelimiter = ';';
+        const string PlatformKeyValueDelimiter = "=";
         const string TargetPostfix = "Target";
         const string SecretPostfix = "appSecret";
 
@@ -28,7 +28,7 @@ namespace Microsoft.AppCenter
 
             // If there are no equals signs, then there are no named identifiers, but log a message in case the developer made 
             // a typing error.
-            if (!secrets.Contains(PlatformIndicator))
+            if (!secrets.Contains(PlatformKeyValueDelimiter))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "No named identifier found in appSecret; using as-is");
                 return secrets;
@@ -36,9 +36,9 @@ namespace Microsoft.AppCenter
 
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
 
-            var platformIndicator = platformIdentifier + PlatformIndicator;
-            var platformTargetIdicator = platformTargetIdentifier + PlatformIndicator;
-            var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
+            var PlatformKeyValueDelimiter = platformIdentifier + PlatformKeyValueDelimiter;
+            var platformTargetIdicator = platformTargetIdentifier + PlatformKeyValueDelimiter;
+            var secretIdx = secrets.IndexOf(PlatformKeyValueDelimiter, StringComparison.Ordinal);
             var targetTokenIdx = secrets.IndexOf(platformTargetIdicator, StringComparison.Ordinal);
             var targetIdx = secrets.IndexOf(TargetPostfix.ToLower(), StringComparison.Ordinal);
             if (secretIdx == -1 && targetTokenIdx == -1 && targetIdx == -1)
@@ -52,7 +52,7 @@ namespace Microsoft.AppCenter
             }
             if (secretIdx >= 0)
             {
-                secretIdx += platformIndicator.Length;
+                secretIdx += PlatformKeyValueDelimiter.Length;
             }
             if (targetTokenIdx >= 0)
             {
@@ -71,9 +71,9 @@ namespace Microsoft.AppCenter
                 //If there is an app secret
                 if (platformSecret.Length > 0)
                 {
-                    platformSecret = SecretPostfix + PlatformIndicator + platformSecret + Delimiter;
+                    platformSecret = SecretPostfix + PlatformKeyValueDelimiter + platformSecret + SecretDelimiter;
                 }
-                platformSecret += TargetPostfix.ToLower() + PlatformIndicator + platformTargetToken;
+                platformSecret += TargetPostfix.ToLower() + PlatformKeyValueDelimiter + platformTargetToken;
             }
             return platformSecret;
         }
@@ -86,7 +86,7 @@ namespace Microsoft.AppCenter
                 while (keyIdx < secrets.Length)
                 {
                     var nextChar = secrets[keyIdx++];
-                    if (nextChar == Delimiter)
+                    if (nextChar == SecretDelimiter)
                     {
                         break;
                     }
