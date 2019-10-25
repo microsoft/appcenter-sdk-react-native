@@ -60,10 +60,10 @@ namespace Microsoft.AppCenter
             {
                 foundTarget = secretsDictionary.TryGetValue(platformTargetIdentifier, out platformTargetToken);
             }
-            var foundSomething = foundTarget || foundSecret;
-            var someKeyExists = !string.IsNullOrEmpty(platformSecret) || !string.IsNullOrEmpty(platformTargetToken);
+            var foundNoneOfTheKeys = !foundTarget && !foundSecret;
+            var bothKeysAreEmpty = string.IsNullOrEmpty(platformSecret) && string.IsNullOrEmpty(platformTargetToken);
 
-            if (!foundSomething || !someKeyExists)
+            if (foundNoneOfTheKeys || bothKeysAreEmpty)
             {
                 throw new AppCenterException(parseErrorMessage);
             }
