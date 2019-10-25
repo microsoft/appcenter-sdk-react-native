@@ -62,12 +62,6 @@ namespace Contoso.WinForms.Demo.DotNetCore
             this.CrashWithNonSerializableException = new System.Windows.Forms.Button();
             this.CrashWithTestException = new System.Windows.Forms.Button();
             this.CrashesEnabled = new System.Windows.Forms.CheckBox();
-            this.OthersTab = new System.Windows.Forms.TabPage();
-            this.CountryCodeGroup = new System.Windows.Forms.GroupBox();
-            this.CountryCodeLabel = new System.Windows.Forms.Label();
-            this.SaveCountryCodeButton = new System.Windows.Forms.Button();
-            this.CountryCodeText = new System.Windows.Forms.TextBox();
-            this.CountryCodeEnabledCheckbox = new System.Windows.Forms.CheckBox();
             this.Tabs.SuspendLayout();
             this.AppCenterTab.SuspendLayout();
             this.LogBox.SuspendLayout();
@@ -76,8 +70,6 @@ namespace Contoso.WinForms.Demo.DotNetCore
             ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).BeginInit();
             this.CrashesTab.SuspendLayout();
             this.CrashBox.SuspendLayout();
-            this.OthersTab.SuspendLayout();
-            this.CountryCodeGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -85,7 +77,6 @@ namespace Contoso.WinForms.Demo.DotNetCore
             this.Tabs.Controls.Add(this.AppCenterTab);
             this.Tabs.Controls.Add(this.AnalyticsTab);
             this.Tabs.Controls.Add(this.CrashesTab);
-            this.Tabs.Controls.Add(this.OthersTab);
             this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabs.Location = new System.Drawing.Point(0, 0);
             this.Tabs.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -480,74 +471,6 @@ namespace Contoso.WinForms.Demo.DotNetCore
             this.CrashesEnabled.UseVisualStyleBackColor = true;
             this.CrashesEnabled.CheckedChanged += new System.EventHandler(this.CrashesEnabled_CheckedChanged);
             // 
-            // OthersTab
-            // 
-            this.OthersTab.Controls.Add(this.CountryCodeGroup);
-            this.OthersTab.Controls.Add(this.CountryCodeEnabledCheckbox);
-            this.OthersTab.Location = new System.Drawing.Point(8, 39);
-            this.OthersTab.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.OthersTab.Name = "OthersTab";
-            this.OthersTab.Size = new System.Drawing.Size(752, 482);
-            this.OthersTab.TabIndex = 3;
-            this.OthersTab.Text = "Others";
-            this.OthersTab.UseVisualStyleBackColor = true;
-            // 
-            // CountryCodeGroup
-            // 
-            this.CountryCodeGroup.Controls.Add(this.CountryCodeLabel);
-            this.CountryCodeGroup.Controls.Add(this.SaveCountryCodeButton);
-            this.CountryCodeGroup.Controls.Add(this.CountryCodeText);
-            this.CountryCodeGroup.Enabled = false;
-            this.CountryCodeGroup.Location = new System.Drawing.Point(16, 60);
-            this.CountryCodeGroup.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.CountryCodeGroup.Name = "CountryCodeGroup";
-            this.CountryCodeGroup.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.CountryCodeGroup.Size = new System.Drawing.Size(720, 192);
-            this.CountryCodeGroup.TabIndex = 1;
-            this.CountryCodeGroup.TabStop = false;
-            this.CountryCodeGroup.Text = "Country Code";
-            // 
-            // CountryCodeLabel
-            // 
-            this.CountryCodeLabel.Location = new System.Drawing.Point(30, 60);
-            this.CountryCodeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.CountryCodeLabel.Name = "CountryCodeLabel";
-            this.CountryCodeLabel.Size = new System.Drawing.Size(188, 44);
-            this.CountryCodeLabel.TabIndex = 12;
-            this.CountryCodeLabel.Text = "Country Code";
-            this.CountryCodeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // SaveCountryCodeButton
-            // 
-            this.SaveCountryCodeButton.Location = new System.Drawing.Point(18, 137);
-            this.SaveCountryCodeButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.SaveCountryCodeButton.Name = "SaveCountryCodeButton";
-            this.SaveCountryCodeButton.Size = new System.Drawing.Size(690, 44);
-            this.SaveCountryCodeButton.TabIndex = 2;
-            this.SaveCountryCodeButton.Text = "Save";
-            this.SaveCountryCodeButton.UseVisualStyleBackColor = true;
-            this.SaveCountryCodeButton.Click += new System.EventHandler(this.CountryCodeSaveButton_ClickListener);
-            // 
-            // CountryCodeText
-            // 
-            this.CountryCodeText.Location = new System.Drawing.Point(228, 65);
-            this.CountryCodeText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.CountryCodeText.Name = "CountryCodeText";
-            this.CountryCodeText.Size = new System.Drawing.Size(476, 31);
-            this.CountryCodeText.TabIndex = 0;
-            // 
-            // CountryCodeEnabledCheckbox
-            // 
-            this.CountryCodeEnabledCheckbox.AutoSize = true;
-            this.CountryCodeEnabledCheckbox.Location = new System.Drawing.Point(20, 15);
-            this.CountryCodeEnabledCheckbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.CountryCodeEnabledCheckbox.Name = "CountryCodeEnabledCheckbox";
-            this.CountryCodeEnabledCheckbox.Size = new System.Drawing.Size(348, 39);
-            this.CountryCodeEnabledCheckbox.TabIndex = 0;
-            this.CountryCodeEnabledCheckbox.Text = "Country Code Enabled";
-            this.CountryCodeEnabledCheckbox.UseVisualStyleBackColor = true;
-            this.CountryCodeEnabledCheckbox.CheckedChanged += new System.EventHandler(this.CountryCodeEnabled_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -569,10 +492,6 @@ namespace Contoso.WinForms.Demo.DotNetCore
             ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).EndInit();
             this.CrashesTab.ResumeLayout(false);
             this.CrashBox.ResumeLayout(false);
-            this.OthersTab.ResumeLayout(false);
-            this.OthersTab.PerformLayout();
-            this.CountryCodeGroup.ResumeLayout(false);
-            this.CountryCodeGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -583,7 +502,6 @@ namespace Contoso.WinForms.Demo.DotNetCore
         private System.Windows.Forms.TabPage AppCenterTab;
         private System.Windows.Forms.TabPage AnalyticsTab;
         private System.Windows.Forms.TabPage CrashesTab;
-        private System.Windows.Forms.TabPage OthersTab;
         private System.Windows.Forms.CheckBox AppCenterEnabled;
         private System.Windows.Forms.Label AppCenterLogLevelLabel;
         private System.Windows.Forms.ComboBox AppCenterLogLevel;
@@ -611,11 +529,6 @@ namespace Contoso.WinForms.Demo.DotNetCore
         private System.Windows.Forms.Button CrashWithAggregateException;
         private System.Windows.Forms.Button CrashWithNullReference;
         private System.Windows.Forms.Button CrashInsideAsyncTask;
-        private System.Windows.Forms.GroupBox CountryCodeGroup;
-        private System.Windows.Forms.Label CountryCodeLabel;
-        private System.Windows.Forms.Button SaveCountryCodeButton;
-        private System.Windows.Forms.TextBox CountryCodeText;
-        private System.Windows.Forms.CheckBox CountryCodeEnabledCheckbox;
     }
 }
 

@@ -173,25 +173,5 @@ namespace Contoso.WinForms.Puppet.DotNetCore
         }
 
         #endregion
-
-        private void CountryCodeEnabled_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!CountryCodeEnabledCheckbox.Checked)
-            {
-                CountryCodeText.Text = "";
-                AppCenter.SetCountryCode(null);
-            }
-            else
-            {
-                CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
-                AppCenter.SetCountryCode(CountryCodeText.Text);
-            }
-            CountryCodeGroup.Enabled = CountryCodeEnabledCheckbox.Checked;
-        }
-
-        private void CountryCodeSaveButton_ClickListener(object sender, EventArgs e)
-        {
-            AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
-        }
     }
 }
