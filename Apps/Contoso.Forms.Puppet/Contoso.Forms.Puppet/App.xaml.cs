@@ -42,6 +42,12 @@ namespace Contoso.Forms.Puppet
             { XamarinDevice.iOS, "4ca276ee-9a50-4ad6-9746-50c420f9df88" }
         };
 
+        static readonly IReadOnlyDictionary<string, string> OneCollectorTokens = new Dictionary<string, string>
+        {
+            { XamarinDevice.Android, "7be01f52a17a455ca07566a4e978d961-de99cbfd-41a4-463a-9c23-92cabd834b0d-6966" },
+            { XamarinDevice.iOS, "1ad92bec07bb4cbf8d98f37c345f1982-c261ed35-7a36-429f-9f5f-6162117fbb72-7166" }
+        };
+
         public App()
         {
             InitializeComponent();
@@ -77,8 +83,7 @@ namespace Contoso.Forms.Puppet
                 Auth.SetConfigUrl("https://config-integration.dev.avalanch.es");
                 Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
 
-                var appSecrets = GetAppSecretDictionary();
-                AppCenter.Start($"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
@@ -103,6 +108,33 @@ namespace Contoso.Forms.Puppet
                 {
                     AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.StackTrace=" + task.Result?.StackTrace);
                 });
+            }
+        }
+
+        private string GetOneCollectorTokenString()
+        {
+            return $"androidTarget={OneCollectorTokens[XamarinDevice.Android]};iosTarget={OneCollectorTokens[XamarinDevice.iOS]}";
+        }
+
+        private string GetAppCenterTokenString()
+        {
+            var appSecrets = GetAppSecretDictionary();
+            return $"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}";
+        }
+
+        private string GetTokensString()
+        {
+            var persistedStartType = StartTypeUtils.GetPersistedStartType();
+            switch (persistedStartType)
+            {
+                
+                case StartType.OneCollector:
+                    return GetOneCollectorTokenString();
+                case StartType.Both:
+                    return $"{GetAppCenterTokenString()};{GetOneCollectorTokenString()}";
+                case StartType.AppCenter:
+                default:
+                    return GetAppCenterTokenString();
             }
         }
 
