@@ -14,7 +14,7 @@ namespace Contoso.Forms.Puppet
         Both
     };
 
-    public class AnalyticsTypeUtils
+    public class StartTypeUtils
     {
         public const StartType DefaultStartType = StartType.AppCenter;
         private const string StartTypeSettingKey = "startType";
