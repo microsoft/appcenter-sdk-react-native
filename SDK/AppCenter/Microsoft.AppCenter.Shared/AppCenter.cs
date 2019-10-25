@@ -36,10 +36,10 @@ namespace Microsoft.AppCenter
                 return secrets;
             }
 
-            Dictionary<string, string> secretsDictionary = secrets.Split(SecretDelimiter)
-            .Select(value => value.Split(PlatformKeyValueDelimiter))
-            .GroupBy(p => p[0], StringComparer.OrdinalIgnoreCase)
-            .ToDictionary(pair => pair.Key, pair => pair.Last()[1], StringComparer.OrdinalIgnoreCase);
+            var secretsDictionary = secrets.Split(SecretDelimiter)
+                                           .Select(value => value.Split(PlatformKeyValueDelimiter))
+                                           .GroupBy(p => p[0] ?? "", StringComparer.OrdinalIgnoreCase)
+                                           .ToDictionary(pair => pair.Key, pair => pair.Last().Last(), StringComparer.OrdinalIgnoreCase);
 
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
             if (secretsDictionary.ContainsKey(TargetPostfix.ToLower()) || secretsDictionary.ContainsKey(SecretPostfix.ToLower()))
@@ -60,8 +60,10 @@ namespace Microsoft.AppCenter
             {
                 foundTarget = secretsDictionary.TryGetValue(platformTargetIdentifier, out platformTargetToken);
             }
+            var foundSomething = foundTarget || foundSecret;
+            var someKeyExists = !string.IsNullOrEmpty(platformSecret) || !string.IsNullOrEmpty(platformTargetToken);
 
-            if ((!foundSecret && !foundTarget) || (string.IsNullOrEmpty(platformSecret) && string.IsNullOrEmpty(platformTargetToken)))
+            if (!foundSomething || !someKeyExists)
             {
                 throw new AppCenterException(parseErrorMessage);
             }
