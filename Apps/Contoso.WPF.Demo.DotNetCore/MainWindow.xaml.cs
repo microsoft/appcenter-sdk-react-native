@@ -126,22 +126,28 @@ namespace Contoso.WPF.Demo.DotNetCore
             if (!CountryCodeEnableCheckbox.IsChecked.Value)
             {
                 CountryCodeText.Text = "";
+                SaveCountryCode();
             }
             else
             {
-                if (string.IsNullOrEmpty(Settings.Default.UserId))
+                if (string.IsNullOrEmpty(Settings.Default.CountryCode))
                 {
                     CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
                 }
                 else
                 {
-                    CountryCodeText.Text = Settings.Default.UserId;
+                    CountryCodeText.Text = Settings.Default.CountryCode;
                 }
             }
             CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
         }
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
+        {
+            SaveCountryCode();
+        }
+
+        private void SaveCountryCode()
         {
             CountryCodeNotice.Visibility = Visibility.Visible;
             Settings.Default.CountryCode = CountryCodeText.Text;
@@ -195,7 +201,7 @@ namespace Contoso.WPF.Demo.DotNetCore
             var userId = UserId.Text;
             var text = string.IsNullOrEmpty(userId) ? null : userId;
             AppCenter.SetUserId(text);
-            Settings.Default.CountryCode = text;
+            Settings.Default.UserId = text;
             Settings.Default.Save();
         }
 

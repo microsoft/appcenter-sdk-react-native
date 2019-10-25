@@ -127,6 +127,7 @@ namespace Contoso.WPF.Puppet
             if (!CountryCodeEnableCheckbox.IsChecked.Value)
             {
                 CountryCodeText.Text = "";
+                SaveCountryCode();
             }
             else
             {
@@ -144,10 +145,15 @@ namespace Contoso.WPF.Puppet
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
+            SaveCountryCode();
+        }
+
+        private void SaveCountryCode()
+        {
             CountryCodeNotice.Visibility = Visibility.Visible;
             Settings.Default.CountryCode = CountryCodeText.Text;
             Settings.Default.Save();
-            AppCenter.SetCountryCode(string.IsNullOrEmpty(Settings.Default.CountryCode) ? null : Settings.Default.CountryCode);
+            AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
         }
 
         private void FileErrorAttachment_Click(object sender, RoutedEventArgs e)

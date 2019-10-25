@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,11 +15,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Contoso.WPF.Puppet.DotNetCore.Properties;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
-using Microsoft.Win32;
 
 namespace Contoso.WPF.Puppet.DotNetCore
 {
@@ -127,22 +126,28 @@ namespace Contoso.WPF.Puppet.DotNetCore
             if (!CountryCodeEnableCheckbox.IsChecked.Value)
             {
                 CountryCodeText.Text = "";
+                SaveCountryCode();
             }
             else
             {
-                if (string.IsNullOrEmpty(Settings.Default.UserId))
+                if (string.IsNullOrEmpty(Settings.Default.CountryCode))
                 {
                     CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
                 }
                 else
                 {
-                    CountryCodeText.Text = Settings.Default.UserId;
+                    CountryCodeText.Text = Settings.Default.CountryCode;
                 }
             }
             CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
         }
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
+        {
+            SaveCountryCode();
+        }
+
+        private void SaveCountryCode()
         {
             CountryCodeNotice.Visibility = Visibility.Visible;
             Settings.Default.CountryCode = CountryCodeText.Text;
