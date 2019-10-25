@@ -44,7 +44,7 @@ namespace Microsoft.AppCenter
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
             if (secretsDictionary.ContainsKey(TargetPostfix.ToLower()) || secretsDictionary.ContainsKey(SecretPostfix.ToLower()))
             {
-                AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier 'target' in the secret. Returning as-is.");
+                AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier in the secret. Returning as-is.");
                 return secrets;
             }
 
