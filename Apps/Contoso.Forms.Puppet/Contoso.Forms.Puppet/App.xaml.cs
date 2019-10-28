@@ -41,7 +41,8 @@ namespace Contoso.Forms.Puppet
             { XamarinDevice.Android, "9c77fb6e-7fff-4ae9-ac18-46c0041a6355" },
             { XamarinDevice.iOS, "4ca276ee-9a50-4ad6-9746-50c420f9df88" }
         };
-
+        
+        // OneCollector secrets
         static readonly IReadOnlyDictionary<string, string> OneCollectorTokens = new Dictionary<string, string>
         {
             { XamarinDevice.Android, "7be01f52a17a455ca07566a4e978d961-de99cbfd-41a4-463a-9c23-92cabd834b0d-6966" },
