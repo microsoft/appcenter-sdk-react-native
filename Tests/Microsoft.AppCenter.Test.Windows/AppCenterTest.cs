@@ -535,9 +535,38 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify parse when there is several platforms and both app secret and token
-        /// </summary>
-        [TestMethod]
+		/// Verify throw exception when finding none of the keys.
+		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(AppCenterException))]
+        public void CheckWhenFoundNoneOfTheKeys()
+        {
+            var invalidePlatformIdentifier = "invalidePlatformIdentifier";
+            var appSecret = Guid.NewGuid().ToString();
+            var targetToken = Guid.NewGuid().ToString();
+            var platformId = "ios";
+            var secrets = $"{platformId}={appSecret};{platformId}Target={targetToken}";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, invalidePlatformIdentifier);
+        }
+
+		/// <summary>
+		/// Verify throw exception when both keys are empty.
+		/// </summary>
+		[TestMethod]
+		[ExpectedException(typeof(AppCenterException))]
+        public void CheckWhenBothKeysAreEmpty()
+        {
+            var appSecret = string.Empty;
+            var targetToken = string.Empty;
+            var platformId = "ios";
+            var secrets = $"{platformId}={appSecret};{platformId}Target={targetToken}";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
+        }
+
+		/// <summary>
+		/// Verify parse when there is several platforms and both app secret and token
+		/// </summary>
+		[TestMethod]
         public void ParseAppSecretAndTargetMultiplePlatform()
         {
             var appSecret = Guid.NewGuid().ToString();

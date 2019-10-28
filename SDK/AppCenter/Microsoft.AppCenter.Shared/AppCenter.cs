@@ -36,8 +36,8 @@ namespace Microsoft.AppCenter
                 return secrets;
             }
 
-            var secretsDictionary = secrets.Split(SecretDelimiter)
-                                           .Select(value => value.Split(PlatformKeyValueDelimiter))
+            var secretsDictionary = secrets.Split(SecretDelimiter.ToCharArray())
+                                           .Select(value => value.Split(PlatformKeyValueDelimiter.ToCharArray()))
                                            .GroupBy(p => p[0].Trim() ?? "", StringComparer.OrdinalIgnoreCase)
                                            .ToDictionary(pair => pair.Key.Trim(), pair => pair.Last().Last().Trim(), StringComparer.OrdinalIgnoreCase);
 
