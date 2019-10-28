@@ -32,7 +32,7 @@ namespace Contoso.Forms.Puppet
             {
                 this.StartTypePicker.Items.Add(startType);
             }
-            this.StartTypePicker.SelectedIndex = (int)(AuthTypeUtils.GetPersistedAuthType());
+            this.StartTypePicker.SelectedIndex = (int)(StartTypeUtils.GetPersistedStartType());
         }
 
         protected override async void OnAppearing()
