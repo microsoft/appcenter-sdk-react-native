@@ -7,9 +7,9 @@
         <TableSection Title="Analytics Settings">
             <SwitchCell Text="Analytics Enabled" On="true" x:Name="EnabledSwitchCell" OnChanged="UpdateEnabled" />
         </TableSection>
-        <TableSection>
+        <TableSection Title="Startup type">
             <ViewCell>
-                <Picker x:Name="StartTypePicker" Title="Start Type" PropertyChanged="ChangeStartType"/>
+                <Picker x:Name="StartTypePicker" Title="Start Type" PropertyChanged="ChangeStartType" />
             </ViewCell>
         </TableSection>
         <TableSection Title="Tracking Events">

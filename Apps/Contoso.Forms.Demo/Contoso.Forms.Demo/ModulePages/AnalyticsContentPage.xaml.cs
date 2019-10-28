@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
+using System.ComponentModel;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
@@ -25,6 +26,13 @@ namespace Contoso.Forms.Demo
             {
                 Icon = "lightning.png";
             }
+
+            // Setup start type dropdown choices
+            foreach (var startType in StartTypeUtils.GetStartTypeChoiceStrings())
+            {
+                this.StartTypePicker.Items.Add(startType);
+            }
+            this.StartTypePicker.SelectedIndex = (int)(StartTypeUtils.GetPersistedStartType());
         }
 
         protected override async void OnAppearing()
@@ -32,6 +40,23 @@ namespace Contoso.Forms.Demo
             base.OnAppearing();
             EnabledSwitchCell.On = await Analytics.IsEnabledAsync();
             EnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
+        }
+
+        async void ChangeStartType(object sender, PropertyChangedEventArgs e)
+        {
+            // IOS sends an event every time user rests their selection on an item without hitting "done", and the only event they send when hitting "done" is that the control is no longer focused.
+            // So we'll process the change at that time. This works for android as well.
+            if (e.PropertyName == "IsFocused" && !this.StartTypePicker.IsFocused)
+            {
+                var newSelectionCandidate = this.StartTypePicker.SelectedIndex;
+                var persistedStartType = StartTypeUtils.GetPersistedStartType();
+                if (newSelectionCandidate != (int)persistedStartType)
+                {
+                    StartTypeUtils.SetPersistedStartType((StartType)newSelectionCandidate);
+                    await Application.Current.SavePropertiesAsync();
+                    await DisplayAlert("Start Type Changed", "Start type has changed, which alters the app secret. Please close and re-run the app for the new app secret to take effect.", "OK");
+                }
+            }
         }
 
         async void AddProperty(object sender, EventArgs e)
