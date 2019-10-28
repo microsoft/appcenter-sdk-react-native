@@ -36,10 +36,13 @@ namespace Microsoft.AppCenter
                 return secrets;
             }
 
-            var secretsDictionary = secrets.Split(SecretDelimiter.ToCharArray())
+            // Grouping by the name of the key.
+            var secretsGroup = secrets.Split(SecretDelimiter.ToCharArray())
                                            .Select(value => value.Split(PlatformKeyValueDelimiter.ToCharArray()))
-                                           .GroupBy(p => p[0].Trim() ?? "", StringComparer.OrdinalIgnoreCase)
-                                           .ToDictionary(pair => pair.Key.Trim(), pair => pair.Last().Last().Trim(), StringComparer.OrdinalIgnoreCase);
+                                           .GroupBy(p => p[0].Trim() ?? "", StringComparer.OrdinalIgnoreCase);
+
+            // Create a dictionary choosing the last secret value for each key.
+            var secretsDictionary = secretsGroup.ToDictionary(pair => pair.Key.Trim(), pair => pair.Last().Last().Trim(), StringComparer.OrdinalIgnoreCase);
 
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
             if (secretsDictionary.ContainsKey(TargetPostfix.ToLower()) || secretsDictionary.ContainsKey(SecretPostfix.ToLower()))
