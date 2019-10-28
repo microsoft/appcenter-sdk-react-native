@@ -13,8 +13,8 @@ namespace Microsoft.AppCenter
     /// </summary>
     public partial class AppCenter
     {
-        const char SecretDelimiter = ';';
-        const char PlatformKeyValueDelimiter = '=';
+        const string SecretDelimiter = ";";
+        const string PlatformKeyValueDelimiter = "=";
         const string TargetPostfix = "Target";
         const string SecretPostfix = "appSecret";
 
@@ -30,7 +30,7 @@ namespace Microsoft.AppCenter
 
             // If there are no equals signs, then there are no named identifiers, but log a message in case the developer made 
             // a typing error.
-            if (!secrets.Contains(PlatformKeyValueDelimiter.ToString()))
+            if (!secrets.Contains(PlatformKeyValueDelimiter))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "No named identifier found in appSecret; using as-is");
                 return secrets;
@@ -44,7 +44,7 @@ namespace Microsoft.AppCenter
             var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
             if (secretsDictionary.ContainsKey(TargetPostfix.ToLower()) || secretsDictionary.ContainsKey(SecretPostfix.ToLower()))
             {
-                AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier in the secret. Returning as-is.");
+                AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier in the secret; using as-is.");
                 return secrets;
             }
 

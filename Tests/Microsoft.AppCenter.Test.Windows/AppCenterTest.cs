@@ -523,7 +523,7 @@ namespace Microsoft.AppCenter.Test
         /// Verify parse when there is only one platform and both app secret and token
         /// </summary>
         [TestMethod]
-        public void ParseAppSecretAndTargetOnePlatformTerminatingSemicolon()
+        public void ParseAppSecretAndTargetOnePlatform()
         {
             var appSecret = Guid.NewGuid().ToString();
             var targetToken = Guid.NewGuid().ToString();
@@ -538,7 +538,7 @@ namespace Microsoft.AppCenter.Test
         /// Verify parse when there is several platforms and both app secret and token
         /// </summary>
         [TestMethod]
-        public void ParseAppSecretAndTargetMultiplePlatformTerminatingSemicolon()
+        public void ParseAppSecretAndTargetMultiplePlatform()
         {
             var appSecret = Guid.NewGuid().ToString();
             var anotherAppSecret = Guid.NewGuid().ToString();
