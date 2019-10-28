@@ -128,12 +128,10 @@ namespace Contoso.Forms.Puppet
             var persistedStartType = StartTypeUtils.GetPersistedStartType();
             switch (persistedStartType)
             {
-                
                 case StartType.OneCollector:
                     return GetOneCollectorTokenString();
                 case StartType.Both:
                     return $"{GetAppCenterTokenString()};{GetOneCollectorTokenString()}";
-                case StartType.AppCenter:
                 default:
                     return GetAppCenterTokenString();
             }

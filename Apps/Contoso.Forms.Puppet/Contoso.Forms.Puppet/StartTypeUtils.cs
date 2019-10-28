@@ -29,7 +29,6 @@ namespace Contoso.Forms.Puppet
                     return persistedStartTypeEnum;
                 }
             }
-
             return DefaultStartType;
         }
 

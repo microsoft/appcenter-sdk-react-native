@@ -29,7 +29,6 @@ namespace Contoso.Forms.Demo
                     return persistedStartTypeEnum;
                 }
             }
-
             return DefaultStartType;
         }
 

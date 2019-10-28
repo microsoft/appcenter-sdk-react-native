@@ -76,7 +76,6 @@ namespace Contoso.Forms.Demo
                     return GetOneCollectorTokenString();
                 case StartType.Both:
                     return $"{GetAppCenterTokenString()};{GetOneCollectorTokenString()}";
-                case StartType.AppCenter:
                 default:
                     return GetAppCenterTokenString();
             }
