@@ -538,7 +538,7 @@ namespace Microsoft.AppCenter.Test
 		/// Verify throw exception when finding none of the keys.
 		/// </summary>
 		[TestMethod]
-		[ExpectedException(typeof(AppCenterException))]
+        [ExpectedException(typeof(AppCenterException))]
         public void CheckWhenFoundNoneOfTheKeys()
         {
             var invalidePlatformIdentifier = "invalidePlatformIdentifier";
@@ -549,11 +549,11 @@ namespace Microsoft.AppCenter.Test
             var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, invalidePlatformIdentifier);
         }
 
-		/// <summary>
-		/// Verify throw exception when both keys are empty.
-		/// </summary>
-		[TestMethod]
-		[ExpectedException(typeof(AppCenterException))]
+        /// <summary>
+        /// Verify throw exception when both keys are empty.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AppCenterException))]
         public void CheckWhenBothKeysAreEmpty()
         {
             var appSecret = string.Empty;
@@ -563,10 +563,10 @@ namespace Microsoft.AppCenter.Test
             var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
         }
 
-		/// <summary>
-		/// Verify parse when there is several platforms and both app secret and token
-		/// </summary>
-		[TestMethod]
+        /// <summary>
+        /// Verify parse when there is several platforms and both app secret and token.
+        /// </summary>
+        [TestMethod]
         public void ParseAppSecretAndTargetMultiplePlatform()
         {
             var appSecret = Guid.NewGuid().ToString();
