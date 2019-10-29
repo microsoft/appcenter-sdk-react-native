@@ -33,14 +33,14 @@
     "jest": "24.8.0",
     "metro-react-native-babel-preset": "0.54.1",
     "@react-native-community/eslint-config": "0.0.3",
-    "eslint": "5.15.3",
-    "react-test-renderer": "16.8.3",
-    "@babel/plugin-external-helpers": "7.2.0",
-    "babel-eslint": "8.2.3",
+    "eslint": "6.0.1",
     "eslint-config-airbnb": "16.1.0",
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-jsx-a11y": "6.0.2",
-    "eslint-plugin-react": "7.16.0"
+    "eslint-plugin-react": "7.16.0",
+    "react-test-renderer": "16.8.3",
+    "@babel/plugin-external-helpers": "7.2.0",
+    "babel-eslint": "8.2.3"
   },
   "jest": {
     "preset": "react-native",
