@@ -1,6 +1,6 @@
 {
   "name": "appcenter-auth",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "React Native plugin for AppCenter Auth",
   "main": "Auth.js",
   "types": "Auth.d.ts",
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/microsoft/appcenter-sdk-react-native/blob/master/appcenter-auth/README.md",
   "dependencies": {
-    "appcenter": "2.4.0"
+    "appcenter": "2.5.0"
   },
   "rnpm": {
     "android": {

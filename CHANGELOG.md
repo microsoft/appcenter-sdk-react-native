@@ -6,7 +6,9 @@
 
 * **[Fix]** Avoid throwing an error when `trackEvent` is called with null property values.
 
-## Version 2.5.0 (Under development)
+___
+
+## Version 2.5.0
 
 ### App Center
 
@@ -17,6 +19,10 @@
 #### Android
 
 * **[Behavior change]** Fix a security issue in the way native Android crashes are processed. The exception message is now `null` and the exception stack trace is the raw Java stack trace.
+
+### App Center Data
+
+* **[Fix]** Reduced retries on Data-related operations to fail fast and avoid the perception of calls "hanging".
 
 ___
 
