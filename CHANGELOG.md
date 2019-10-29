@@ -1,5 +1,11 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.5.1 (Under development)
+
+### App Center Analytics
+
+* **[Fix]** Avoid throwing an error when `trackEvent` is called with null property values.
+
 ## Version 2.5.0 (Under development)
 
 ### App Center
