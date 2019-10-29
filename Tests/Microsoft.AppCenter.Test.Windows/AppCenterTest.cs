@@ -580,7 +580,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify parse when there is only token
+        /// Verify parse when there is only token.
         /// </summary>
         [TestMethod]
         public void ParseTargetTerminatingSemicolon()
@@ -594,7 +594,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify parse when there is only token
+        /// Verify that the invalid target string is not parsed.
         /// </summary>
         [TestMethod]
         public void NotParseTargetString()

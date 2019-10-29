@@ -15,8 +15,8 @@ namespace Microsoft.AppCenter
     {
         const string SecretDelimiter = ";";
         const string PlatformKeyValueDelimiter = "=";
-        const string TargetPostfix = "Target";
-        const string SecretPostfix = "appSecret";
+        const string TargetPostfix = "target";
+        const string SecretPostfix = "appsecret";
 
         // Gets the first instance of an app sceret and/or target token corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
@@ -43,43 +43,35 @@ namespace Microsoft.AppCenter
 
             // Create a dictionary choosing the last secret value for each key.
             var secretsDictionary = secretsGroup.ToDictionary(pair => pair.Key.Trim(), pair => pair.Last().Last().Trim(), StringComparer.OrdinalIgnoreCase);
-
-            var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
-            if (secretsDictionary.ContainsKey(TargetPostfix.ToLower()) || secretsDictionary.ContainsKey(SecretPostfix.ToLower()))
+            if (!secretsDictionary.ContainsKey(TargetPostfix) || !secretsDictionary.ContainsKey(SecretPostfix))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier in the secret; using as-is.");
                 return secrets;
             }
-
             var platformSecret = string.Empty;
             var platformTargetToken = string.Empty;
-            bool foundSecret = false;
-            bool foundTarget = false;
             if (secretsDictionary.ContainsKey(platformIdentifier))
             {
-                foundSecret = secretsDictionary.TryGetValue(platformIdentifier, out platformSecret);
+                secretsDictionary.TryGetValue(platformIdentifier, out platformSecret);
             }
             if (secretsDictionary.ContainsKey(platformTargetIdentifier))
             {
-                foundTarget = secretsDictionary.TryGetValue(platformTargetIdentifier, out platformTargetToken);
+                secretsDictionary.TryGetValue(platformTargetIdentifier, out platformTargetToken);
             }
-            var foundNoneOfTheKeys = !foundTarget && !foundSecret;
-            var bothKeysAreEmpty = string.IsNullOrEmpty(platformSecret) && string.IsNullOrEmpty(platformTargetToken);
-
-            if (foundNoneOfTheKeys || bothKeysAreEmpty)
+            if (string.IsNullOrEmpty(platformSecret) && string.IsNullOrEmpty(platformTargetToken))
             {
-                throw new AppCenterException(parseErrorMessage);
+                throw new AppCenterException($"Error parsing key for '{platformIdentifier}'");
             }
 
             // Format the string as "appSecret={};target={}" or "target={}" if needed.
-            if (platformTargetToken.Length > 0)
+            if (string.IsNullOrEmpty(platformTargetToken))
             {
-                //If there is an app secret
+                // If there is an app secret
                 if (platformSecret.Length > 0)
                 {
                     platformSecret = SecretPostfix + PlatformKeyValueDelimiter + platformSecret + SecretDelimiter;
                 }
-                platformSecret += TargetPostfix.ToLower() + PlatformKeyValueDelimiter + platformTargetToken;
+                platformSecret += TargetPostfix + PlatformKeyValueDelimiter + platformTargetToken;
             }
             return platformSecret;
         }
