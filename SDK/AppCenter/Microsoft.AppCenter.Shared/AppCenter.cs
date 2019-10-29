@@ -43,7 +43,7 @@ namespace Microsoft.AppCenter
 
             // Create a dictionary choosing the last secret value for each key.
             var secretsDictionary = secretsGroup.ToDictionary(pair => pair.Key.Trim(), pair => pair.Last().Last().Trim(), StringComparer.OrdinalIgnoreCase);
-            if (!secretsDictionary.ContainsKey(TargetPostfix) || !secretsDictionary.ContainsKey(SecretPostfix))
+            if (secretsDictionary.ContainsKey(TargetPostfix) || secretsDictionary.ContainsKey(SecretPostfix))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier in the secret; using as-is.");
                 return secrets;
@@ -64,10 +64,10 @@ namespace Microsoft.AppCenter
             }
 
             // Format the string as "appSecret={};target={}" or "target={}" if needed.
-            if (string.IsNullOrEmpty(platformTargetToken))
+            if (!string.IsNullOrEmpty(platformTargetToken))
             {
                 // If there is an app secret
-                if (platformSecret.Length > 0)
+                if (!string.IsNullOrEmpty(platformSecret))
                 {
                     platformSecret = SecretPostfix + PlatformKeyValueDelimiter + platformSecret + SecretDelimiter;
                 }

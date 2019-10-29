@@ -530,7 +530,7 @@ namespace Microsoft.AppCenter.Test
             var platformId = "ios";
             var secrets = $"{platformId}={appSecret};{platformId}Target={targetToken}";
             var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
-            var expected = $"appSecret={appSecret};target={targetToken}";
+            var expected = $"appsecret={appSecret};target={targetToken}";
             Assert.AreEqual(expected, parsedSecret);
         }
 
@@ -575,7 +575,7 @@ namespace Microsoft.AppCenter.Test
             var platformId = "android";
             var secrets = $"{platformId}={appSecret};ios={anotherAppSecret};{platformId}Target={targetToken};iosTarget={anotherAppSecret}";
             var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
-            var expected = $"appSecret={appSecret};target={targetToken}";
+            var expected = $"appsecret={appSecret};target={targetToken}";
             Assert.AreEqual(expected, parsedSecret);
         }
 
