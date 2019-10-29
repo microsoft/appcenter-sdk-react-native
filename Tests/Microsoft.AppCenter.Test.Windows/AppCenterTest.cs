@@ -537,7 +537,7 @@ namespace Microsoft.AppCenter.Test
         /// <summary>
         /// Verify throw exception when finding none of the keys.
         /// </summary>
-		[TestMethod]
+        [TestMethod]
         [ExpectedException(typeof(AppCenterException))]
         public void CheckWhenFoundNoneOfTheKeys()
         {
