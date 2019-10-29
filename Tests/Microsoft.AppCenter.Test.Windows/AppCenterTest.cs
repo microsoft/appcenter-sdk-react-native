@@ -523,22 +523,51 @@ namespace Microsoft.AppCenter.Test
         /// Verify parse when there is only one platform and both app secret and token
         /// </summary>
         [TestMethod]
-        public void ParseAppSecretAndTargetOnePlatformTerminatingSemicolon()
+        public void ParseAppSecretAndTargetOnePlatform()
         {
             var appSecret = Guid.NewGuid().ToString();
             var targetToken = Guid.NewGuid().ToString();
             var platformId = "ios";
             var secrets = $"{platformId}={appSecret};{platformId}Target={targetToken}";
             var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
-            var expected = $"appSecret={appSecret};target={targetToken}";
+            var expected = $"appsecret={appSecret};target={targetToken}";
             Assert.AreEqual(expected, parsedSecret);
         }
 
         /// <summary>
-        /// Verify parse when there is several platforms and both app secret and token
+        /// Verify throw exception when finding none of the keys.
         /// </summary>
         [TestMethod]
-        public void ParseAppSecretAndTargetMultiplePlatformTerminatingSemicolon()
+        [ExpectedException(typeof(AppCenterException))]
+        public void CheckWhenFoundNoneOfTheKeys()
+        {
+            var invalidePlatformIdentifier = "invalidePlatformIdentifier";
+            var appSecret = Guid.NewGuid().ToString();
+            var targetToken = Guid.NewGuid().ToString();
+            var platformId = "ios";
+            var secrets = $"{platformId}={appSecret};{platformId}Target={targetToken}";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, invalidePlatformIdentifier);
+        }
+
+        /// <summary>
+        /// Verify throw exception when both keys are empty.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AppCenterException))]
+        public void CheckWhenBothKeysAreEmpty()
+        {
+            var appSecret = string.Empty;
+            var targetToken = string.Empty;
+            var platformId = "ios";
+            var secrets = $"{platformId}={appSecret};{platformId}Target={targetToken}";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
+        }
+
+        /// <summary>
+        /// Verify parse when there is several platforms and both app secret and token.
+        /// </summary>
+        [TestMethod]
+        public void ParseAppSecretAndTargetMultiplePlatform()
         {
             var appSecret = Guid.NewGuid().ToString();
             var anotherAppSecret = Guid.NewGuid().ToString();
@@ -546,15 +575,15 @@ namespace Microsoft.AppCenter.Test
             var platformId = "android";
             var secrets = $"{platformId}={appSecret};ios={anotherAppSecret};{platformId}Target={targetToken};iosTarget={anotherAppSecret}";
             var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
-            var expected = $"appSecret={appSecret};target={targetToken}";
+            var expected = $"appsecret={appSecret};target={targetToken}";
             Assert.AreEqual(expected, parsedSecret);
         }
 
         /// <summary>
-        /// Verify parse when there is only token
+        /// Verify parse when there is only token.
         /// </summary>
         [TestMethod]
-        public void ParseTargetTerminatingSemicolon()
+        public void ParseTargetToken()
         {
             var targetToken = Guid.NewGuid().ToString();
             var platformId = "android";
@@ -565,7 +594,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify parse when there is only token
+        /// Verify that the invalid target string is not parsed.
         /// </summary>
         [TestMethod]
         public void NotParseTargetString()
