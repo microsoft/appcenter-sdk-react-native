@@ -7,11 +7,6 @@
         <TableSection Title="Analytics Settings">
             <SwitchCell Text="Analytics Enabled" On="true" x:Name="EnabledSwitchCell" OnChanged="UpdateEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
         </TableSection>
-        <TableSection Title="Startup type">
-            <ViewCell>
-                <Picker x:Name="StartTypePicker" Title="Start Type" PropertyChanged="ChangeStartType" />
-            </ViewCell>
-        </TableSection>
         <TableSection Title="Tracking Events">
             <EntryCell Label="Event Name" HorizontalTextAlignment="Start" x:Name="EventNameCell" />
             <ViewCell Tapped="PropertiesCellTapped">
