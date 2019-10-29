@@ -535,8 +535,8 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-		/// Verify throw exception when finding none of the keys.
-		/// </summary>
+        /// Verify throw exception when finding none of the keys.
+        /// </summary>
 		[TestMethod]
         [ExpectedException(typeof(AppCenterException))]
         public void CheckWhenFoundNoneOfTheKeys()
@@ -583,7 +583,7 @@ namespace Microsoft.AppCenter.Test
         /// Verify parse when there is only token.
         /// </summary>
         [TestMethod]
-        public void ParseTargetTerminatingSemicolon()
+        public void ParseTargetToken()
         {
             var targetToken = Guid.NewGuid().ToString();
             var platformId = "android";
