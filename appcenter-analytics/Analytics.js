@@ -122,7 +122,7 @@ function sanitizeProperties(props = null) {
     if (props === null) {
         return result;
     }
-    Object.keys(props).forEach((key) => {
+    Object.keys(props).filter((key) => props[key] !== null).forEach((key) => {
         switch (typeof props[key]) {
             case 'string':
             case 'number':

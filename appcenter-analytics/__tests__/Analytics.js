@@ -20,6 +20,17 @@ describe('App Center Analytics tests', () => {
     expect(spy).toHaveBeenCalledWith(eventName, expectedProperties);
   });
 
+  test('trackEvent with properties filters null values when sanitized', async () => {
+    const eventName = 'Event with null value';
+    const eventProperties = {
+      string: 'value', number: 1, boolean: true, nothing: null
+    };
+    const expectedProperties = { string: 'value', number: '1', boolean: 'true' };
+    const spy = jest.spyOn(NativeModules.AppCenterReactNativeAnalytics, 'trackEvent');
+    await Analytics.trackEvent(eventName, eventProperties);
+    expect(spy).toHaveBeenCalledWith(eventName, expectedProperties);
+  });
+
   test('trackEvent with null properties are sanitized', async () => {
     const eventName = 'Test event';
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeAnalytics, 'trackEvent');
