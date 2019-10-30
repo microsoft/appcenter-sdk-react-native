@@ -15,14 +15,14 @@ namespace Microsoft.AppCenter
     {
         const string SecretDelimiter = ";";
         const string PlatformKeyValueDelimiter = "=";
-        const string TargetPostfix = "target";
-        const string SecretPostfix = "appsecret";
+        const string TargetKeyName = "target";
+        const string AppSecretKeyName = "appsecret";
 
         // Gets the first instance of an app sceret and/or target token corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
         internal static string GetSecretAndTargetForPlatform(string secrets, string platformIdentifier)
         {
-            var platformTargetIdentifier = platformIdentifier + TargetPostfix;
+            var platformTargetIdentifier = platformIdentifier + TargetKeyName;
             if (string.IsNullOrEmpty(secrets))
             {
                 throw new AppCenterException("App secrets string is null or empty");
@@ -41,9 +41,9 @@ namespace Microsoft.AppCenter
                                            .Select(value => value.Split(PlatformKeyValueDelimiter.ToCharArray()))
                                            .GroupBy(p => p[0].Trim() ?? "", StringComparer.OrdinalIgnoreCase);
 
-            // Create a dictionary choosing the last secret value for each key.
+            // Create a dictionary choosing the last secret value for each key. If the key has more than one secret value then select the last of them.
             var secretsDictionary = secretsGroup.ToDictionary(pair => pair.Key.Trim(), pair => pair.Last().Last().Trim(), StringComparer.OrdinalIgnoreCase);
-            if (secretsDictionary.ContainsKey(TargetPostfix) || secretsDictionary.ContainsKey(SecretPostfix))
+            if (secretsDictionary.ContainsKey(TargetKeyName) || secretsDictionary.ContainsKey(AppSecretKeyName))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier in the secret; using as-is.");
                 return secrets;
@@ -69,9 +69,9 @@ namespace Microsoft.AppCenter
                 // If there is an app secret
                 if (!string.IsNullOrEmpty(platformSecret))
                 {
-                    platformSecret = SecretPostfix + PlatformKeyValueDelimiter + platformSecret + SecretDelimiter;
+                    platformSecret = AppSecretKeyName + PlatformKeyValueDelimiter + platformSecret + SecretDelimiter;
                 }
-                platformSecret += TargetPostfix + PlatformKeyValueDelimiter + platformTargetToken;
+                platformSecret += TargetKeyName + PlatformKeyValueDelimiter + platformTargetToken;
             }
             return platformSecret;
         }
