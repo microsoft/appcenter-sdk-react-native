@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
-using System.ComponentModel;
 using Xamarin.Forms;
 
 namespace Contoso.Forms.Demo
