@@ -1466,7 +1466,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.reactnative.demoapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.reactnative.ios.demo;
 				PRODUCT_NAME = DemoApp;
 				PROVISIONING_PROFILE = "98420b5f-72f9-42f1-b250-1b94e3ee8aa6";
 				PROVISIONING_PROFILE_SPECIFIER = "AppCenter SDK React Native DemoApp Debug";
@@ -1502,7 +1502,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.reactnative.demoapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.appcenter.reactnative.ios.demo;
 				PRODUCT_NAME = DemoApp;
 				PROVISIONING_PROFILE = "e7cf4f08-8dba-4e3a-a905-01c6c1d6d2f1";
 				PROVISIONING_PROFILE_SPECIFIER = "AppCenter SDK React Native DemoApp Release";
