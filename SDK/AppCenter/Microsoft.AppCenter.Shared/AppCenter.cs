@@ -43,9 +43,14 @@ namespace Microsoft.AppCenter
 
             // Create a dictionary choosing the last secret value for each key. If the key has more than one secret value then select the last of them.
             var secretsDictionary = secretsGroup.ToDictionary(pair => pair.Key, pair => pair.Last().Last());
-            if (secretsDictionary.ContainsKey(TargetKeyName) || secretsDictionary.ContainsKey(AppSecretKeyName))
+            if (secretsDictionary.ContainsKey(TargetKeyName))
             {
-                AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier in the secret; using as-is.");
+                AppCenterLog.Debug(AppCenterLog.LogTag, "Found 'target=' identifier in the secret; using as-is.");
+                return secrets;
+            }
+            if (secretsDictionary.ContainsKey(AppSecretKeyName))
+            {
+                AppCenterLog.Debug(AppCenterLog.LogTag, "Found 'appSecret=' identifier in the secret; using as-is.");
                 return secrets;
             }
             var platformSecret = string.Empty;
