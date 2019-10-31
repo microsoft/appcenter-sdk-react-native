@@ -8,8 +8,8 @@ assignees: ''
 ---
 
 <!--
-    Thanks for your interest in using the App Center SDK for Apple platforms.
-    If your issue is not related to using our Apple SDK but rather about the product experience like the portal or CI,
+    Thanks for your interest in using the App Center SDK for .NET platforms.
+    If your issue is not related to using our .NET SDK but rather about the product experience like the portal or CI,
     please create an issue on https://github.com/Microsoft/appcenter instead.
 -->
 
