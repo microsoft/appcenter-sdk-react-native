@@ -16,13 +16,14 @@ namespace Microsoft.AppCenter
         const string SecretDelimiter = ";";
         const string PlatformKeyValueDelimiter = "=";
         const string TargetKeyName = "target";
+        const string TargetKeyNameUpper = "Target";
         const string AppSecretKeyName = "appsecret";
 
         // Gets the first instance of an app sceret and/or target token corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
         internal static string GetSecretAndTargetForPlatform(string secrets, string platformIdentifier)
         {
-            var platformTargetIdentifier = platformIdentifier + TargetKeyName;
+            var platformTargetIdentifier = platformIdentifier + TargetKeyNameUpper;
             if (string.IsNullOrEmpty(secrets))
             {
                 throw new AppCenterException("App secrets string is null or empty");
