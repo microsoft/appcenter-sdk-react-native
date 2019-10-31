@@ -1,14 +1,22 @@
+---
+name: Problem report
+about: Report a problem using the SDK
+title: ''
+labels: support
+assignees: ''
+
+---
+
 <!--
     Thanks for your interest in using the App Center SDK for React Native.
     Please create issues only for problems specific to using the SDK for React Native.
-    If your issue is related to App Center build only (meaning no issue building locally) or CodePush, please create a ticket using the blue chat button on any page of the https://appcenter.ms portal instead.
+    If your issue is related to App Center build only (meaning no issue building locally) or CodePush,
+    please create an issue on https://github.com/Microsoft/appcenter instead.
 -->
 
 ### **Description**
 
-Please describe the issue you are facing or a feature you would like to be added to the SDK.
-
-<!-- If making a feature request, remove the below information -->
+Please describe the issue you are facing using the SDK.
 
 ### **Repro Steps**
 
@@ -36,4 +44,3 @@ Place output here
 Place output here
 
 7. Please enable verbose logging for your app using `[MSAppCenter setLogLevel: MSLogLevelVerbose];` before your call to `[AppCenterReactNative register];` (or any other SDK registration). For Android, use `AppCenter.setLogLevel(android.util.Log.VERBOSE);` before your `SoLoader.init` call (you will need to `import com.microsoft.appcenter.AppCenter;`). Include the logs here:
-
