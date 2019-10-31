@@ -39,10 +39,10 @@ namespace Microsoft.AppCenter
             // Grouping by the name of the key.
             var secretsGroup = secrets.Split(SecretDelimiter.ToCharArray())
                                            .Select(value => value.Split(PlatformKeyValueDelimiter.ToCharArray()))
-                                           .GroupBy(p => p[0].Trim() ?? "", StringComparer.OrdinalIgnoreCase);
+                                           .GroupBy(p => p[0].Trim() ?? "");
 
             // Create a dictionary choosing the last secret value for each key. If the key has more than one secret value then select the last of them.
-            var secretsDictionary = secretsGroup.ToDictionary(pair => pair.Key.Trim(), pair => pair.Last().Last().Trim(), StringComparer.OrdinalIgnoreCase);
+            var secretsDictionary = secretsGroup.ToDictionary(pair => pair.Key.Trim(), pair => pair.Last().Last().Trim());
             if (secretsDictionary.ContainsKey(TargetKeyName) || secretsDictionary.ContainsKey(AppSecretKeyName))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "Found named identifier in the secret; using as-is.");
