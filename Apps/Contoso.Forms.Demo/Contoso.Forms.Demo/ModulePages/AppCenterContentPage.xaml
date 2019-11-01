@@ -10,6 +10,11 @@
                 </StackLayout>
             </ViewCell>
         </TableSection>
+        <TableSection Title="Startup type">
+            <ViewCell>
+                <Picker x:Name="StartTypePicker" Title="Start Type" PropertyChanged="ChangeStartType" />
+            </ViewCell>
+        </TableSection>
         <TableSection Title="Logging">
             <EntryCell Label="Log Message" x:Name="LogMessageEntryCell" />
             <EntryCell Label="Log Tag" x:Name="LogTagEntryCell" />
