@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Alert, Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
+import { Image, View, Text, TextInput, Switch, SectionList, Modal, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 import Data from 'appcenter-data';
 
@@ -54,10 +54,26 @@ export default class DataScreen extends Component {
   async refreshToggle() {
     const dataEnabled = await Data.isEnabled();
     this.setState({ dataEnabled });
+    if (!this.state.loadingData) {
+      const documents = await this.listDocuments(this.state.partition);
+      this.setState({ documents, loadingData: false });
+    }
   }
 
-  setCreateDocModalVisible(visible) {
+  async setCreateDocModalVisible(visible) {
     this.setState({ createDocModalVisible: visible });
+    if (!visible) {
+      const documents = await this.listDocuments(this.state.partition);
+      this.setState({
+        docTtl: 60,
+        docId: '',
+        docType: '',
+        docKey: '',
+        docValue: '',
+        documents,
+        loadingData: false
+      });
+    }
   }
 
   async listDocuments(partition) {
@@ -82,12 +98,17 @@ export default class DataScreen extends Component {
       } else {
         this.setState({ canCreateDocument: false });
       }
+      this.setState({
+        error: null
+      });
       return documents;
     } catch (err) {
       if (partition === Data.DefaultPartitions.USER_DOCUMENTS) {
         this.setState({ canCreateDocument: false });
       }
-      Alert.alert('Unable to list user partition.', err.message);
+      this.setState({
+        error: err.message
+      });
       console.log(err);
     }
     return documents;
@@ -102,7 +123,7 @@ export default class DataScreen extends Component {
     );
 
     const DocTtlRenderItem = ({ item: { title } }) => (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={SharedStyles.modalItem}>
         <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
@@ -123,7 +144,7 @@ export default class DataScreen extends Component {
     );
 
     const DocTypeRenderItem = ({ item: { title } }) => (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={SharedStyles.modalItem}>
         <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
@@ -146,12 +167,13 @@ export default class DataScreen extends Component {
     );
 
     const DocIdRenderItem = ({ item: { title } }) => (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={SharedStyles.modalItem}>
         <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
         <View style={{ flex: 0.75 }}>
           <TextInput
+            style={SharedStyles.modalTextInput}
             onChangeText={docId => this.setState({ docId })}
             value={this.state.docId}
           />
@@ -160,12 +182,13 @@ export default class DataScreen extends Component {
     );
 
     const DocValueRenderItem = ({ item: { title } }) => (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={SharedStyles.modalItem}>
         <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
         <View style={{ flex: 0.75 }}>
           <TextInput
+            style={SharedStyles.modalTextInput}
             onChangeText={docValue => this.setState({ docValue })}
             value={this.state.docValue}
           />
@@ -174,12 +197,13 @@ export default class DataScreen extends Component {
     );
 
     const DocKeyRenderItem = ({ item: { title } }) => (
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <View style={SharedStyles.modalItem}>
         <View style={{ flex: 0.25 }}>
           <Text style={SharedStyles.itemTitle}>{title}</Text>
         </View>
         <View style={{ flex: 0.75 }}>
           <TextInput
+            style={SharedStyles.modalTextInput}
             onChangeText={docKey => this.setState({ docKey })}
             value={this.state.docKey}
           />
@@ -247,10 +271,14 @@ export default class DataScreen extends Component {
                   },
                 ]}
            />
-           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-             <View style={{ flex: 0.5 }}>
-               <TouchableOpacity
-                 onPress={async () => {
+           <View style={{
+             flexDirection: 'row',
+             marginTop: 16,
+            }}
+           >
+             <TouchableOpacity
+               style={SharedStyles.modalButton}
+               onPress={async () => {
                     const createResult =
                             await Data.create(
                               this.state.docId,
@@ -259,21 +287,20 @@ export default class DataScreen extends Component {
                               new Data.WriteOptions(this.state.docTtl)
                             );
                     console.log('Successful create', createResult);
-                    this.setCreateDocModalVisible(!this.state.createDocModalVisible);
+                    await this.setCreateDocModalVisible(!this.state.createDocModalVisible);
                   }}
-               >
-                 <Text style={[SharedStyles.itemButton]}>Create</Text>
-               </TouchableOpacity>
-             </View>
-             <View style={{ flex: 0.5 }}>
-               <TouchableOpacity
-                 onPress={() => {
-                      this.setCreateDocModalVisible(!this.state.createDocModalVisible);
+             >
+               <Text style={[SharedStyles.itemButton]}>Create</Text>
+             </TouchableOpacity>
+             <TouchableOpacity
+               style={SharedStyles.modalButton}
+               onPress={async () => {
+                      await this.setCreateDocModalVisible(!this.state.createDocModalVisible);
                     }}
-               >
-                 <Text style={[SharedStyles.itemButton]}>Cancel</Text>
-               </TouchableOpacity>
-             </View>
+             >
+               <Text style={[SharedStyles.itemButton]}>Cancel</Text>
+             </TouchableOpacity>
+
            </View>
          </View>
        </Modal>
@@ -298,7 +325,7 @@ export default class DataScreen extends Component {
       />
     );
 
-    const documentsViewer = ({ item: { onDocumentRemoved } }) => (
+    let documentsViewer = ({ item: { onDocumentRemoved } }) => (
       <View>
         <ActivityIndicator size="large" color="red" animating={this.state.loadingData} />
         <DataDocumentListView
@@ -307,6 +334,13 @@ export default class DataScreen extends Component {
         />
       </View>
     );
+    if (this.state.error) {
+      documentsViewer = () => (
+        <View style={SharedStyles.itemStretchable}>
+          <Text>{`Unable to list user partition.\n\n ${this.state.error}`}</Text>
+        </View>
+      );
+    }
 
     return (
       <View style={SharedStyles.container}>
