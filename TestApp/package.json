@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "./node_modules/.bin/eslint .",
@@ -18,8 +20,8 @@
     "appcenter-link-scripts": "file:appcenter-link-scripts-2.5.0.tgz",
     "appcenter-push": "file:appcenter-push-2.5.0.tgz",
     "metro": "0.54.1",
-    "react": "16.8.6",
-    "react-native": "0.60.3",
+    "react": "16.9.0",
+    "react-native": "0.61.3",
     "react-native-fs": "2.16.1",
     "react-native-gesture-handler": "1.5.0",
     "react-native-image-picker": "1.1.0",
@@ -40,7 +42,7 @@
     "jest": "24.9.0",
     "jetifier": "1.6.4",
     "metro-react-native-babel-preset": "0.54.1",
-    "react-test-renderer": "16.8.6"
+    "react-test-renderer": "16.9.0"
   },
   "jest": {
     "preset": "react-native",
