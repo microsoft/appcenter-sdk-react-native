@@ -6,7 +6,7 @@
 
 #### Xamarin
 
-* **[Fix]** Updated Android support packages to 28.0.0.3 version in Auth module.
+* **[Fix]** Updated Android support packages to 28.0.0.3 version in Auth and Push module.
 ___
 
 ## Version 2.5.0
