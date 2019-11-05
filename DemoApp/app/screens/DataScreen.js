@@ -68,9 +68,9 @@ export default class DataScreen extends Component {
       docType: '',
       docKey: '',
       docValue: '',
-      documents: documents,
+      documents,
       loadingData: false
-    });  
+    });
   }
 
   async listDocuments(partition) {
@@ -284,10 +284,10 @@ export default class DataScreen extends Component {
                               new Data.WriteOptions(this.state.docTtl)
                             );
                     console.log('Successful create', createResult);
-                    this.setState({ createDocModalVisible: !this.state.createDocModalVisible }); 
+                    this.setState({ createDocModalVisible: !this.state.createDocModalVisible });
                     if (!this.state.createDocModalVisible) {
                       await this.hideCreateDocModal();
-                    }       
+                    }
                   }}
              >
                <Text style={[SharedStyles.itemButton]}>Create</Text>
@@ -295,7 +295,7 @@ export default class DataScreen extends Component {
              <TouchableOpacity
                style={SharedStyles.modalButton}
                onPress={async () => {
-                      this.setState({ createDocModalVisible: !this.state.createDocModalVisible }); 
+                      this.setState({ createDocModalVisible: !this.state.createDocModalVisible });
                       if (!this.state.createDocModalVisible) {
                         await this.hideCreateDocModal();
                       }
@@ -375,7 +375,7 @@ export default class DataScreen extends Component {
                   value: 'createNewDocument',
                   action: async () => {
                     const showCreateDocModal = this.state.dataEnabled && this.state.canCreateDocument;
-                    this.setState({ createDocModalVisible: showCreateDocModal }); 
+                    this.setState({ createDocModalVisible: showCreateDocModal });
                     if (!showCreateDocModal) {
                       await this.hideCreateDocModal();
                     }
