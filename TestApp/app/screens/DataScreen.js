@@ -60,20 +60,17 @@ export default class DataScreen extends Component {
     }
   }
 
-  async setCreateDocModalVisible(visible) {
-    this.setState({ createDocModalVisible: visible });
-    if (!visible) {
-      const documents = await this.listDocuments(this.state.partition);
-      this.setState({
-        docTtl: 60,
-        docId: '',
-        docType: '',
-        docKey: '',
-        docValue: '',
-        documents,
-        loadingData: false
-      });
-    }
+  async hideCreateDocModal() {
+    const documents = await this.listDocuments(this.state.partition);
+    this.setState({
+      docTtl: 60,
+      docId: '',
+      docType: '',
+      docKey: '',
+      docValue: '',
+      documents: documents,
+      loadingData: false
+    });  
   }
 
   async listDocuments(partition) {
@@ -287,7 +284,10 @@ export default class DataScreen extends Component {
                               new Data.WriteOptions(this.state.docTtl)
                             );
                     console.log('Successful create', createResult);
-                    await this.setCreateDocModalVisible(!this.state.createDocModalVisible);
+                    this.setState({ createDocModalVisible: !this.state.createDocModalVisible }); 
+                    if (!this.state.createDocModalVisible) {
+                      await this.hideCreateDocModal();
+                    }       
                   }}
              >
                <Text style={[SharedStyles.itemButton]}>Create</Text>
@@ -295,7 +295,10 @@ export default class DataScreen extends Component {
              <TouchableOpacity
                style={SharedStyles.modalButton}
                onPress={async () => {
-                      await this.setCreateDocModalVisible(!this.state.createDocModalVisible);
+                      this.setState({ createDocModalVisible: !this.state.createDocModalVisible }); 
+                      if (!this.state.createDocModalVisible) {
+                        await this.hideCreateDocModal();
+                      }
                     }}
              >
                <Text style={[SharedStyles.itemButton]}>Cancel</Text>
@@ -371,8 +374,11 @@ export default class DataScreen extends Component {
                   title: 'Create a new document',
                   value: 'createNewDocument',
                   action: async () => {
-                    this.setCreateDocModalVisible(this.state.dataEnabled &&
-                      this.state.canCreateDocument);
+                    const showCreateDocModal = this.state.dataEnabled && this.state.canCreateDocument;
+                    this.setState({ createDocModalVisible: showCreateDocModal }); 
+                    if (!showCreateDocModal) {
+                      await this.hideCreateDocModal();
+                    }
                   }
                 },
               ],
