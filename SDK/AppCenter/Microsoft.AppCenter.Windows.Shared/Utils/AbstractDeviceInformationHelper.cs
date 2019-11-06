@@ -102,17 +102,32 @@ namespace Microsoft.AppCenter.Utils
 
         protected virtual string GetLiveUpdateReleaseLabel()
         {
-            return _wrapperSdk.LiveUpdateReleaseLabel;
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.LiveUpdateReleaseLabel;
+            }
+
+            return null;
         }
 
         protected virtual string GetLiveUpdateDevelopmentKey()
         {
-            return _wrapperSdk.LiveUpdateDeploymentKey;
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.LiveUpdateDeploymentKey;
+            }
+
+            return null;
         }
 
         protected virtual string GetLiveUpdatePackageHash()
         {
-            return _wrapperSdk.LiveUpdatePackageHash;
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.LiveUpdatePackageHash;
+            }
+
+            return null;
         }
 
         private string GetSdkVersion()
@@ -132,16 +147,31 @@ namespace Microsoft.AppCenter.Utils
 
         private string GetWrapperSdkVersion()
         {
-            return _wrapperSdk.WrapperSdkVersion;
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.WrapperSdkVersion;
+            }
+
+            return null;
         }
         private string GetWrapperSdkName()
         {
-            return _wrapperSdk.WrapperSdkName;
+            if(_wrapperSdk != null)
+            {
+                return _wrapperSdk.WrapperSdkName;
+            }
+
+            return null;
         }
 
         private string GetWrapperRuntimeVersion()
         {
-            return _wrapperSdk.WrapperRuntimeVersion;
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.WrapperRuntimeVersion;
+            }
+
+            return null;
         }
 
         private int? GetOsApiLevel()
