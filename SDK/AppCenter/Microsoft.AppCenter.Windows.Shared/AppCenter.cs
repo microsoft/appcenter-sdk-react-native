@@ -249,6 +249,15 @@ namespace Microsoft.AppCenter
             }
         }
 
+        /// <summary>
+        /// Set information about sdk wrapper
+        /// </summary>
+        /// <param name="wrapperSdkInfo">Sdk wrapper infrmation</param>
+        public static void SetWrapperSdkInfo(WrapperSdkInfo wrapperSdkInfo)
+        {
+            DeviceInformationHelper.SetWrapperSdkInfo(wrapperSdkInfo);
+        }
+
         #endregion
 
         #region instance

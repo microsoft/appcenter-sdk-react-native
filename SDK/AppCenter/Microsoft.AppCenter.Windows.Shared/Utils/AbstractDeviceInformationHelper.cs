@@ -15,6 +15,7 @@ namespace Microsoft.AppCenter.Utils
         public static string DefaultSystemSku = "SKU";
         public static event EventHandler InformationInvalidated;
         private static string _country;
+        private static WrapperSdkInfo _wrapperSdk;
 
         internal static void SetCountryCode(string country)
         {
@@ -51,8 +52,14 @@ namespace Microsoft.AppCenter.Utils
                 AppNamespace = GetAppNamespace(),
                 LiveUpdateReleaseLabel = GetLiveUpdateReleaseLabel(),
                 LiveUpdateDeploymentKey = GetLiveUpdateDevelopmentKey(),
-                LiveUpdatePackageHash = GetLiveUpdatePackageHash()
+                LiveUpdatePackageHash = GetLiveUpdatePackageHash(),
+                WrapperRuntimeVersion = GetWrapperRuntimeVersion()
             };
+        }
+
+        internal static void SetWrapperSdkInfo(WrapperSdkInfo wrapperSdkInfo)
+        {
+            _wrapperSdk = wrapperSdkInfo;
         }
 
         protected static void InvalidateInformation(object sender, EventArgs e)
@@ -95,17 +102,17 @@ namespace Microsoft.AppCenter.Utils
 
         protected virtual string GetLiveUpdateReleaseLabel()
         {
-            return null;
+            return _wrapperSdk.LiveUpdateReleaseLabel;
         }
 
         protected virtual string GetLiveUpdateDevelopmentKey()
         {
-            return null;
+            return _wrapperSdk.LiveUpdateDeploymentKey;
         }
 
         protected virtual string GetLiveUpdatePackageHash()
         {
-            return null;
+            return _wrapperSdk.LiveUpdatePackageHash;
         }
 
         private string GetSdkVersion()
@@ -125,12 +132,18 @@ namespace Microsoft.AppCenter.Utils
 
         private string GetWrapperSdkVersion()
         {
-            return null;
+            return _wrapperSdk.WrapperSdkVersion;
         }
         private string GetWrapperSdkName()
         {
-            return null;
+            return _wrapperSdk.WrapperSdkName;
         }
+
+        private string GetWrapperRuntimeVersion()
+        {
+            return _wrapperSdk.WrapperRuntimeVersion;
+        }
+
         private int? GetOsApiLevel()
         {
             return null;
