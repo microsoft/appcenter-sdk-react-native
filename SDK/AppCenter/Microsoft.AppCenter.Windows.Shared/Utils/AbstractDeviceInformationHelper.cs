@@ -15,7 +15,7 @@ namespace Microsoft.AppCenter.Utils
         public static string DefaultSystemSku = "SKU";
         public static event EventHandler InformationInvalidated;
         private static string _country;
-        private static WrapperSdkInfo _wrapperSdk;
+        private static WrapperSdk _wrapperSdk;
 
         internal static void SetCountryCode(string country)
         {
@@ -57,9 +57,9 @@ namespace Microsoft.AppCenter.Utils
             };
         }
 
-        internal static void SetWrapperSdkInfo(WrapperSdkInfo wrapperSdkInfo)
+        internal static void SetWrapperSdk(WrapperSdk wrapperSdk)
         {
-            _wrapperSdk = wrapperSdkInfo;
+            _wrapperSdk = wrapperSdk;
         }
 
         protected static void InvalidateInformation(object sender, EventArgs e)

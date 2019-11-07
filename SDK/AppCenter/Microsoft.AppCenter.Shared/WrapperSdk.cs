@@ -3,7 +3,7 @@
 
 namespace Microsoft.AppCenter
 {
-    public static class WrapperSdk
+    public partial class WrapperSdk
     {
         public const string Name = "appcenter.xamarin";
 

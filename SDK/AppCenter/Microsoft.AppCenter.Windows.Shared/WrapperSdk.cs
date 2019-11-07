@@ -3,16 +3,22 @@
 
 namespace Microsoft.AppCenter
 {
-    public class WrapperSdkInfo
+    public partial class WrapperSdk
     {
+
         public string WrapperSdkVersion { get; private set; }
+
         public string WrapperSdkName { get; private set; }
+
         public string WrapperRuntimeVersion { get; private set; }
+
         public string LiveUpdateReleaseLabel { get; private set; }
+
         public string LiveUpdateDeploymentKey { get; private set; }
+
         public string LiveUpdatePackageHash { get; private set; }
 
-        public WrapperSdkInfo(string wrapperSdkVersion,
+        public WrapperSdk(string wrapperSdkVersion,
                               string wrapperSdkName,
                               string wrapperRuntimeVersion,
                               string liveUpdateReleaseLabel,

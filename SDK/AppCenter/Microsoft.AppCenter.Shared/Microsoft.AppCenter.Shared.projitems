@@ -16,6 +16,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)Device.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppCenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomProperties.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WrapperSdkInfo.cs" />
   </ItemGroup>
 </Project>
