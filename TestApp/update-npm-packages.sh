@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-echo "Install shared framework pods..."
-(cd ../AppCenterReactNativeShared/ios && pod install)
-
 echo 'Removing existing appcenter* packages...'
 rm -rf node_modules/appcenter*
 
@@ -25,14 +22,17 @@ rm appcenter*.tgz
 echo "Installing other packages..."
 npm install
 
-echo "Build shared framework..."
-(cd ../AppCenterReactNativeShared/ios && SRCROOT=`pwd` ./build-fat-framework.sh)
-
 echo "Running jetify to resolve AndroidX compatibility issues..."
 npx jetify
 
 echo "Updating CocoaPods repos..."
 pod repo update
+
+echo "Install shared framework pods..."
+(cd ../AppCenterReactNativeShared/ios && pod install)
+
+echo "Build shared framework..."
+(cd ../AppCenterReactNativeShared/ios && SRCROOT=`pwd` ./build-fat-framework.sh)
 
 echo "Running pod install..."
 (cd ios && pod install)
