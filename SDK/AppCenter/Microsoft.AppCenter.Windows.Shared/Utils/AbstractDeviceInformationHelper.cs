@@ -106,7 +106,6 @@ namespace Microsoft.AppCenter.Utils
             {
                 return _wrapperSdk.LiveUpdateReleaseLabel;
             }
-
             return null;
         }
 
@@ -116,7 +115,6 @@ namespace Microsoft.AppCenter.Utils
             {
                 return _wrapperSdk.LiveUpdateDeploymentKey;
             }
-
             return null;
         }
 
@@ -126,7 +124,6 @@ namespace Microsoft.AppCenter.Utils
             {
                 return _wrapperSdk.LiveUpdatePackageHash;
             }
-
             return null;
         }
 
@@ -151,7 +148,6 @@ namespace Microsoft.AppCenter.Utils
             {
                 return _wrapperSdk.WrapperSdkVersion;
             }
-
             return null;
         }
         private string GetWrapperSdkName()
@@ -160,7 +156,6 @@ namespace Microsoft.AppCenter.Utils
             {
                 return _wrapperSdk.WrapperSdkName;
             }
-
             return null;
         }
 
@@ -170,7 +165,6 @@ namespace Microsoft.AppCenter.Utils
             {
                 return _wrapperSdk.WrapperRuntimeVersion;
             }
-
             return null;
         }
 
