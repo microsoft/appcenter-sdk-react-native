@@ -2,6 +2,11 @@
 
 ## Version 2.5.1 （Under development）
 
+### App Center
+
+#### Xamarin
+
+* **[Fix]** Updated Android support packages versions to `28.0.0.3` for Auth and Push modules.
 ___
 
 ## Version 2.5.0
