@@ -1,8 +1,12 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.6.0 (Under development)
+## Version 2.6.0
 
 ### App Center
+
+#### iOS
+
+* **[Fix]** Fix warnings in Xcode 11 when SDK is installed via CocoaPods.
 
 #### Xamarin
 
@@ -10,9 +14,19 @@
 
 ### App Center Crashes
 
+#### Android
+
+* **[Feature]** Add the Crash.trackError method to send handled errors (with optional properties and attachments).
+
 #### UWP/WPF/WinForms
 
 * **[Feature]** Support sending attachments in handled errors.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix an in-app update caching issue, where the same version was installed constantly after the 1st successful update (or also if the download was canceled).
 
 ___
 
