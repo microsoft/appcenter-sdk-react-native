@@ -311,8 +311,7 @@ namespace Contoso.WPF.Demo.DotNetCore
                 properties = null;
             }
 
-            // TODO: uncomment App.GetErrorAttachments().ToArray() when the sdk is released
-            Crashes.TrackError(e, properties/*, App.GetErrorAttachments().ToArray() */);
+            Crashes.TrackError(e, properties, App.GetErrorAttachments().ToArray());
         }
 
         void HandleOrThrow(Action action)
