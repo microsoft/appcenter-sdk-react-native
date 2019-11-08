@@ -118,7 +118,7 @@ namespace Microsoft.AppCenter
             string parsedSecret;
             try
             {
-                parsedSecret = GetSecretForPlatform(appSecret, PlatformIdentifier);
+                parsedSecret = GetSecretAndTargetForPlatform(appSecret, PlatformIdentifier);
             }
             catch (AppCenterException ex)
             {

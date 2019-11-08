@@ -52,6 +52,11 @@ namespace Contoso.WPF.Demo.DotNetCore
             textAttachments = Settings.Default.TextErrorAttachments;
             TextAttachmentTextBox.Text = textAttachments;
             FileAttachmentLabel.Content = fileAttachments;
+            if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
+            {
+                CountryCodeEnableCheckbox.IsChecked = true;
+                CountryCodeText.Text = Settings.Default.CountryCode;
+            }
             if (!string.IsNullOrEmpty(Settings.Default.UserId))
             {
                 UserId.Text = Settings.Default.UserId;
@@ -121,18 +126,32 @@ namespace Contoso.WPF.Demo.DotNetCore
             if (!CountryCodeEnableCheckbox.IsChecked.Value)
             {
                 CountryCodeText.Text = "";
-                AppCenter.SetCountryCode(null);
+                SaveCountryCode();
             }
             else
             {
-                CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
-                AppCenter.SetCountryCode(CountryCodeText.Text);
+                if (string.IsNullOrEmpty(Settings.Default.CountryCode))
+                {
+                    CountryCodeText.Text = RegionInfo.CurrentRegion.TwoLetterISORegionName;
+                }
+                else
+                {
+                    CountryCodeText.Text = Settings.Default.CountryCode;
+                }
             }
             CountryCodePanel.IsEnabled = CountryCodeEnableCheckbox.IsChecked.Value;
         }
 
         private void CountryCodeSave_ClickListener(object sender, RoutedEventArgs e)
         {
+            SaveCountryCode();
+        }
+
+        private void SaveCountryCode()
+        {
+            CountryCodeNotice.Visibility = Visibility.Visible;
+            Settings.Default.CountryCode = CountryCodeText.Text;
+            Settings.Default.Save();
             AppCenter.SetCountryCode(CountryCodeText.Text.Length > 0 ? CountryCodeText.Text : null);
         }
 
@@ -291,7 +310,9 @@ namespace Contoso.WPF.Demo.DotNetCore
             {
                 properties = null;
             }
-            Crashes.TrackError(e, properties);
+
+            // TODO: uncomment App.GetErrorAttachments().ToArray() when the sdk is released
+            Crashes.TrackError(e, properties/*, App.GetErrorAttachments().ToArray() */);
         }
 
         void HandleOrThrow(Action action)

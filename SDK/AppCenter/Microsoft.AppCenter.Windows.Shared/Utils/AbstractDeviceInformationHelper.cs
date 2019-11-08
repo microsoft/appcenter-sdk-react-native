@@ -15,6 +15,7 @@ namespace Microsoft.AppCenter.Utils
         public static string DefaultSystemSku = "SKU";
         public static event EventHandler InformationInvalidated;
         private static string _country;
+        private static WrapperSdk _wrapperSdk;
 
         internal static void SetCountryCode(string country)
         {
@@ -51,8 +52,14 @@ namespace Microsoft.AppCenter.Utils
                 AppNamespace = GetAppNamespace(),
                 LiveUpdateReleaseLabel = GetLiveUpdateReleaseLabel(),
                 LiveUpdateDeploymentKey = GetLiveUpdateDevelopmentKey(),
-                LiveUpdatePackageHash = GetLiveUpdatePackageHash()
+                LiveUpdatePackageHash = GetLiveUpdatePackageHash(),
+                WrapperRuntimeVersion = GetWrapperRuntimeVersion()
             };
+        }
+
+        internal static void SetWrapperSdk(WrapperSdk wrapperSdk)
+        {
+            _wrapperSdk = wrapperSdk;
         }
 
         protected static void InvalidateInformation(object sender, EventArgs e)
@@ -95,16 +102,28 @@ namespace Microsoft.AppCenter.Utils
 
         protected virtual string GetLiveUpdateReleaseLabel()
         {
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.LiveUpdateReleaseLabel;
+            }
             return null;
         }
 
         protected virtual string GetLiveUpdateDevelopmentKey()
         {
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.LiveUpdateDeploymentKey;
+            }
             return null;
         }
 
         protected virtual string GetLiveUpdatePackageHash()
         {
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.LiveUpdatePackageHash;
+            }
             return null;
         }
 
@@ -125,12 +144,30 @@ namespace Microsoft.AppCenter.Utils
 
         private string GetWrapperSdkVersion()
         {
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.WrapperSdkVersion;
+            }
             return null;
         }
         private string GetWrapperSdkName()
         {
+            if(_wrapperSdk != null)
+            {
+                return _wrapperSdk.WrapperSdkName;
+            }
             return null;
         }
+
+        private string GetWrapperRuntimeVersion()
+        {
+            if (_wrapperSdk != null)
+            {
+                return _wrapperSdk.WrapperRuntimeVersion;
+            }
+            return null;
+        }
+
         private int? GetOsApiLevel()
         {
             return null;

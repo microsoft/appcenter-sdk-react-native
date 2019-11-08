@@ -1,5 +1,35 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.6.0
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix warnings in Xcode 11 when SDK is installed via CocoaPods.
+
+#### Xamarin
+
+* **[Fix]** Updated Android support packages versions to `28.0.0.3` for Auth and Push modules.
+
+### App Center Crashes
+
+#### Android
+
+* **[Feature]** Add the Crash.trackError method to send handled errors (with optional properties and attachments).
+
+#### UWP/WPF/WinForms
+
+* **[Feature]** Support sending attachments in handled errors.
+
+### App Center Distribute
+
+#### Android
+
+* **[Fix]** Fix an in-app update caching issue, where the same version was installed constantly after the 1st successful update (or also if the download was canceled).
+
+___
+
 ## Version 2.5.0
 
 ### App Center
@@ -40,6 +70,11 @@
 * **[Fix]** Downloading in-app update APK file has been failing on Android 4.x since TLS 1.2 has been enforced early September. The file is now downloaded using HTTPS direct connection when running on Android 4 instead of relying on system's download manager.
 * **[Fix]** Fix a crash and improve logging when downloading an update fails on Android 5+.
 * **[Breaking change]** If your minSdkVersion is lower than 19, Android requires the WRITE_EXTERNAL_STORAGE permission to store new downloaded updates. Please refer to the updated documentation site for detailed instructions. This is related to the download fix.
+
+### App Center Data
+
+* **[Fix]** Reduced retries on Data-related operations to fail fast and avoid the perception of calls "hanging".
+
 ___
 
 ## Version 2.4.0-preview

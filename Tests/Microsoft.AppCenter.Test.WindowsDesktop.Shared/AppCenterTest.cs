@@ -13,7 +13,7 @@ namespace Microsoft.AppCenter.Test.WindowsDesktop
         [Fact]
         public void VerifyPlatformId()
         {
-            var appClientId = AppCenter.GetSecretForPlatform("windowsdesktop=6a367cda-2c0a-4fb0-bedf-f110bf4e338b", "windowsdesktop");
+            var appClientId = AppCenter.GetSecretAndTargetForPlatform("windowsdesktop=6a367cda-2c0a-4fb0-bedf-f110bf4e338b", "windowsdesktop");
             Assert.Equal("6a367cda-2c0a-4fb0-bedf-f110bf4e338b", appClientId);
         }
     }

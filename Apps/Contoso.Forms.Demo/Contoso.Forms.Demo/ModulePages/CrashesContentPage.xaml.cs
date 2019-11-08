@@ -241,7 +241,9 @@ namespace Contoso.Forms.Demo
             }
             Properties.Clear();
             RefreshPropCount();
-            Crashes.TrackError(e, properties);
+
+            // TODO: uncomment the App.GetErrorAttachments().ToArray() when the SDK is released.
+            Crashes.TrackError(e, properties /*, App.GetErrorAttachments().ToArray() */);
         }
 
         void ClearCrashUserConfirmation(object sender, EventArgs e)

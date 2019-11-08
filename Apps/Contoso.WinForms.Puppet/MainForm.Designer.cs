@@ -54,6 +54,13 @@ namespace Contoso.WinForms.Puppet
             this.EventNameLabel = new System.Windows.Forms.Label();
             this.AnalyticsEnabled = new System.Windows.Forms.CheckBox();
             this.CrashesTab = new System.Windows.Forms.TabPage();
+            this.ErrorAttachmentsBox = new System.Windows.Forms.GroupBox();
+            this.SelectFileAttachmentButton = new System.Windows.Forms.Button();
+            this.FileAttachmentPathLabel = new System.Windows.Forms.Label();
+            this.FileAttachmentLabel = new System.Windows.Forms.Label();
+            this.TextAttachmentTextBox = new System.Windows.Forms.TextBox();
+            this.TextAttachmentLabel = new System.Windows.Forms.Label();
+            this.HandleExceptions = new System.Windows.Forms.CheckBox();
             this.CrashBox = new System.Windows.Forms.GroupBox();
             this.CrashInsideAsyncTask = new System.Windows.Forms.Button();
             this.CrashWithNullReference = new System.Windows.Forms.Button();
@@ -62,12 +69,6 @@ namespace Contoso.WinForms.Puppet
             this.CrashWithNonSerializableException = new System.Windows.Forms.Button();
             this.CrashWithTestException = new System.Windows.Forms.Button();
             this.CrashesEnabled = new System.Windows.Forms.CheckBox();
-            this.OthersTab = new System.Windows.Forms.TabPage();
-            this.CountryCodeGroup = new System.Windows.Forms.GroupBox();
-            this.CountryCodeLabel = new System.Windows.Forms.Label();
-            this.SaveCountryCodeButton = new System.Windows.Forms.Button();
-            this.CountryCodeText = new System.Windows.Forms.TextBox();
-            this.CountryCodeEnabledCheckbox = new System.Windows.Forms.CheckBox();
             this.Tabs.SuspendLayout();
             this.AppCenterTab.SuspendLayout();
             this.LogBox.SuspendLayout();
@@ -75,9 +76,8 @@ namespace Contoso.WinForms.Puppet
             this.EventBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).BeginInit();
             this.CrashesTab.SuspendLayout();
+            this.ErrorAttachmentsBox.SuspendLayout();
             this.CrashBox.SuspendLayout();
-            this.OthersTab.SuspendLayout();
-            this.CountryCodeGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -85,13 +85,12 @@ namespace Contoso.WinForms.Puppet
             this.Tabs.Controls.Add(this.AppCenterTab);
             this.Tabs.Controls.Add(this.AnalyticsTab);
             this.Tabs.Controls.Add(this.CrashesTab);
-            this.Tabs.Controls.Add(this.OthersTab);
             this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabs.Location = new System.Drawing.Point(0, 0);
             this.Tabs.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(768, 529);
+            this.Tabs.Size = new System.Drawing.Size(768, 1006);
             this.Tabs.TabIndex = 0;
             this.Tabs.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
             // 
@@ -105,7 +104,7 @@ namespace Contoso.WinForms.Puppet
             this.AppCenterTab.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.AppCenterTab.Name = "AppCenterTab";
             this.AppCenterTab.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AppCenterTab.Size = new System.Drawing.Size(752, 482);
+            this.AppCenterTab.Size = new System.Drawing.Size(752, 959);
             this.AppCenterTab.TabIndex = 0;
             this.AppCenterTab.Text = "App Center";
             this.AppCenterTab.UseVisualStyleBackColor = true;
@@ -257,7 +256,7 @@ namespace Contoso.WinForms.Puppet
             this.AnalyticsTab.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.AnalyticsTab.Name = "AnalyticsTab";
             this.AnalyticsTab.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AnalyticsTab.Size = new System.Drawing.Size(752, 482);
+            this.AnalyticsTab.Size = new System.Drawing.Size(752, 959);
             this.AnalyticsTab.TabIndex = 1;
             this.AnalyticsTab.Text = "Analytics";
             this.AnalyticsTab.UseVisualStyleBackColor = true;
@@ -362,15 +361,94 @@ namespace Contoso.WinForms.Puppet
             // 
             // CrashesTab
             // 
+            this.CrashesTab.Controls.Add(this.ErrorAttachmentsBox);
+            this.CrashesTab.Controls.Add(this.HandleExceptions);
             this.CrashesTab.Controls.Add(this.CrashBox);
             this.CrashesTab.Controls.Add(this.CrashesEnabled);
             this.CrashesTab.Location = new System.Drawing.Point(8, 39);
             this.CrashesTab.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.CrashesTab.Name = "CrashesTab";
-            this.CrashesTab.Size = new System.Drawing.Size(752, 482);
+            this.CrashesTab.Size = new System.Drawing.Size(752, 959);
             this.CrashesTab.TabIndex = 2;
             this.CrashesTab.Text = "Crashes";
             this.CrashesTab.UseVisualStyleBackColor = true;
+            // 
+            // ErrorAttachmentsBox
+            // 
+            this.ErrorAttachmentsBox.Controls.Add(this.SelectFileAttachmentButton);
+            this.ErrorAttachmentsBox.Controls.Add(this.FileAttachmentPathLabel);
+            this.ErrorAttachmentsBox.Controls.Add(this.FileAttachmentLabel);
+            this.ErrorAttachmentsBox.Controls.Add(this.TextAttachmentTextBox);
+            this.ErrorAttachmentsBox.Controls.Add(this.TextAttachmentLabel);
+            this.ErrorAttachmentsBox.Location = new System.Drawing.Point(16, 127);
+            this.ErrorAttachmentsBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ErrorAttachmentsBox.Name = "ErrorAttachmentsBox";
+            this.ErrorAttachmentsBox.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ErrorAttachmentsBox.Size = new System.Drawing.Size(718, 221);
+            this.ErrorAttachmentsBox.TabIndex = 6;
+            this.ErrorAttachmentsBox.TabStop = false;
+            this.ErrorAttachmentsBox.Text = "Error Attachments";
+            // 
+            // SelectFileAttachmentButton
+            // 
+            this.SelectFileAttachmentButton.Location = new System.Drawing.Point(18, 165);
+            this.SelectFileAttachmentButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.SelectFileAttachmentButton.Name = "SelectFileAttachmentButton";
+            this.SelectFileAttachmentButton.Size = new System.Drawing.Size(680, 44);
+            this.SelectFileAttachmentButton.TabIndex = 4;
+            this.SelectFileAttachmentButton.Text = "Select file attachment";
+            this.SelectFileAttachmentButton.UseVisualStyleBackColor = true;
+            this.SelectFileAttachmentButton.Click += new System.EventHandler(this.SelectFileAttachmentButton_ClickListener);
+            // 
+            // FileAttachmentPathLabel
+            // 
+            this.FileAttachmentPathLabel.AutoSize = true;
+            this.FileAttachmentPathLabel.Location = new System.Drawing.Point(184, 123);
+            this.FileAttachmentPathLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.FileAttachmentPathLabel.Name = "FileAttachmentPathLabel";
+            this.FileAttachmentPathLabel.Size = new System.Drawing.Size(0, 25);
+            this.FileAttachmentPathLabel.TabIndex = 3;
+            // 
+            // FileAttachmentLabel
+            // 
+            this.FileAttachmentLabel.AutoSize = true;
+            this.FileAttachmentLabel.Location = new System.Drawing.Point(12, 123);
+            this.FileAttachmentLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.FileAttachmentLabel.Name = "FileAttachmentLabel";
+            this.FileAttachmentLabel.Size = new System.Drawing.Size(161, 25);
+            this.FileAttachmentLabel.TabIndex = 2;
+            this.FileAttachmentLabel.Text = "File Attachment";
+            // 
+            // TextAttachmentTextBox
+            // 
+            this.TextAttachmentTextBox.Location = new System.Drawing.Point(190, 58);
+            this.TextAttachmentTextBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.TextAttachmentTextBox.Name = "TextAttachmentTextBox";
+            this.TextAttachmentTextBox.Size = new System.Drawing.Size(504, 31);
+            this.TextAttachmentTextBox.TabIndex = 1;
+            this.TextAttachmentTextBox.TextChanged += new System.EventHandler(this.TextAttachmentTextBox_TextChanged);
+            // 
+            // TextAttachmentLabel
+            // 
+            this.TextAttachmentLabel.AutoSize = true;
+            this.TextAttachmentLabel.Location = new System.Drawing.Point(8, 63);
+            this.TextAttachmentLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.TextAttachmentLabel.Name = "TextAttachmentLabel";
+            this.TextAttachmentLabel.Size = new System.Drawing.Size(168, 25);
+            this.TextAttachmentLabel.TabIndex = 0;
+            this.TextAttachmentLabel.Text = "Text Attachment";
+            // 
+            // HandleExceptions
+            // 
+            this.HandleExceptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.HandleExceptions.Location = new System.Drawing.Point(16, 69);
+            this.HandleExceptions.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.HandleExceptions.Name = "HandleExceptions";
+            this.HandleExceptions.Size = new System.Drawing.Size(720, 46);
+            this.HandleExceptions.TabIndex = 5;
+            this.HandleExceptions.Text = "Handle Exceptions";
+            this.HandleExceptions.UseVisualStyleBackColor = true;
             // 
             // CrashBox
             // 
@@ -380,7 +458,7 @@ namespace Contoso.WinForms.Puppet
             this.CrashBox.Controls.Add(this.CrashWithDivisionByZero);
             this.CrashBox.Controls.Add(this.CrashWithNonSerializableException);
             this.CrashBox.Controls.Add(this.CrashWithTestException);
-            this.CrashBox.Location = new System.Drawing.Point(16, 69);
+            this.CrashBox.Location = new System.Drawing.Point(14, 379);
             this.CrashBox.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.CrashBox.Name = "CrashBox";
             this.CrashBox.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -480,79 +558,11 @@ namespace Contoso.WinForms.Puppet
             this.CrashesEnabled.UseVisualStyleBackColor = true;
             this.CrashesEnabled.CheckedChanged += new System.EventHandler(this.CrashesEnabled_CheckedChanged);
             // 
-            // OthersTab
-            // 
-            this.OthersTab.Controls.Add(this.CountryCodeGroup);
-            this.OthersTab.Controls.Add(this.CountryCodeEnabledCheckbox);
-            this.OthersTab.Location = new System.Drawing.Point(8, 39);
-            this.OthersTab.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.OthersTab.Name = "OthersTab";
-            this.OthersTab.Size = new System.Drawing.Size(752, 482);
-            this.OthersTab.TabIndex = 3;
-            this.OthersTab.Text = "Others";
-            this.OthersTab.UseVisualStyleBackColor = true;
-            // 
-            // CountryCodeGroup
-            // 
-            this.CountryCodeGroup.Controls.Add(this.CountryCodeLabel);
-            this.CountryCodeGroup.Controls.Add(this.SaveCountryCodeButton);
-            this.CountryCodeGroup.Controls.Add(this.CountryCodeText);
-            this.CountryCodeGroup.Enabled = false;
-            this.CountryCodeGroup.Location = new System.Drawing.Point(16, 60);
-            this.CountryCodeGroup.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.CountryCodeGroup.Name = "CountryCodeGroup";
-            this.CountryCodeGroup.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.CountryCodeGroup.Size = new System.Drawing.Size(720, 192);
-            this.CountryCodeGroup.TabIndex = 1;
-            this.CountryCodeGroup.TabStop = false;
-            this.CountryCodeGroup.Text = "Country Code";
-            // 
-            // CountryCodeLabel
-            // 
-            this.CountryCodeLabel.Location = new System.Drawing.Point(30, 60);
-            this.CountryCodeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.CountryCodeLabel.Name = "CountryCodeLabel";
-            this.CountryCodeLabel.Size = new System.Drawing.Size(188, 44);
-            this.CountryCodeLabel.TabIndex = 12;
-            this.CountryCodeLabel.Text = "Country Code";
-            this.CountryCodeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // SaveCountryCodeButton
-            // 
-            this.SaveCountryCodeButton.Location = new System.Drawing.Point(18, 137);
-            this.SaveCountryCodeButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.SaveCountryCodeButton.Name = "SaveCountryCodeButton";
-            this.SaveCountryCodeButton.Size = new System.Drawing.Size(690, 44);
-            this.SaveCountryCodeButton.TabIndex = 2;
-            this.SaveCountryCodeButton.Text = "Save";
-            this.SaveCountryCodeButton.UseVisualStyleBackColor = true;
-            this.SaveCountryCodeButton.Click += new System.EventHandler(this.CountryCodeSaveButton_ClickListener);
-            // 
-            // CountryCodeText
-            // 
-            this.CountryCodeText.Location = new System.Drawing.Point(228, 65);
-            this.CountryCodeText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.CountryCodeText.Name = "CountryCodeText";
-            this.CountryCodeText.Size = new System.Drawing.Size(476, 31);
-            this.CountryCodeText.TabIndex = 0;
-            // 
-            // CountryCodeEnabledCheckbox
-            // 
-            this.CountryCodeEnabledCheckbox.AutoSize = true;
-            this.CountryCodeEnabledCheckbox.Location = new System.Drawing.Point(20, 15);
-            this.CountryCodeEnabledCheckbox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.CountryCodeEnabledCheckbox.Name = "CountryCodeEnabledCheckbox";
-            this.CountryCodeEnabledCheckbox.Size = new System.Drawing.Size(348, 39);
-            this.CountryCodeEnabledCheckbox.TabIndex = 0;
-            this.CountryCodeEnabledCheckbox.Text = "Country Code Enabled";
-            this.CountryCodeEnabledCheckbox.UseVisualStyleBackColor = true;
-            this.CountryCodeEnabledCheckbox.CheckedChanged += new System.EventHandler(this.CountryCodeEnabled_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(768, 529);
+            this.ClientSize = new System.Drawing.Size(768, 1006);
             this.Controls.Add(this.Tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -568,11 +578,9 @@ namespace Contoso.WinForms.Puppet
             this.EventBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).EndInit();
             this.CrashesTab.ResumeLayout(false);
+            this.ErrorAttachmentsBox.ResumeLayout(false);
+            this.ErrorAttachmentsBox.PerformLayout();
             this.CrashBox.ResumeLayout(false);
-            this.OthersTab.ResumeLayout(false);
-            this.OthersTab.PerformLayout();
-            this.CountryCodeGroup.ResumeLayout(false);
-            this.CountryCodeGroup.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -583,7 +591,6 @@ namespace Contoso.WinForms.Puppet
         private System.Windows.Forms.TabPage AppCenterTab;
         private System.Windows.Forms.TabPage AnalyticsTab;
         private System.Windows.Forms.TabPage CrashesTab;
-        private System.Windows.Forms.TabPage OthersTab;
         private System.Windows.Forms.CheckBox AppCenterEnabled;
         private System.Windows.Forms.Label AppCenterLogLevelLabel;
         private System.Windows.Forms.ComboBox AppCenterLogLevel;
@@ -611,11 +618,13 @@ namespace Contoso.WinForms.Puppet
         private System.Windows.Forms.Button CrashWithAggregateException;
         private System.Windows.Forms.Button CrashWithNullReference;
         private System.Windows.Forms.Button CrashInsideAsyncTask;
-        private System.Windows.Forms.GroupBox CountryCodeGroup;
-        private System.Windows.Forms.Label CountryCodeLabel;
-        private System.Windows.Forms.Button SaveCountryCodeButton;
-        private System.Windows.Forms.TextBox CountryCodeText;
-        private System.Windows.Forms.CheckBox CountryCodeEnabledCheckbox;
+        private System.Windows.Forms.CheckBox HandleExceptions;
+        private System.Windows.Forms.GroupBox ErrorAttachmentsBox;
+        private System.Windows.Forms.Label TextAttachmentLabel;
+        private System.Windows.Forms.TextBox TextAttachmentTextBox;
+        private System.Windows.Forms.Label FileAttachmentPathLabel;
+        private System.Windows.Forms.Label FileAttachmentLabel;
+        private System.Windows.Forms.Button SelectFileAttachmentButton;
     }
 }
 

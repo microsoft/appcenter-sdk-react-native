@@ -26,6 +26,13 @@ namespace Contoso.Forms.Demo
     {
         public const string LogTag = "AppCenterXamarinDemo";
 
+        // OneCollector secrets
+        static readonly IReadOnlyDictionary<string, string> OneCollectorTokens = new Dictionary<string, string>
+        {
+            { XamarinDevice.Android, "7be01f52a17a455ca07566a4e978d961-de99cbfd-41a4-463a-9c23-92cabd834b0d-6966" },
+            { XamarinDevice.iOS, "1ad92bec07bb4cbf8d98f37c345f1982-c261ed35-7a36-429f-9f5f-6162117fbb72-7166" }
+        };
+
         // App Center B2C secrets
         static readonly IReadOnlyDictionary<string, string> B2CAuthAppSecrets = new Dictionary<string, string>
         {
@@ -48,6 +55,32 @@ namespace Contoso.Forms.Demo
             MainPage = new NavigationPage(new MainDemoPage());
         }
 
+        private string GetOneCollectorTokenString()
+        {
+            return $"androidTarget={OneCollectorTokens[XamarinDevice.Android]};iosTarget={OneCollectorTokens[XamarinDevice.iOS]}";
+        }
+
+        private string GetAppCenterTokenString()
+        {
+            var appSecrets = GetAppSecretDictionary();
+            return $"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}";
+        }
+
+        private string GetTokensString()
+        {
+            var persistedStartType = StartTypeUtils.GetPersistedStartType();
+            switch (persistedStartType)
+            {
+
+                case StartType.OneCollector:
+                    return GetOneCollectorTokenString();
+                case StartType.Both:
+                    return $"{GetAppCenterTokenString()};{GetOneCollectorTokenString()}";
+                default:
+                    return GetAppCenterTokenString();
+            }
+        }
+
         protected override void OnStart()
         {
             if (!AppCenter.Configured)
@@ -60,7 +93,7 @@ namespace Contoso.Forms.Demo
                 // Set callbacks
                 Crashes.ShouldProcessErrorReport = ShouldProcess;
                 Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
-                Crashes.GetErrorAttachments = GetErrorAttachments;
+                Crashes.GetErrorAttachments = GetErrorAttachmentsCallback;
                 Distribute.ReleaseAvailable = OnReleaseAvailable;
 
                 // Event handlers
@@ -71,8 +104,7 @@ namespace Contoso.Forms.Demo
 
                 AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
 
-                var appSecrets = GetAppSecretDictionary();
-                AppCenter.Start($"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}", typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
@@ -176,7 +208,12 @@ namespace Contoso.Forms.Demo
             return true;
         }
 
-        static IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
+        static IEnumerable<ErrorAttachmentLog> GetErrorAttachmentsCallback(ErrorReport report)
+        {
+            return GetErrorAttachments();
+        }
+
+        public static IEnumerable<ErrorAttachmentLog> GetErrorAttachments()
         {
             var attachments = new List<ErrorAttachmentLog>();
             if (Current.Properties.TryGetValue(CrashesContentPage.TextAttachmentKey, out var textAttachment) &&
