@@ -3,11 +3,11 @@
 
 namespace Microsoft.AppCenter
 {
-    public static class WrapperSdk
+    public partial class WrapperSdk
     {
         public const string Name = "appcenter.xamarin";
 
         /* We can't use reflection for assemblyInformationalVersion on iOS with "Link All" optimization. */
-        internal const string Version = "2.4.1-SNAPSHOT";
+        internal const string Version = "2.5.1-SNAPSHOT";
     }
 }

@@ -35,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Ingestion\Models\ValidationException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\IStorageAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Storage\StorageAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\UserIdEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\SessionContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IAppCenterService.cs" />
@@ -75,5 +76,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UserIdContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WrapperSdk.cs" />
   </ItemGroup>
 </Project>

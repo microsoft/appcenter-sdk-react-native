@@ -249,6 +249,15 @@ namespace Microsoft.AppCenter
             }
         }
 
+        /// <summary>
+        /// A wrapper SDK can use this method to pass extra information to device properties.
+        /// </summary>
+        /// <param name="wrapperSdk">Wrapper SDK information.</param>
+        public static void SetWrapperSdk(WrapperSdk wrapperSdk)
+        {
+            DeviceInformationHelper.SetWrapperSdk(wrapperSdk);
+        }
+
         #endregion
 
         #region instance
@@ -338,7 +347,7 @@ namespace Microsoft.AppCenter
                 AppCenterLog.Warn(AppCenterLog.LogTag, "App Center may only be configured once.");
                 return;
             }
-            _appSecret = GetSecretForPlatform(appSecretOrSecrets, PlatformIdentifier);
+            _appSecret = GetSecretAndTargetForPlatform(appSecretOrSecrets, PlatformIdentifier);
 
             // If a factory has been supplied, use it to construct the channel group - this is useful for wrapper SDKs and testing.
             _networkStateAdapter = new NetworkStateAdapter();

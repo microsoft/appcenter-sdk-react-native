@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter
@@ -11,10 +13,17 @@ namespace Microsoft.AppCenter
     /// </summary>
     public partial class AppCenter
     {
-        // Gets the first instance of an app secret corresponding to the given platform name, or returns the string 
+        const string SecretDelimiter = ";";
+        const string PlatformKeyValueDelimiter = "=";
+        const string TargetKeyName = "target";
+        const string TargetKeyNameUpper = "Target";
+        const string AppSecretKeyName = "appsecret";
+
+        // Gets the first instance of an app sceret and/or target token corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
-        internal static string GetSecretForPlatform(string secrets, string platformIdentifier)
+        internal static string GetSecretAndTargetForPlatform(string secrets, string platformIdentifier)
         {
+            var platformTargetIdentifier = platformIdentifier + TargetKeyNameUpper;
             if (string.IsNullOrEmpty(secrets))
             {
                 throw new AppCenterException("App secrets string is null or empty");
@@ -22,39 +31,54 @@ namespace Microsoft.AppCenter
 
             // If there are no equals signs, then there are no named identifiers, but log a message in case the developer made 
             // a typing error.
-            if (!secrets.Contains("="))
+            if (!secrets.Contains(PlatformKeyValueDelimiter))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "No named identifier found in appSecret; using as-is");
                 return secrets;
             }
 
-            var parseErrorMessage = $"Error parsing key for '{platformIdentifier}'";
+            // Grouping by the name of the key.
+            var secretsGroup = secrets.Split(SecretDelimiter.ToCharArray())
+                                           .Select(value => value.Split(PlatformKeyValueDelimiter.ToCharArray()))
+                                           .GroupBy(p => p[0] ?? "");
 
-            var platformIndicator = platformIdentifier + "=";
-            var secretIdx = secrets.IndexOf(platformIndicator, StringComparison.Ordinal);
-            if (secretIdx == -1)
+            // Create a dictionary choosing the last secret value for each key. If the key has more than one secret value then select the last of them.
+            var secretsDictionary = secretsGroup.ToDictionary(pair => pair.Key, pair => pair.Last().Last());
+            if (secretsDictionary.ContainsKey(TargetKeyName))
             {
-                throw new AppCenterException(parseErrorMessage);
+                AppCenterLog.Debug(AppCenterLog.LogTag, "Found 'target=' identifier in the secret; using as-is.");
+                return secrets;
             }
-            secretIdx += platformIndicator.Length;
+            if (secretsDictionary.ContainsKey(AppSecretKeyName))
+            {
+                AppCenterLog.Debug(AppCenterLog.LogTag, "Found 'appSecret=' identifier in the secret; using as-is.");
+                return secrets;
+            }
             var platformSecret = string.Empty;
-
-            while (secretIdx < secrets.Length)
+            var platformTargetToken = string.Empty;
+            if (secretsDictionary.ContainsKey(platformIdentifier))
             {
-                var nextChar = secrets[secretIdx++];
-                if (nextChar == ';')
+                secretsDictionary.TryGetValue(platformIdentifier, out platformSecret);
+            }
+            if (secretsDictionary.ContainsKey(platformTargetIdentifier))
+            {
+                secretsDictionary.TryGetValue(platformTargetIdentifier, out platformTargetToken);
+            }
+            if (string.IsNullOrEmpty(platformSecret) && string.IsNullOrEmpty(platformTargetToken))
+            {
+                throw new AppCenterException($"Error parsing key for '{platformIdentifier}'");
+            }
+
+            // Format the string as "appSecret={};target={}" or "target={}" if needed.
+            if (!string.IsNullOrEmpty(platformTargetToken))
+            {
+                // If there is an app secret
+                if (!string.IsNullOrEmpty(platformSecret))
                 {
-                    break;
+                    platformSecret = AppSecretKeyName + PlatformKeyValueDelimiter + platformSecret + SecretDelimiter;
                 }
-
-                platformSecret += nextChar;
+                platformSecret += TargetKeyName + PlatformKeyValueDelimiter + platformTargetToken;
             }
-
-            if (platformSecret == string.Empty)
-            {
-                throw new AppCenterException(parseErrorMessage);
-            }
-
             return platformSecret;
         }
 
