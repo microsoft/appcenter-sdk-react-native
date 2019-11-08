@@ -76,5 +76,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Utils\TimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UnhandledExceptionOccurredEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utils\UserIdContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WrapperSdk.cs" />
   </ItemGroup>
 </Project>

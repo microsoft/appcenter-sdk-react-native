@@ -740,6 +740,27 @@ namespace Microsoft.AppCenter.Test
                 log.Services.Count == 1 &&
                 log.Services[0] == MockAppCenterService.Instance.ServiceName)), Times.Once());
         }
+
+        [TestMethod]
+        public void SetWrapperSdk()
+        {
+            string wrapperName = $"expectedName {Guid.NewGuid()}";
+            string wrapperVersion = $"expectedVersion {Guid.NewGuid()}";
+            string releaseLabel = $"expectedLabel {Guid.NewGuid()}";
+            string updateDevKey = $"expectedUpdateDevKey {Guid.NewGuid()}";
+            string updatePackageHash = $"expectedHash {Guid.NewGuid()}";
+            string runtimeVersion = $"expectedRuntimeVersion {Guid.NewGuid()}";
+            WrapperSdk wrapperSdk = new WrapperSdk(wrapperName, wrapperVersion, runtimeVersion, releaseLabel, updateDevKey, updatePackageHash);
+            DeviceInformationHelper.SetWrapperSdk(wrapperSdk);
+            var deviceInformationHelper = new DeviceInformationHelper();
+            var device = deviceInformationHelper.GetDeviceInformationAsync().RunNotAsync();
+            Assert.AreEqual(wrapperName, device.WrapperSdkName);
+            Assert.AreEqual(wrapperVersion, device.WrapperSdkVersion);
+            Assert.AreEqual(releaseLabel, device.LiveUpdateReleaseLabel);
+            Assert.AreEqual(updateDevKey, device.LiveUpdateDeploymentKey);
+            Assert.AreEqual(updatePackageHash, device.LiveUpdatePackageHash);
+            Assert.AreEqual(runtimeVersion, device.WrapperRuntimeVersion);
+        }
     }
 
     public class NullInstanceAppCenterService : IAppCenterService

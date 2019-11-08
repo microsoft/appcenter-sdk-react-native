@@ -249,6 +249,15 @@ namespace Microsoft.AppCenter
             }
         }
 
+        /// <summary>
+        /// A wrapper SDK can use this method to pass extra information to device properties.
+        /// </summary>
+        /// <param name="wrapperSdk">Wrapper SDK information.</param>
+        public static void SetWrapperSdk(WrapperSdk wrapperSdk)
+        {
+            DeviceInformationHelper.SetWrapperSdk(wrapperSdk);
+        }
+
         #endregion
 
         #region instance
