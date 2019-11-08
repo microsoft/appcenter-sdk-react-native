@@ -750,7 +750,7 @@ namespace Microsoft.AppCenter.Test
             string updateDevKey = $"expectedUpdateDevKey {Guid.NewGuid()}";
             string updatePackageHash = $"expectedHash {Guid.NewGuid()}";
             string runtimeVersion = $"expectedRuntimeVersion {Guid.NewGuid()}";
-            WrapperSdk wrapperSdk = new WrapperSdk(wrapperVersion, wrapperName, runtimeVersion, releaseLabel, updateDevKey, updatePackageHash);
+            WrapperSdk wrapperSdk = new WrapperSdk(wrapperName, wrapperVersion, runtimeVersion, releaseLabel, updateDevKey, updatePackageHash);
             DeviceInformationHelper.SetWrapperSdk(wrapperSdk);
             var deviceInformationHelper = new DeviceInformationHelper();
             var device = deviceInformationHelper.GetDeviceInformationAsync().RunNotAsync();

@@ -17,12 +17,12 @@ namespace Microsoft.AppCenter
 
         public string LiveUpdatePackageHash { get; private set; }
 
-        public WrapperSdk(string wrapperSdkVersion,
-                          string wrapperSdkName,
-                          string wrapperRuntimeVersion,
-                          string liveUpdateReleaseLabel,
-                          string liveUpdateDeploymentKey,
-                          string liveUpdatePackageHash)
+        public WrapperSdk(string wrapperSdkName,
+                          string wrapperSdkVersion,
+                          string wrapperRuntimeVersion = null,
+                          string liveUpdateReleaseLabel = null,
+                          string liveUpdateDeploymentKey = null,
+                          string liveUpdatePackageHash = null)
         {
             WrapperSdkName = wrapperSdkName;
             WrapperSdkVersion = wrapperSdkVersion;
