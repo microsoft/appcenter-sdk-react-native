@@ -54,6 +54,13 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.EventNameLabel = new System.Windows.Forms.Label();
             this.AnalyticsEnabled = new System.Windows.Forms.CheckBox();
             this.CrashesTab = new System.Windows.Forms.TabPage();
+            this.ErrorAttachmentsBox = new System.Windows.Forms.GroupBox();
+            this.SelectFileAttachmentButton = new System.Windows.Forms.Button();
+            this.FileAttachmentPathLabel = new System.Windows.Forms.Label();
+            this.FileAttachmentLabel = new System.Windows.Forms.Label();
+            this.TextAttachmentTextBox = new System.Windows.Forms.TextBox();
+            this.TextAttachmentLabel = new System.Windows.Forms.Label();
+            this.HandleExceptions = new System.Windows.Forms.CheckBox();
             this.CrashBox = new System.Windows.Forms.GroupBox();
             this.CrashInsideAsyncTask = new System.Windows.Forms.Button();
             this.CrashWithNullReference = new System.Windows.Forms.Button();
@@ -69,6 +76,7 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.EventBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).BeginInit();
             this.CrashesTab.SuspendLayout();
+            this.ErrorAttachmentsBox.SuspendLayout();
             this.CrashBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,7 +90,7 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.Tabs.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(768, 529);
+            this.Tabs.Size = new System.Drawing.Size(768, 1006);
             this.Tabs.TabIndex = 0;
             this.Tabs.SelectedIndexChanged += new System.EventHandler(this.Tabs_SelectedIndexChanged);
             // 
@@ -96,7 +104,7 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.AppCenterTab.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.AppCenterTab.Name = "AppCenterTab";
             this.AppCenterTab.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AppCenterTab.Size = new System.Drawing.Size(752, 482);
+            this.AppCenterTab.Size = new System.Drawing.Size(752, 959);
             this.AppCenterTab.TabIndex = 0;
             this.AppCenterTab.Text = "App Center";
             this.AppCenterTab.UseVisualStyleBackColor = true;
@@ -248,7 +256,7 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.AnalyticsTab.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.AnalyticsTab.Name = "AnalyticsTab";
             this.AnalyticsTab.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AnalyticsTab.Size = new System.Drawing.Size(752, 482);
+            this.AnalyticsTab.Size = new System.Drawing.Size(752, 959);
             this.AnalyticsTab.TabIndex = 1;
             this.AnalyticsTab.Text = "Analytics";
             this.AnalyticsTab.UseVisualStyleBackColor = true;
@@ -353,15 +361,94 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             // 
             // CrashesTab
             // 
+            this.CrashesTab.Controls.Add(this.ErrorAttachmentsBox);
+            this.CrashesTab.Controls.Add(this.HandleExceptions);
             this.CrashesTab.Controls.Add(this.CrashBox);
             this.CrashesTab.Controls.Add(this.CrashesEnabled);
             this.CrashesTab.Location = new System.Drawing.Point(8, 39);
             this.CrashesTab.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.CrashesTab.Name = "CrashesTab";
-            this.CrashesTab.Size = new System.Drawing.Size(752, 482);
+            this.CrashesTab.Size = new System.Drawing.Size(752, 959);
             this.CrashesTab.TabIndex = 2;
             this.CrashesTab.Text = "Crashes";
             this.CrashesTab.UseVisualStyleBackColor = true;
+            // 
+            // ErrorAttachmentsBox
+            // 
+            this.ErrorAttachmentsBox.Controls.Add(this.SelectFileAttachmentButton);
+            this.ErrorAttachmentsBox.Controls.Add(this.FileAttachmentPathLabel);
+            this.ErrorAttachmentsBox.Controls.Add(this.FileAttachmentLabel);
+            this.ErrorAttachmentsBox.Controls.Add(this.TextAttachmentTextBox);
+            this.ErrorAttachmentsBox.Controls.Add(this.TextAttachmentLabel);
+            this.ErrorAttachmentsBox.Location = new System.Drawing.Point(16, 127);
+            this.ErrorAttachmentsBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ErrorAttachmentsBox.Name = "ErrorAttachmentsBox";
+            this.ErrorAttachmentsBox.Padding = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ErrorAttachmentsBox.Size = new System.Drawing.Size(718, 221);
+            this.ErrorAttachmentsBox.TabIndex = 6;
+            this.ErrorAttachmentsBox.TabStop = false;
+            this.ErrorAttachmentsBox.Text = "Error Attachments";
+            // 
+            // SelectFileAttachmentButton
+            // 
+            this.SelectFileAttachmentButton.Location = new System.Drawing.Point(18, 165);
+            this.SelectFileAttachmentButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.SelectFileAttachmentButton.Name = "SelectFileAttachmentButton";
+            this.SelectFileAttachmentButton.Size = new System.Drawing.Size(680, 44);
+            this.SelectFileAttachmentButton.TabIndex = 4;
+            this.SelectFileAttachmentButton.Text = "Select file attachment";
+            this.SelectFileAttachmentButton.UseVisualStyleBackColor = true;
+            this.SelectFileAttachmentButton.Click += new System.EventHandler(this.SelectFileAttachmentButton_ClickListener);
+            // 
+            // FileAttachmentPathLabel
+            // 
+            this.FileAttachmentPathLabel.AutoSize = true;
+            this.FileAttachmentPathLabel.Location = new System.Drawing.Point(184, 123);
+            this.FileAttachmentPathLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.FileAttachmentPathLabel.Name = "FileAttachmentPathLabel";
+            this.FileAttachmentPathLabel.Size = new System.Drawing.Size(0, 25);
+            this.FileAttachmentPathLabel.TabIndex = 3;
+            // 
+            // FileAttachmentLabel
+            // 
+            this.FileAttachmentLabel.AutoSize = true;
+            this.FileAttachmentLabel.Location = new System.Drawing.Point(12, 123);
+            this.FileAttachmentLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.FileAttachmentLabel.Name = "FileAttachmentLabel";
+            this.FileAttachmentLabel.Size = new System.Drawing.Size(161, 25);
+            this.FileAttachmentLabel.TabIndex = 2;
+            this.FileAttachmentLabel.Text = "File Attachment";
+            // 
+            // TextAttachmentTextBox
+            // 
+            this.TextAttachmentTextBox.Location = new System.Drawing.Point(190, 58);
+            this.TextAttachmentTextBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.TextAttachmentTextBox.Name = "TextAttachmentTextBox";
+            this.TextAttachmentTextBox.Size = new System.Drawing.Size(504, 31);
+            this.TextAttachmentTextBox.TabIndex = 1;
+            this.TextAttachmentTextBox.TextChanged += new System.EventHandler(this.TextAttachmentTextBox_TextChanged);
+            // 
+            // TextAttachmentLabel
+            // 
+            this.TextAttachmentLabel.AutoSize = true;
+            this.TextAttachmentLabel.Location = new System.Drawing.Point(8, 63);
+            this.TextAttachmentLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.TextAttachmentLabel.Name = "TextAttachmentLabel";
+            this.TextAttachmentLabel.Size = new System.Drawing.Size(168, 25);
+            this.TextAttachmentLabel.TabIndex = 0;
+            this.TextAttachmentLabel.Text = "Text Attachment";
+            // 
+            // HandleExceptions
+            // 
+            this.HandleExceptions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.HandleExceptions.Location = new System.Drawing.Point(16, 69);
+            this.HandleExceptions.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.HandleExceptions.Name = "HandleExceptions";
+            this.HandleExceptions.Size = new System.Drawing.Size(720, 46);
+            this.HandleExceptions.TabIndex = 5;
+            this.HandleExceptions.Text = "Handle Exceptions";
+            this.HandleExceptions.UseVisualStyleBackColor = true;
             // 
             // CrashBox
             // 
@@ -371,7 +458,7 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.CrashBox.Controls.Add(this.CrashWithDivisionByZero);
             this.CrashBox.Controls.Add(this.CrashWithNonSerializableException);
             this.CrashBox.Controls.Add(this.CrashWithTestException);
-            this.CrashBox.Location = new System.Drawing.Point(16, 69);
+            this.CrashBox.Location = new System.Drawing.Point(14, 379);
             this.CrashBox.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.CrashBox.Name = "CrashBox";
             this.CrashBox.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -475,7 +562,7 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(768, 529);
+            this.ClientSize = new System.Drawing.Size(768, 1006);
             this.Controls.Add(this.Tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -491,6 +578,8 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.EventBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).EndInit();
             this.CrashesTab.ResumeLayout(false);
+            this.ErrorAttachmentsBox.ResumeLayout(false);
+            this.ErrorAttachmentsBox.PerformLayout();
             this.CrashBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -529,6 +618,12 @@ namespace Contoso.WinForms.Puppet.DotNetCore
         private System.Windows.Forms.Button CrashWithAggregateException;
         private System.Windows.Forms.Button CrashWithNullReference;
         private System.Windows.Forms.Button CrashInsideAsyncTask;
+        private System.Windows.Forms.CheckBox HandleExceptions;
+        private System.Windows.Forms.GroupBox ErrorAttachmentsBox;
+        private System.Windows.Forms.Label TextAttachmentLabel;
+        private System.Windows.Forms.TextBox TextAttachmentTextBox;
+        private System.Windows.Forms.Label FileAttachmentPathLabel;
+        private System.Windows.Forms.Label FileAttachmentLabel;
+        private System.Windows.Forms.Button SelectFileAttachmentButton;
     }
 }
-

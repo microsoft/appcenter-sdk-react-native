@@ -312,7 +312,9 @@ namespace Contoso.WPF.Demo
             {
                 properties = null;
             }
-            Crashes.TrackError(e, properties);
+
+            // TODO: uncomment App.GetErrorAttachments().ToArray() when the sdk is released
+            Crashes.TrackError(e, properties/*, App.GetErrorAttachments().ToArray() */);
         }
 
         void HandleOrThrow(Action action)

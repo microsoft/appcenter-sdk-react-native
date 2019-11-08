@@ -67,7 +67,7 @@ namespace Contoso.Forms.Puppet
                 // Set callbacks
                 Crashes.ShouldProcessErrorReport = ShouldProcess;
                 Crashes.ShouldAwaitUserConfirmation = ConfirmationHandler;
-                Crashes.GetErrorAttachments = GetErrorAttachments;
+                Crashes.GetErrorAttachments = GetErrorAttachmentsCallback;
                 Distribute.ReleaseAvailable = OnReleaseAvailable;
 
                 // Event handlers
@@ -217,7 +217,12 @@ namespace Contoso.Forms.Puppet
             return true;
         }
 
-        static IEnumerable<ErrorAttachmentLog> GetErrorAttachments(ErrorReport report)
+        static IEnumerable<ErrorAttachmentLog> GetErrorAttachmentsCallback(ErrorReport report)
+        {
+            return GetErrorAttachments();
+        }
+
+        public static IEnumerable<ErrorAttachmentLog> GetErrorAttachments()
         {
             var attachments = new List<ErrorAttachmentLog>();
             if (Current.Properties.TryGetValue(CrashesContentPage.TextAttachmentKey, out var textAttachment) &&

@@ -310,7 +310,7 @@ namespace Contoso.WPF.Puppet.DotNetCore
             {
                 properties = null;
             }
-            Crashes.TrackError(e, properties);
+            Crashes.TrackError(e, properties, App.GetErrorAttachments().ToArray());
         }
 
         void HandleOrThrow(Action action)

@@ -1,12 +1,19 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.5.1 （Under development）
+## Version 2.6.0 (Under development)
 
 ### App Center
 
 #### Xamarin
 
 * **[Fix]** Updated Android support packages versions to `28.0.0.3` for Auth and Push modules.
+
+### App Center Crashes
+
+#### UWP/WPF/WinForms
+
+* **[Feature]** Support sending attachments in handled errors.
+
 ___
 
 ## Version 2.5.0
