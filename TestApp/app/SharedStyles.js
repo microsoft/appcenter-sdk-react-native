@@ -29,6 +29,16 @@ export default StyleSheet.create({
     borderColor: 'gray',
     backgroundColor: 'white'
   },
+  itemStretchable: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'gray',
+    backgroundColor: 'white'
+  },
   itemTitle: {
     color: 'black',
     marginRight: 5
@@ -56,6 +66,22 @@ export default StyleSheet.create({
   modalSelector: {
     borderColor: 'gray',
     backgroundColor: 'white'
+  },
+  modalTextInput: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+  },
+  modalItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 8,
+    marginVertical: 8
+  },
+  modalButton: {
+    flex: 0.5,
+    padding: 16,
+    borderColor: 'grey',
+    borderWidth: 1,
   },
   dialogInput: {
     ...Platform.select({
