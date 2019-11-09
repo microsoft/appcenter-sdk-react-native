@@ -110,11 +110,6 @@ namespace Microsoft.AppCenter.Crashes.iOS.Bindings
         [Static]
         [Export("disableMachExceptionHandler")]
         void DisableMachExceptionHandler();
-
-        //+(void)trackModelException:(MSException *)exception withProperties:(NSDictionary *)properties withAttachments:(nullable NSArray<MSErrorAttachmentLog *> *)attachments;
-        [Static]
-        [Export("trackModelException:withProperties:withAttachments:")]
-        void TrackModelException(MSException exception, NSDictionary properties, NSArray attachments);
     }
 
     // @protocol MSCrashesDelegate <NSObject>
@@ -279,5 +274,10 @@ namespace Microsoft.AppCenter.Crashes.iOS.Bindings
         [Static]
         [Export("setCrashHandlerSetupDelegate:")]
         void SetCrashHandlerSetupDelegate(MSCrashHandlerSetupDelegate del);
+
+        //+(void)trackModelException:(MSException *)exception withProperties:(NSDictionary *)properties withAttachments:(nullable NSArray<MSErrorAttachmentLog *> *)attachments;
+        [Static]
+        [Export("trackModelException:withProperties:withAttachments:")]
+        void TrackModelException(MSException exception, NSDictionary properties, NSArray attachments);
     }
 }
