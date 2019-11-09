@@ -48,6 +48,7 @@
     <NativeReference Include="..\..\..\externals\ios\AppCenterPush.a">
       <Kind>Static</Kind>
       <SmartLink>False</SmartLink>
+      <WeakFrameworks>UserNotifications</WeakFrameworks>
     </NativeReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.ObjCBinding.CSharp.targets" />
