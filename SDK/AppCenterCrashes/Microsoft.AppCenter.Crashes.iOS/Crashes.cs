@@ -88,7 +88,7 @@ namespace Microsoft.AppCenter.Crashes
                     AppCenterLog.Warn(LogTag, "Skipping null ErrorAttachmentLog in Crashes.TrackError.");
                 }
             }
-            MSCrashes.TrackModelException(GenerateiOSException(exception, false), propertyDictionary, attachmentArray);
+            MSWrapperCrashesHelper.TrackModelException(GenerateiOSException(exception, false), propertyDictionary, attachmentArray);
         }
 
         /// <summary>

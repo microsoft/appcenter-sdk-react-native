@@ -22,36 +22,20 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter\Microsoft.AppCenter.csproj">
-      <Project>{3FE04B97-48DE-4895-8612-ECBDFEBD917C}</Project>
-      <Name>Microsoft.AppCenter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterAnalytics\Microsoft.AppCenter.Analytics\Microsoft.AppCenter.Analytics.csproj">
-      <Project>{0F13E444-717E-460A-BDE7-8AD537F0A418}</Project>
-      <Name>Microsoft.AppCenter.Analytics</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes\Microsoft.AppCenter.Crashes.csproj">
-      <Project>{302F0881-77AE-4CCE-ACF4-930AD5D4FB08}</Project>
-      <Name>Microsoft.AppCenter.Crashes</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute\Microsoft.AppCenter.Distribute.csproj">
-      <Project>{41FEBC72-C12B-47E1-B6F6-51D50158C825}</Project>
-      <Name>Microsoft.AppCenter.Distribute</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push\Microsoft.AppCenter.Push.csproj">
-      <Project>{8EE6B5DA-6547-43C8-AEB6-8E0EAE3F81C9}</Project>
-      <Name>Microsoft.AppCenter.Push</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum\Microsoft.AppCenter.Rum.csproj">
-      <Project>{254D5434-9087-4F05-A43F-23A790E42024}</Project>
-      <Name>Microsoft.AppCenter.Rum</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth\Microsoft.AppCenter.Auth.csproj">
-      <Project>{CFE0475E-4A94-4D92-901B-E174E3658A49}</Project>
-      <Name>Microsoft.AppCenter.Auth</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data\Microsoft.AppCenter.Data.csproj">
-      <Project>{7FE5A0E2-B042-40CA-87FF-FA0CB10A6910}</Project>
-      <Name>Microsoft.AppCenter.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
