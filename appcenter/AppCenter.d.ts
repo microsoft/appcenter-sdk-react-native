@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-export const enum LogLevel {
+export enum LogLevel {
     VERBOSE = 2,
     DEBUG = 3,
     INFO = 4,
@@ -14,7 +14,7 @@ export const enum LogLevel {
 /**
  * @deprecated Use `LogLevel` instead.
  */
-export const enum AppCenterLogLevel {
+export enum AppCenterLogLevel {
     VERBOSE = 2,
     DEBUG = 3,
     INFO = 4,
@@ -25,8 +25,8 @@ export const enum AppCenterLogLevel {
 }
 
 export class CustomProperties {
-    set(key: string, value: string | number | boolean | Date);
-    clear(key: string);
+    set(key: string, value: string | number | boolean | Date): CustomProperties;
+    clear(key: string): CustomProperties;
 }
 
 export function setLogLevel(logLevel: LogLevel | AppCenterLogLevel): Promise<void>;
