@@ -16,7 +16,7 @@
 
 ### App Center Data
 
-* **[Fix]** Fix typescript compiler errors related to const enum usage
+* **[Fix]** Fix typescript compiler errors related to const enum usage.
 ___
 
 ## Version 2.5.0
