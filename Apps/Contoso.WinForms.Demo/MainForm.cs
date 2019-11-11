@@ -223,8 +223,7 @@ namespace Contoso.WinForms.Demo
         {
             Dictionary<string, string> properties = null;
 
-            // TODO: uncomment Program.GetErrorAttachments().ToArray() when the sdk is released.
-            Crashes.TrackError(e, properties/*, Program.GetErrorAttachments().ToArray() */);
+            Crashes.TrackError(e, properties, Program.GetErrorAttachments().ToArray());
         }
 
         private void HandleOrThrow(Action action)
