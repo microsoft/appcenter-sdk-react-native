@@ -36,4 +36,4 @@ export function isEnabled(): Promise<boolean>;
 export function setEnabled(enabled: boolean): Promise<void>;
 export function setUserId(userId: string | null): Promise<void>;
 export function getInstallId(): Promise<string>;
-export function setCustomProperties(properties: CustomProperties);
+export function setCustomProperties(properties: CustomProperties): Promise<void>;
