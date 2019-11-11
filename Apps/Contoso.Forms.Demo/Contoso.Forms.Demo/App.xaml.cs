@@ -29,8 +29,8 @@ namespace Contoso.Forms.Demo
         // OneCollector secrets
         static readonly IReadOnlyDictionary<string, string> OneCollectorTokens = new Dictionary<string, string>
         {
-            { XamarinDevice.Android, "7be01f52a17a455ca07566a4e978d961-de99cbfd-41a4-463a-9c23-92cabd834b0d-6966" },
-            { XamarinDevice.iOS, "1ad92bec07bb4cbf8d98f37c345f1982-c261ed35-7a36-429f-9f5f-6162117fbb72-7166" }
+            { XamarinDevice.Android, "c40f5d207131484ca4b5f945f20863c5-bef11119-61fd-45a6-8a92-daf7a308a7c6-7036" },
+            { XamarinDevice.iOS, "684020093d3844b099ccc5b7d43fc253-4e03393d-1fdc-4f9e-81f4-91fe172d3894-6969" }
         };
 
         // App Center B2C secrets
