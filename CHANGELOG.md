@@ -12,7 +12,7 @@
 
 ### App Center Crashes
 
-* **[Fix]** Fix typescript compiler errors related to const enum usage
+* **[Fix]** Fix typescript compiler errors related to const enum usage.
 
 ### App Center Data
 
