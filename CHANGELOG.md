@@ -22,6 +22,8 @@
 
 * **[Feature]** Support sending attachments in handled errors.
 
+* **[Fix]** Fix an error on running same application twice and enabling App Center.
+
 ### App Center Distribute
 
 #### Android
