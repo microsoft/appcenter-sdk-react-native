@@ -68,6 +68,7 @@ namespace Microsoft.AppCenter.Utils
         {
             lock (configLock)
             {
+                configuration = OpenConfiguration();
                 var element = configuration.AppSettings.Settings[key];
                 if (element == null)
                 {
