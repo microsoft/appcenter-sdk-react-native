@@ -222,7 +222,7 @@ namespace Contoso.WinForms.Demo.DotNetCore
         {
             Dictionary<string, string> properties = null;
 
-            Crashes.TrackError(e, properties, Program.GetErrorAttachments());
+            Crashes.TrackError(e, properties, Program.GetErrorAttachments().ToArray());
         }
 
         private void HandleOrThrow(Action action)
