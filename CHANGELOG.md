@@ -2,10 +2,21 @@
 
 ## Version 2.5.1 (Under development)
 
+### App Center
+
+* **[Fix]** Fix typescript compiler errors related to const enum usage and missing return types
+
 ### App Center Analytics
 
 * **[Fix]** Avoid throwing an error when `trackEvent` is called with null property values.
 
+### App Center Crashes
+
+* **[Fix]** Fix typescript compiler errors related to const enum usage
+
+### App Center Data
+
+* **[Fix]** Fix typescript compiler errors related to const enum usage
 ___
 
 ## Version 2.5.0
