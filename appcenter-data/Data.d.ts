@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-export const enum TimeToLive {
+export enum TimeToLive {
     INFINITE = -1,
     NO_CACHE = 0,
     DEFAULT = -1
 }
 
-export const enum DefaultPartitions {
+export enum DefaultPartitions {
     USER_DOCUMENTS = 'user',
     APP_DOCUMENTS = 'readonly'
 }

@@ -1,4 +1,4 @@
-export const enum UserConfirmation {
+export enum UserConfirmation {
   DONT_SEND = 0,
   SEND = 1,
   ALWAYS_SEND = 2
