@@ -1,5 +1,15 @@
 # App Center SDK for .NET Change Log
 
+## Version 2.6.2
+
+### App Center
+
+#### UWP/WPF/WinForms
+
+* **[Fix]** Fix an error on running same application twice and enabling App Center.
+
+___
+
 ## Version 2.6.1
 
 ### App Center
@@ -21,8 +31,6 @@
 #### UWP/WPF/WinForms
 
 * **[Feature]** Support sending attachments in handled errors.
-
-* **[Fix]** Fix an error on running same application twice and enabling App Center.
 
 ### App Center Distribute
 
