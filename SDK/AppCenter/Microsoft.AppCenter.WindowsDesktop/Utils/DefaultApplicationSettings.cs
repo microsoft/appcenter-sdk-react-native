@@ -59,6 +59,7 @@ namespace Microsoft.AppCenter.Utils
         {
             lock (configLock)
             {
+                configuration = OpenConfiguration();
                 configuration.AppSettings.Settings.Remove(key);
                 configuration.Save();
             }
