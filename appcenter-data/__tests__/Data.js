@@ -77,12 +77,13 @@ describe('App Center Data read operation tests', () => {
 });
 
 describe('App Center Data list operation tests', () => {
-  test('list is called ', async () => {
+  test('list is called with partition and TimeToLive.DEFAULT', async () => {
     const partition = Data.DefaultPartitions.USER_DOCUMENTS;
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
     const result = await Data.list(partition);
     console.log(result);
-    expect(spy).toHaveBeenCalledWith(partition);
+    const readOptions = { 'timeToLive': Data.TimeToLive.DEFAULT };
+    expect(spy).toHaveBeenCalledWith(partition, readOptions);
     expect(result).toHaveProperty('currentPage');
     expect(result).toHaveProperty('hasNextPage');
     expect(result).toHaveProperty('getNextPage');

@@ -4,7 +4,7 @@
 
 ### App Center
 
-* **[Fix]** Fix typescript compiler errors related to const enum usage and missing return types
+* **[Fix]** Fix typescript compiler errors related to const enum usage and missing return types.
 
 ### App Center Analytics
 
@@ -12,11 +12,11 @@
 
 ### App Center Crashes
 
-* **[Fix]** Fix typescript compiler errors related to const enum usage
+* **[Fix]** Fix typescript compiler errors related to const enum usage.
 
 ### App Center Data
 
-* **[Fix]** Fix typescript compiler errors related to const enum usage
+* **[Fix]** Fix typescript compiler errors related to const enum usage.
 ___
 
 ## Version 2.5.0
