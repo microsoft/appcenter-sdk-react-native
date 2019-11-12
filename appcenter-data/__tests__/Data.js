@@ -82,7 +82,7 @@ describe('App Center Data list operation tests', () => {
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
     const result = await Data.list(partition);
     console.log(result);
-    const readOptions = { "timeToLive": Data.TimeToLive.DEFAULT };
+    const readOptions = { 'timeToLive': Data.TimeToLive.DEFAULT };
     expect(spy).toHaveBeenCalledWith(partition, readOptions);
     expect(result).toHaveProperty('currentPage');
     expect(result).toHaveProperty('hasNextPage');
