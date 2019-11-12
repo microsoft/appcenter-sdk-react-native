@@ -57,6 +57,7 @@ namespace Contoso.WPF.Demo
             if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
             {
                 CountryCodeEnableCheckbox.IsChecked = true;
+                CountryCodeText.Text = Settings.Default.CountryCode;
             }
 
             if (!string.IsNullOrEmpty(Settings.Default.UserId))
@@ -313,8 +314,7 @@ namespace Contoso.WPF.Demo
                 properties = null;
             }
 
-            // TODO: uncomment App.GetErrorAttachments().ToArray() when the sdk is released
-            Crashes.TrackError(e, properties/*, App.GetErrorAttachments().ToArray() */);
+            Crashes.TrackError(e, properties, App.GetErrorAttachments().ToArray());
         }
 
         void HandleOrThrow(Action action)
