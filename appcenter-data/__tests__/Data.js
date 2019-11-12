@@ -77,12 +77,27 @@ describe('App Center Data read operation tests', () => {
 });
 
 describe('App Center Data list operation tests', () => {
-  test('list is called with partition and TimeToLive.DEFAULT', async () => {
+  test('list is called with partition and TimeToLive.NOCACHE', async () => {
+    const partition = Data.DefaultPartitions.USER_DOCUMENTS;
+    const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
+    const readOptions = { timeToLive: Data.TimeToLive.NO_CACHE };
+    const result = await Data.list(partition, readOptions);
+    console.log(result);
+    expect(spy).toHaveBeenCalledWith(partition, readOptions);
+    expect(result).toHaveProperty('currentPage');
+    expect(result).toHaveProperty('hasNextPage');
+    expect(result).toHaveProperty('getNextPage');
+    expect(result).toHaveProperty('close');
+  });
+});
+
+describe('App Center Data list operation tests', () => {
+  test('list is called with partition and default TTL TimeToLive.DEFAULT', async () => {
     const partition = Data.DefaultPartitions.USER_DOCUMENTS;
     const spy = jest.spyOn(NativeModules.AppCenterReactNativeData, 'list');
     const result = await Data.list(partition);
     console.log(result);
-    const readOptions = { 'timeToLive': Data.TimeToLive.DEFAULT };
+    const readOptions = { timeToLive: Data.TimeToLive.DEFAULT };
     expect(spy).toHaveBeenCalledWith(partition, readOptions);
     expect(result).toHaveProperty('currentPage');
     expect(result).toHaveProperty('hasNextPage');
