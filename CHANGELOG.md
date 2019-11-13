@@ -1,5 +1,32 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.6.0
+
+### App Center
+
+* **[Fix]** Fix typescript compiler errors related to const enum usage and missing return types.
+
+#### iOS
+
+* **[Fix]** Fix warnings in Xcode 11 when SDK is installed via CocoaPods.
+
+### App Center Analytics
+
+* **[Fix]** Avoid throwing an error when `trackEvent` is called with null property values.
+
+### App Center Crashes
+
+* **[Fix]** Fix typescript compiler errors related to const enum usage.
+
+#### Android
+
+* **[Feature]** Add the `Crash.trackError` method to send handled errors (with optional properties and attachments).
+
+### App Center Data
+
+* **[Fix]** Fix typescript compiler errors related to const enum usage.
+___
+
 ## Version 2.5.0
 
 ### App Center
