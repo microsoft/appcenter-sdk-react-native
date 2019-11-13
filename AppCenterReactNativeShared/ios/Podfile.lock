@@ -1,23 +1,23 @@
 PODS:
-  - AppCenter (2.5.0):
-    - AppCenter/Analytics (= 2.5.0)
-    - AppCenter/Crashes (= 2.5.0)
-  - AppCenter/Analytics (2.5.0):
+  - AppCenter (2.5.1):
+    - AppCenter/Analytics (= 2.5.1)
+    - AppCenter/Crashes (= 2.5.1)
+  - AppCenter/Analytics (2.5.1):
     - AppCenter/Core
-  - AppCenter/Core (2.5.0)
-  - AppCenter/Crashes (2.5.0):
+  - AppCenter/Core (2.5.1)
+  - AppCenter/Crashes (2.5.1):
     - AppCenter/Core
 
 DEPENDENCIES:
-  - AppCenter (~> 2.5.0)
+  - AppCenter (~> 2.5.1)
 
 SPEC REPOS:
   trunk:
     - AppCenter
 
 SPEC CHECKSUMS:
-  AppCenter: 637f180deefc61e8ab3f94223869ee50f61dabea
+  AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
 
-PODFILE CHECKSUM: 43dc840ab9bfb6207ae0474b09f6bb77821fc678
+PODFILE CHECKSUM: 65b5a503c8d9f1599d79441fbe4ef719bca0b3b9
 
 COCOAPODS: 1.8.4

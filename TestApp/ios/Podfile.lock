@@ -1,40 +1,40 @@
 PODS:
-  - appcenter (2.5.0):
+  - appcenter (2.6.0):
     - AppCenterReactNativeShared
     - React
-  - appcenter-analytics (2.5.0):
+  - appcenter-analytics (2.6.0):
     - AppCenter/Analytics
     - AppCenterReactNativeShared
     - React
-  - appcenter-auth (2.5.0):
+  - appcenter-auth (2.6.0):
     - AppCenter/Auth
     - AppCenterReactNativeShared
     - React
-  - appcenter-crashes (2.5.0):
+  - appcenter-crashes (2.6.0):
     - AppCenter/Crashes
     - AppCenterReactNativeShared
     - React
-  - appcenter-data (2.5.0):
+  - appcenter-data (2.6.0):
     - AppCenter/Data
     - AppCenterReactNativeShared
     - React
-  - appcenter-push (2.5.0):
+  - appcenter-push (2.6.0):
     - AppCenter/Push
     - AppCenterReactNativeShared
     - React
-  - AppCenter/Analytics (2.5.0):
+  - AppCenter/Analytics (2.5.1):
     - AppCenter/Core
-  - AppCenter/Auth (2.5.0):
+  - AppCenter/Auth (2.5.1):
     - AppCenter/Core
-  - AppCenter/Core (2.5.0)
-  - AppCenter/Crashes (2.5.0):
+  - AppCenter/Core (2.5.1)
+  - AppCenter/Crashes (2.5.1):
     - AppCenter/Core
-  - AppCenter/Data (2.5.0):
+  - AppCenter/Data (2.5.1):
     - AppCenter/Core
-  - AppCenter/Push (2.5.0):
+  - AppCenter/Push (2.5.1):
     - AppCenter/Core
-  - AppCenterReactNativeShared (2.5.0):
-    - AppCenter/Core (= 2.5.0)
+  - AppCenterReactNativeShared (2.6.0):
+    - AppCenter/Core (= 2.5.1)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.61.3)
@@ -384,14 +384,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 637f180deefc61e8ab3f94223869ee50f61dabea
-  appcenter: bde9923b687332a25607fc1aa9577c9361cfed85
-  appcenter-analytics: 0ee7a35def715d4bce58ec435f54161770195166
-  appcenter-auth: defc647aad5a8bf27b4835e23b90c34975bb55e1
-  appcenter-crashes: 9f9c5647dba19026ff09509576fb7233f69697ff
-  appcenter-data: c4080ab83489c6276e573ef9ae8b0e365b950320
-  appcenter-push: 683b98fcde542864128c828a61751ce8ab39b53d
-  AppCenterReactNativeShared: 9517e7fe96ea315cc7fe0960427c5b8157d420df
+  AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
+  appcenter: dc687dcf81280ccab1dc938b0b974d265144a802
+  appcenter-analytics: fa8dba207d07733dcbda749d262fde3e7161258d
+  appcenter-auth: 0ad2919b71c45a85dbaa68b01b812529e634e9e1
+  appcenter-crashes: fa97ffec69882486d7183193cc9394473757d1ad
+  appcenter-data: 074d69ff61abfab3257ae165a257d1ae45e27052
+  appcenter-push: d5a64c593578762f773ac40b76a2e6965911e45c
+  AppCenterReactNativeShared: bbed12040b9608d74a0bc46f1fa81bcd0576967c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 5bc5b1606fc9a7ac6956de049f6e30901ed31c49
