@@ -18,10 +18,6 @@
 
 * **[Fix]** Fix typescript compiler errors related to const enum usage.
 
-#### Android
-
-* **[Feature]** Add the `Crash.trackError` method to send handled errors (with optional properties and attachments).
-
 ### App Center Data
 
 * **[Fix]** Fix typescript compiler errors related to const enum usage.
