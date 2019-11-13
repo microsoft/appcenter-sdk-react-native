@@ -47,7 +47,6 @@ namespace Microsoft.AppCenter.Storage
         /// </summary>
         public Storage() : this(DefaultAdapter())
         {
-            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
         }
 
         /// <summary>
