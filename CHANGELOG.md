@@ -2,6 +2,11 @@
 
 ## Version 2.6.2 （Under development）
 
+### App Center
+
+#### UWP/WPF/WinForms
+
+* **[Fix]** Fix an issue where internal SDK exceptions would sometimes be "unobserved" and create noise as a result.
 ___
 
 ## Version 2.6.1
