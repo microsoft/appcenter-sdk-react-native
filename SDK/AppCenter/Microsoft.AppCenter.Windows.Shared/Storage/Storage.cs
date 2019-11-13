@@ -349,7 +349,7 @@ namespace Microsoft.AppCenter.Storage
                 {
                     action();
                 }
-                catch (Exception e) when (e.GetType() != typeof(StorageException))
+                catch (Exception e) when (!(e is StorageException))
                 {
                     // Tasks should already be throwing only storage exceptions, but in case any are missed, 
                     // which has happened, catch them here and wrap in a storage exception. This will prevent 
@@ -369,7 +369,7 @@ namespace Microsoft.AppCenter.Storage
                 {
                     return action();
                 }
-                catch (Exception e) when (e.GetType() != typeof(StorageException))
+                catch (Exception e) when (!(e is StorageException))
                 {
                     // Tasks should already be throwing only storage exceptions, but in case any are missed, 
                     // which has happened, catch them here and wrap in a storage exception. This will prevent 
