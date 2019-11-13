@@ -13,7 +13,7 @@ android {
         minSdkVersion 16
         targetSdkVersion rootProject.properties.get('targetSdkVersion', 26)
         versionCode 46
-        versionName '2.5.1'
+        versionName '2.6.0'
         ndk {
             abiFilters 'armeabi-v7a', 'x86'
         }
@@ -27,5 +27,5 @@ dependencies {
     api 'com.microsoft.appcenter:appcenter:2.5.0'
 
     //api project(':AppCenterReactNativeShared')   // For testing with TestApp
-    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:2.5.1'
+    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:2.6.0'
 }

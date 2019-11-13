@@ -1,24 +1,24 @@
 PODS:
-  - appcenter (2.5.1):
+  - appcenter (2.6.0):
     - AppCenterReactNativeShared
     - React
-  - appcenter-analytics (2.5.1):
+  - appcenter-analytics (2.6.0):
     - AppCenter/Analytics
     - AppCenterReactNativeShared
     - React
-  - appcenter-auth (2.5.1):
+  - appcenter-auth (2.6.0):
     - AppCenter/Auth
     - AppCenterReactNativeShared
     - React
-  - appcenter-crashes (2.5.1):
+  - appcenter-crashes (2.6.0):
     - AppCenter/Crashes
     - AppCenterReactNativeShared
     - React
-  - appcenter-data (2.5.1):
+  - appcenter-data (2.6.0):
     - AppCenter/Data
     - AppCenterReactNativeShared
     - React
-  - appcenter-push (2.5.1):
+  - appcenter-push (2.6.0):
     - AppCenter/Push
     - AppCenterReactNativeShared
     - React
@@ -33,7 +33,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Push (2.5.1):
     - AppCenter/Core
-  - AppCenterReactNativeShared (2.5.1):
+  - AppCenterReactNativeShared (2.6.0):
     - AppCenter/Core (= 2.5.1)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
@@ -385,13 +385,13 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppCenter: fddcbac6e4baae3d93a196ceb0bfe0e4ce407dec
-  appcenter: 607925c8edda9c63d76fb27eba88f4f0e2d1a1b7
-  appcenter-analytics: 4c3c49ba4ad14b407570edb860e0aa5dbbd5a4fa
-  appcenter-auth: e9ffb87ffdcc7fbe35dc7818d72107869c7b5beb
-  appcenter-crashes: 5002203e52c8dfa87efe3b759691d80bb1bfa79c
-  appcenter-data: 4f268f2696182527089fc03c55913386e6fc8557
-  appcenter-push: b06b65f5928a2d306740c52d376f48939399e71d
-  AppCenterReactNativeShared: e19f8c660620bcdabb2099c29a7ab344cec0afeb
+  appcenter: dc687dcf81280ccab1dc938b0b974d265144a802
+  appcenter-analytics: fa8dba207d07733dcbda749d262fde3e7161258d
+  appcenter-auth: 0ad2919b71c45a85dbaa68b01b812529e634e9e1
+  appcenter-crashes: fa97ffec69882486d7183193cc9394473757d1ad
+  appcenter-data: 074d69ff61abfab3257ae165a257d1ae45e27052
+  appcenter-push: d5a64c593578762f773ac40b76a2e6965911e45c
+  AppCenterReactNativeShared: bbed12040b9608d74a0bc46f1fa81bcd0576967c
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 5bc5b1606fc9a7ac6956de049f6e30901ed31c49
