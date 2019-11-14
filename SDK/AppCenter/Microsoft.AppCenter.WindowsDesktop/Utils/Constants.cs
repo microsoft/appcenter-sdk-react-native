@@ -33,3 +33,4 @@ namespace Microsoft.AppCenter.Utils
 
         public static string LocalAppData => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
     }
+}

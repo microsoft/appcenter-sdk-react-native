@@ -14,5 +14,7 @@ namespace Microsoft.AppCenter.Utils
         public static string AppCenterFilesDirectoryPath = "";
 
         public static string AppCenterDatabasePath = "Microsoft.AppCenter.Storage";
+
+        public static string LocalAppData => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
     }
 }
