@@ -20,9 +20,8 @@ namespace Microsoft.AppCenter.Utils.Files
         {
         }
 
-        public File(string filePath)
+        public File(string filePath) : this(new FileInfo(filePath))
         {
-            _underlyingFileInfo = new FileInfo(filePath);
         }
 
         internal File(FileInfo fileInfo)
