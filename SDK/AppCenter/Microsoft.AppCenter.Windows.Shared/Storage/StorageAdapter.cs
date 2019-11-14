@@ -34,7 +34,7 @@ namespace Microsoft.AppCenter.Storage
                 // In SQLite-net 1.5 return type was changed.
                 // Using reflection to accept newer library version.
                 var task = (Task)_dbConnection.GetType()
-                    .GetMethod("CreateTableAsync", new [] { typeof(CreateFlags) })
+                    .GetMethod("CreateTableAsync", new[] { typeof(CreateFlags) })
                     .MakeGenericMethod(typeof(T))
                     .Invoke(_dbConnection, new object[] { CreateFlags.None });
                 await task.ConfigureAwait(false);
@@ -131,6 +131,23 @@ namespace Microsoft.AppCenter.Storage
                 if (_dbConnection == null)
                 {
                     throw new StorageException("Cannot initialize SQLite library.");
+                }
+            });
+        }
+
+        public Task DeleteDatabaseFileAsync()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    // TODO delete file does not work for some reason, and there is no error.
+                    SQLiteAsyncConnection.ResetPool();
+                    new File(_databasePath).Delete();
+                }
+                catch (Exception e)
+                {
+                    throw new StorageException(e);
                 }
             });
         }
