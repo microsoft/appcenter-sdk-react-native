@@ -59,9 +59,8 @@ namespace Microsoft.AppCenter.Utils
         {
             lock (configLock)
             {
-                configuration = OpenConfiguration();
                 configuration.AppSettings.Settings.Remove(key);
-                configuration.Save();
+                SaveConfiguration();
             }
         }
 
@@ -69,7 +68,6 @@ namespace Microsoft.AppCenter.Utils
         {
             lock (configLock)
             {
-                configuration = OpenConfiguration();
                 var element = configuration.AppSettings.Settings[key];
                 if (element == null)
                 {
@@ -79,7 +77,19 @@ namespace Microsoft.AppCenter.Utils
                 {
                     element.Value = value;
                 }
+                SaveConfiguration();
+            }
+        }
+
+        private void SaveConfiguration()
+        {
+            try
+            {
                 configuration.Save();
+            }
+            catch (ConfigurationErrorsException e)
+            {
+                AppCenterLog.Warn(AppCenterLog.LogTag, $"Configuration file can't be saved. Failure reason: {e.Message}");
             }
         }
 
