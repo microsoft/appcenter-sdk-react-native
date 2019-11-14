@@ -279,7 +279,7 @@ export default class DataScreen extends Component {
                     const createResult =
                             await Data.create(
                               this.state.docId,
-                              {[this.state.docKey]: this.state.docValue},
+                              { [this.state.docKey]: this.state.docValue },
                               Data.DefaultPartitions.USER_DOCUMENTS,
                               new Data.WriteOptions(this.state.docTtl)
                             );
