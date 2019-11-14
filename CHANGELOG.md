@@ -6,7 +6,7 @@
 
 #### UWP/WPF/WinForms
 
-* **[Fix]** Fix an issue where internal SDK exceptions would sometimes be "unobserved" and create noise as a result.
+* **[Fix]** Fix an issue where internal SDK exceptions would sometimes be "unobserved" and would cause undefined behavior.
 ___
 
 ## Version 2.6.1
