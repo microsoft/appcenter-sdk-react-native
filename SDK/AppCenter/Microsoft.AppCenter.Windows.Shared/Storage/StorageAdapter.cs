@@ -3,11 +3,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Utils.Files;
 using SQLite;
+using Windows.UI.WebUI;
 
 namespace Microsoft.AppCenter.Storage
 {
@@ -63,11 +66,15 @@ namespace Microsoft.AppCenter.Storage
             var table = _dbConnection.Table<T>();
             return table.Where(pred).CountAsync();
         }
-
+        int timer = 1;
         public Task<int> InsertAsync<T>(T val) where T : new()
         {
             try
             {
+                if (timer++ % 4 == 0)
+                {
+                    throw new Exception("Corrupt");
+                }
                 return _dbConnection.InsertAsync(val);
             }
             catch (SQLiteException e)
@@ -141,9 +148,9 @@ namespace Microsoft.AppCenter.Storage
             {
                 try
                 {
-                    // TODO delete file does not work for some reason, and there is no error.
                     SQLiteAsyncConnection.ResetPool();
-                    new File(_databasePath).Delete();
+                    var prefix = _databaseDirectory == null ? Constants.LocalAppData : "";
+                    new File(System.IO.Path.Combine(prefix, _databasePath)).Delete();
                 }
                 catch (Exception e)
                 {

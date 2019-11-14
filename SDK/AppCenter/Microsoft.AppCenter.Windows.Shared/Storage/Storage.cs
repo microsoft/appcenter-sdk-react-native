@@ -387,7 +387,7 @@ namespace Microsoft.AppCenter.Storage
             {
                 AppCenterLog.Error(AppCenterLog.LogTag, "Database corruption detected, deleting the file and starting fresh...", e);
                 await _storageAdapter.DeleteDatabaseFileAsync();
-                await InitializeDatabaseAsync();
+                //await InitializeDatabaseAsync();
             }
 
             // Return exception to re-throw.
