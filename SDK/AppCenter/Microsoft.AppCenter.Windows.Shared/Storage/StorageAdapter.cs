@@ -53,7 +53,7 @@ namespace Microsoft.AppCenter.Storage
             try
             {
                 var table = _dbConnection.Table<T>();
-                return await table.Where(pred).Take(limit).ToListAsync().ConfigureAwait(false);
+                return await table.Where(pred).Take(0).ToListAsync().ConfigureAwait(false);
             }
             catch (SQLiteException e)
             {
@@ -66,15 +66,11 @@ namespace Microsoft.AppCenter.Storage
             var table = _dbConnection.Table<T>();
             return table.Where(pred).CountAsync();
         }
-        int timer = 1;
+
         public Task<int> InsertAsync<T>(T val) where T : new()
         {
             try
             {
-                if (timer++ % 4 == 0)
-                {
-                    throw new Exception("Corrupt");
-                }
                 return _dbConnection.InsertAsync(val);
             }
             catch (SQLiteException e)
@@ -148,6 +144,10 @@ namespace Microsoft.AppCenter.Storage
             {
                 try
                 {
+                    // This is not ideal to call a static method as it could cause side effects on other part of the app/libs using SQLite.
+                    // However this is so far the only way we found to be able to reopen a new database with same file name after delete.
+                    // Disposing connection, then setting to null, then even running garbage collector is not enough to make table create succeed after reopen if
+                    // we don't call ResetPool.
                     SQLiteAsyncConnection.ResetPool();
                     var prefix = _databaseDirectory == null ? Constants.LocalAppData : "";
                     new File(System.IO.Path.Combine(prefix, _databasePath)).Delete();

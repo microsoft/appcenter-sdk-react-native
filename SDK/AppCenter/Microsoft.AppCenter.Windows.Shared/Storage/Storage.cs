@@ -383,11 +383,11 @@ namespace Microsoft.AppCenter.Storage
             // that it's not always originated by a proper SQLiteException (which would then be converted to StorageException in StorageAdapter).
             // If it was always the right type then the exception would not have been unobserved in that application before we changed the re-throw logic here.
             // But the message is definitely "Corrupt" and thus unfortunately that is the only check we seem to be able to do as opposed to type/property checking.
-            if (e.Message == "Corrupt")
+            if (e.Message == "Corrupt" || e.InnerException?.Message == "Corrupt")
             {
                 AppCenterLog.Error(AppCenterLog.LogTag, "Database corruption detected, deleting the file and starting fresh...", e);
                 await _storageAdapter.DeleteDatabaseFileAsync();
-                //await InitializeDatabaseAsync();
+                await InitializeDatabaseAsync();
             }
 
             // Return exception to re-throw.
