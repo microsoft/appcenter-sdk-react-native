@@ -10,7 +10,6 @@ namespace Contoso.Forms.Puppet
     [Android.Runtime.Preserve(AllMembers = true)]
     public partial class AppCenterContentPage : ContentPage
     {
-
         public AppCenterContentPage()
         {
             InitializeComponent();
@@ -19,7 +18,7 @@ namespace Contoso.Forms.Puppet
                 Icon = "bolt.png";
             }
 
-            // Setup start type dropdown choices
+            // Setup start type dropdown choices.
             foreach (var startType in StartTypeUtils.GetStartTypeChoiceStrings())
             {
                 this.StartTypePicker.Items.Add(startType);
@@ -65,6 +64,5 @@ namespace Contoso.Forms.Puppet
         {
             await AppCenter.SetEnabledAsync(e.Value);
         }
-
     }
 }

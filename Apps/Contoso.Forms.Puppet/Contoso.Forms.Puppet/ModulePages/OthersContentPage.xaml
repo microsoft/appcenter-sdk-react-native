@@ -8,16 +8,16 @@
             <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled" OnColor="{StaticResource SwitchCellOnColor}"/>
         </TableSection>
         <TableSection Title="Auth">
-            <SwitchCell Text="Auth Enabled" On="true" x:Name="AuthEnabledSwitchCell" OnChanged="UpdateAuthEnabled"  OnColor="{StaticResource SwitchCellOnColor}"/>
+            <SwitchCell Text="Auth Enabled" On="true" x:Name="AuthEnabledSwitchCell" OnChanged="UpdateAuthEnabled" OnColor="{StaticResource SwitchCellOnColor}"/>
             <ViewCell>
                 <Picker x:Name="AuthTypePicker" Title="Auth Type" PropertyChanged="ChangeAuthType"/>
             </ViewCell>
         </TableSection>
         <TableSection Title="Rum">
-            <SwitchCell Text="Rum Enabled" x:Name="RumEnabledSwitchCell" OnChanged="UpdateRumEnabled"  OnColor="{StaticResource SwitchCellOnColor}"/>
+            <SwitchCell Text="Rum Enabled" x:Name="RumEnabledSwitchCell" OnChanged="UpdateRumEnabled" OnColor="{StaticResource SwitchCellOnColor}"/>
         </TableSection>
         <TableSection Title="EventFilter">
-            <SwitchCell Text="EventFilter Enabled" x:Name="EventFilterEnabledSwitchCell" OnChanged="UpdateEventFilterEnabled"  OnColor="{StaticResource SwitchCellOnColor}" />
+            <SwitchCell Text="EventFilter Enabled" x:Name="EventFilterEnabledSwitchCell" OnChanged="UpdateEventFilterEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
         </TableSection>
         <TableSection Title="MBaaS">
             <ViewCell Tapped="RunMBaaSAsync">
