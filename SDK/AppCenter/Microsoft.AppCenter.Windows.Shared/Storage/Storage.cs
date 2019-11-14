@@ -343,14 +343,40 @@ namespace Microsoft.AppCenter.Storage
 
         private Task AddTaskToQueue(Action action)
         {
-            var task = new Task(action);
+            var task = new Task(() =>
+            {
+                try
+                {
+                    action();
+                }
+                catch (Exception e) when (!(e is StorageException))
+                {
+                    // Tasks should already be throwing only storage exceptions, but in case any are missed, 
+                    // which has happened, catch them here and wrap in a storage exception. This will prevent 
+                    // the exception from being unobserved.
+                    throw new StorageException(e);
+                }
+            });
             AddTaskToQueue(task);
             return task;
         }
 
         private Task<T> AddTaskToQueue<T>(Func<T> action)
         {
-            var task = new Task<T>(action);
+            var task = new Task<T>(() =>
+            {
+                try
+                {
+                    return action();
+                }
+                catch (Exception e) when (!(e is StorageException))
+                {
+                    // Tasks should already be throwing only storage exceptions, but in case any are missed, 
+                    // which has happened, catch them here and wrap in a storage exception. This will prevent 
+                    // the exception from being unobserved.
+                    throw new StorageException(e);
+                }
+            });
             AddTaskToQueue(task);
             return task;
         }

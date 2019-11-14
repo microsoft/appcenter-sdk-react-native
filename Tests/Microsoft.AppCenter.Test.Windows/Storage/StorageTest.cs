@@ -3,12 +3,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Storage;
+using Microsoft.AppCenter.Test.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SQLite;
+using LogEntry = Microsoft.AppCenter.Storage.Storage.LogEntry;
 
 namespace Microsoft.AppCenter.Test
 {
@@ -70,6 +73,21 @@ namespace Microsoft.AppCenter.Test
             _storage.GetLogsAsync(StorageTestChannelName, 1, retrievedLogs).RunNotAsync();
             var retrievedLog = retrievedLogs[0];
             Assert.AreEqual(addedLog, retrievedLog);
+        }
+
+        /// <summary>
+        /// Verify that any exception thrown by a task is converted to a storage exception.
+        /// </summary>
+        [TestMethod]
+        public async Task ExceptionIsConvertedToStorageException()
+        {
+            var mockStorageAdapter = Mock.Of<IStorageAdapter>();
+            var storage = new Microsoft.AppCenter.Storage.Storage(mockStorageAdapter);
+            var exception = new Exception();
+            Mock.Get(mockStorageAdapter).Setup(adapter => adapter.CountAsync(It.IsAny<Expression<Func<LogEntry, bool>>>())).Throws(exception);
+            Mock.Get(mockStorageAdapter).Setup(adapter => adapter.InsertAsync(It.IsAny<LogEntry>())).Throws(exception);
+            await Assert.ThrowsExceptionAsync<StorageException>(() => storage.PutLog(StorageTestChannelName, TestLog.CreateTestLog()));
+            await Assert.ThrowsExceptionAsync<StorageException>(() => storage.CountLogsAsync(StorageTestChannelName));
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace Microsoft.AppCenter.Storage
             }
             catch (SQLiteException e)
             {
-                throw new StorageException(e);
+                throw ToStorageException(e);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Microsoft.AppCenter.Storage
             }
             catch (SQLiteException e)
             {
-                throw new StorageException(e);
+                throw ToStorageException(e);
             }
         }
 
@@ -72,8 +72,13 @@ namespace Microsoft.AppCenter.Storage
             }
             catch (SQLiteException e)
             {
-                throw new StorageException(e);
+                throw ToStorageException(e);
             }
+        }
+
+        private static StorageException ToStorageException(SQLiteException e)
+        {
+            return new StorageException($"SQLite errorCode={e.Result}", e);
         }
 
         public async Task<int> DeleteAsync<T>(Expression<Func<T, bool>> pred) where T : new()
@@ -91,7 +96,7 @@ namespace Microsoft.AppCenter.Storage
             }
             catch (SQLiteException e)
             {
-                throw new StorageException(e);
+                throw ToStorageException(e);
             }
         }
 
