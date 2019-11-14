@@ -53,7 +53,7 @@ namespace Microsoft.AppCenter.Storage
             try
             {
                 var table = _dbConnection.Table<T>();
-                return await table.Where(pred).Take(0).ToListAsync().ConfigureAwait(false);
+                return await table.Where(pred).Take(limit).ToListAsync().ConfigureAwait(false);
             }
             catch (SQLiteException e)
             {
