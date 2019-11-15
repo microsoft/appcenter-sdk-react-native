@@ -391,14 +391,16 @@ namespace Microsoft.AppCenter.Storage
             }
 
             // Return exception to re-throw.
-            if (!(e is StorageException))
+            if (e is StorageException)
             {
-                // Tasks should already be throwing only storage exceptions, but in case any are missed, 
-                // which has happened (the Corrupt exception mentioned previously), catch them here and wrap in a storage exception. This will prevent 
-                // the exception from being unobserved.
-                return new StorageException(e);
+                // This is the expected case, storage adapter already wraps exception as StorageException, so return as is.
+                return e;
             }
-            return e;
+
+            // Tasks should already be throwing only storage exceptions, but in case any are missed, 
+            // which has happened (the Corrupt exception mentioned previously), catch them here and wrap in a storage exception. This will prevent 
+            // the exception from being unobserved.
+            return new StorageException(e);
         }
 
         private void AddTaskToQueue(Task task)
