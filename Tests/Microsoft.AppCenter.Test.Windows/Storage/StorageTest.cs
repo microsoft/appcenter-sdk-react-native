@@ -80,7 +80,7 @@ namespace Microsoft.AppCenter.Test
         /// Verify that any exception thrown by a task is converted to a storage exception.
         /// </summary>
         [TestMethod]
-        public async Task ExceptionIsConvertedToStorageException()
+        public async Task UnknownExceptionIsConvertedToStorageException()
         {
             var mockStorageAdapter = Mock.Of<IStorageAdapter>();
             using (var storage = new Microsoft.AppCenter.Storage.Storage(mockStorageAdapter))
@@ -90,6 +90,39 @@ namespace Microsoft.AppCenter.Test
                 Mock.Get(mockStorageAdapter).Setup(adapter => adapter.InsertAsync(It.IsAny<LogEntry>())).Throws(exception);
                 await Assert.ThrowsExceptionAsync<StorageException>(() => storage.PutLog(StorageTestChannelName, TestLog.CreateTestLog()));
                 await Assert.ThrowsExceptionAsync<StorageException>(() => storage.CountLogsAsync(StorageTestChannelName));
+            }
+        }
+
+        /// <summary>
+        /// Verify that any exception thrown by a task is returned as is if already storage exceptipn.
+        /// </summary>
+        [TestMethod]
+        public async Task KnownExceptionIsThrownAsIs()
+        {
+            var mockStorageAdapter = Mock.Of<IStorageAdapter>();
+            using (var storage = new Microsoft.AppCenter.Storage.Storage(mockStorageAdapter))
+            {
+                var exception = new StorageException();
+                Mock.Get(mockStorageAdapter).Setup(adapter => adapter.CountAsync(It.IsAny<Expression<Func<LogEntry, bool>>>())).Throws(exception);
+                Mock.Get(mockStorageAdapter).Setup(adapter => adapter.InsertAsync(It.IsAny<LogEntry>())).Throws(exception);
+                try
+                {
+                    await storage.PutLog(StorageTestChannelName, TestLog.CreateTestLog());
+                    Assert.Fail("Should have thrown exception");
+                }
+                catch (Exception e)
+                {
+                    Assert.AreSame(exception, e);
+                }
+                try
+                {
+                    await storage.CountLogsAsync(StorageTestChannelName);
+                    Assert.Fail("Should have thrown exception");
+                }
+                catch (Exception e)
+                {
+                    Assert.AreSame(exception, e);
+                }
             }
         }
 
@@ -281,6 +314,57 @@ namespace Microsoft.AppCenter.Test
                 Assert.IsNull(batchId);
                 Assert.AreEqual(0, logs.Count);
                 Assert.AreEqual(0, count);
+            }
+        }
+
+        /// <summary>
+        /// Verify that we recreated corrupted database.
+        /// </summary>
+        [TestMethod]
+        public async Task RecreateCorruptedDatabaseOnInnerCorruptException()
+        {
+            var mockStorageAdapter = Mock.Of<IStorageAdapter>();
+            using (var storage = new Microsoft.AppCenter.Storage.Storage(mockStorageAdapter))
+            {
+                var exception = new StorageException(SQLiteException.New(SQLite3.Result.Corrupt, "Corrupt"));
+                Mock.Get(mockStorageAdapter).Setup(adapter => adapter.InsertAsync(It.IsAny<LogEntry>())).Throws(exception);
+                await Assert.ThrowsExceptionAsync<StorageException>(() => storage.PutLog(StorageTestChannelName, TestLog.CreateTestLog()));
+                Mock.Get(mockStorageAdapter).Verify(adapter => adapter.DeleteDatabaseFileAsync());
+                Mock.Get(mockStorageAdapter).Verify(adapter => adapter.InitializeStorageAsync(), Times.Exactly(2));
+            }
+        }
+
+        /// <summary>
+        /// Verify that we recreated corrupted database even if the exception type does not look right.
+        /// </summary>
+        [TestMethod]
+        public async Task RecreateCorruptedDatabaseOnUnknownCorruptException()
+        {
+            var mockStorageAdapter = Mock.Of<IStorageAdapter>();
+            using (var storage = new Microsoft.AppCenter.Storage.Storage(mockStorageAdapter))
+            {
+                var exception = new Exception("Corrupt");
+                Mock.Get(mockStorageAdapter).Setup(adapter => adapter.InsertAsync(It.IsAny<LogEntry>())).Throws(exception);
+                await Assert.ThrowsExceptionAsync<StorageException>(() => storage.PutLog(StorageTestChannelName, TestLog.CreateTestLog()));
+                Mock.Get(mockStorageAdapter).Verify(adapter => adapter.DeleteDatabaseFileAsync());
+                Mock.Get(mockStorageAdapter).Verify(adapter => adapter.InitializeStorageAsync(), Times.Exactly(2));
+            }
+        }
+
+        /// <summary>
+        /// Verify that we don't delete database if the error is not related to corruption.
+        /// </summary>
+        [TestMethod]
+        public async Task DontRecreateCorruptedDatabaseOnNotCorruptException()
+        {
+            var mockStorageAdapter = Mock.Of<IStorageAdapter>();
+            using (var storage = new Microsoft.AppCenter.Storage.Storage(mockStorageAdapter))
+            {
+                var exception = new Exception("Something else");
+                Mock.Get(mockStorageAdapter).Setup(adapter => adapter.InsertAsync(It.IsAny<LogEntry>())).Throws(exception);
+                await Assert.ThrowsExceptionAsync<StorageException>(() => storage.PutLog(StorageTestChannelName, TestLog.CreateTestLog()));
+                Mock.Get(mockStorageAdapter).Verify(adapter => adapter.DeleteDatabaseFileAsync(), Times.Never());
+                Mock.Get(mockStorageAdapter).Verify(adapter => adapter.InitializeStorageAsync(), Times.Once());
             }
         }
 
