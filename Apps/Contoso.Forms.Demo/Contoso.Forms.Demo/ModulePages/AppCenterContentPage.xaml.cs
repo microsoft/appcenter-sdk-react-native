@@ -64,12 +64,13 @@ namespace Contoso.Forms.Demo
             {
                 UserIdEntry.Text = id;
             }
-            UserIdEntry.Unfocused += (sender, args) =>
+            UserIdEntry.Unfocused += async (sender, args) =>
             {
                 var inputText = UserIdEntry.Text;
                 var text = string.IsNullOrEmpty(inputText) ? null : inputText;
                 AppCenter.SetUserId(text);
                 Application.Current.Properties[Constants.UserId] = text;
+                await Application.Current.SavePropertiesAsync();
             };
         }
 
