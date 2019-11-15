@@ -7,7 +7,7 @@
 #### UWP/WPF/WinForms
 
 * **[Fix]** Fix an issue where internal SDK exceptions would sometimes be "unobserved" and would cause undefined behavior.
-* **[Fix]** Fix deleting the database file and opening a new one whenever corruption is detected.
+* **[Fix]** The SDK now detects the SQLite database is corrupted and deletes it and creates a new one to start over.
 
 ___
 
