@@ -9,7 +9,7 @@
                 <Picker x:Name="StartTypePicker" Title="Start Type" PropertyChanged="ChangeStartType" />
             </ViewCell>
         </TableSection>
-        <TableSection Title="Logging">
+        <TableSection Title="Misc">
             <ViewCell>
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
                     <Label Text="User Id" HorizontalOptions="FillAndExpand" VerticalOptions="Center" />
