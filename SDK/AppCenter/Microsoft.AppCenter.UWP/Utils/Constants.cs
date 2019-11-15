@@ -10,8 +10,11 @@ namespace Microsoft.AppCenter.Utils
     /// </summary>
     public static partial class Constants
     {
+        // Local Data.
+        public static readonly string LocalAppData = global::Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+
         // File Storage.
-        public static readonly string AppCenterFilesDirectoryPath = Path.Combine(global::Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Microsoft", "AppCenter");
+        public static readonly string AppCenterFilesDirectoryPath = Path.Combine(LocalAppData, "Microsoft", "AppCenter");
 
         // The database file does not go in the main App Center files folder because it cannot be changed without migrating.
         public static readonly string AppCenterDatabasePath = "Microsoft.AppCenter.Storage";

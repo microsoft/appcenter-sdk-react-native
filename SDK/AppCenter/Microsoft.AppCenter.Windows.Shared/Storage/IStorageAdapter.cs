@@ -16,5 +16,6 @@ namespace Microsoft.AppCenter.Storage
         Task<int> CountAsync<T>(Expression<Func<T, bool>> pred) where T : new();
         Task<int> InsertAsync<T>(T val) where T : new();
         Task<int> DeleteAsync<T>(Expression<Func<T, bool>> pred) where T : new();
+        Task DeleteDatabaseFileAsync();
     }
 }

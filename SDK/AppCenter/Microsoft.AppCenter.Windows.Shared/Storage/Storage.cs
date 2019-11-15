@@ -275,7 +275,7 @@ namespace Microsoft.AppCenter.Storage
             _pendingDbIdentifierGroups.Add(GetFullIdentifier(channelName, batchId), ids);
             AppCenterLog.Debug(AppCenterLog.LogTag, message);
         }
-       
+
         private async Task InitializeDatabaseAsync()
         {
             try
@@ -349,12 +349,10 @@ namespace Microsoft.AppCenter.Storage
                 {
                     action();
                 }
-                catch (Exception e) when (!(e is StorageException))
+                catch (Exception e)
                 {
-                    // Tasks should already be throwing only storage exceptions, but in case any are missed, 
-                    // which has happened, catch them here and wrap in a storage exception. This will prevent 
-                    // the exception from being unobserved.
-                    throw new StorageException(e);
+                    // If we use await on a task that returns an exception, it makes the app crash, however, using the awaiter works...
+                    throw HandleStorageRelatedExceptionAsync(e).GetAwaiter().GetResult();
                 }
             });
             AddTaskToQueue(task);
@@ -369,16 +367,40 @@ namespace Microsoft.AppCenter.Storage
                 {
                     return action();
                 }
-                catch (Exception e) when (!(e is StorageException))
+                catch (Exception e)
                 {
-                    // Tasks should already be throwing only storage exceptions, but in case any are missed, 
-                    // which has happened, catch them here and wrap in a storage exception. This will prevent 
-                    // the exception from being unobserved.
-                    throw new StorageException(e);
+                    // And regarding the comment in other variant of this function, async lambda + await cannot work with a Func anyway.
+                    throw HandleStorageRelatedExceptionAsync(e).GetAwaiter().GetResult();
                 }
             });
             AddTaskToQueue(task);
             return task;
+        }
+
+        private async Task<Exception> HandleStorageRelatedExceptionAsync(Exception e)
+        {
+            // Check if database is corrupted, we have evidence (https://github.com/microsoft/appcenter-sdk-dotnet/issues/1184)
+            // that it's not always originated by a proper SQLiteException (which would then be converted to StorageException in StorageAdapter).
+            // If it was always the right type then the exception would not have been unobserved in that application before we changed the re-throw logic here.
+            // But the message is definitely "Corrupt" and thus unfortunately that is the only check we seem to be able to do as opposed to type/property checking.
+            if (e.Message == "Corrupt" || e.InnerException?.Message == "Corrupt")
+            {
+                AppCenterLog.Error(AppCenterLog.LogTag, "Database corruption detected, deleting the file and starting fresh...", e);
+                await _storageAdapter.DeleteDatabaseFileAsync().ConfigureAwait(false);
+                await InitializeDatabaseAsync().ConfigureAwait(false);
+            }
+
+            // Return exception to re-throw.
+            if (e is StorageException)
+            {
+                // This is the expected case, storage adapter already wraps exception as StorageException, so return as is.
+                return e;
+            }
+
+            // Tasks should already be throwing only storage exceptions, but in case any are missed, 
+            // which has happened (the Corrupt exception mentioned previously), catch them here and wrap in a storage exception. This will prevent 
+            // the exception from being unobserved.
+            return new StorageException(e);
         }
 
         private void AddTaskToQueue(Task task)

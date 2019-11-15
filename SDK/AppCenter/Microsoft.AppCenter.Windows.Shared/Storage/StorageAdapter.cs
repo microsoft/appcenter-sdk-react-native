@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.AppCenter.Utils;
+using Microsoft.AppCenter.Utils.Files;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.AppCenter.Utils.Files;
-using SQLite;
 
 namespace Microsoft.AppCenter.Storage
 {
@@ -34,7 +35,7 @@ namespace Microsoft.AppCenter.Storage
                 // In SQLite-net 1.5 return type was changed.
                 // Using reflection to accept newer library version.
                 var task = (Task)_dbConnection.GetType()
-                    .GetMethod("CreateTableAsync", new [] { typeof(CreateFlags) })
+                    .GetMethod("CreateTableAsync", new[] { typeof(CreateFlags) })
                     .MakeGenericMethod(typeof(T))
                     .Invoke(_dbConnection, new object[] { CreateFlags.None });
                 await task.ConfigureAwait(false);
@@ -131,6 +132,25 @@ namespace Microsoft.AppCenter.Storage
                 if (_dbConnection == null)
                 {
                     throw new StorageException("Cannot initialize SQLite library.");
+                }
+            });
+        }
+
+        public Task DeleteDatabaseFileAsync()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    // We can't delete the file and recreate without invalidating the connection pool.
+                    // This is explained in details at https://chrisriesgo.com/sqlite-net-async-connections-keep-it-clean/.
+                    SQLiteAsyncConnection.ResetPool();
+                    var prefix = _databaseDirectory == null ? Constants.LocalAppData : "";
+                    new File(System.IO.Path.Combine(prefix, _databasePath)).Delete();
+                }
+                catch (Exception e)
+                {
+                    throw new StorageException(e);
                 }
             });
         }
