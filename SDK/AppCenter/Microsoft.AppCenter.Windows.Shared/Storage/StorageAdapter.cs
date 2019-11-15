@@ -142,10 +142,8 @@ namespace Microsoft.AppCenter.Storage
             {
                 try
                 {
-                    // This is not ideal to call a static method as it could cause side effects on other part of the app/libs using SQLite.
-                    // However this is so far the only way we found to be able to reopen a new database with same file name after delete.
-                    // Disposing connection, then setting to null, then even running garbage collector is not enough to make table create succeed after reopen if
-                    // we don't call ResetPool.
+                    // We can't delete the file and recreate without invalidating the connection pool.
+                    // This is explained in details at https://chrisriesgo.com/sqlite-net-async-connections-keep-it-clean/.
                     SQLiteAsyncConnection.ResetPool();
                     var prefix = _databaseDirectory == null ? Constants.LocalAppData : "";
                     new File(System.IO.Path.Combine(prefix, _databasePath)).Delete();
