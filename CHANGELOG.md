@@ -7,6 +7,8 @@
 #### UWP/WPF/WinForms
 
 * **[Fix]** Fix an issue where internal SDK exceptions would sometimes be "unobserved" and would cause undefined behavior.
+* **[Fix]** Fix deleting the database file and opening a new one whenever corruption is detected.
+
 ___
 
 ## Version 2.6.1
