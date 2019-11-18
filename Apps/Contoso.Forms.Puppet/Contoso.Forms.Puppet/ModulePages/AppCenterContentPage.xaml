@@ -2,33 +2,14 @@
 <ContentPage Title="App Center" xmlns:local="clr-namespace:Contoso.Forms.Puppet" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Puppet.AppCenterContentPage">
     <TableView Intent="Form">
         <TableSection Title="AppCenter Settings">
-            <SwitchCell Text="App Center Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled" />
-            <ViewCell Tapped="LogLevelCellTapped">
-                <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
-                    <Label Text="Log Level" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                    <Label Text="Verbose" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="LogLevelLabel" />
-                </StackLayout>
-            </ViewCell>
+            <SwitchCell Text="AppCenter Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled" />
         </TableSection>
         <TableSection Title="Startup type">
             <ViewCell>
                 <Picker x:Name="StartTypePicker" Title="Start Type" PropertyChanged="ChangeStartType" />
             </ViewCell>
         </TableSection>
-        <TableSection Title="Logging">
-            <EntryCell Label="Log Message" x:Name="LogMessageEntryCell" />
-            <EntryCell Label="Log Tag" x:Name="LogTagEntryCell" />
-            <ViewCell Tapped="LogWriteLevelCellTapped">
-                <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
-                    <Label Text="Log Level" HorizontalOptions="StartAndExpand" VerticalOptions="Center" />
-                    <Label Text="{x:Static local:Constants.Verbose}" HorizontalOptions="EndAndExpand" VerticalOptions="Center" TextColor="Gray" x:Name="LogWriteLevelLabel" />
-                </StackLayout>
-            </ViewCell>
-            <ViewCell Tapped="WriteLog">
-                <Button Text="Write Log" InputTransparent="true" Clicked="WriteLog" />
-            </ViewCell>
-        </TableSection>
-        <TableSection Title="Logging">
+        <TableSection Title="Misc">
             <ViewCell>
                 <StackLayout Orientation="Horizontal" Margin="15,0,15,0">
                     <Label Text="User Id" HorizontalOptions="FillAndExpand" VerticalOptions="Center" />
