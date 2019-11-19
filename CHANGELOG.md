@@ -1,6 +1,12 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.6.2 （Under development）
+## Version 2.6.2（Under development）
+
+### App Center
+
+#### WPF/WinForms
+
+* **[Fix]** Fix an error on running same application twice and enabling App Center.
 
 ### App Center
 
