@@ -15,6 +15,10 @@
 
 * **[Fix]** Validate error attachment size to avoid server error or out of memory issues (using the documented limit which is 7MB).
 
+#### UWP
+
+* **[Fix]** Fix NuGet package dependency.
+
 ___
 
 ## Version 2.6.1
