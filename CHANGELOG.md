@@ -13,7 +13,7 @@
 
 #### UWP
 
-* **[Fix]** Fix Nuget package dependency
+* **[Fix]** Fix NuGet package dependency.
 
 ___
 
