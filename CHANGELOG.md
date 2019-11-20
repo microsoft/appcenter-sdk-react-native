@@ -41,12 +41,6 @@ ___
 
 ### App Center Crashes
 
-#### Android
-
-* **[Feature]** Add the Crash.trackError method to send handled errors (with optional properties and attachments).
-
-#### UWP/WPF/WinForms
-
 * **[Feature]** Support sending attachments in handled errors.
 
 ### App Center Distribute
