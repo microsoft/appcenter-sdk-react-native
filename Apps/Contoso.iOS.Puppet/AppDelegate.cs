@@ -53,7 +53,7 @@ namespace Contoso.iOS.Puppet
                 Window.RootViewController.PresentViewController(alertController, true, null);
                 _didTapNotification = false;
             };
-            Distribute.SetInstallUrl("http://install.appcenter-int.trafficmanager.net");
+            Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
             Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
             Distribute.DontCheckForUpdatesInDebug();
             Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
