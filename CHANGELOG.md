@@ -8,8 +8,6 @@
 
 * **[Fix]** Fix an error on running same application twice and enabling App Center.
 
-### App Center
-
 #### UWP/WPF/WinForms
 
 * **[Fix]** Fix an issue where internal SDK exceptions would sometimes be "unobserved" and would cause undefined behavior.
@@ -24,6 +22,12 @@
 #### UWP
 
 * **[Fix]** Fix NuGet package dependency.
+
+### AppCenterDistribute
+
+#### iOS
+
+* **[Fix]** Fix native link error when using Distribute module without Auth and building for real devices.
 
 ___
 
