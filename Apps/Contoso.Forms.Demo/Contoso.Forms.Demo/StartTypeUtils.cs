@@ -14,7 +14,7 @@ namespace Contoso.Forms.Demo
         Both
     };
 
-    class StartTypeUtils
+    public class StartTypeUtils
     {
         public const StartType DefaultStartType = StartType.AppCenter;
         private const string StartTypeSettingKey = "startType";

@@ -66,20 +66,20 @@ namespace Contoso.Forms.Demo
         {
             PropertyValueHolder.Children.Clear();
             PropertyValue.IsVisible = false;
-            switch ((PropertyTypes)PropertyType.SelectedIndex)
+            switch ((PropertyTypes) PropertyType.SelectedIndex)
             {
                 case PropertyTypes.Boolean:
                     PropertyValueHolder.Children.Add(new Switch());
                     PropertyValue.IsVisible = true;
                     break;
                 case PropertyTypes.Number:
-                    Editor NumberEditor = new Editor() { Keyboard = Keyboard.Numeric };
+                    Editor NumberEditor = new Editor() { Keyboard = Keyboard.Numeric};
                     NumberEditor.TextChanged += NumberEditor_TextChanged;
                     PropertyValueHolder.Children.Add(NumberEditor);
                     PropertyValue.IsVisible = true;
                     break;
                 case PropertyTypes.DateTime:
-                    StackLayout DateTimeLayout = new StackLayout() { Orientation = StackOrientation.Vertical };
+                    StackLayout DateTimeLayout = new StackLayout() { Orientation = StackOrientation.Vertical};
                     DatePicker = new DatePicker() { Date = DateTime.Now };
                     DateTimeLayout.Children.Add(DatePicker);
                     TimePicker = new TimePicker() { Time = DateTime.Now.TimeOfDay };

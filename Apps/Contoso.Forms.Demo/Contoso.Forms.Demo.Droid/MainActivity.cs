@@ -9,6 +9,8 @@ using Android.OS;
 using Com.Microsoft.Appcenter.Analytics;
 using Com.Microsoft.Appcenter.Analytics.Channel;
 using Com.Microsoft.Appcenter.Ingestion.Models;
+using HockeyApp.Android;
+using HockeyApp.Android.Utils;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
 using Xamarin.Forms;
@@ -37,6 +39,13 @@ namespace Contoso.Forms.Demo.Droid
 
             AndroidAnalytics.SetListener(new AndroidAnalyticsListener());
             LoadApplication(new App());
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            HockeyLog.LogLevel = 2;
+            CrashManager.Register(this, "760386e0bff149268f270f30fde3d6e4");
         }
 
         protected override void OnNewIntent(Intent intent)
