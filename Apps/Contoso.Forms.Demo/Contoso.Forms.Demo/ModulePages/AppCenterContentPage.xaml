@@ -2,7 +2,7 @@
 <ContentPage Title="App Center" xmlns:local="clr-namespace:Contoso.Forms.Demo" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Demo.AppCenterContentPage">
     <TableView Intent="Form">
         <TableSection Title="AppCenter Settings">
-            <SwitchCell Text="AppCenter Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled" />
+            <SwitchCell Text="AppCenter Enabled" On="true" x:Name="AppCenterEnabledSwitchCell" OnChanged="UpdateEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
         </TableSection>
         <TableSection Title="Startup type">
             <ViewCell>

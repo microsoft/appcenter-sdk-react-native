@@ -31,7 +31,7 @@ namespace Contoso.UWP.Demo
              TaskScheduler.UnobservedTaskException += (object sender, UnobservedTaskExceptionEventArgs args) =>
             {
                 // If you see this message while testing the app and if the stack trace is SDK related, we might have a bug in the SDK as we don't want to leak any exception from the SDK.
-                AppCenterLog.Error("AppCenterPuppet", "Unobserved exception observed=" + args.Observed, args.Exception);
+                AppCenterLog.Error("AppCenterDemo", "Unobserved exception observed=" + args.Observed, args.Exception);
             };
             CoreApplication.EnablePrelaunch(true);
             InitializeComponent();

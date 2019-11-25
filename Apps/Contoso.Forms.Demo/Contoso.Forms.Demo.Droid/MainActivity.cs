@@ -41,13 +41,6 @@ namespace Contoso.Forms.Demo.Droid
             LoadApplication(new App());
         }
 
-        protected override void OnResume()
-        {
-            base.OnResume();
-            HockeyLog.LogLevel = 2;
-            CrashManager.Register(this, "760386e0bff149268f270f30fde3d6e4");
-        }
-
         protected override void OnNewIntent(Intent intent)
         {
             base.OnNewIntent(intent);
