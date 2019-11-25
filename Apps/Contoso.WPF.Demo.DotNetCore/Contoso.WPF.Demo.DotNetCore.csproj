@@ -12,7 +12,6 @@
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="2.6.2" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.6.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Xamarin.Forms" Version="4.3.0.991211" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Resources.Designer.cs">
