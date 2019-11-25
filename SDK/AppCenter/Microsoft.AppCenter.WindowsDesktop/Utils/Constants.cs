@@ -21,16 +21,16 @@ namespace Microsoft.AppCenter.Utils
             {
                 if (AppCenterFilesDirectoryPathBacking == null)
                 {
-                    var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
                     // This shouldn't block in reality.
                     var installId = AppCenter.GetInstallIdAsync().Result.ToString();
-                    AppCenterFilesDirectoryPathBacking = Path.Combine(localAppData, "Microsoft", "AppCenter", installId);
+                    AppCenterFilesDirectoryPathBacking = Path.Combine(LocalAppData, "Microsoft", "AppCenter", installId);
                 }
                 return AppCenterFilesDirectoryPathBacking;
             }
         }
 
         public static string AppCenterDatabasePath = Path.Combine(AppCenterFilesDirectoryPath, "Logs.db");
+
+        public static string LocalAppData => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
     }
 }

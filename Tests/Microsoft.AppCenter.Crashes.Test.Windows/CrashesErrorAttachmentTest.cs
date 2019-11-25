@@ -175,7 +175,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog1.Id)).Returns(mockExceptionFile1);
             Mock.Get(ErrorLogHelper.Instance).Setup(instance => instance.InstanceGetStoredExceptionFile(expectedManagedErrorLog2.Id)).Returns(mockExceptionFile2);
 
-            // Create two valid and one invalid attachment.
+            // Create two valid and one invalid attachment and one huge attachment (discarded but otherwise valid).
             var invalidErrorAttachment1 = new ErrorAttachmentLog();
             var validErrorAttachmentWithoutDevice = new ErrorAttachmentLog()
             {
@@ -186,13 +186,15 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
             };
             var validErrorAttachment1 = GetValidErrorAttachmentLog();
             var validErrorAttachment2 = GetValidErrorAttachmentLog();
+            var hugeAttachment = GetValidErrorAttachmentLog();
+            hugeAttachment.Data = new byte[7 * 1024 * 1024 + 1];
 
             // Implement attachments callback.
             Crashes.GetErrorAttachments = errorReport =>
             {
                 if (errorReport.Id == expectedManagedErrorLog1.Id.ToString())
                 {
-                    return new List<ErrorAttachmentLog> { invalidErrorAttachment1, validErrorAttachmentWithoutDevice, validErrorAttachment1 };
+                    return new List<ErrorAttachmentLog> { invalidErrorAttachment1, validErrorAttachmentWithoutDevice, validErrorAttachment1, hugeAttachment };
                 }
                 return new List<ErrorAttachmentLog> { validErrorAttachment2 };
             };
@@ -203,6 +205,7 @@ namespace Microsoft.AppCenter.Crashes.Test.Windows
 
             // Verify all valid attachment logs has been queued to the channel, but not invalid one.
             _mockChannel.Verify(channel => channel.EnqueueAsync(invalidErrorAttachment1), Times.Never());
+            _mockChannel.Verify(channel => channel.EnqueueAsync(hugeAttachment), Times.Never());
             _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachmentWithoutDevice), Times.Once());
             _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachment1), Times.Once());
             _mockChannel.Verify(channel => channel.EnqueueAsync(validErrorAttachment2), Times.Once());

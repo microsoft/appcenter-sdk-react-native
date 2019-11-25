@@ -4,14 +4,12 @@
 using Microsoft.AppCenter.Channel;
 using Microsoft.AppCenter.Crashes.Ingestion.Models;
 using Microsoft.AppCenter.Crashes.Utils;
-using Microsoft.AppCenter.Ingestion.Models;
 using Microsoft.AppCenter.Ingestion.Models.Serialization;
 using Microsoft.AppCenter.Utils;
 using Microsoft.AppCenter.Windows.Shared.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,6 +22,8 @@ namespace Microsoft.AppCenter.Crashes
         private static Crashes _instanceField;
 
         private const int MaxAttachmentsPerCrash = 2;
+
+        private const int MaxAttachmentSize = 7 * 1024 * 1024;
 
         internal const string PrefKeyAlwaysSend = Constants.KeyPrefix + "CrashesAlwaysSend";
 
@@ -387,7 +387,7 @@ namespace Microsoft.AppCenter.Crashes
                 properties = PropertyValidator.ValidateProperties(properties, "HandledError");
                 var exceptionAndBinaries = ErrorLogHelper.CreateModelExceptionAndBinaries(exception);
                 var errorId = Guid.NewGuid();
-                var log = new HandledErrorLog(exception: exceptionAndBinaries.Exception, binaries:exceptionAndBinaries.Binaries, properties: properties, id: errorId, device: null, userId: UserIdContext.Instance.UserId);
+                var log = new HandledErrorLog(exception: exceptionAndBinaries.Exception, binaries: exceptionAndBinaries.Binaries, properties: properties, id: errorId, device: null, userId: UserIdContext.Instance.UserId);
                 Channel.EnqueueAsync(log);
                 SendErrorAttachmentsAsync(errorId, attachments);
             }
@@ -403,14 +403,18 @@ namespace Microsoft.AppCenter.Crashes
                 {
                     attachment.Id = Guid.NewGuid();
                     attachment.ErrorId = errorId;
-                    if (attachment.ValidatePropertiesForAttachment())
+                    if (!attachment.ValidatePropertiesForAttachment())
                     {
-                        ++totalErrorAttachments;
-                        tasks.Add(Channel.EnqueueAsync(attachment));
+                        AppCenterLog.Error(LogTag, "Not all required fields are present in ErrorAttachmentLog.");
+                    }
+                    else if (attachment.Data.Length > MaxAttachmentSize)
+                    {
+                        AppCenterLog.Error(LogTag, $"Discarding attachment with size above {MaxAttachmentSize} bytes: size={attachment.Data.Length}, fileName={attachment.FileName}.");
                     }
                     else
                     {
-                        AppCenterLog.Error(LogTag, "Not all required fields are present in ErrorAttachmentLog.");
+                        ++totalErrorAttachments;
+                        tasks.Add(Channel.EnqueueAsync(attachment));
                     }
                 }
                 else

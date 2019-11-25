@@ -20,6 +20,10 @@ namespace Microsoft.AppCenter.Utils.Files
         {
         }
 
+        public File(string filePath) : this(new FileInfo(filePath))
+        {
+        }
+
         internal File(FileInfo fileInfo)
         {
             _underlyingFileInfo = fileInfo;
