@@ -73,13 +73,13 @@ namespace Contoso.Forms.Demo
                     PropertyValue.IsVisible = true;
                     break;
                 case PropertyTypes.Number:
-                    Editor NumberEditor = new Editor() { Keyboard = Keyboard.Numeric};
+                    Editor NumberEditor = new Editor() { Keyboard = Keyboard.Numeric };
                     NumberEditor.TextChanged += NumberEditor_TextChanged;
                     PropertyValueHolder.Children.Add(NumberEditor);
                     PropertyValue.IsVisible = true;
                     break;
                 case PropertyTypes.DateTime:
-                    StackLayout DateTimeLayout = new StackLayout() { Orientation = StackOrientation.Vertical};
+                    StackLayout DateTimeLayout = new StackLayout() { Orientation = StackOrientation.Vertical };
                     DatePicker = new DatePicker() { Date = DateTime.Now };
                     DateTimeLayout.Children.Add(DatePicker);
                     TimePicker = new TimePicker() { Time = DateTime.Now.TimeOfDay };

@@ -9,8 +9,6 @@ using Android.OS;
 using Com.Microsoft.Appcenter.Analytics;
 using Com.Microsoft.Appcenter.Analytics.Channel;
 using Com.Microsoft.Appcenter.Ingestion.Models;
-using HockeyApp.Android;
-using HockeyApp.Android.Utils;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Push;
 using Xamarin.Forms;
