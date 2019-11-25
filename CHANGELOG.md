@@ -1,6 +1,6 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.6.2（Under development）
+## Version 2.6.2
 
 ### App Center
 
