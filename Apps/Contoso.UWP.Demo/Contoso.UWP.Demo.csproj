@@ -132,9 +132,6 @@
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="2.6.2" />
     <PackageReference Include="Microsoft.AppCenter.Push" Version="2.6.2" />
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="5.2.6" />
-    <PackageReference Include="Xamarin.Forms">
-      <Version>4.3.0.991211</Version>
-    </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

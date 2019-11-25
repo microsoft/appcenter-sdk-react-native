@@ -1,8 +1,7 @@
 ﻿{
   "dependencies": {
     "Microsoft.AppCenter.Analytics": "2.6.2",
-    "Microsoft.AppCenter.Crashes": "2.6.2",
-    "Xamarin.Forms": "4.3.0.991211"
+    "Microsoft.AppCenter.Crashes": "2.6.2"
   },
   "frameworks": {
     "net45": {}
