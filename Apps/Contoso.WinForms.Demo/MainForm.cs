@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -222,7 +223,6 @@ namespace Contoso.WinForms.Demo
         private void TrackException(Exception e)
         {
             Dictionary<string, string> properties = null;
-
             Crashes.TrackError(e, properties, Program.GetErrorAttachments().ToArray());
         }
 

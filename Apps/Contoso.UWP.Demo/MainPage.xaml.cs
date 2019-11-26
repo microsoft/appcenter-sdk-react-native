@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 
 using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using System;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -31,9 +33,47 @@ namespace Contoso.UWP.Demo
             Analytics.TrackEvent("Test");
         }
 
-        private void ThrowException(object sender, RoutedEventArgs e)
+        private async void ThrowException(object sender, RoutedEventArgs e)
         {
-            throw new Exception();
+            // Contoso.Forms.Puppet.UWP has more crash types and UI features to test properties.
+            // This app is just for smoke testing.
+            // Also this app uses min SDK version to 10240, which changes the .NET native generated code to have missing symbols for handled errors.
+            // Handled errors in the forms app never hit that case because we need to use v16299 there.
+            await GenerateComplexException(2);
+        }
+
+        private async Task GenerateComplexException(int loop)
+        {
+            if (loop == 0)
+            {
+                try
+                {
+                    try
+                    {
+                        throw new ArgumentException("Hello, I'm an inner exception!");
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new InvalidOperationException("Hola! I'm an outer exception!", ex);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (HandleExceptions.IsOn)
+                    {
+                        Crashes.TrackError(ex);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            else
+            {
+                await Task.Run(() => { });
+                await GenerateComplexException(loop - 1);
+            }
         }
     }
 }
