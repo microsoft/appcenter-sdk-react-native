@@ -47,6 +47,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCenterService.cs" />
@@ -57,9 +58,11 @@
     <Compile Include="Device.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="CustomProperties.cs" />
+    <Compile Include="DependencyManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Values\Strings.xml" />
