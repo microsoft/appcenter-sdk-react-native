@@ -9,7 +9,7 @@ namespace Microsoft.AppCenter
     {
         static void PlatformSetDependencies(System.Net.Http.HttpClient httpClient)
         {
-            AndroidDependencyManager.PlatformSetDependencies(httpClient);
+            AndroidDependencyManager.SetDependencies((Com.Microsoft.Appcenter.Http.IHttpClient)httpClient);
         }
     }
 }
