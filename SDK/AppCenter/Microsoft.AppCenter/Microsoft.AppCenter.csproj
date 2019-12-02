@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems" Label="Shared" />
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFramework>netstandard1.0</TargetFramework>
     <Optimize>true</Optimize>
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Product>Microsoft.AppCenter.Core</Product>
@@ -15,7 +15,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MSBuild.Sdk.Extras" Version="1.1.0" PrivateAssets="All" />
-    <PackageReference Include="System.Net.Http" Version="4.3.0" />
   </ItemGroup>
   <Import Project="$(MSBuildSDKExtrasTargets)" Condition="Exists('$(MSBuildSDKExtrasTargets)')" />
   <Target Name="GetPackagingOutputs" />
