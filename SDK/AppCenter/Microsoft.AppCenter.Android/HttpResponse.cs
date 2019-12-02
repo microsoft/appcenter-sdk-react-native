@@ -1,25 +1,29 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
+
 namespace Microsoft.AppCenter
 {
-    public partial class DependencyManager
+    public partial class HttpResponse
     {
-        internal DependencyManager()
-        {
-        }
-
-        static IHttpNetworkAdapter PlatformHttpNetworkAdapter
+        int PlatformStatusCode
         {
             get
             {
-                return null;
+
             }
 
             set
             {
-                // = value;
+
             }
+        }
+
+        string PlatformContent
+        {
+            get { }
+            set { }
         }
     }
 }

@@ -5,8 +5,10 @@ namespace Microsoft.AppCenter
 {
     public partial class DependencyManager
     {
-        static void PlatformSetDependencies(System.Net.Http.HttpClient httpClient)
+        internal DependencyManager()
         {
         }
+
+        static IHttpNetworkAdapter PlatformHttpNetworkAdapter { get; set; }
     }
 }

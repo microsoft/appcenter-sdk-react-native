@@ -17,5 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)AppCenter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CustomProperties.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DependencyManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HttpResponse.cs" />
   </ItemGroup>
 </Project>
