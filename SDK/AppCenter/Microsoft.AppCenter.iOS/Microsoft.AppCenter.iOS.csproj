@@ -52,6 +52,9 @@
     <Compile Include="AppCenterLog.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="CustomProperties.cs" />
+    <Compile Include="IHttpNetworkAdapter.cs" />
+    <Compile Include="DependencyManager.cs" />
+    <Compile Include="HttpResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.AppCenter.iOS.Bindings\Microsoft.AppCenter.iOS.Bindings.csproj">
