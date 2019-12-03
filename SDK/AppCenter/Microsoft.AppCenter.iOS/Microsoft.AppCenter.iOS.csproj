@@ -53,7 +53,7 @@
     <Compile Include="Device.cs" />
     <Compile Include="CustomProperties.cs" />
     <Compile Include="IHttpNetworkAdapter.cs" />
-    <Compile Include="DependencyConfigurator.cs" />
+    <Compile Include="DependencyConfiguration.cs" />
     <Compile Include="HttpResponse.cs" />
   </ItemGroup>
   <ItemGroup>

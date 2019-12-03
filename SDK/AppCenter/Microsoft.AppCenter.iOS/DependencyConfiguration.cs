@@ -3,7 +3,7 @@
 
 namespace Microsoft.AppCenter
 {
-    static partial class DependencyConfigurator
+    static partial class DependencyConfiguration
     {
         private static IHttpNetworkAdapter PlatformHttpNetworkAdapter { get; set; }
 

@@ -3,8 +3,8 @@
 
 namespace Microsoft.AppCenter
 {
-    internal static partial class DependencyConfigurator
-    {
+    internal static partial class DependencyConfiguration
+	{
         internal static IHttpNetworkAdapter HttpNetworkAdapter { get; } = PlatformHttpNetworkAdapter;
 
         internal static void SetDependencies(IHttpNetworkAdapter httpNetworkAdapter = null)

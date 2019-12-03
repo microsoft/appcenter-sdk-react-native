@@ -57,7 +57,7 @@
     <Compile Include="Device.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="CustomProperties.cs" />
-    <Compile Include="DependencyConfigurator.cs" />
+    <Compile Include="DependencyConfiguration.cs" />
     <Compile Include="IHttpNetworkAdapter.cs" />
     <Compile Include="HttpResponse.cs" />
   </ItemGroup>
