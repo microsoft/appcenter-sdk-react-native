@@ -3,15 +3,14 @@
 
 namespace Microsoft.AppCenter
 {
-    static partial class DependencyManager
+    static partial class DependencyConfigurator
     {
         private static IHttpNetworkAdapter PlatformHttpNetworkAdapter { get; set; }
 
         internal static void PlatformSetDependencies(IHttpNetworkAdapter httpNetworkAdapter = null)
         {
             PlatformHttpNetworkAdapter = httpNetworkAdapter;
-            // Call Android native setDependencies
+            // Call iOS native setDependencies
         }
-
     }
 }
