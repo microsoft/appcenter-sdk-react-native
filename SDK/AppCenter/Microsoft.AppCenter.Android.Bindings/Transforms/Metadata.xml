@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-    <!-- Keep ServiceCall and ServiceCallback. -->
-    <remove-node path="/api/package[@name='com.microsoft.appcenter.http']/class[not(starts-with(@name, 'ServiceCall'))]" />
+    <!-- Keep ServiceCall, ServiceCallback and HttpResponse. -->
+    <remove-node path="/api/package[@name='com.microsoft.appcenter.http']/class[not(starts-with(@name, 'ServiceCall') or starts-with(@name, 'HttpResponse'))]" />
     <remove-node path="/api/package[@name='com.microsoft.appcenter.channel']/class[starts-with(@name, 'DefaultChannel')]" />
     <remove-node path="/api/package[@name='com.microsoft.appcenter.ingestion.models']/class[contains(@name, 'Log')]/field[@name='TYPE']" />
     <remove-node path="/api/package[@name='com.microsoft.appcenter.persistence']" />
     <remove-node path="/api/package[@name='com.microsoft.appcenter.utils.storage']" />
     <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='AppCenter']" name="managedName">AndroidAppCenter</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='CustomProperties']" name="managedName">AndroidCustomProperties</attr>
-    <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='DependencyManager']" name="managedName">AndroidDependencyManager</attr>
+    <attr path="/api/package[@name='com.microsoft.appcenter']/class[@name='DependencyConfiguration']" name="managedName">AndroidDependencyConfiguration</attr>
+    <attr path="/api/package[@name='com.microsoft.appcenter.http']/class[@name='HttpResponse']" name="managedName">AndroidHttpResponse</attr>
 </metadata>

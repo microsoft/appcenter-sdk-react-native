@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Com.Microsoft.Appcenter;
+
 namespace Microsoft.AppCenter
 {
     static partial class DependencyConfigurator
@@ -10,7 +12,7 @@ namespace Microsoft.AppCenter
         internal static void PlatformSetDependencies(IHttpNetworkAdapter httpNetworkAdapter = null)
         {
             PlatformHttpNetworkAdapter = httpNetworkAdapter;
-            // Call Android native setDependencies
+            AndroidDependencyConfiguration.HttpClient = httpNetworkAdapter;
         }
     }
 }

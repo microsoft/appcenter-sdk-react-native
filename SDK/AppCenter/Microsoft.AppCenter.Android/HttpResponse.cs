@@ -3,25 +3,17 @@
 
 namespace Microsoft.AppCenter
 {
+    using AndroidHttpResponse = Com.Microsoft.Appcenter.Http.AndroidHttpResponse;
+
     internal partial class HttpResponse
     {
-        private int PlatformStatusCode
+        private int PlatformStatusCode { get; set; }
+        private string PlatformContent { get; set;}
+
+        internal HttpResponse(AndroidHttpResponse httpResponse)
         {
-            get
-            {
-
-            }
-
-            set
-            {
-
-            }
-        }
-
-        private string PlatformContent
-        {
-            get { }
-            set { }
+            PlatformStatusCode = httpResponse.StatusCode;
+            PlatformContent = httpResponse.Payload;
         }
     }
 }
