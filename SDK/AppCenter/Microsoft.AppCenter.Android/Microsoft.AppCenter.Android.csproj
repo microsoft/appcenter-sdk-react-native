@@ -60,6 +60,7 @@
     <Compile Include="DependencyConfiguration.cs" />
     <Compile Include="IHttpNetworkAdapter.cs" />
     <Compile Include="HttpResponse.cs" />
+    <Compile Include="AndroidHttpClientAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
