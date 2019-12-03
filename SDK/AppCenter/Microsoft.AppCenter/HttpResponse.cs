@@ -3,7 +3,7 @@
 
 namespace Microsoft.AppCenter
 {
-    public partial class HttpResponse
+    internal partial class HttpResponse
     {
         int PlatformStatusCode { get; set; }
         string PlatformContent { get; set; }

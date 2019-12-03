@@ -3,23 +3,15 @@
 
 namespace Microsoft.AppCenter
 {
-    public partial class DependencyManager
+    static partial class DependencyManager
     {
-        internal DependencyManager()
+        private static IHttpNetworkAdapter PlatformHttpNetworkAdapter { get; set; }
+
+        internal static void PlatformSetDependencies(IHttpNetworkAdapter httpNetworkAdapter = null)
         {
+            PlatformHttpNetworkAdapter = httpNetworkAdapter;
+            // Call Android native setDependencies
         }
 
-        static IHttpNetworkAdapter PlatformHttpNetworkAdapter
-        {
-            get
-            {
-                return null;
-            }
-
-            set
-            {
-                // = value;
-            }
-        }
     }
 }

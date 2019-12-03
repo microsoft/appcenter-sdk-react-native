@@ -3,15 +3,15 @@
 
 namespace Microsoft.AppCenter
 {
-    public partial class HttpResponse
+    internal partial class HttpResponse
     {
-        public int StatusCode
+        internal int StatusCode
         {
             get => PlatformStatusCode;
             set => PlatformStatusCode = value;
         }
 
-        public string Content
+        internal string Content
         {
             get => PlatformContent;
             set => PlatformContent = value;

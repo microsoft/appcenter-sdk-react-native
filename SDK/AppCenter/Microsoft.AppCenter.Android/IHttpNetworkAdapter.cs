@@ -5,8 +5,8 @@ using System;
 
 namespace Microsoft.AppCenter
 {
-    public interface IHttpNetworkAdapter : IDisposable
+    internal interface IHttpNetworkAdapter : IDisposable
     {
-        /* This interface should remain empty */
+        // This interface should remain empty.
     }
 }

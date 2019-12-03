@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter
 {
-    public interface IHttpNetworkAdapter : IDisposable
+    internal interface IHttpNetworkAdapter : IDisposable
     {
         Task<HttpResponse> SendAsync(string uri, string method, IDictionary<string, string> headers, string jsonContent, CancellationToken cancellationToken);
     }

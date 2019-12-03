@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using System;
-
 namespace Microsoft.AppCenter
 {
-    public partial class HttpResponse
+    internal partial class HttpResponse
     {
-        int PlatformStatusCode
+        private int PlatformStatusCode
         {
             get
             {
@@ -20,7 +18,7 @@ namespace Microsoft.AppCenter
             }
         }
 
-        string PlatformContent
+        private string PlatformContent
         {
             get { }
             set { }
