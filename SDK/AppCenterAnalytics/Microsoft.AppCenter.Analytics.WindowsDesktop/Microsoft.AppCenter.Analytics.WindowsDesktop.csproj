@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.0;net45</TargetFrameworks>
     <RootNamespace>Microsoft.AppCenter.Analytics</RootNamespace>
-    <Version>2.6.2-SNAPSHOT</Version>
+    <Version>2.6.3-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <FileVersion>2.6.2.0</FileVersion>
+    <FileVersion>2.6.3.0</FileVersion>
     <AssemblyName>Microsoft.AppCenter.Analytics</AssemblyName>
     <DocumentationFile>bin\Microsoft.AppCenter.Analytics.xml</DocumentationFile>
   </PropertyGroup>
