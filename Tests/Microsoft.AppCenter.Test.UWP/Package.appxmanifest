@@ -7,7 +7,7 @@
 
   <Identity Name="da6d3d34-876e-488c-9342-7a7e4daa110b"
             Publisher="CN=Alexander Chocron"
-            Version="2.6.2.0" />
+            Version="2.6.3.0" />
 
   <mp:PhoneIdentity PhoneProductId="da6d3d34-876e-488c-9342-7a7e4daa110b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

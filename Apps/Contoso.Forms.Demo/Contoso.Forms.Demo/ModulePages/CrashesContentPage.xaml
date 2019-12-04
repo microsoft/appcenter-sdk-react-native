@@ -2,7 +2,7 @@
 <ContentPage Title="Crashes" xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Contoso.Forms.Demo.CrashesContentPage">
     <TableView Intent="Form">
         <TableSection Title="Crashes Settings">
-            <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled" OnColor="{StaticResource SwitchCellOnColor}"  />
+            <SwitchCell Text="Crashes Enabled" On="true" x:Name="CrashesEnabledSwitchCell" OnChanged="UpdateEnabled" OnColor="{StaticResource SwitchCellOnColor}" />
             <SwitchCell Text="Handle Exceptions" On="false" x:Name="HandleExceptionsSwitchCell" OnColor="{StaticResource SwitchCellOnColor}" />
             <ViewCell Tapped="TextAttachment">
                 <Button Text="Text Attachment" x:Name="TextAttachmentButton" Clicked="TextAttachment" />

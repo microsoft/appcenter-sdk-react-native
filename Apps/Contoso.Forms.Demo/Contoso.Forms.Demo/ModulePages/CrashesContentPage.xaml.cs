@@ -241,8 +241,7 @@ namespace Contoso.Forms.Demo
             }
             Properties.Clear();
             RefreshPropCount();
-
-            Crashes.TrackError(e, properties , App.GetErrorAttachments().ToArray());
+            Crashes.TrackError(e, properties, App.GetErrorAttachments().ToArray());
         }
 
         void ClearCrashUserConfirmation(object sender, EventArgs e)

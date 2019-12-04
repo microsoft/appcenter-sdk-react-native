@@ -66,7 +66,7 @@ namespace Contoso.Forms.Demo
         {
             PropertyValueHolder.Children.Clear();
             PropertyValue.IsVisible = false;
-            switch ((PropertyTypes)PropertyType.SelectedIndex)
+            switch ((PropertyTypes) PropertyType.SelectedIndex)
             {
                 case PropertyTypes.Boolean:
                     PropertyValueHolder.Children.Add(new Switch());

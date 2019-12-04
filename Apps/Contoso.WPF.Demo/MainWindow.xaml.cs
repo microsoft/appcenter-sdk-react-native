@@ -53,13 +53,11 @@ namespace Contoso.WPF.Demo
             textAttachments = Settings.Default.TextErrorAttachments;
             TextAttachmentTextBox.Text = textAttachments;
             FileAttachmentLabel.Content = fileAttachments;
-
             if (!string.IsNullOrEmpty(Settings.Default.CountryCode))
             {
                 CountryCodeEnableCheckbox.IsChecked = true;
                 CountryCodeText.Text = Settings.Default.CountryCode;
             }
-
             if (!string.IsNullOrEmpty(Settings.Default.UserId))
             {
                 UserId.Text = Settings.Default.UserId;
@@ -186,28 +184,6 @@ namespace Contoso.WPF.Demo
             Settings.Default.Save();
         }
 
-        private void UserId_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                HandleUserIdChange();
-            }
-        }
-
-        private void UserId_LostFocus(object sender, RoutedEventArgs e)
-        {
-            HandleUserIdChange();
-        }
-
-        private void HandleUserIdChange()
-        {
-            var userId = UserId.Text;
-            var text = string.IsNullOrEmpty(userId) ? null : userId;
-            AppCenter.SetUserId(text);
-            Settings.Default.UserId = text;
-            Settings.Default.Save();
-        }
-
         #region Crash
 
         private void CrashesEnabled_Checked(object sender, RoutedEventArgs e)
@@ -313,7 +289,6 @@ namespace Contoso.WPF.Demo
             {
                 properties = null;
             }
-
             Crashes.TrackError(e, properties, App.GetErrorAttachments().ToArray());
         }
 
@@ -330,5 +305,27 @@ namespace Contoso.WPF.Demo
         }
 
         #endregion
+        
+        private void UserId_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                HandleUserIdChange();
+            }
+        }
+
+        private void UserId_LostFocus(object sender, RoutedEventArgs e)
+        {
+            HandleUserIdChange();
+        }
+
+        private void HandleUserIdChange()
+        {
+            var userId = UserId.Text;
+            var text = string.IsNullOrEmpty(userId) ? null : userId;
+            AppCenter.SetUserId(text);
+            Settings.Default.UserId = text;
+            Settings.Default.Save();
+        }
     }
 }
