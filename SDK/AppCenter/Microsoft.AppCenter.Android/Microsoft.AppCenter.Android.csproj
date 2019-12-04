@@ -58,7 +58,6 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="CustomProperties.cs" />
     <Compile Include="DependencyConfiguration.cs" />
-    <Compile Include="IHttpNetworkAdapter.cs" />
     <Compile Include="HttpResponse.cs" />
     <Compile Include="AndroidHttpClientAdapter.cs" />
   </ItemGroup>
@@ -74,6 +73,7 @@
       <Name>Microsoft.AppCenter.Android.Bindings</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\Microsoft.AppCenter.Shared.Xamarin\Microsoft.AppCenter.Shared.Xamarin.projitems" Label="Shared" Condition="Exists('..\Microsoft.AppCenter.Shared.Xamarin\Microsoft.AppCenter.Shared.Xamarin.projitems')" />
   <Import Project="..\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems" Label="Shared" Condition="Exists('..\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

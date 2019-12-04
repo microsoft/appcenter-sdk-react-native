@@ -5,10 +5,10 @@ namespace Microsoft.AppCenter
 {
     internal static partial class DependencyConfiguration
     {
-        private static IHttpNetworkAdapter PlatformHttpNetworkAdapter { get; set; }
-
-        internal static void PlatformSetDependencies(IHttpNetworkAdapter httpNetworkAdapter = null)
+        internal static IHttpNetworkAdapter HttpNetworkAdapter
         {
+            get => PlatformHttpNetworkAdapter;
+            set => PlatformHttpNetworkAdapter = value;
         }
     }
 }

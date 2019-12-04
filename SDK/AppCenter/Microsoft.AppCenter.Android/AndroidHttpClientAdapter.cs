@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.Threading;
 using Com.Microsoft.Appcenter.Http;
 
 namespace Microsoft.AppCenter
@@ -17,18 +18,50 @@ namespace Microsoft.AppCenter
 
         public IServiceCall CallAsync(string uri, string method, IDictionary<string, string> headers, IAndroidHttpClientCallTemplate callTemplate, IServiceCallback serviceCallback)
         {
-            _httpNetworkAdapter.
-            throw new System.NotImplementedException();
+            var jsonContent = callTemplate?.BuildRequestBody();
+            var cancellationTokenSource = new CancellationTokenSource();
+            _httpNetworkAdapter.SendAsync(uri, method, headers, jsonContent, cancellationTokenSource.Token).ContinueWith(t =>
+            {
+                var innerException = t.Exception?.InnerException;
+                if (innerException is HttpException)
+                {
+                    var response = (innerException as HttpException).HttpResponse;
+                    serviceCallback.OnCallFailed(new AndroidHttpException(new AndroidHttpResponse(response.StatusCode, response.Content)));
+                }
+                else if (innerException != null)
+                {
+                    serviceCallback.OnCallFailed(new Java.Lang.Exception(innerException.Message));
+                }
+                else
+                {
+                    var response = t.Result;
+                    serviceCallback.OnCallSucceeded(new AndroidHttpResponse(response.StatusCode, response.Content));
+                }
+            });
+            return new ServiceCall(cancellationTokenSource);
         }
 
         public void Close()
         {
-            throw new System.NotImplementedException();
         }
 
         public void Reopen()
         {
-            throw new System.NotImplementedException();
+        }
+    }
+
+    internal class ServiceCall : Java.Lang.Object, IServiceCall
+    {
+        private readonly CancellationTokenSource _cancellationTokenSource;
+
+        internal ServiceCall(CancellationTokenSource cancellationTokenSource)
+        {
+            _cancellationTokenSource = cancellationTokenSource;
+        }
+
+        public void Cancel()
+        {
+            _cancellationTokenSource.Cancel();
         }
     }
 }

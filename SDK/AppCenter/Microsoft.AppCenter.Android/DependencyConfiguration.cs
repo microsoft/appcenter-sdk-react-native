@@ -7,14 +7,14 @@ namespace Microsoft.AppCenter
 {
     static partial class DependencyConfiguration
     {
+        private static IHttpNetworkAdapter _httpNetworkAdapter;
         private static IHttpNetworkAdapter PlatformHttpNetworkAdapter
         {
-            get
-            {
-
-            }
+            get => _httpNetworkAdapter;
             set
             {
+                AndroidDependencyConfiguration.HttpClient = new AndroidHttpClientAdapter(value);
+                _httpNetworkAdapter = value;
             }
         }
     }
