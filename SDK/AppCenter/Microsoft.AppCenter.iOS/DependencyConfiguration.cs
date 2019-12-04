@@ -5,12 +5,15 @@ namespace Microsoft.AppCenter
 {
     static partial class DependencyConfiguration
     {
-        private static IHttpNetworkAdapter PlatformHttpNetworkAdapter { get; set; }
-
-        internal static void PlatformSetDependencies(IHttpNetworkAdapter httpNetworkAdapter = null)
+        private static IHttpNetworkAdapter _httpNetworkAdapter;
+        private static IHttpNetworkAdapter PlatformHttpNetworkAdapter
         {
-            PlatformHttpNetworkAdapter = httpNetworkAdapter;
-            // Call iOS native setDependencies
+            get => _httpNetworkAdapter;
+            set
+            {
+                // TODO: Implement iOS.
+                _httpNetworkAdapter = value;
+            }
         }
     }
 }
