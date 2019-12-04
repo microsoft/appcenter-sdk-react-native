@@ -131,6 +131,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.iO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.iOS", "SDK\AppCenterData\Microsoft.AppCenter.Data.iOS\Microsoft.AppCenter.Data.iOS.csproj", "{E71F3053-056C-4381-9638-048ED73BDFF6}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Shared.Xamarin", "SDK\AppCenter\Microsoft.AppCenter.Shared.Xamarin\Microsoft.AppCenter.Shared.Xamarin.shproj", "{7076E711-FE72-4EC0-8335-045EEFC1100C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{119c1730-e109-4bc9-aa89-9dca2c50bfd5}*SharedItemsImports = 4
@@ -2425,6 +2427,7 @@ Global
 		{715F7D40-4134-419A-9D63-DBE846F9A708} = {0E51300A-4C69-401B-BEFC-3EE6AEF693E6}
 		{0DBD983F-BD8F-4BD6-B08A-AD28457D35EF} = {0E51300A-4C69-401B-BEFC-3EE6AEF693E6}
 		{E71F3053-056C-4381-9638-048ED73BDFF6} = {0E51300A-4C69-401B-BEFC-3EE6AEF693E6}
+		{7076E711-FE72-4EC0-8335-045EEFC1100C} = {13744327-9529-490B-A970-06A1D3144117}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{7076E711-FE72-4EC0-8335-045EEFC1100C}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Microsoft.AppCenter.Shared.Xamarin</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)DependencyConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HttpResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IHttpNetworkAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HttpException.cs" />
+  </ItemGroup>
+</Project>
