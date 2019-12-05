@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Microsoft.AppCenter.Test.Functional
 {
@@ -38,6 +39,7 @@ namespace Microsoft.AppCenter.Test.Functional
                 Content = _expectedContent
             };
 
+            var obj = JsonConvert.DeserializeObject(jsonContent);
             if (string.IsNullOrEmpty(_expectedLogType) || jsonContent.Contains(_expectedLogType))
             {
                 Uri = uri;
