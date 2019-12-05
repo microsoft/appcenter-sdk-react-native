@@ -17,7 +17,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
         public async Task TrackEventWithoutPropertiesAsync()
         {
             // Set up HttpNetworkAdapter.
-            var httpNetworkAdapter = new HttpNetworkAdapter();
+            var httpNetworkAdapter = new HttpNetworkAdapter(expectedLogType: "event");
             DependencyConfiguration.HttpNetworkAdapter = httpNetworkAdapter;
 
             // Start App Center.
