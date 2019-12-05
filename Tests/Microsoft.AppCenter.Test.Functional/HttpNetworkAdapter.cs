@@ -11,6 +11,7 @@ namespace Microsoft.AppCenter.Test.Functional
     {
         private readonly int _expectedStatusCode;
         private readonly string _expectedContent;
+        private readonly string _expectedLogType;
 
         private readonly TaskCompletionSource<HttpResponse> _taskCompletionSource = new TaskCompletionSource<HttpResponse>();
 
@@ -21,10 +22,11 @@ namespace Microsoft.AppCenter.Test.Functional
         internal IDictionary<string, string> Headers { get; private set; }
         internal string JsonContent { get; private set; }
 
-        internal HttpNetworkAdapter(int expectedStatusCode = 200, string expectedContent = "")
+        internal HttpNetworkAdapter(int expectedStatusCode = 200, string expectedContent = "", string expectedLogType = null)
         {
             _expectedStatusCode = expectedStatusCode;
             _expectedContent = expectedContent;
+            _expectedLogType = expectedLogType;
             HttpResponseTask = _taskCompletionSource.Task;
         }
 
@@ -36,7 +38,7 @@ namespace Microsoft.AppCenter.Test.Functional
                 Content = _expectedContent
             };
 
-            if (jsonContent.Contains("event"))
+            if (string.IsNullOrEmpty(_expectedLogType) || jsonContent.Contains(_expectedLogType))
             {
                 Uri = uri;
                 Method = method;
