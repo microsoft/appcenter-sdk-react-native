@@ -58,7 +58,6 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="CustomProperties.cs" />
     <Compile Include="DependencyConfiguration.cs" />
-    <Compile Include="HttpResponse.cs" />
     <Compile Include="AndroidHttpClientAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
