@@ -36,6 +36,8 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             Assert.Equal("POST", httpNetworkAdapter.Method);
             var actualEventName = (string)httpNetworkAdapter.JsonContent["logs"][0]["name"];
             Assert.Equal("Hello World", actualEventName);
+            var typedProperties = httpNetworkAdapter.JsonContent["logs"][0]["typedProperties"];
+            Assert.Null(typedProperties);
         }
 
         [Fact]
