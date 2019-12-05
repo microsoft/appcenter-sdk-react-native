@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.AppCenter.Test.Functional
 {
@@ -21,7 +22,7 @@ namespace Microsoft.AppCenter.Test.Functional
         internal string Uri { get; private set; }
         internal string Method { get; private set; }
         internal IDictionary<string, string> Headers { get; private set; }
-        internal string JsonContent { get; private set; }
+        internal JObject JsonContent { get; private set; }
 
         internal HttpNetworkAdapter(int expectedStatusCode = 200, string expectedContent = "", string expectedLogType = null)
         {
@@ -39,13 +40,13 @@ namespace Microsoft.AppCenter.Test.Functional
                 Content = _expectedContent
             };
 
-            var obj = JsonConvert.DeserializeObject(jsonContent);
-            if (string.IsNullOrEmpty(_expectedLogType) || jsonContent.Contains(_expectedLogType))
+            var jsonLogContainer = JObject.Parse(jsonContent);
+            if (string.IsNullOrEmpty(_expectedLogType) || jsonLogContainer.SelectTokens($"$.logs[?(@.type == '{_expectedLogType}')]").ToList().Count > 0)
             {
                 Uri = uri;
                 Method = method;
                 Headers = headers;
-                JsonContent = jsonContent;
+                JsonContent = jsonLogContainer;
 
                 _taskCompletionSource.SetResult(response);
                 return HttpResponseTask;

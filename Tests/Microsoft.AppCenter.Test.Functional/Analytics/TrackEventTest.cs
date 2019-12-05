@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -30,8 +31,9 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             await httpNetworkAdapter.HttpResponseTask;
 
             // Verify.
-            // TODO: Complete this verification for the test with JSON content.
             Assert.Equal("POST", httpNetworkAdapter.Method);
+            var events = httpNetworkAdapter.JsonContent.SelectTokens("$.logs[?(@.name == 'Hello World')]").ToList();
+            Assert.Equal(1, events?.Count);
         }
     }
 }
