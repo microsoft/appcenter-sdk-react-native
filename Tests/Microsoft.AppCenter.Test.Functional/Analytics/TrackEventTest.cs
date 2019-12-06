@@ -15,8 +15,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
     {
         private readonly string _appSecret = Guid.NewGuid().ToString();
 
-        // TODO: The SDK couldn't be started multiple times, disable this test temporarily.
-        //[Fact]
+        [Fact]
         public async Task TrackEventWithoutPropertiesAsync()
         {
             // Set up HttpNetworkAdapter.
@@ -24,6 +23,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             DependencyConfiguration.HttpNetworkAdapter = httpNetworkAdapter;
 
             // Start App Center.
+            AppCenter.UnsetInstance();
             AppCenter.Start(_appSecret, typeof(Analytics));
 
             // Test TrackEvent.
@@ -48,6 +48,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             DependencyConfiguration.HttpNetworkAdapter = httpNetworkAdapter;
 
             // Start App Center.
+            AppCenter.UnsetInstance();
             AppCenter.Start(_appSecret, typeof(Analytics));
 
             // Build event properties.
