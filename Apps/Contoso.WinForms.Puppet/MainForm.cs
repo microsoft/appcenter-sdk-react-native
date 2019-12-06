@@ -20,19 +20,10 @@ namespace Contoso.WinForms.Puppet
         private string fileAttachments;
         private string textAttachments;
 
-        private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions = new Dictionary<LogLevel, Action<string, string>> {
-            { LogLevel.Verbose, AppCenterLog.Verbose },
-            { LogLevel.Debug, AppCenterLog.Debug },
-            { LogLevel.Info, AppCenterLog.Info },
-            { LogLevel.Warn, AppCenterLog.Warn },
-            { LogLevel.Error, AppCenterLog.Error }
-        };
-
         public MainForm()
         {
             InitializeComponent();
             UpdateState();
-            AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
             fileAttachments = Settings.Default.FileErrorAttachments;
             textAttachments = Settings.Default.TextErrorAttachments;
             TextAttachmentTextBox.Text = textAttachments;
@@ -59,26 +50,9 @@ namespace Contoso.WinForms.Puppet
             Analytics.SetEnabledAsync(AnalyticsEnabled.Checked).Wait();
         }
 
-        private void AppCenterLogLevel_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            AppCenter.LogLevel = (LogLevel)AppCenterLogLevel.SelectedIndex;
-        }
-
         private void Tabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateState();
-        }
-
-        private void WriteLog_Click(object sender, EventArgs e)
-        {
-            if (LogLevelValue.SelectedIndex == -1)
-            {
-                return;
-            }
-            var level = (LogLevel)LogLevelValue.SelectedIndex;
-            var tag = LogTag.Text;
-            var message = LogMessage.Text;
-            LogFunctions[level](tag, message);
         }
 
         private void TrackEvent_Click(object sender, EventArgs e)
