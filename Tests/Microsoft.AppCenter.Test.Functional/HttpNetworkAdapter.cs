@@ -23,6 +23,7 @@ namespace Microsoft.AppCenter.Test.Functional
         internal string Method { get; private set; }
         internal IDictionary<string, string> Headers { get; private set; }
         internal JObject JsonContent { get; private set; }
+        internal int CallCount { get; private set; }
 
         internal HttpNetworkAdapter(int expectedStatusCode = 200, string expectedContent = "", string expectedLogType = null)
         {
@@ -39,7 +40,6 @@ namespace Microsoft.AppCenter.Test.Functional
                 StatusCode = _expectedStatusCode,
                 Content = _expectedContent
             };
-
             var jsonLogContainer = JObject.Parse(jsonContent);
             if (string.IsNullOrEmpty(_expectedLogType) || jsonLogContainer.SelectTokens($"$.logs[?(@.type == '{_expectedLogType}')]").ToList().Count > 0)
             {
@@ -47,8 +47,11 @@ namespace Microsoft.AppCenter.Test.Functional
                 Method = method;
                 Headers = headers;
                 JsonContent = jsonLogContainer;
-
-                _taskCompletionSource.SetResult(response);
+                lock (this)
+                {
+                    CallCount++;
+                }
+                _taskCompletionSource.TrySetResult(response);
                 return HttpResponseTask;
             }
             return Task.FromResult(response);

@@ -38,6 +38,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             Assert.Equal("Hello World", actualEventName);
             var typedProperties = httpNetworkAdapter.JsonContent["logs"][0]["typedProperties"];
             Assert.Null(typedProperties);
+            Assert.Equal(1, httpNetworkAdapter.CallCount);
         }
 
         [Fact]
@@ -75,6 +76,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             {
                 Assert.NotNull(typedProperties.SelectToken($"[?(@.name == 'Key{i}' && @.value == 'Value{i}')]"));
             }
+            Assert.Equal(1, httpNetworkAdapter.CallCount);
         }
     }
 }
