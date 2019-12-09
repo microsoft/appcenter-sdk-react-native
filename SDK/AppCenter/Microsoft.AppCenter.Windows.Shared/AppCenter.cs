@@ -185,6 +185,11 @@ namespace Microsoft.AppCenter
             }
         }
 
+        internal static void PlatformUnsetInstance()
+        {
+            Instance = null;
+        }
+
         static bool PlatformConfigured
         {
             get

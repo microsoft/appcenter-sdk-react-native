@@ -7,6 +7,7 @@ using Microsoft.AppCenter.Test.Functional;
 using UIKit;
 using Xunit.Runner;
 using Xunit.Runners.ResultChannels;
+using Xunit.Sdk;
 
 namespace Contoso.Test.Functional.iOS
 {
@@ -28,7 +29,12 @@ namespace Contoso.Test.Functional.iOS
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             // Register tests from shared library.
-            AddTestAssembly(typeof(Config).Assembly);
+            // TODO remove the 2 following lines once iOS bindings are ready and working (and remove TemporaryTest.cs)
+            AddExecutionAssembly(typeof(ExtensibilityPointFactory).Assembly);
+            AddTestAssembly(typeof(TemporaryTest).Assembly);
+
+            // TODO uncomment this when iOS is ready to be tested.
+            //AddTestAssembly(typeof(Config).Assembly);
 
             // Try to send results to the host via a socket for CI.
             try
