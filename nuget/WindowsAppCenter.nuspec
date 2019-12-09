@@ -31,6 +31,12 @@
         <dependency id="System.Configuration.ConfigurationManager" version="4.6.0"/>
       </group>
     </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Configuration" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Deployment" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Management" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Net.Http" targetFramework="net45" />
+    </frameworkAssemblies>
   </metadata>
   <files>
 
