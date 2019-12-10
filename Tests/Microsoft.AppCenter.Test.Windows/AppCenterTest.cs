@@ -658,7 +658,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify empty pairs are ignored
+        /// Verify empty pairs are ignored.
         /// </summary>
         [TestMethod]
         public void ParseValidSecretSurroundedWithInvalidPairs()
@@ -671,7 +671,7 @@ namespace Microsoft.AppCenter.Test
         }
 
         /// <summary>
-        /// Verify last value is used on duplicate key
+        /// Verify last value is used on duplicate key.
         /// </summary>
         [TestMethod]
         public void ParseSecretUsesLastValueOnDuplicateKey()
