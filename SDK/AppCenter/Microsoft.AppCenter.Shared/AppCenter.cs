@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Microsoft.AppCenter
@@ -18,6 +18,13 @@ namespace Microsoft.AppCenter
         const string TargetKeyName = "target";
         const string TargetKeyNameUpper = "Target";
         const string AppSecretKeyName = "appsecret";
+        const string SecretsPattern = @"(?:([^;=]+)=([^;=]+));?";
+
+#if NETSTANDARD
+        static readonly Regex _secretsRegex = new Regex(SecretsPattern);
+#else
+        static readonly Regex _secretsRegex = new Regex(SecretsPattern, RegexOptions.Compiled);
+#endif
 
         // Gets the first instance of an app sceret and/or target token corresponding to the given platform name, or returns the string 
         // as-is if no identifier can be found. Logs a message if no identifiers can be found.
@@ -37,13 +44,15 @@ namespace Microsoft.AppCenter
                 return secrets;
             }
 
-            // Grouping by the name of the key.
-            var secretsGroup = secrets.Split(SecretDelimiter.ToCharArray())
-                                           .Select(value => value.Split(PlatformKeyValueDelimiter.ToCharArray()))
-                                           .GroupBy(p => p[0] ?? "");
+            // Iterate over matching patterns.
+            var secretsDictionary = new Dictionary<string, string>();
+            var matches = _secretsRegex.Matches(secrets);
+            foreach (Match match in matches)
+            {
+                secretsDictionary[match.Groups[1].Value] = match.Groups[2].Value;
+            }
 
-            // Create a dictionary choosing the last secret value for each key. If the key has more than one secret value then select the last of them.
-            var secretsDictionary = secretsGroup.ToDictionary(pair => pair.Key, pair => pair.Last().Last());
+            // Extract the secrets for the current platform.
             if (secretsDictionary.ContainsKey(TargetKeyName))
             {
                 AppCenterLog.Debug(AppCenterLog.LogTag, "Found 'target=' identifier in the secret; using as-is.");
