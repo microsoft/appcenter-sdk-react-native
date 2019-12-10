@@ -2,6 +2,12 @@
 
 ## Version 2.6.3 （Under development）
 
+### AppCenter
+
+#### Android
+
+* **[Fix]** Fix `MissingMethodException` of `String.Split()` with some build configurations (a bug introduced in version `2.5.0`).
+
 ___
 
 ## Version 2.6.2
