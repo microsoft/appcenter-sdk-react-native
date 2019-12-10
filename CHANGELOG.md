@@ -6,7 +6,7 @@
 
 #### Android
 
-* **[Fix]** Fix `MissingMethodException` that could occur with some build configurations (bug introduced in version 2.5.0).
+* **[Fix]** Fix `MissingMethodException` that could occur with some build configurations (a bug introduced in version `2.5.0`).
 
 ___
 
