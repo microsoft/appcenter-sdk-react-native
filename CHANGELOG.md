@@ -2,6 +2,12 @@
 
 ## Version 2.6.3 （Under development）
 
+### AppCenter
+
+#### Android
+
+* **[Fix]** Fix `MissingMethodException` that could occur with some build configurations (bug introduced in version 2.5.0).
+
 ___
 
 ## Version 2.6.2
