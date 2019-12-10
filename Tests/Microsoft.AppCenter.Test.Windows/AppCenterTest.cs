@@ -657,6 +657,9 @@ namespace Microsoft.AppCenter.Test
             Assert.IsFalse(AppCenter.Configured);
         }
 
+        /// <summary>
+        /// Verify empty pairs are ignored
+        /// </summary>
         [TestMethod]
         public void ParseValidSecretSurroundedWithInvalidPairs()
         {
@@ -667,6 +670,9 @@ namespace Microsoft.AppCenter.Test
             Assert.AreEqual(appSecret, parsedSecret);
         }
 
+        /// <summary>
+        /// Verify last value is used on duplicate key
+        /// </summary>
         [TestMethod]
         public void ParseSecretUsesLastValueOnDuplicateKey()
         {
