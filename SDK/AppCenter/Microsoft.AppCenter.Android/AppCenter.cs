@@ -161,7 +161,11 @@ namespace Microsoft.AppCenter
             if (monoAssemblyVersionAttibutes?.Length > 0)
             {
                 xamarinAndroidVersion = monoAssemblyVersionAttibutes[0].InformationalVersion;
-                xamarinAndroidVersion = xamarinAndroidVersion?.Split(';')[0];
+                var indexOfVersion = xamarinAndroidVersion?.IndexOf(';') ?? -1;
+                if (indexOfVersion >= 0)
+                {
+                    xamarinAndroidVersion = xamarinAndroidVersion?.Substring(0, indexOfVersion + 1);
+                }
             }
             var wrapperSdk = new AndroidWrapperSdk
             {
