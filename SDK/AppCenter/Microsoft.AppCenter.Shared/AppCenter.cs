@@ -47,7 +47,7 @@ namespace Microsoft.AppCenter
             // Iterate over matching patterns.
             var secretsDictionary = new Dictionary<string, string>();
             var matches = _secretsRegex.Matches(secrets);
-            foreach (var match in matches)
+            foreach (Match match in matches)
             {
                 secretsDictionary[match.Groups[1].Value] = match.Groups[2].Value;
             }
