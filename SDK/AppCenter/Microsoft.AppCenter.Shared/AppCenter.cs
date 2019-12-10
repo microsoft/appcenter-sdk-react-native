@@ -18,7 +18,7 @@ namespace Microsoft.AppCenter
         const string TargetKeyName = "target";
         const string TargetKeyNameUpper = "Target";
         const string AppSecretKeyName = "appsecret";
-        const string SecretsPattern = @"(?:([^;=]+)=([^;=]+));?";
+        const string SecretsPattern = @"([^;=]+)=([^;=]+);?";
 
 #if NETSTANDARD
         static readonly Regex _secretsRegex = new Regex(SecretsPattern);
