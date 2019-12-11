@@ -1,5 +1,28 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.6.1
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Improve log messages for errors when it failed to read/write auth token history.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Improvement]**  Report additional details for macOS exceptions thrown on the main thread.
+* **[Fix]** Fix sending crashes if an application is launched in background.
+* **[Fix]** Validate error attachment size to avoid server error or out of memory issues (using the documented limit which is 7MB).
+* **[Fix]** Fix an issue where crash might contain incorrect data if two consecutive crashes occurred in a previous version of the application.
+
+#### Android
+
+* **[Fix]** Validate error attachment size to avoid server error or out of memory issues (using the documented limit which is 7MB).
+
+___
+
 ## Version 2.6.0
 
 ### App Center
@@ -21,6 +44,7 @@
 ### App Center Data
 
 * **[Fix]** Fix typescript compiler errors related to const enum usage.
+
 ___
 
 ## Version 2.5.0
