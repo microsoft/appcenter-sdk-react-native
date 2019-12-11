@@ -22,8 +22,9 @@
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net45'">
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
 </Project>

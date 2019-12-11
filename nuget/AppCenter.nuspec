@@ -36,6 +36,12 @@
       <group targetFramework="Xamarin.iOS10">
       </group>
     </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Configuration" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Deployment" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Management" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Net.Http" targetFramework="net45" />
+    </frameworkAssemblies>
     <version>$version$</version>
   </metadata>
 
