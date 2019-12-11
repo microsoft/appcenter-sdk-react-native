@@ -4,6 +4,10 @@
 
 ### AppCenter
 
+#### WPF/WinForms
+
+* **[Fix]** Use explicit dependencies for .NET Framework assemblies to avoid runtime errors in some applications.
+
 #### UWP/WPF/WinForms
 
 * **[Fix]** Fix sending remaining pending logs after sending 3 concurrent HTTP requests.
