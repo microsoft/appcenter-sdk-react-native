@@ -4,6 +4,10 @@
 
 ### AppCenter
 
+#### UWP/WPF/WinForms
+
+* **[Fix]** Fix sending remaining pending logs after sending 3 concurrent HTTP requests.
+
 #### Android
 
 * **[Fix]** Fix `MissingMethodException` of `String.Split()` with some build configurations (a bug introduced in version `2.5.0`).
