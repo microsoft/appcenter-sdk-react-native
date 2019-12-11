@@ -352,16 +352,18 @@ namespace Microsoft.AppCenter.Test.Channel
         {
             SetChannelWithTimeSpan(TimeSpan.Zero);
             
-            var calls = new[] { new ServiceCall(), new ServiceCall(), new ServiceCall() };
+            var firstCalls = new[] { new ServiceCall(), new ServiceCall(), new ServiceCall() };
+            var lastCall = new ServiceCall();
             var setup = _mockIngestion
                 .SetupSequence(ingestion => ingestion.Call(
                     It.IsAny<string>(),
                     It.IsAny<Guid>(),
                     It.IsAny<IList<Log>>()));
-            foreach (var call in calls)
+            foreach (var call in firstCalls)
             {
                 setup.Returns(call);
             }
+            setup.Returns(lastCall);
             
             // Send in separate batches
             await _channel.EnqueueAsync(new TestLog());
@@ -371,12 +373,21 @@ namespace Microsoft.AppCenter.Test.Channel
             await _channel.EnqueueAsync(new TestLog());
             VerifySendingLog(1);
 
+            // An extra call is on hold as reaching maximum capacity of concurrent http calls.
+            await _channel.EnqueueAsync(new TestLog());
+            VerifySendingLog(0);
+
             // Complete all
-            foreach (var call in calls)
+            foreach (var call in firstCalls)
             {
                 call.SetResult("test");
             }
             VerifySentLog(3);
+
+            // Check sending all logs unlocks the last call.
+            VerifySendingLog(1);
+            lastCall.SetResult("test");
+            VerifySentLog(1);
         }
 
         /// <summary>

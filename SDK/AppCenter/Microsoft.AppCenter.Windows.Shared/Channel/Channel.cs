@@ -505,6 +505,7 @@ namespace Microsoft.AppCenter.Channel
             {
                 AppCenterLog.Warn(AppCenterLog.LogTag, $"Could not delete logs for batch {batchId}", e);
             }
+            CheckPendingLogs(state);
         }
 
         private void HandleSendingFailure(State state, string batchId, Exception exception)
