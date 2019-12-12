@@ -1,8 +1,8 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.6.3 （Under development）
+## Version 2.6.3
 
-### AppCenter
+### App Center
 
 #### WPF/WinForms
 
@@ -15,6 +15,36 @@
 #### Android
 
 * **[Fix]** Fix `MissingMethodException` of `String.Split()` with some build configurations (a bug introduced in version `2.5.0`).
+
+#### iOS
+
+* **[Fix]** Improve log messages for errors when it failed to read/write auth token history.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Validate error attachment size to avoid server error or out of memory issues (using the documented limit which is 7MB).
+
+#### iOS
+
+* **[Improvement]** Report additional details for macOS exceptions thrown on the main thread.
+* **[Fix]** Fix sending crashes if an application is launched in background.
+* **[Fix]** Validate error attachment size to avoid server error or out of memory issues (using the documented limit which is 7MB).
+* **[Fix]** Fix an issue where crash might contain incorrect data if two consecutive crashes occurred in a previous version of the application.
+
+### App Center Auth
+
+#### iOS
+
+* **[Fix]** Fix build warnings when adding App Center Auth framework in project.
+
+### App Center Distribute
+
+#### iOS
+
+* **[Fix]** Fix missing alert dialogs in apps that use iOS 13's new UIScene API (multiple scenes are not yet supported).
+* **[Fix]** Fix an issue where users would sometimes be prompted multiple times to sign in with App Center.
 
 ___
 
