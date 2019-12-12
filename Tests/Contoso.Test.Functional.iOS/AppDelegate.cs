@@ -29,7 +29,7 @@ namespace Contoso.Test.Functional.iOS
         public override bool FinishedLaunching(UIApplication uiApplication, NSDictionary launchOptions)
         {
             // Register tests from shared library.
-            AddExecutionAssembly(typeof(ExtensibilityPointFactory).Assembly);
+            //AddExecutionAssembly(typeof(ExtensibilityPointFactory).Assembly);
             AddTestAssembly(typeof(Config).Assembly);
 
             // Try to send results to the host via a socket for CI.
