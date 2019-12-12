@@ -7,9 +7,9 @@
     <Copyright>Microsoft Corp. All rights reserved.</Copyright>
     <Product>Microsoft.AppCenter.Rum</Product>
     <Company>Microsoft Corporation</Company>
-    <Version>2.6.2-SNAPSHOT</Version>
+    <Version>2.6.3-SNAPSHOT</Version>
     <AssemblyVersion>0.0.0.0</AssemblyVersion>
-    <FileVersion>2.6.2.0</FileVersion>
+    <FileVersion>2.6.3.0</FileVersion>
     <AssemblyTitle>Microsoft.AppCenter.Rum</AssemblyTitle>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\Microsoft.AppCenter.Rum.xml</DocumentationFile>
     <Description />

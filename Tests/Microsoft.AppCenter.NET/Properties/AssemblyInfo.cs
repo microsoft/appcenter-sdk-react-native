@@ -36,8 +36,8 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("2.6.2.0")]
-[assembly: AssemblyInformationalVersion("2.6.2-SNAPSHOT")]
+[assembly: AssemblyFileVersion("2.6.3.0")]
+[assembly: AssemblyInformationalVersion("2.6.3-SNAPSHOT")]
 
 [assembly: InternalsVisibleTo("Microsoft.AppCenter.Test.Windows")]
 [assembly: InternalsVisibleTo("Microsoft.AppCenter.Analytics.Test.Windows")]

@@ -546,7 +546,7 @@ namespace Microsoft.AppCenter.Test
             var targetToken = Guid.NewGuid().ToString();
             var platformId = "ios";
             var secrets = $"{platformId}={appSecret};{platformId}Target={targetToken}";
-            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, invalidePlatformIdentifier);
+            AppCenter.GetSecretAndTargetForPlatform(secrets, invalidePlatformIdentifier);
         }
 
         /// <summary>
@@ -560,7 +560,7 @@ namespace Microsoft.AppCenter.Test
             var targetToken = string.Empty;
             var platformId = "ios";
             var secrets = $"{platformId}={appSecret};{platformId}Target={targetToken}";
-            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
+            AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
         }
 
         /// <summary>
@@ -614,7 +614,7 @@ namespace Microsoft.AppCenter.Test
         {
             var appSecret = Guid.NewGuid().ToString();
             var platformId = "uwp";
-            var secrets = $"{platformId}={appSecret}; ios=anotherstring";
+            var secrets = $"{platformId}={appSecret};ios=anotherstring";
             var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
             Assert.AreEqual(appSecret, parsedSecret);
         }
@@ -655,6 +655,32 @@ namespace Microsoft.AppCenter.Test
             AppCenter.Configure(secrets);
 
             Assert.IsFalse(AppCenter.Configured);
+        }
+
+        /// <summary>
+        /// Verify empty pairs are ignored.
+        /// </summary>
+        [TestMethod]
+        public void ParseValidSecretSurroundedWithInvalidPairs()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var platformId = "uwp";
+            var secrets = $"=;{platformId}={appSecret};=";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
+            Assert.AreEqual(appSecret, parsedSecret);
+        }
+
+        /// <summary>
+        /// Verify last value is used on duplicate key.
+        /// </summary>
+        [TestMethod]
+        public void ParseSecretUsesLastValueOnDuplicateKey()
+        {
+            var appSecret = Guid.NewGuid().ToString();
+            var platformId = "uwp";
+            var secrets = $"{platformId}={Guid.NewGuid()};{platformId}={appSecret}";
+            var parsedSecret = AppCenter.GetSecretAndTargetForPlatform(secrets, platformId);
+            Assert.AreEqual(appSecret, parsedSecret);
         }
 
         /// <summary>

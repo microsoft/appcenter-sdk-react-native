@@ -25,18 +25,7 @@ namespace Contoso.WPF.Puppet.DotNetCore
     public partial class MainWindow
     {
         private string fileAttachments;
-
         private string textAttachments;
-
-        private static readonly IDictionary<LogLevel, Action<string, string>> LogFunctions =
-            new Dictionary<LogLevel, Action<string, string>>
-            {
-                {Microsoft.AppCenter.LogLevel.Verbose, AppCenterLog.Verbose},
-                {Microsoft.AppCenter.LogLevel.Debug, AppCenterLog.Debug},
-                {Microsoft.AppCenter.LogLevel.Info, AppCenterLog.Info},
-                {Microsoft.AppCenter.LogLevel.Warn, AppCenterLog.Warn},
-                {Microsoft.AppCenter.LogLevel.Error, AppCenterLog.Error}
-            };
 
         public ObservableCollection<Property> EventPropertiesSource = new ObservableCollection<Property>();
         public ObservableCollection<Property> ErrorPropertiesSource = new ObservableCollection<Property>();
@@ -45,7 +34,6 @@ namespace Contoso.WPF.Puppet.DotNetCore
         {
             InitializeComponent();
             UpdateState();
-            AppCenterLogLevel.SelectedIndex = (int)AppCenter.LogLevel;
             EventProperties.ItemsSource = EventPropertiesSource;
             ErrorProperties.ItemsSource = ErrorPropertiesSource;
             fileAttachments = Settings.Default.FileErrorAttachments;
@@ -86,27 +74,9 @@ namespace Contoso.WPF.Puppet.DotNetCore
             Analytics.SetEnabledAsync(AnalyticsEnabled.IsChecked.Value).Wait();
         }
 
-        private void AppCenterLogLevel_SelectionChanged(object sender, RoutedEventArgs e)
-        {
-            AppCenter.LogLevel = (LogLevel)AppCenterLogLevel.SelectedIndex;
-        }
-
         private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             UpdateState();
-        }
-
-        private void WriteLog_Click(object sender, RoutedEventArgs e)
-        {
-            if (LogLevel.SelectedIndex == -1)
-            {
-                return;
-            }
-
-            var level = (LogLevel)LogLevel.SelectedIndex;
-            var tag = LogTag.Text;
-            var message = LogMessage.Text;
-            LogFunctions[level](tag, message);
         }
 
         private void TrackEvent_Click(object sender, RoutedEventArgs e)
