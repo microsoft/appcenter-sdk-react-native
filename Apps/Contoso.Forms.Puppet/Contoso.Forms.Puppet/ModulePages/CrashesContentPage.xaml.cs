@@ -43,8 +43,7 @@ namespace Contoso.Forms.Puppet
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
-            CrashesEnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
+            RefreshEnabled();
             var hasLowMemoryWarning = await Crashes.HasReceivedMemoryWarningInLastSessionAsync();
             MemoryWarningLabel.Text = hasLowMemoryWarning ? "Yes" : "No";
 
@@ -72,6 +71,7 @@ namespace Contoso.Forms.Puppet
         async void UpdateEnabled(object sender, ToggledEventArgs e)
         {
             await Crashes.SetEnabledAsync(e.Value);
+            RefreshEnabled();
         }
 
         async void TextAttachment(object sender, EventArgs e)
@@ -114,6 +114,12 @@ namespace Contoso.Forms.Puppet
         async void PropertiesCellTapped(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new PropertiesContentPage(Properties));
+        }
+
+        async void RefreshEnabled()
+        {
+            CrashesEnabledSwitchCell.On = await Crashes.IsEnabledAsync();
+            CrashesEnabledSwitchCell.IsEnabled = await AppCenter.IsEnabledAsync();
         }
 
         void RefreshPropCount()
