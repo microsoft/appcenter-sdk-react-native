@@ -21,7 +21,6 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             // Set up HttpNetworkAdapter.
             var httpNetworkAdapter = new HttpNetworkAdapter(expectedLogType: "event");
             DependencyConfiguration.HttpNetworkAdapter = httpNetworkAdapter;
-            Assert.Same(httpNetworkAdapter, DependencyConfiguration.HttpNetworkAdapter);
 
             // Start App Center.
             AppCenter.UnsetInstance();
