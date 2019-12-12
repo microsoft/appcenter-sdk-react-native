@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -58,5 +59,9 @@ namespace Microsoft.AppCenter.Analytics
         //{
         //    throw new NotImplementedException();
         //}
+
+        internal static void UnsetInstance()
+        {
+        }
     }
 }

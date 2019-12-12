@@ -21,9 +21,11 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             // Set up HttpNetworkAdapter.
             var httpNetworkAdapter = new HttpNetworkAdapter(expectedLogType: "event");
             DependencyConfiguration.HttpNetworkAdapter = httpNetworkAdapter;
+            Assert.Same(httpNetworkAdapter, DependencyConfiguration.HttpNetworkAdapter);
 
             // Start App Center.
             AppCenter.UnsetInstance();
+            Analytics.UnsetInstance();
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.Start(_appSecret, typeof(Analytics));
 
@@ -35,7 +37,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
 
             // Verify.
             Assert.Equal("POST", httpNetworkAdapter.Method);
-            var actualEventName = (string)httpNetworkAdapter.JsonContent["logs"][0]["name"];
+            var actualEventName = (string)httpNetworkAdapter.JsonContent.SelectTokens($"$.logs[?(@.type == 'event')]").ToList()[0]["name"];
             Assert.Equal("Hello World", actualEventName);
             var typedProperties = httpNetworkAdapter.JsonContent["logs"][0]["typedProperties"];
             Assert.Null(typedProperties);
@@ -51,6 +53,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
 
             // Start App Center.
             AppCenter.UnsetInstance();
+            Analytics.UnsetInstance();
             AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.Start(_appSecret, typeof(Analytics));
 
@@ -70,9 +73,9 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
 
             // Verify.
             Assert.Equal("POST", httpNetworkAdapter.Method);
-            var actualEventName = (string)httpNetworkAdapter.JsonContent["logs"][0]["name"];
+            var actualEventName = (string)httpNetworkAdapter.JsonContent.SelectTokens($"$.logs[?(@.type == 'event')]").ToList()[0]["name"];
             Assert.Equal("Hello World", actualEventName);
-            var typedProperties = httpNetworkAdapter.JsonContent["logs"][0]["typedProperties"];
+            var typedProperties = httpNetworkAdapter.JsonContent.SelectTokens($"$.logs[?(@.type == 'event')]").ToList()[0]["typedProperties"];
             Assert.Equal(3, typedProperties.Count());
             for (var i = 1; i <= 3; i++)
             {
