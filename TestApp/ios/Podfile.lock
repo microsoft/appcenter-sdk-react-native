@@ -305,9 +305,8 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/microsoft/mobile-center-sdk-specs:
+  https://github.com/CocoaPods/Specs.git:
     - AppCenter
-  trunk:
     - boost-for-react-native
 
 EXTERNAL SOURCES:
