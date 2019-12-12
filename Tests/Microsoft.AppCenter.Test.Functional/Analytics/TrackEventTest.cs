@@ -24,6 +24,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
 
             // Start App Center.
             AppCenter.UnsetInstance();
+            AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.Start(_appSecret, typeof(Analytics));
 
             // Test TrackEvent.
@@ -50,6 +51,7 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
 
             // Start App Center.
             AppCenter.UnsetInstance();
+            AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.Start(_appSecret, typeof(Analytics));
 
             // Build event properties.

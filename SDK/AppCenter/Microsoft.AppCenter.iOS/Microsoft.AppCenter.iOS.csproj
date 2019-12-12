@@ -53,6 +53,7 @@
     <Compile Include="Device.cs" />
     <Compile Include="CustomProperties.cs" />
     <Compile Include="DependencyConfiguration.cs" />
+    <Compile Include="IosHttpClientAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.AppCenter.iOS.Bindings\Microsoft.AppCenter.iOS.Bindings.csproj">

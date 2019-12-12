@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using Microsoft.AppCenter.iOS.Bindings;
+
 namespace Microsoft.AppCenter
 {
     static partial class DependencyConfiguration
@@ -11,7 +13,7 @@ namespace Microsoft.AppCenter
             get => _httpNetworkAdapter;
             set
             {
-                // TODO: Implement iOS.
+                MSDependencyConfiguration.HttpClient = new IosHttpClientAdapter(value);
                 _httpNetworkAdapter = value;
             }
         }
