@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.Threading;
 using Foundation;
 using Microsoft.AppCenter.iOS.Bindings;
 
@@ -23,7 +24,7 @@ namespace Microsoft.AppCenter
             {
                 managedHeaders[header.Key.ToString()] = header.Value.ToString();
             }
-            _httpNetworkAdapter.SendAsync(url.ToString(), method, managedHeaders, data.ToString(), default).ContinueWith(t =>
+            _httpNetworkAdapter.SendAsync(url.ToString(), method, managedHeaders, data.ToString(), CancellationToken.None).ContinueWith(t =>
             {
                 var innerException = t.Exception?.InnerException;
                 if (innerException is HttpException)
