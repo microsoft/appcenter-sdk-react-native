@@ -4,6 +4,9 @@
     <remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models.one.json']" />
     <remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models']/class[contains(@name, 'Log')]/field[@name='TYPE']" />
     <remove-node path="/api/package[@name='com.microsoft.appcenter.analytics.ingestion.models.one']/class[contains(@name, 'Log')]/field[@name='TYPE']" />
+    <add-node path="/api/package[@name='com.microsoft.appcenter.analytics']/class[@name='Analytics']">
+        <method name="unsetInstance" return="void" abstract="false" native="false" synchronized="true" static="true" final="false" deprecated="not deprecated" visibility="public"/>
+    </add-node>
     <attr path="/api/package[@name='com.microsoft.appcenter.analytics']/class[@name='Analytics']" name="managedName">AndroidAnalytics</attr>
     <attr path="/api/package[@name='com.microsoft.appcenter.analytics']/class[@name='Analytics']/method[@name='setListener']" name="visibility">public</attr>
 </metadata>

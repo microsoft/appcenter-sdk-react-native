@@ -79,7 +79,7 @@ namespace Microsoft.AppCenter.Analytics
 
         internal static void UnsetInstance()
         {
-            // TODO
+            AndroidAnalytics.UnsetInstance();
         }
     }
 }
