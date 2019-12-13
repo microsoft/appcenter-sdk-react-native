@@ -34,8 +34,7 @@ namespace Microsoft.AppCenter
                 }
                 else if (innerException != null)
                 {
-                    var userInfo = new NSDictionary();
-                    userInfo["stackTrace"] = new NSString(innerException.ToString());
+                    var userInfo = NSDictionary.FromObjectAndKey(new NSString("stackTrace"), new NSString(innerException.ToString()));
                     completionHandler(null, null, new NSError(new NSString(".NET SDK"), 1, userInfo));
                 }
                 else
