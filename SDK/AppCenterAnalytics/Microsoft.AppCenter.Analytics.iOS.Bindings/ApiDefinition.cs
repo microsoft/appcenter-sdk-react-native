@@ -34,6 +34,11 @@ namespace Microsoft.AppCenter.Analytics.iOS.Bindings
         [Export("setDelegate:")]
         void SetDelegate([NullAllowed] MSAnalyticsDelegate analyticsDelegate);
 
+        // + (void)resetSharedInstance
+        [Static]
+        [Export("resetSharedInstance")]
+        void ResetSharedInstance();
+
         //// +(void)trackPage:(NSString *)pageName;
         //[Static]
         //[Export("trackPage:")]

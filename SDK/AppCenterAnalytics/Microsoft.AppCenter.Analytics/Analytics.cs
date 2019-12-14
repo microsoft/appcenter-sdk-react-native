@@ -58,5 +58,9 @@ namespace Microsoft.AppCenter.Analytics
         //{
         //    throw new NotImplementedException();
         //}
+
+        internal static void UnsetInstance()
+        {
+        }
     }
 }

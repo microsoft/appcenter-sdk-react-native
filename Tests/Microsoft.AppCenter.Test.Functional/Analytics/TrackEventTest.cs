@@ -24,6 +24,8 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
 
             // Start App Center.
             AppCenter.UnsetInstance();
+            Analytics.UnsetInstance();
+            AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.Start(_appSecret, typeof(Analytics));
 
             // Test TrackEvent.
@@ -32,11 +34,14 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             // Wait for processing event.
             await httpNetworkAdapter.HttpResponseTask;
 
-            // Verify.
+            // Verify. The start session can be in same batch as the event HTTP request so look for it inside.
             Assert.Equal("POST", httpNetworkAdapter.Method);
-            var actualEventName = (string)httpNetworkAdapter.JsonContent["logs"][0]["name"];
+            var eventLogs = httpNetworkAdapter.JsonContent.SelectTokens($"$.logs[?(@.type == 'event')]").ToList();
+            Assert.Equal(1, eventLogs.Count());
+            var eventLog = eventLogs[0];
+            var actualEventName = (string)eventLog["name"];
             Assert.Equal("Hello World", actualEventName);
-            var typedProperties = httpNetworkAdapter.JsonContent["logs"][0]["typedProperties"];
+            var typedProperties = eventLog["typedProperties"];
             Assert.Null(typedProperties);
             Assert.Equal(1, httpNetworkAdapter.CallCount);
         }
@@ -50,6 +55,8 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
 
             // Start App Center.
             AppCenter.UnsetInstance();
+            Analytics.UnsetInstance();
+            AppCenter.LogLevel = LogLevel.Verbose;
             AppCenter.Start(_appSecret, typeof(Analytics));
 
             // Build event properties.
@@ -66,11 +73,15 @@ namespace Microsoft.AppCenter.Test.Functional.Analytics
             // Wait for processing event.
             await httpNetworkAdapter.HttpResponseTask;
 
-            // Verify.
+            // Verify. The start session can be in same batch as the event HTTP request so look for it inside.
             Assert.Equal("POST", httpNetworkAdapter.Method);
-            var actualEventName = (string)httpNetworkAdapter.JsonContent["logs"][0]["name"];
+            var eventLogs = httpNetworkAdapter.JsonContent.SelectTokens($"$.logs[?(@.type == 'event')]").ToList();
+            Assert.Equal(1, eventLogs.Count());
+            var eventLog = eventLogs[0];
+            var actualEventName = (string)eventLog["name"];
             Assert.Equal("Hello World", actualEventName);
-            var typedProperties = httpNetworkAdapter.JsonContent["logs"][0]["typedProperties"];
+            var typedProperties = eventLog["typedProperties"];
+            Assert.NotNull(typedProperties);
             Assert.Equal(3, typedProperties.Count());
             for (var i = 1; i <= 3; i++)
             {

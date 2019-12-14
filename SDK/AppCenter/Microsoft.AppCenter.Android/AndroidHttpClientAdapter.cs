@@ -18,6 +18,7 @@ namespace Microsoft.AppCenter
 
         public IServiceCall CallAsync(string uri, string method, IDictionary<string, string> headers, IAndroidHttpClientCallTemplate callTemplate, IServiceCallback serviceCallback)
         {
+            callTemplate?.OnBeforeCalling(new Java.Net.URL(uri), headers);
             var jsonContent = callTemplate?.BuildRequestBody();
             var cancellationTokenSource = new CancellationTokenSource();
             _httpNetworkAdapter.SendAsync(uri, method, headers, jsonContent, cancellationTokenSource.Token).ContinueWith(t =>

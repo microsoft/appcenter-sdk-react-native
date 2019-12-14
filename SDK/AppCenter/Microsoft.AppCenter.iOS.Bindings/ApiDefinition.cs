@@ -162,6 +162,11 @@ namespace Microsoft.AppCenter.iOS.Bindings
         [Export("sharedInstance")]
         MSAppCenter SharedInstance();
 
+        // +(void)resetSharedInstance
+        [Static]
+        [Export("resetSharedInstance")]
+        void ResetSharedInstance();
+
         // +(void)configureWithAppSecret:(NSString *)appSecret;
         [Static]
         [Export("configureWithAppSecret:")]
@@ -251,8 +256,8 @@ namespace Microsoft.AppCenter.iOS.Bindings
         [Static]
         [Export("setEnabled:")]
         void SetEnabled(bool val);
-
     }
+
     // @interface MSServiceAbstract : NSObject <MSService>
     [BaseType(typeof(MSService))]
     interface MSServiceAbstract : IMSService
@@ -277,5 +282,69 @@ namespace Microsoft.AppCenter.iOS.Bindings
         [Static]
         [Export("MSWrapperLog:tag:level:")]
         void MSWrapperLog(MSLogMessageProvider message, string tag, MSLogLevel level);
+    }
+
+    // typedef void (^MSHttpRequestCompletionHandler)(NSData *_Nullable responseBody, NSHTTPURLResponse *_Nullable response, NSError* _Nullable error);
+    delegate void MSHttpRequestCompletionHandler([NullAllowed] NSData responseBody, [NullAllowed] NSHttpUrlResponse response, [NullAllowed] NSError error);
+
+    // @protocol MSHttpClientProtocol <NSObject>
+    [Protocol, Model]
+    [BaseType(typeof(NSObject))]
+    interface MSHttpClientProtocol
+    {
+        // @property(nonatomic, weak, nullable) id<MSHttpClientDelegate> delegate;
+        // Using a C# property, even when using the Wrap/Weak pattern, we get "setDelegate:]: unrecognized selector sent to instance", work around by using a setter method as we don't need the getter
+        [Export("setDelegate:")]
+        void SetDelegate([NullAllowed] MSHttpClientDelegate httpClientDelegate);
+
+        // @required - (void)sendAsync:(NSURL *)url
+        //                      method:(NSString*) method
+        //                     headers:(nullable NSDictionary<NSString*, NSString*> *)headers
+        //                        data:(nullable NSData *)data
+        //           completionHandler:(nullable MSHttpRequestCompletionHandler) completionHandler;
+        [Export("sendAsync:method:headers:data:completionHandler:")]
+        void SendAsync(NSUrl url, NSString method, [NullAllowed] NSDictionary<NSString, NSString> headers, [NullAllowed] NSData data, [NullAllowed] MSHttpRequestCompletionHandler completionHandler);
+
+        // @required - (void) sendAsync:(NSURL*) url
+        //                       method:(NSString*) method
+        //                      headers:(nullable NSDictionary<NSString*, NSString*> *)headers
+        //                         data:(nullable NSData *)data
+        //               retryIntervals:(NSArray*) retryIntervals
+        //           compressionEnabled:(BOOL) compressionEnabled
+        //            completionHandler:(nullable MSHttpRequestCompletionHandler) completionHandler;
+        [Export("sendAsync:method:headers:data:retryIntervals:compressionEnabled:completionHandler:")]
+        void SendAsync(NSUrl url, NSString method, [NullAllowed] NSDictionary<NSString, NSString> headers, [NullAllowed] NSData data, NSArray retryIntervals, bool compressionEnabled, [NullAllowed] MSHttpRequestCompletionHandler completionHandler);
+
+        // @required - (void)pause;
+        [Export("pause")]
+        void Pause();
+
+        // @required - (void)resume;
+        [Export("resume")]
+        void Resume();
+
+        // @required - (void)setEnabled:(BOOL)isEnabled;
+        [Export("setEnabled:")]
+        void SetEnabled(bool enabled);
+    }
+
+    // @protocol MSHttpClientDelegate <NSObject>
+    [Protocol]
+    [BaseType(typeof(NSObject))]
+    interface MSHttpClientDelegate
+    {
+        // -(void)willSendHTTPRequestToURL:(NSURL *)url withHeaders:(nullable NSDictionary<NSString *, NSString *> *)headers;
+        [Export("willSendHTTPRequestToURL:withHeaders:")]
+        void WillSendHTTPRequestToURL(NSUrl url, [NullAllowed] NSDictionary<NSString, NSString> headers);
+    }
+
+    // @interface MSDependencyConfiguration : NSObject
+    [BaseType(typeof(NSObject))]
+    interface MSDependencyConfiguration
+    {
+        // @property(class, nonatomic) id<MSHttpClientProtocol> httpClient;
+        [Static]
+        [Export("httpClient")]
+        MSHttpClientProtocol HttpClient { get; set; }
     }
 }

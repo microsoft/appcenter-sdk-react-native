@@ -191,7 +191,7 @@ namespace Microsoft.AppCenter
 
         internal static void PlatformUnsetInstance()
         {
-            // TODO: Call unsetInstance in iOS.
+            iOSAppCenter.ResetSharedInstance();
         }
     }
 }
