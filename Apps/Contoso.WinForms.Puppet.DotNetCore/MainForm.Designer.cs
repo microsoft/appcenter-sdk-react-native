@@ -33,16 +33,6 @@ namespace Contoso.WinForms.Puppet.DotNetCore
         {
             this.Tabs = new System.Windows.Forms.TabControl();
             this.AppCenterTab = new System.Windows.Forms.TabPage();
-            this.LogBox = new System.Windows.Forms.GroupBox();
-            this.WriteLog = new System.Windows.Forms.Button();
-            this.LogTag = new System.Windows.Forms.TextBox();
-            this.LogMessage = new System.Windows.Forms.TextBox();
-            this.LogMessageLabel = new System.Windows.Forms.Label();
-            this.LogTagLabel = new System.Windows.Forms.Label();
-            this.LogLevelLabel = new System.Windows.Forms.Label();
-            this.LogLevelValue = new System.Windows.Forms.ComboBox();
-            this.AppCenterLogLevelLabel = new System.Windows.Forms.Label();
-            this.AppCenterLogLevel = new System.Windows.Forms.ComboBox();
             this.AppCenterEnabled = new System.Windows.Forms.CheckBox();
             this.AnalyticsTab = new System.Windows.Forms.TabPage();
             this.EventBox = new System.Windows.Forms.GroupBox();
@@ -71,7 +61,6 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.CrashesEnabled = new System.Windows.Forms.CheckBox();
             this.Tabs.SuspendLayout();
             this.AppCenterTab.SuspendLayout();
-            this.LogBox.SuspendLayout();
             this.AnalyticsTab.SuspendLayout();
             this.EventBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EventProperties)).BeginInit();
@@ -96,9 +85,6 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             // 
             // AppCenterTab
             // 
-            this.AppCenterTab.Controls.Add(this.LogBox);
-            this.AppCenterTab.Controls.Add(this.AppCenterLogLevelLabel);
-            this.AppCenterTab.Controls.Add(this.AppCenterLogLevel);
             this.AppCenterTab.Controls.Add(this.AppCenterEnabled);
             this.AppCenterTab.Location = new System.Drawing.Point(8, 39);
             this.AppCenterTab.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
@@ -108,132 +94,6 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.AppCenterTab.TabIndex = 0;
             this.AppCenterTab.Text = "App Center";
             this.AppCenterTab.UseVisualStyleBackColor = true;
-            // 
-            // LogBox
-            // 
-            this.LogBox.Controls.Add(this.WriteLog);
-            this.LogBox.Controls.Add(this.LogTag);
-            this.LogBox.Controls.Add(this.LogMessage);
-            this.LogBox.Controls.Add(this.LogMessageLabel);
-            this.LogBox.Controls.Add(this.LogTagLabel);
-            this.LogBox.Controls.Add(this.LogLevelLabel);
-            this.LogBox.Controls.Add(this.LogLevelValue);
-            this.LogBox.Location = new System.Drawing.Point(16, 121);
-            this.LogBox.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LogBox.Name = "LogBox";
-            this.LogBox.Padding = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LogBox.Size = new System.Drawing.Size(720, 250);
-            this.LogBox.TabIndex = 5;
-            this.LogBox.TabStop = false;
-            this.LogBox.Text = "Log";
-            // 
-            // WriteLog
-            // 
-            this.WriteLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.WriteLog.Location = new System.Drawing.Point(20, 194);
-            this.WriteLog.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.WriteLog.Name = "WriteLog";
-            this.WriteLog.Size = new System.Drawing.Size(684, 44);
-            this.WriteLog.TabIndex = 11;
-            this.WriteLog.Text = "Write Log";
-            this.WriteLog.UseVisualStyleBackColor = true;
-            this.WriteLog.Click += new System.EventHandler(this.WriteLog_Click);
-            // 
-            // LogTag
-            // 
-            this.LogTag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LogTag.Location = new System.Drawing.Point(212, 37);
-            this.LogTag.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LogTag.Name = "LogTag";
-            this.LogTag.Size = new System.Drawing.Size(488, 31);
-            this.LogTag.TabIndex = 10;
-            // 
-            // LogMessage
-            // 
-            this.LogMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LogMessage.Location = new System.Drawing.Point(212, 81);
-            this.LogMessage.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LogMessage.Name = "LogMessage";
-            this.LogMessage.Size = new System.Drawing.Size(488, 31);
-            this.LogMessage.TabIndex = 9;
-            // 
-            // LogMessageLabel
-            // 
-            this.LogMessageLabel.Location = new System.Drawing.Point(12, 79);
-            this.LogMessageLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.LogMessageLabel.Name = "LogMessageLabel";
-            this.LogMessageLabel.Size = new System.Drawing.Size(188, 44);
-            this.LogMessageLabel.TabIndex = 8;
-            this.LogMessageLabel.Text = "Log Message";
-            this.LogMessageLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // LogTagLabel
-            // 
-            this.LogTagLabel.Location = new System.Drawing.Point(12, 33);
-            this.LogTagLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.LogTagLabel.Name = "LogTagLabel";
-            this.LogTagLabel.Size = new System.Drawing.Size(188, 44);
-            this.LogTagLabel.TabIndex = 7;
-            this.LogTagLabel.Text = "Log Tag";
-            this.LogTagLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // LogLevelLabel
-            // 
-            this.LogLevelLabel.Location = new System.Drawing.Point(12, 129);
-            this.LogLevelLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.LogLevelLabel.Name = "LogLevelLabel";
-            this.LogLevelLabel.Size = new System.Drawing.Size(188, 44);
-            this.LogLevelLabel.TabIndex = 6;
-            this.LogLevelLabel.Text = "Log Level";
-            this.LogLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // LogLevelValue
-            // 
-            this.LogLevelValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LogLevelValue.FormattingEnabled = true;
-            this.LogLevelValue.Items.AddRange(new object[] {
-            "Verbose",
-            "Debug",
-            "Info",
-            "Warning",
-            "Error"});
-            this.LogLevelValue.Location = new System.Drawing.Point(212, 131);
-            this.LogLevelValue.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LogLevelValue.Name = "LogLevelValue";
-            this.LogLevelValue.Size = new System.Drawing.Size(488, 33);
-            this.LogLevelValue.TabIndex = 5;
-            // 
-            // AppCenterLogLevelLabel
-            // 
-            this.AppCenterLogLevelLabel.Location = new System.Drawing.Point(40, 69);
-            this.AppCenterLogLevelLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.AppCenterLogLevelLabel.Name = "AppCenterLogLevelLabel";
-            this.AppCenterLogLevelLabel.Size = new System.Drawing.Size(176, 44);
-            this.AppCenterLogLevelLabel.TabIndex = 4;
-            this.AppCenterLogLevelLabel.Text = "Log Level";
-            this.AppCenterLogLevelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // AppCenterLogLevel
-            // 
-            this.AppCenterLogLevel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.AppCenterLogLevel.FormattingEnabled = true;
-            this.AppCenterLogLevel.Items.AddRange(new object[] {
-            "Verbose",
-            "Debug",
-            "Info",
-            "Warning",
-            "Error"});
-            this.AppCenterLogLevel.Location = new System.Drawing.Point(228, 71);
-            this.AppCenterLogLevel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AppCenterLogLevel.Name = "AppCenterLogLevel";
-            this.AppCenterLogLevel.Size = new System.Drawing.Size(488, 33);
-            this.AppCenterLogLevel.TabIndex = 3;
-            this.AppCenterLogLevel.SelectedIndexChanged += new System.EventHandler(this.AppCenterLogLevel_SelectedIndexChanged);
             // 
             // AppCenterEnabled
             // 
@@ -571,8 +431,6 @@ namespace Contoso.WinForms.Puppet.DotNetCore
             this.Text = "App Center Puppet App";
             this.Tabs.ResumeLayout(false);
             this.AppCenterTab.ResumeLayout(false);
-            this.LogBox.ResumeLayout(false);
-            this.LogBox.PerformLayout();
             this.AnalyticsTab.ResumeLayout(false);
             this.EventBox.ResumeLayout(false);
             this.EventBox.PerformLayout();
@@ -592,16 +450,6 @@ namespace Contoso.WinForms.Puppet.DotNetCore
         private System.Windows.Forms.TabPage AnalyticsTab;
         private System.Windows.Forms.TabPage CrashesTab;
         private System.Windows.Forms.CheckBox AppCenterEnabled;
-        private System.Windows.Forms.Label AppCenterLogLevelLabel;
-        private System.Windows.Forms.ComboBox AppCenterLogLevel;
-        private System.Windows.Forms.GroupBox LogBox;
-        private System.Windows.Forms.Button WriteLog;
-        private System.Windows.Forms.TextBox LogTag;
-        private System.Windows.Forms.TextBox LogMessage;
-        private System.Windows.Forms.Label LogMessageLabel;
-        private System.Windows.Forms.Label LogTagLabel;
-        private System.Windows.Forms.Label LogLevelLabel;
-        private System.Windows.Forms.ComboBox LogLevelValue;
         private System.Windows.Forms.GroupBox EventBox;
         private System.Windows.Forms.CheckBox AnalyticsEnabled;
         private System.Windows.Forms.TextBox EventName;
