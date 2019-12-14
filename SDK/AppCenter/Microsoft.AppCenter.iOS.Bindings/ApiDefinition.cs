@@ -162,7 +162,7 @@ namespace Microsoft.AppCenter.iOS.Bindings
         [Export("sharedInstance")]
         MSAppCenter SharedInstance();
 
-        // + (void)resetSharedInstance
+        // +(void)resetSharedInstance
         [Static]
         [Export("resetSharedInstance")]
         void ResetSharedInstance();
@@ -292,6 +292,11 @@ namespace Microsoft.AppCenter.iOS.Bindings
     [BaseType(typeof(NSObject))]
     interface MSHttpClientProtocol
     {
+        // @property(nonatomic, weak) id<MSHttpClientDelegate> delegate;
+        // Using a C# property, even when using the Wrap/Weak pattern, we get "setDelegate:]: unrecognized selector sent to instance", work around by using a setter method as we don't need the getter
+        [Export("setDelegate:")]
+        void SetDelegate(MSHttpClientDelegate httpClientDelegate);
+
         // @required - (void)sendAsync:(NSURL *)url
         //                      method:(NSString*) method
         //                     headers:(nullable NSDictionary<NSString*, NSString*> *)headers
@@ -321,6 +326,16 @@ namespace Microsoft.AppCenter.iOS.Bindings
         // @required - (void)setEnabled:(BOOL)isEnabled;
         [Export("setEnabled:")]
         void SetEnabled(bool enabled);
+    }
+
+    // @protocol MSHttpClientDelegate <NSObject>
+    [Protocol]
+    [BaseType(typeof(NSObject))]
+    interface MSHttpClientDelegate
+    {
+        // -(void)willSendHTTPRequestToURL:(NSURL *)url withHeaders:(NSDictionary<NSString *, NSString *> *)headers;
+        [Export("willSendHTTPRequestToURL:withHeaders:")]
+        void WillSendHTTPRequestToURL(NSUrl url, NSDictionary<NSString, NSString> headers);
     }
 
     // @interface MSDependencyConfiguration : NSObject

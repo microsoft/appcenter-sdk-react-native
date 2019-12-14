@@ -12,6 +12,8 @@ namespace Microsoft.AppCenter
     {
         private readonly IHttpNetworkAdapter _httpNetworkAdapter;
 
+        private MSHttpClientDelegate _httpClientDelegate;
+
         public IosHttpClientAdapter(IHttpNetworkAdapter httpNetworkAdapter)
         {
             _httpNetworkAdapter = httpNetworkAdapter;
@@ -19,6 +21,7 @@ namespace Microsoft.AppCenter
 
         public override void SendAsync(NSUrl url, NSString method, NSDictionary<NSString, NSString> headers, NSData data, MSHttpRequestCompletionHandler completionHandler)
         {
+            _httpClientDelegate?.WillSendHTTPRequestToURL(url, headers);
             var managedHeaders = new Dictionary<string, string>();
             foreach (KeyValuePair<NSObject, NSObject> header in headers)
             {
@@ -60,6 +63,11 @@ namespace Microsoft.AppCenter
 
         public override void SetEnabled(bool enabled)
         {
+        }
+
+        public override void SetDelegate(MSHttpClientDelegate httpClientDelegate)
+        {
+            _httpClientDelegate = httpClientDelegate;
         }
     }
 }
