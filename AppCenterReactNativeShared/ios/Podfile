@@ -3,6 +3,6 @@ target 'AppCenterReactNativeShared' do
   use_frameworks!
 
   # Pods for AppCenterReactNativeShared
-  pod 'AppCenter', '~> 2.5.2'
+  pod 'AppCenter', '~> 2.5.3'
 
 end
