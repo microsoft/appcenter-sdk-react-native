@@ -64,5 +64,9 @@ namespace Microsoft.AppCenter
         static void PlatformSetCustomProperties(CustomProperties customProperties)
         {
         }
+
+        internal static void PlatformUnsetInstance()
+        {
+        }
     }
 }

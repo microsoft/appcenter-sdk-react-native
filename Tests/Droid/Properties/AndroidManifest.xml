@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="68" android:versionName="2.6.4-SNAPSHOT" package="com.contoso.contoso_forms_test">
-	<uses-sdk android:minSdkVersion="16" />
-	<application android:label="Contoso.Forms.Test"></application>
-</manifest>

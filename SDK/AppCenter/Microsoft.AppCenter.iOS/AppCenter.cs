@@ -188,5 +188,10 @@ namespace Microsoft.AppCenter
         {
             iOSAppCenter.SetCustomProperties(customProperties?.IOSCustomProperties);
         }
+
+        internal static void PlatformUnsetInstance()
+        {
+            iOSAppCenter.ResetSharedInstance();
+        }
     }
 }

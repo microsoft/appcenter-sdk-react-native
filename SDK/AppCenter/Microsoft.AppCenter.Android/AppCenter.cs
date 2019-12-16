@@ -203,5 +203,10 @@ namespace Microsoft.AppCenter
         {
             AndroidAppCenter.SetCustomProperties(customProperties.AndroidCustomProperties);
         }
+
+        internal static void PlatformUnsetInstance()
+        {
+            AndroidAppCenter.UnsetInstance();
+        }
     }
 }

@@ -76,5 +76,10 @@ namespace Microsoft.AppCenter.Analytics
         //{
         //    AndroidAnalytics.TrackPage(name, properties);
         //}
+
+        internal static void UnsetInstance()
+        {
+            AndroidAnalytics.UnsetInstance();
+        }
     }
 }
