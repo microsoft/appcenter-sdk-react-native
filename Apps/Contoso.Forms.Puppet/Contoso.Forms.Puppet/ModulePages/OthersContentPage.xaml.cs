@@ -59,12 +59,9 @@ namespace Contoso.Forms.Puppet
         {
             base.OnAppearing();
             var acEnabled = await AppCenter.IsEnabledAsync();
-            DistributeEnabledSwitchCell.On = await Distribute.IsEnabledAsync();
-            DistributeEnabledSwitchCell.IsEnabled = acEnabled;
-            PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
-            PushEnabledSwitchCell.IsEnabled = acEnabled;
-            AuthEnabledSwitchCell.On = await Auth.IsEnabledAsync();
-            AuthEnabledSwitchCell.IsEnabled = acEnabled;
+            RefreshDistributeEnabled(acEnabled);
+            RefreshPushEnabled(acEnabled);
+            RefreshAuthEnabled(acEnabled);
             RumEnabledSwitchCell.On = _rumStarted && await RealUserMeasurements.IsEnabledAsync();
             RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
@@ -86,16 +83,40 @@ namespace Contoso.Forms.Puppet
         async void UpdateDistributeEnabled(object sender, ToggledEventArgs e)
         {
             await Distribute.SetEnabledAsync(e.Value);
+            var acEnabled = await AppCenter.IsEnabledAsync();
+            RefreshDistributeEnabled(acEnabled);
         }
 
         async void UpdatePushEnabled(object sender, ToggledEventArgs e)
         {
             await Push.SetEnabledAsync(e.Value);
+            var acEnabled = await AppCenter.IsEnabledAsync();
+            RefreshPushEnabled(acEnabled);
         }
 
         async void UpdateAuthEnabled(object sender, ToggledEventArgs e)
         {
             await Auth.SetEnabledAsync(e.Value);
+            var acEnabled = await AppCenter.IsEnabledAsync();
+            RefreshAuthEnabled(acEnabled);
+        }
+
+        async void RefreshDistributeEnabled(bool _appCenterEnabled)
+        {
+            DistributeEnabledSwitchCell.On = await Distribute.IsEnabledAsync();
+            DistributeEnabledSwitchCell.IsEnabled = _appCenterEnabled;
+        }
+
+        async void RefreshPushEnabled(bool _appCenterEnabled)
+        {
+            PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
+            PushEnabledSwitchCell.IsEnabled = _appCenterEnabled;
+        }
+
+        async void RefreshAuthEnabled(bool _appCenterEnabled)
+        {
+            AuthEnabledSwitchCell.On = await Auth.IsEnabledAsync();
+            AuthEnabledSwitchCell.IsEnabled = _appCenterEnabled;
         }
 
         async void ChangeAuthType(object sender, PropertyChangedEventArgs e)
