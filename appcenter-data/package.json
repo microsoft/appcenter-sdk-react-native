@@ -1,6 +1,6 @@
 {
   "name": "appcenter-data",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "React Native plugin for AppCenter Data",
   "main": "Data.js",
   "types": "Data.d.ts",
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/microsoft/appcenter-sdk-react-native/blob/master/appcenter-data/README.md",
   "dependencies": {
-    "appcenter": "2.6.0"
+    "appcenter": "2.6.1"
   },
   "rnpm": {
     "android": {
