@@ -38,12 +38,38 @@ namespace Microsoft.AppCenter.Test.Windows.Ingestion.Http
         }
 
         /// <summary>
-        /// Verify that ingestion throw exception on error response.
+        /// Verify that ingestion call http adapter and not fails on 2xx.
+        /// </summary>
+        [TestMethod]
+        public async Task HttpIngestionStatusCodePartialContent()
+        {
+            SetupAdapterSendResponse(HttpStatusCode.PartialContent);
+            var call = _httpIngestion.Call(AppSecret, InstallId, Logs);
+            await call.ToTask();
+            VerifyAdapterSend(Times.Once());
+
+            // No throw any exception
+        }
+
+        /// <summary>
+        /// Verify that ingestion throw exception on error response >= 300.
         /// </summary>
         [TestMethod]
         public async Task HttpIngestionStatusCodeError()
         {
             SetupAdapterSendResponse(HttpStatusCode.NotFound);
+            var call = _httpIngestion.Call(AppSecret, InstallId, Logs);
+            await Assert.ThrowsExceptionAsync<HttpIngestionException>(() => call.ToTask());
+            VerifyAdapterSend(Times.Once());
+        }
+
+        /// <summary>
+        /// Verify that ingestion throw exception on error response < 200.
+        /// </summary>
+        [TestMethod]
+        public async Task HttpIngestionStatusCodeErrorBelow200()
+        {
+            SetupAdapterSendResponse(HttpStatusCode.SwitchingProtocols);
             var call = _httpIngestion.Call(AppSecret, InstallId, Logs);
             await Assert.ThrowsExceptionAsync<HttpIngestionException>(() => call.ToTask());
             VerifyAdapterSend(Times.Once());

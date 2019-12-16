@@ -76,7 +76,7 @@ namespace Microsoft.AppCenter.Ingestion.Http
                 }
                 var logMessage = $"HTTP response status={(int)response.StatusCode} ({response.StatusCode}) payload={logPayload}";
                 AppCenterLog.Verbose(AppCenterLog.LogTag, logMessage);
-                if (response.StatusCode != HttpStatusCode.OK)
+                if ((int)response.StatusCode < 200 || (int)response.StatusCode >= 300)
                 {
                     throw new HttpIngestionException(logMessage)
                     {
