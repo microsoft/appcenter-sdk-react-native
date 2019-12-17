@@ -11,6 +11,7 @@
 #### UWP/WPF/WinForms
 
 * **[Fix]** Fix sending remaining pending logs after sending 3 concurrent HTTP requests.
+* **[Fix]** Fix only accepting 200 HTTP success code instead of 200-299 range.
 
 #### Android
 
