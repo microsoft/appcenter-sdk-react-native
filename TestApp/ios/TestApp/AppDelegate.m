@@ -16,23 +16,17 @@
 
 #import <AppCenterReactNative.h>
 #import <AppCenterReactNativeAnalytics.h>
-#import <AppCenterReactNativeAuth.h>
 #import <AppCenterReactNativeCrashes.h>
-#import <AppCenterReactNativeData.h>
 #import <AppCenterReactNativePush.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @import AppCenter;
-@import AppCenterAuth;
-@import AppCenterData;
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [MSAppCenter setLogLevel:MSLogLevelVerbose];
   [MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
-  [MSData setTokenExchangeUrl:@"https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1"];
-  [MSAuth setConfigUrl:@"https://config-integration.dev.avalanch.es"];
 
   id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
   if ([appSecret isKindOfClass:[NSString class]]) {
@@ -46,10 +40,8 @@
 
   [AppCenterReactNative register];                                   // Initialize AppCenter
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true]; // Initialize AppCenter Analytics
-  [AppCenterReactNativeAuth register];                               // Initialize AppCenter Auth
   [AppCenterReactNativeCrashes register];                            // Initialize AppCenter Crashes
   [AppCenterReactNativePush register];                               // Initialize AppCenter Push
-  [AppCenterReactNativeData register];                               // Initialize AppCenter Data
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"TestApp" initialProperties:nil];

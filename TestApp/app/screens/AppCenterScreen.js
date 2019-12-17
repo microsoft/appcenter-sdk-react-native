@@ -7,9 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 
 import AppCenter, { CustomProperties } from 'appcenter';
-import Auth from 'appcenter-auth';
 import Push from 'appcenter-push';
-import Data from 'appcenter-data';
 
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
@@ -97,14 +95,12 @@ export default class AppCenterScreen extends Component {
   state = {
     appCenterEnabled: false,
     pushEnabled: false,
-    authEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
     appSecret: AppSecrets[0],
     userId: '',
-    accountId: '',
-    authStatus: 'Authentication status unknown'
+    accountId: ''
   }
 
   async componentDidMount() {
@@ -142,9 +138,6 @@ export default class AppCenterScreen extends Component {
   async refreshUI() {
     const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
-
-    const authEnabled = await Auth.isEnabled();
-    this.setState({ authEnabled });
 
     const pushEnabled = await Push.isEnabled();
     this.setState({ pushEnabled });
@@ -260,18 +253,8 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await AppCenter.setEnabled(!this.state.appCenterEnabled);
                     const appCenterEnabled = await AppCenter.isEnabled();
-                    const authEnabled = await Auth.isEnabled();
                     const pushEnabled = await Push.isEnabled();
-                    this.setState({ appCenterEnabled, authEnabled, pushEnabled });
-                  }
-                },
-                {
-                  title: 'Auth Enabled',
-                  value: 'authEnabled',
-                  toggle: async () => {
-                    await Auth.setEnabled(!this.state.authEnabled);
-                    const authEnabled = await Auth.isEnabled();
-                    this.setState({ authEnabled, accountId: '', authStatus: 'User is not authenticated' });
+                    this.setState({ appCenterEnabled, pushEnabled });
                   }
                 },
                 {
@@ -315,31 +298,6 @@ export default class AppCenterScreen extends Component {
               renderItem: actionRenderItem
             },
             {
-              title: 'Auth',
-              data: [
-                {
-                  title: 'Sign In',
-                  action: async () => {
-                    try {
-                      const result = await Auth.signIn();
-                      this.setState({ accountId: result.accountId, authStatus: 'User is authenticated' });
-                      runDataCrudScenarios();
-                    } catch (e) {
-                      console.log(e);
-                    }
-                  }
-                },
-                {
-                  title: 'Sign Out',
-                  action: () => {
-                    Auth.signOut();
-                    this.setState({ accountId: '', authStatus: 'User is not authenticated' });
-                  }
-                },
-              ],
-              renderItem: actionRenderItem
-            },
-            {
               title: 'Miscellaneous',
               data: [
                 { title: 'Install ID', value: 'installId' },
@@ -367,13 +325,6 @@ export default class AppCenterScreen extends Component {
                   onChange: async (accountId) => {
                     this.setState({ accountId });
                   }
-                },
-                {
-                  title: 'Auth Status',
-                  value: 'authStatus',
-                  onChange: async (authStatus) => {
-                    this.setState({ authStatus });
-                  }
                 }
               ],
               renderItem: valueRenderItem
@@ -383,57 +334,4 @@ export default class AppCenterScreen extends Component {
       </View>
     );
   }
-}
-
-async function runDataCrudScenarios() {
-  const MY_DOCUMENT_ID = 'some-random-document-id';
-
-  const readOptions = new Data.ReadOptions(5000);
-  const writeOptions = new Data.WriteOptions(5000);
-
-  const user = {
-    name: 'Alex',
-    email: 'alex@appcenter.ms',
-    phone: '+1-(855)-555-5555',
-    someNull: null,
-    nestedObject: {
-      nestedString: 'key1',
-      nestedBoolean: true,
-      nestedNumber: 42.2,
-      nestedArray: [1, 2, 3.0, 'four', '👻', null, true, false, { nestedCat: '😺' }]
-    },
-    someNumber: 26.1,
-    someOtherNumber: 26.0,
-    someBoolean: false,
-    '👻 as a key': '🤖'
-  };
-
-  const updatedUser = {
-    name: 'Bob',
-    email: 'bob@appcenter.ms',
-    number: '+1-(855)-111-1111',
-    someNullOther: null,
-    nestedObject2: {
-      key1: 'key3',
-      key2: 'key4',
-      nestedArray: [1, 2, 3.0, 'four', null]
-    },
-    someNumber: 99.1,
-    someOtherNumber2: 99.0,
-    someBool2: false,
-    someOtherBool: true,
-    '👀': '🙉'
-  };
-
-  const createResult = await Data.create(MY_DOCUMENT_ID, user, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
-  console.log('Successful create', createResult);
-
-  const readResult = await Data.read(MY_DOCUMENT_ID, Data.DefaultPartitions.USER_DOCUMENTS, readOptions);
-  console.log('Successful read', readResult);
-
-  const replaceResult = await Data.replace(MY_DOCUMENT_ID, updatedUser, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
-  console.log('Successful replace', replaceResult);
-
-  const removeResult = await Data.remove(MY_DOCUMENT_ID, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
-  console.log('Successful remove', removeResult);
 }
