@@ -25,6 +25,8 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [AppCenterReactNativePush register];  // Initialize AppCenter push
+  [AppCenterReactNative register];  // Initialize AppCenter
   [MSAppCenter setLogLevel:MSLogLevelVerbose];
   
   id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
