@@ -18,14 +18,12 @@ const USER_ID_KEY = 'USER_ID_KEY';
 const SecretStrings = {
   ios: {
     appSecrets: {
-      AAD: '5ee746f1-4731-4df9-8602-9bc505edb2c3',
       B2C: 'f5f84a76-6622-437a-9130-07b27d3c72e7'
     },
     target: 'target=c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906'
   },
   android: {
     appSecrets: {
-      AAD: 'f0ac54aa-6e53-4018-98f6-37d60ff7649a',
       B2C: 'e65c7490-1f58-4e93-bb55-a2e11dac4368'
     },
     target: 'target=4dacd24d0b1b42db9894926d0db2f4c7-39311d37-fb55-479c-b7b6-9893b53d0186-7306'
@@ -33,17 +31,13 @@ const SecretStrings = {
 };
 
 const B2C = 'B2C';
-const AAD = 'AAD';
 SecretStrings.ios.both = {};
-SecretStrings.ios.both[AAD] = `appsecret=${SecretStrings.ios.appSecrets.AAD};${SecretStrings.ios.target}`;
 SecretStrings.ios.both[B2C] = `appsecret=${SecretStrings.ios.appSecrets.B2C};${SecretStrings.ios.target}`;
 
 SecretStrings.android.both = {};
-SecretStrings.android.both[AAD] = `appsecret=${SecretStrings.android.appSecrets.AAD};${SecretStrings.android.target}`;
 SecretStrings.android.both[B2C] = `appsecret=${SecretStrings.android.appSecrets.B2C};${SecretStrings.android.target}`;
 
 const STARTUP_MODE = 'STARTUP_MODE';
-const APP_SECRET = 'APP_SECRET';
 
 const StartupModes = [
   {
@@ -68,17 +62,6 @@ const StartupModes = [
   }
 ];
 
-const AppSecrets = [
-  {
-    label: B2C,
-    key: B2C
-  },
-  {
-    label: AAD,
-    key: AAD
-  }
-];
-
 export default class AppCenterScreen extends Component {
   static navigationOptions = {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DialsTabBarIcon} />,
@@ -99,7 +82,6 @@ export default class AppCenterScreen extends Component {
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
-    appSecret: AppSecrets[0],
     userId: '',
     accountId: ''
   }
@@ -111,15 +93,6 @@ export default class AppCenterScreen extends Component {
       const startupMode = StartupModes[index];
       if (startupMode.key === startupModeKey) {
         this.state.startupMode = startupMode;
-        break;
-      }
-    }
-
-    const appSecretKey = await AsyncStorage.getItem(APP_SECRET);
-    for (let index = 0; index < AppSecrets.length; index++) {
-      const appSecret = AppSecrets[index];
-      if (appSecret.key === appSecretKey) {
-        this.state.appSecret = appSecret;
         break;
       }
     }
@@ -224,20 +197,6 @@ export default class AppCenterScreen extends Component {
       />
     );
 
-    const appSecretRenderItem = ({ item: { appSecrets } }) => (
-      <ModalSelector
-        data={appSecrets}
-        initValue={this.state.appSecret.label}
-        style={SharedStyles.modalSelector}
-        selectTextStyle={SharedStyles.itemButton}
-        onChange={async ({ key }) => {
-            await AsyncStorage.setItem(APP_SECRET, key);
-            this.setState({ appSecret: appSecrets.filter(s => s.key === key)[0] }, this.selectStartup);
-          }
-        }
-      />
-    );
-
     return (
       <View style={SharedStyles.container}>
         <SectionList
@@ -278,15 +237,6 @@ export default class AppCenterScreen extends Component {
                 }
               ],
               renderItem: startupModeRenderItem
-            },
-            {
-              title: 'Change App Secret',
-              data: [
-                {
-                  appSecrets: AppSecrets
-                }
-              ],
-              renderItem: appSecretRenderItem
             },
             {
               title: 'Actions',
