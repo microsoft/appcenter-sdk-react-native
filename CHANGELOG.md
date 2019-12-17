@@ -11,6 +11,7 @@
 #### UWP/WPF/WinForms
 
 * **[Fix]** Fix sending remaining pending logs after sending 3 concurrent HTTP requests.
+* **[Fix]** The SDK was considering 201-299 status code as HTTP errors and is now fixed to accept all 2XX codes as successful.
 
 #### Android
 
