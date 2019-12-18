@@ -5,7 +5,7 @@ echo 'Removing existing appcenter* packages...'
 rm -rf node_modules/appcenter*
 
 echo "Packing appcenter* packages..."
-npm pack ../appcenter
+npm pack ../appcenter-rn
 npm pack ../appcenter-analytics
 
 echo "Installing appcenter* packages..."

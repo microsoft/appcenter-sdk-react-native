@@ -10,10 +10,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "appcenter": "file:appcenter-2.6.1.tgz",
     "appcenter-analytics": "file:appcenter-analytics-2.6.1.tgz",
-    "react": "16.9.0",
-    "react-native": "0.61.5"
+    "appcenter-rn": "file:appcenter-rn-2.6.1.tgz",
+    "react": "^16.9.0",
+    "react-native": "^0.61.5"
   },
   "devDependencies": {
     "@babel/core": "^7.7.5",

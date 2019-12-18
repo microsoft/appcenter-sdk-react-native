@@ -1,5 +1,5 @@
 {
-  "name": "appcenter",
+  "name": "appcenter-rn",
   "version": "2.6.1",
   "description": "Node module that contains common functionality needed to appcenter-* modules",
   "main": "AppCenter.js",

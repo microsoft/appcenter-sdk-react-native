@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-crashes/README.md",
   "dependencies": {
-    "appcenter": "2.6.1"
+    "appcenter-rn": "2.6.1"
   },
   "rnpm": {
     "android": {
