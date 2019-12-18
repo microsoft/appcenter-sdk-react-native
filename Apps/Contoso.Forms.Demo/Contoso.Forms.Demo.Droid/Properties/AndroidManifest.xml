@@ -22,13 +22,11 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:host="auth" android:scheme="msal987b5941-4fac-4968-933e-98a7ff29237c" />
 			</intent-filter>
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:host="auth" android:scheme="msal739eacee-42de-454c-b0d7-c093e765e009" />
 			</intent-filter>
 		</activity>
 	</application>

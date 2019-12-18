@@ -174,22 +174,6 @@
       <Project>{9417E221-3287-47AC-BD56-5223057DC389}</Project>
       <Name>Microsoft.AppCenter.Push.iOS.Bindings</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.iOS.Bindings\Microsoft.AppCenter.Auth.iOS.Bindings.csproj">
-      <Project>{AA8B3644-7C06-40BD-B3E5-4C51E485CCBE}</Project>
-      <Name>Microsoft.AppCenter.Auth.iOS.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.iOS\Microsoft.AppCenter.Auth.iOS.csproj">
-      <Project>{D2ACDD48-183E-4788-97DC-8FE859C2C3C8}</Project>
-      <Name>Microsoft.AppCenter.Auth.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.iOS.Bindings\Microsoft.AppCenter.Data.iOS.Bindings.csproj">
-      <Project>{0DBD983F-BD8F-4BD6-B08A-AD28457D35EF}</Project>
-      <Name>Microsoft.AppCenter.Data.iOS.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.iOS\Microsoft.AppCenter.Data.iOS.csproj">
-      <Project>{E71F3053-056C-4381-9638-048ED73BDFF6}</Project>
-      <Name>Microsoft.AppCenter.Data.iOS</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\..\..\packages\Xamarin.Forms.4.0.0.482894\build\Xamarin.Forms.targets" Condition="Exists('..\..\..\packages\Xamarin.Forms.4.0.0.482894\build\Xamarin.Forms.targets')" />

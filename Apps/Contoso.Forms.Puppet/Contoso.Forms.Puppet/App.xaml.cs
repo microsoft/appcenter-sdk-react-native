@@ -3,9 +3,7 @@
 
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using System;
@@ -85,10 +83,8 @@ namespace Contoso.Forms.Puppet
 
                 Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
                 Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
-                Auth.SetConfigUrl("https://config-integration.dev.avalanch.es");
-                Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
 
-                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
@@ -149,7 +145,6 @@ namespace Contoso.Forms.Puppet
             {
                 case AuthType.AAD:
                     return AADAuthAppSecrets;
-                case AuthType.B2C:
                 default:
                     return B2CAuthAppSecrets;
             }

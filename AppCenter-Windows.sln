@@ -89,18 +89,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AppCenter.Crashes
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Crashes.Windows.Shared", "SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.shproj", "{3F190EDF-F524-4B8D-9031-CD7B045EB6A5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppCenterData", "AppCenterData", "{5BC8C674-8474-4C49-B1E4-DA4C70E86322}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppCenterAuth", "AppCenterAuth", "{596CE983-2E16-41EA-9D06-570C36943789}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Auth.Shared", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Shared\Microsoft.AppCenter.Auth.Shared.shproj", "{3B661923-87AF-4D7B-A451-1EDC6D741E32}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AppCenter.Auth", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth\Microsoft.AppCenter.Auth.csproj", "{C2369F56-DCD8-4744-971A-17957AE445DC}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Data.Shared", "SDK\AppCenterData\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.shproj", "{F707D6CC-E43A-442F-AA38-B913EAE3D7C1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AppCenter.Data", "SDK\AppCenterData\Microsoft.AppCenter.Data\Microsoft.AppCenter.Data.csproj", "{0043E55C-F25A-4925-B558-7CFD141834E7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Crashes.Test.Windows", "Tests\Microsoft.AppCenter.Crashes.Test.Windows\Microsoft.AppCenter.Crashes.Test.Windows.csproj", "{1F1DBE94-AAEE-4A43-8586-EF8743672587}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Test.WindowsDesktop", "Tests\Microsoft.AppCenter.Test.WindowsDesktop\Microsoft.AppCenter.Test.WindowsDesktop.csproj", "{C4674357-EFBA-43AA-9DB8-DE62A3309EB6}"
@@ -142,7 +130,6 @@ Global
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems*{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}*SharedItemsImports = 4
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems*{2f715d51-643c-4f7f-9ea4-6554d4eeccb2}*SharedItemsImports = 4
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Shared\Microsoft.AppCenter.Crashes.Shared.projitems*{302f0881-77ae-4cce-acf4-930ad5d4fb08}*SharedItemsImports = 4
-		SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Shared\Microsoft.AppCenter.Auth.Shared.projitems*{3b661923-87af-4d7b-a451-1edc6d741e32}*SharedItemsImports = 13
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems*{3f190edf-f524-4b8d-9031-cd7b045eb6a5}*SharedItemsImports = 13
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{3fe04b97-48de-4895-8612-ecbdfebd917c}*SharedItemsImports = 4
 		SDK\AppCenterDistribute\Microsoft.AppCenter.Distribute.Shared\Microsoft.AppCenter.Distribute.Shared.projitems*{41febc72-c12b-47e1-b6f6-51d50158c825}*SharedItemsImports = 4
@@ -168,7 +155,6 @@ Global
 		SDK\AppCenterCrashes\Microsoft.AppCenter.Crashes.Windows.Shared\Microsoft.AppCenter.Crashes.Windows.Shared.projitems*{dc55c086-714d-4e2f-b6ce-3c14bc3b6646}*SharedItemsImports = 4
 		SDK\AppCenter\Microsoft.AppCenter.Shared\Microsoft.AppCenter.Shared.projitems*{e76dc547-2b63-4911-971c-767587ebfab6}*SharedItemsImports = 4
 		SDK\AppCenter\Microsoft.AppCenter.Windows.Shared\Microsoft.AppCenter.Windows.Shared.projitems*{e76dc547-2b63-4911-971c-767587ebfab6}*SharedItemsImports = 4
-		SDK\AppCenterData\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.projitems*{f707d6cc-e43a-442f-aa38-b913eae3d7c1}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

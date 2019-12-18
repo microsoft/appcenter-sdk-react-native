@@ -15,7 +15,5 @@
     <PackageReference Include="Microsoft.AppCenter.Push" Version="2.6.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Xamarin.Forms" Version="4.4.0.991265" />
-    <PackageReference Include="Microsoft.AppCenter.Auth" Version="2.6.4" />
-    <PackageReference Include="Microsoft.AppCenter.Data" Version="2.6.4" />
   </ItemGroup>
 </Project>

@@ -3,9 +3,7 @@
 
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using System;
@@ -104,7 +102,7 @@ namespace Contoso.Forms.Demo
 
                 AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
 
-                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);

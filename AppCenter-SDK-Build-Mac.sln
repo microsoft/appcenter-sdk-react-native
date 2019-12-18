@@ -83,38 +83,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Rum.And
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Rum.Shared", "SDK\AppCenterRum\Microsoft.AppCenter.Rum.Shared\Microsoft.AppCenter.Rum.Shared.shproj", "{8E7B80C4-D22A-4F80-A7AE-E3882E72FFB3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppCenterAuth", "AppCenterAuth", "{6E0BDE1C-B0FF-4790-8EAE-4322820541FB}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Auth.Shared", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Shared\Microsoft.AppCenter.Auth.Shared.shproj", "{3B661923-87AF-4D7B-A451-1EDC6D741E32}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Auth", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth\Microsoft.AppCenter.Auth.csproj", "{2BB73F8D-582A-4F49-A158-4ACBF4D4E99E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common\Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common.csproj", "{C1F8B170-BEBA-4432-B88C-9789BCC4533D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Auth.Android.Bindings.Msal", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android.Bindings.Msal\Microsoft.AppCenter.Auth.Android.Bindings.Msal.csproj", "{9898EDAE-E071-4098-A9DF-C909A8EB9082}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Auth.Android.Bindings", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android.Bindings\Microsoft.AppCenter.Auth.Android.Bindings.csproj", "{E2936797-F00E-4709-A696-14B3C05B336F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Auth.Android", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android\Microsoft.AppCenter.Auth.Android.csproj", "{C566819E-C6BE-478D-B061-6F89CC7F30C2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Auth.iOS.Bindings", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth.iOS.Bindings\Microsoft.AppCenter.Auth.iOS.Bindings.csproj", "{AA8B3644-7C06-40BD-B3E5-4C51E485CCBE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Auth.iOS", "SDK\AppCenterAuth\Microsoft.AppCenter.Auth.iOS\Microsoft.AppCenter.Auth.iOS.csproj", "{D2ACDD48-183E-4788-97DC-8FE859C2C3C8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppCenterData", "AppCenterData", "{03D26EEE-1127-4055-9497-F628E846F25B}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Data.Shared", "SDK\AppCenterData\Microsoft.AppCenter.Data.Shared\Microsoft.AppCenter.Data.Shared.shproj", "{F707D6CC-E43A-442F-AA38-B913EAE3D7C1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data", "SDK\AppCenterData\Microsoft.AppCenter.Data\Microsoft.AppCenter.Data.csproj", "{FAEC50D3-7029-407B-909B-53D7806DB92E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.iOS", "SDK\AppCenterData\Microsoft.AppCenter.Data.iOS\Microsoft.AppCenter.Data.iOS.csproj", "{E71F3053-056C-4381-9638-048ED73BDFF6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.iOS.Bindings", "SDK\AppCenterData\Microsoft.AppCenter.Data.iOS.Bindings\Microsoft.AppCenter.Data.iOS.Bindings.csproj", "{0DBD983F-BD8F-4BD6-B08A-AD28457D35EF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.Android", "SDK\AppCenterData\Microsoft.AppCenter.Data.Android\Microsoft.AppCenter.Data.Android.csproj", "{8CCB60CC-7592-4959-A63D-826201524B11}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Data.Android.Bindings", "SDK\AppCenterData\Microsoft.AppCenter.Data.Android.Bindings\Microsoft.AppCenter.Data.Android.Bindings.csproj", "{715F7D40-4134-419A-9D63-DBE846F9A708}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Shared.Xamarin", "SDK\AppCenter\Microsoft.AppCenter.Shared.Xamarin\Microsoft.AppCenter.Shared.Xamarin.shproj", "{7076E711-FE72-4EC0-8335-045EEFC1100C}"
 EndProject
 Global
