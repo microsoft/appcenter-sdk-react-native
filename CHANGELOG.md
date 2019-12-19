@@ -4,7 +4,7 @@
 
 ### App Center
 
-* **[Change]** Removed Auth and Data modules from SDK.
+* **[Breaking Change]** Removed Auth and Data modules from SDK.
 
 ## Version 2.6.1
 
