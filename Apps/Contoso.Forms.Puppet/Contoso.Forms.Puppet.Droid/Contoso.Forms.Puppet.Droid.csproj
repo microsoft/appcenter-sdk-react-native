@@ -226,6 +226,9 @@
     <Reference Include="Xamarin.Firebase.Iid.Interop">
       <HintPath>..\..\..\packages\Xamarin.Firebase.Iid.Interop.71.1601.0\lib\monoandroid90\Xamarin.Firebase.Iid.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />

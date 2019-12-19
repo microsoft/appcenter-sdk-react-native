@@ -24,22 +24,14 @@ namespace Contoso.Forms.Puppet
     {
         public const string LogTag = "AppCenterXamarinPuppet";
 
-        // App Center B2C secrets
-        static readonly IReadOnlyDictionary<string, string> B2CAuthAppSecrets = new Dictionary<string, string>
+        static readonly IReadOnlyDictionary<string, string> AppSecrets = new Dictionary<string, string>
         {
             { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" }, // same for all devices
             { XamarinDevice.Android, "bff0949b-7970-439d-9745-92cdc59b10fe" },
             { XamarinDevice.iOS, "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899" }
+
         };
 
-        // App Center AAD secrets
-        static readonly IReadOnlyDictionary<string, string> AADAuthAppSecrets = new Dictionary<string, string>
-        {
-            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" }, // same for all devices
-            { XamarinDevice.Android, "9c77fb6e-7fff-4ae9-ac18-46c0041a6355" },
-            { XamarinDevice.iOS, "4ca276ee-9a50-4ad6-9746-50c420f9df88" }
-        };
-        
         // OneCollector secrets
         static readonly IReadOnlyDictionary<string, string> OneCollectorTokens = new Dictionary<string, string>
         {
@@ -119,7 +111,7 @@ namespace Contoso.Forms.Puppet
 
         private string GetAppCenterTokenString()
         {
-            var appSecrets = GetAppSecretDictionary();
+            var appSecrets = AppSecrets;
             return $"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}";
         }
 
@@ -134,19 +126,6 @@ namespace Contoso.Forms.Puppet
                     return $"{GetAppCenterTokenString()};{GetOneCollectorTokenString()}";
                 default:
                     return GetAppCenterTokenString();
-            }
-        }
-
-        static IReadOnlyDictionary<string, string> GetAppSecretDictionary()
-        {
-            // If user has selected another Auth Type, override the secret dictionary accordingly.
-            var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
-            switch (persistedAuthType)
-            {
-                case AuthType.AAD:
-                    return AADAuthAppSecrets;
-                default:
-                    return B2CAuthAppSecrets;
             }
         }
 
