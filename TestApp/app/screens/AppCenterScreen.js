@@ -81,8 +81,7 @@ export default class AppCenterScreen extends Component {
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
-    userId: '',
-    accountId: ''
+    userId: ''
   }
 
   async componentDidMount() {
@@ -267,13 +266,6 @@ export default class AppCenterScreen extends Component {
                       await AsyncStorage.removeItem(USER_ID_KEY);
                     }
                     await AppCenter.setUserId(userId);
-                  }
-                },
-                {
-                  title: 'Account ID',
-                  value: 'accountId',
-                  onChange: async (accountId) => {
-                    this.setState({ accountId });
                   }
                 }
               ],
