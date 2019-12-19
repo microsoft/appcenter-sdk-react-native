@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<metadata>
-    <remove-node path="/api/package[@name='com.microsoft.identity.client']/class[@name='AcquireTokenParameters']" />
-    <remove-node path="/api/package[@name='com.microsoft.identity.client']/class[@name='AcquireTokenSilentParameters']" />
-    <remove-node path="/api/package[@name='com.microsoft.identity.client.internal.configuration']/class[@name='LogLevelDeserializer']" />
-    <remove-node path="/api/package[@name='com.microsoft.identity.client.internal.telemetry']" />
-</metadata>
