@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.appcenter.xamarin.forms.demo" android:versionName="2.6.2" android:versionCode="73">
-=======
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.microsoft.appcenter.xamarin.forms.demo" android:versionName="2.6.4" android:versionCode="75">
->>>>>>> master
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="27" />
 	<application android:label="ACFDemo">
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
@@ -17,17 +12,5 @@
 		</receiver>
 		<meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_appcenter_logo" />
 		<meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/appcenter_logo" />
-		<activity android:name="com.microsoft.identity.client.BrowserTabActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-			</intent-filter>
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-			</intent-filter>
-		</activity>
 	</application>
 </manifest>

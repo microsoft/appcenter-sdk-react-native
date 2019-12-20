@@ -33,7 +33,7 @@ namespace Contoso.Forms.Demo
 
         static readonly IReadOnlyDictionary<string, string> AppSecrets = new Dictionary<string, string>
         {
-            { XamarinDevice.UWP, "5bce20c8-f00b-49ca-8580-7a49d5705d4c" }, // same for all devices
+            { XamarinDevice.UWP, "5bce20c8-f00b-49ca-8580-7a49d5705d4c" },
             { XamarinDevice.Android, "739eacee-42de-454c-b0d7-c093e765e009" },
             { XamarinDevice.iOS, "e9f015c6-6c2b-4410-8053-70eaa52d90e0" }
         };
@@ -51,8 +51,7 @@ namespace Contoso.Forms.Demo
 
         private string GetAppCenterTokenString()
         {
-            var appSecrets = AppSecrets;
-            return $"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}";
+            return $"uwp={AppSecrets[XamarinDevice.UWP]};android={AppSecrets[XamarinDevice.Android]};ios={AppSecrets[XamarinDevice.iOS]}";
         }
 
         private string GetTokensString()

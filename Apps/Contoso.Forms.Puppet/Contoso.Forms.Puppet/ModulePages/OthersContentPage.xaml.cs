@@ -10,7 +10,6 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
-using Microsoft.AppCenter.Rum;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
@@ -47,8 +46,6 @@ namespace Contoso.Forms.Puppet
             var acEnabled = await AppCenter.IsEnabledAsync();
             RefreshDistributeEnabled(acEnabled);
             RefreshPushEnabled(acEnabled);
-            RumEnabledSwitchCell.On = _rumStarted && await RealUserMeasurements.IsEnabledAsync();
-            RumEnabledSwitchCell.IsEnabled = acEnabled;
             EventFilterEnabledSwitchCell.On = _eventFilterStarted && await EventFilterHolder.Implementation?.IsEnabledAsync();
             EventFilterEnabledSwitchCell.IsEnabled = acEnabled && EventFilterHolder.Implementation != null;
         }
@@ -77,17 +74,6 @@ namespace Contoso.Forms.Puppet
         {
             PushEnabledSwitchCell.On = await Push.IsEnabledAsync();
             PushEnabledSwitchCell.IsEnabled = _appCenterEnabled;
-        }
-
-        async void UpdateRumEnabled(object sender, ToggledEventArgs e)
-        {
-            if (!_rumStarted)
-            {
-                RealUserMeasurements.SetRumKey("b1919553367d44d8b0ae72594c74e0ff");
-                AppCenter.Start(typeof(RealUserMeasurements));
-                _rumStarted = true;
-            }
-            await RealUserMeasurements.SetEnabledAsync(e.Value);
         }
 
         async void UpdateEventFilterEnabled(object sender, ToggledEventArgs e)

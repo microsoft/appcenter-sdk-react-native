@@ -73,16 +73,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Push.iO
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Push.Shared", "SDK\AppCenterPush\Microsoft.AppCenter.Push.Shared\Microsoft.AppCenter.Push.Shared.shproj", "{A5D2FD20-13EE-4CA4-8278-09520CC376CD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppCenterRum", "AppCenterRum", "{83DE67B9-4AF0-4153-900D-E222BA53627E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Rum", "SDK\AppCenterRum\Microsoft.AppCenter.Rum\Microsoft.AppCenter.Rum.csproj", "{254D5434-9087-4F05-A43F-23A790E42024}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Rum.Android", "SDK\AppCenterRum\Microsoft.AppCenter.Rum.Android\Microsoft.AppCenter.Rum.Android.csproj", "{7F7FA7ED-1386-41B5-A11E-656B7F85A8F9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AppCenter.Rum.Android.Bindings", "SDK\AppCenterRum\Microsoft.AppCenter.Rum.Android.Bindings\Microsoft.AppCenter.Rum.Android.Bindings.csproj", "{7E130457-B427-4043-A5A2-9484CB5809BF}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Rum.Shared", "SDK\AppCenterRum\Microsoft.AppCenter.Rum.Shared\Microsoft.AppCenter.Rum.Shared.shproj", "{8E7B80C4-D22A-4F80-A7AE-E3882E72FFB3}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Microsoft.AppCenter.Shared.Xamarin", "SDK\AppCenter\Microsoft.AppCenter.Shared.Xamarin\Microsoft.AppCenter.Shared.Xamarin.shproj", "{7076E711-FE72-4EC0-8335-045EEFC1100C}"
 EndProject
 Global

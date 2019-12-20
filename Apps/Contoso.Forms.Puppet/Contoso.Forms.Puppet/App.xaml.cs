@@ -26,7 +26,7 @@ namespace Contoso.Forms.Puppet
 
         static readonly IReadOnlyDictionary<string, string> AppSecrets = new Dictionary<string, string>
         {
-            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" }, // same for all devices
+            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" },
             { XamarinDevice.Android, "bff0949b-7970-439d-9745-92cdc59b10fe" },
             { XamarinDevice.iOS, "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899" }
 
@@ -111,8 +111,7 @@ namespace Contoso.Forms.Puppet
 
         private string GetAppCenterTokenString()
         {
-            var appSecrets = AppSecrets;
-            return $"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}";
+            return $"uwp={AppSecrets[XamarinDevice.UWP]};android={AppSecrets[XamarinDevice.Android]};ios={AppSecrets[XamarinDevice.iOS]}";
         }
 
         private string GetTokensString()

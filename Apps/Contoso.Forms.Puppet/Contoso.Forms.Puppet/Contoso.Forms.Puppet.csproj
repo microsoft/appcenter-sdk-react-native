@@ -31,8 +31,6 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push\Microsoft.AppCenter.Push.csproj">
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum\Microsoft.AppCenter.Rum.csproj">
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Update="AddPropertyContentPage.xaml">
