@@ -1,5 +1,15 @@
 # App Center SDK for React Native Change Log
 
+## Version 2.6.2 (Under development)
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix an error where Cocoapods couldn't find appcenter.podspec.json file.
+
+___
+
 ## Version 2.6.1
 
 ### App Center
