@@ -41,6 +41,18 @@
 	<key>CFBundleName</key>
 	<string>ACFPuppet</string>
 	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+			<key>CFBundleURLName</key>
+			<string>com.microsoft.appcenter.xamarin.forms.ios.puppet</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>appcenter-b889c4f2-9ac2-4e2e-ae16-dae54f2c5899</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleLocalizations</key>
