@@ -6,7 +6,8 @@
 
 #### iOS
 
-* **[Fix]** Fix an error where Cocoapods couldn't find appcenter.podspec.json file.
+* **[Fix]** Fix an error where **appcenter.podspec.json** could not be found.
+* **[Fix]** Fix issues with `use_frameworks!` directive.
 
 ___
 
