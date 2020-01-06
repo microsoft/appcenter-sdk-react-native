@@ -8,9 +8,7 @@ import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
-import Auth from 'appcenter-auth';
 import Push from 'appcenter-push';
-import Data from 'appcenter-data';
 
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
@@ -19,33 +17,19 @@ const USER_ID_KEY = 'USER_ID_KEY';
 
 const SecretStrings = {
   ios: {
-    appSecrets: {
-      AAD: '5ee746f1-4731-4df9-8602-9bc505edb2c3',
-      B2C: 'f5f84a76-6622-437a-9130-07b27d3c72e7'
-    },
+    appSecret: 'f5f84a76-6622-437a-9130-07b27d3c72e7',
     target: 'target=c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906'
   },
   android: {
-    appSecrets: {
-      AAD: 'f0ac54aa-6e53-4018-98f6-37d60ff7649a',
-      B2C: 'e65c7490-1f58-4e93-bb55-a2e11dac4368'
-    },
+    appSecret: 'e65c7490-1f58-4e93-bb55-a2e11dac4368',
     target: 'target=4dacd24d0b1b42db9894926d0db2f4c7-39311d37-fb55-479c-b7b6-9893b53d0186-7306'
   }
 };
 
-const B2C = 'B2C';
-const AAD = 'AAD';
-SecretStrings.ios.both = {};
-SecretStrings.ios.both[AAD] = `appsecret=${SecretStrings.ios.appSecrets.AAD};${SecretStrings.ios.target}`;
-SecretStrings.ios.both[B2C] = `appsecret=${SecretStrings.ios.appSecrets.B2C};${SecretStrings.ios.target}`;
-
-SecretStrings.android.both = {};
-SecretStrings.android.both[AAD] = `appsecret=${SecretStrings.android.appSecrets.AAD};${SecretStrings.android.target}`;
-SecretStrings.android.both[B2C] = `appsecret=${SecretStrings.android.appSecrets.B2C};${SecretStrings.android.target}`;
+SecretStrings.ios.both = `appsecret=${SecretStrings.ios.appSecret};${SecretStrings.ios.target}`;
+SecretStrings.android.both = `appsecret=${SecretStrings.android.appSecret};${SecretStrings.android.target}`;
 
 const STARTUP_MODE = 'STARTUP_MODE';
-const APP_SECRET = 'APP_SECRET';
 
 const StartupModes = [
   {
@@ -70,17 +54,6 @@ const StartupModes = [
   }
 ];
 
-const AppSecrets = [
-  {
-    label: B2C,
-    key: B2C
-  },
-  {
-    label: AAD,
-    key: AAD
-  }
-];
-
 export default class AppCenterScreen extends Component {
   static navigationOptions = {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DialsTabBarIcon} />,
@@ -98,14 +71,10 @@ export default class AppCenterScreen extends Component {
   state = {
     appCenterEnabled: false,
     pushEnabled: false,
-    authEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
-    appSecret: AppSecrets[0],
-    userId: '',
-    accountId: '',
-    authStatus: 'Authentication status unknown'
+    userId: ''
   }
 
   async componentDidMount() {
@@ -115,15 +84,6 @@ export default class AppCenterScreen extends Component {
       const startupMode = StartupModes[index];
       if (startupMode.key === startupModeKey) {
         this.state.startupMode = startupMode;
-        break;
-      }
-    }
-
-    const appSecretKey = await AsyncStorage.getItem(APP_SECRET);
-    for (let index = 0; index < AppSecrets.length; index++) {
-      const appSecret = AppSecrets[index];
-      if (appSecret.key === appSecretKey) {
-        this.state.appSecret = appSecret;
         break;
       }
     }
@@ -143,9 +103,6 @@ export default class AppCenterScreen extends Component {
   async refreshUI() {
     const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
-
-    const authEnabled = await Auth.isEnabled();
-    this.setState({ authEnabled });
 
     const pushEnabled = await Push.isEnabled();
     this.setState({ pushEnabled });
@@ -175,13 +132,13 @@ export default class AppCenterScreen extends Component {
   async selectStartup() {
     switch (this.state.startupMode.key) {
       case 'APPCENTER':
-        await this.configureStartup(SecretStrings[Platform.OS].appSecrets[this.state.appSecret.key], true);
+        await this.configureStartup(SecretStrings[Platform.OS].appSecret, true);
         break;
       case 'TARGET':
         await this.configureStartup(SecretStrings[Platform.OS].target, true);
         break;
       case 'BOTH':
-        await this.configureStartup(SecretStrings[Platform.OS].both[this.state.appSecret.key], true);
+        await this.configureStartup(SecretStrings[Platform.OS].both, true);
         break;
       case 'NONE':
         await this.configureStartup(null, true);
@@ -231,20 +188,6 @@ export default class AppCenterScreen extends Component {
       />
     );
 
-    const appSecretRenderItem = ({ item: { appSecrets } }) => (
-      <ModalSelector
-        data={appSecrets}
-        initValue={this.state.appSecret.label}
-        style={SharedStyles.modalSelector}
-        selectTextStyle={SharedStyles.itemButton}
-        onChange={async ({ key }) => {
-            await AsyncStorage.setItem(APP_SECRET, key);
-            this.setState({ appSecret: appSecrets.filter(s => s.key === key)[0] }, this.selectStartup);
-          }
-        }
-      />
-    );
-
     return (
       <View style={SharedStyles.container}>
         <SectionList
@@ -261,18 +204,8 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await AppCenter.setEnabled(!this.state.appCenterEnabled);
                     const appCenterEnabled = await AppCenter.isEnabled();
-                    const authEnabled = await Auth.isEnabled();
                     const pushEnabled = await Push.isEnabled();
-                    this.setState({ appCenterEnabled, authEnabled, pushEnabled });
-                  }
-                },
-                {
-                  title: 'Auth Enabled',
-                  value: 'authEnabled',
-                  toggle: async () => {
-                    await Auth.setEnabled(!this.state.authEnabled);
-                    const authEnabled = await Auth.isEnabled();
-                    this.setState({ authEnabled, accountId: '', authStatus: 'User is not authenticated' });
+                    this.setState({ appCenterEnabled, pushEnabled });
                   }
                 },
                 {
@@ -297,45 +230,11 @@ export default class AppCenterScreen extends Component {
               renderItem: startupModeRenderItem
             },
             {
-              title: 'Change App Secret',
-              data: [
-                {
-                  appSecrets: AppSecrets
-                }
-              ],
-              renderItem: appSecretRenderItem
-            },
-            {
               title: 'Actions',
               data: [
                 {
                   title: 'Set Custom Properties',
                   action: this.setCustomProperties
-                },
-              ],
-              renderItem: actionRenderItem
-            },
-            {
-              title: 'Auth',
-              data: [
-                {
-                  title: 'Sign In',
-                  action: async () => {
-                    try {
-                      const result = await Auth.signIn();
-                      this.setState({ accountId: result.accountId, authStatus: 'User is authenticated' });
-                      runDataCrudScenarios();
-                    } catch (e) {
-                      console.log(e);
-                    }
-                  }
-                },
-                {
-                  title: 'Sign Out',
-                  action: () => {
-                    Auth.signOut();
-                    this.setState({ accountId: '', authStatus: 'User is not authenticated' });
-                  }
                 },
               ],
               renderItem: actionRenderItem
@@ -361,20 +260,6 @@ export default class AppCenterScreen extends Component {
                     }
                     await AppCenter.setUserId(userId);
                   }
-                },
-                {
-                  title: 'Account ID',
-                  value: 'accountId',
-                  onChange: async (accountId) => {
-                    this.setState({ accountId });
-                  }
-                },
-                {
-                  title: 'Auth Status',
-                  value: 'authStatus',
-                  onChange: async (authStatus) => {
-                    this.setState({ authStatus });
-                  }
                 }
               ],
               renderItem: valueRenderItem
@@ -384,57 +269,4 @@ export default class AppCenterScreen extends Component {
       </View>
     );
   }
-}
-
-async function runDataCrudScenarios() {
-  const MY_DOCUMENT_ID = 'some-random-document-id';
-
-  const readOptions = new Data.ReadOptions(5000);
-  const writeOptions = new Data.WriteOptions(5000);
-
-  const user = {
-    name: 'Alex',
-    email: 'alex@appcenter.ms',
-    phone: '+1-(855)-555-5555',
-    someNull: null,
-    nestedObject: {
-      nestedString: 'key1',
-      nestedBoolean: true,
-      nestedNumber: 42.2,
-      nestedArray: [1, 2, 3.0, 'four', '👻', null, true, false, { nestedCat: '😺' }]
-    },
-    someNumber: 26.1,
-    someOtherNumber: 26.0,
-    someBoolean: false,
-    '👻 as a key': '🤖'
-  };
-
-  const updatedUser = {
-    name: 'Bob',
-    email: 'bob@appcenter.ms',
-    number: '+1-(855)-111-1111',
-    someNullOther: null,
-    nestedObject2: {
-      key1: 'key3',
-      key2: 'key4',
-      nestedArray: [1, 2, 3.0, 'four', null]
-    },
-    someNumber: 99.1,
-    someOtherNumber2: 99.0,
-    someBool2: false,
-    someOtherBool: true,
-    '👀': '🙉'
-  };
-
-  const createResult = await Data.create(MY_DOCUMENT_ID, user, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
-  console.log('Successful create', createResult);
-
-  const readResult = await Data.read(MY_DOCUMENT_ID, Data.DefaultPartitions.USER_DOCUMENTS, readOptions);
-  console.log('Successful read', readResult);
-
-  const replaceResult = await Data.replace(MY_DOCUMENT_ID, updatedUser, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
-  console.log('Successful replace', replaceResult);
-
-  const removeResult = await Data.remove(MY_DOCUMENT_ID, Data.DefaultPartitions.USER_DOCUMENTS, writeOptions);
-  console.log('Successful remove', removeResult);
 }
