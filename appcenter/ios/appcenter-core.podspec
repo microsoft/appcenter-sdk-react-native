@@ -3,6 +3,8 @@ require 'json'
 package = JSON.parse(File.read(File.join(__dir__, '../package.json')))
 
 Pod::Spec.new do |s|
+  # The name is hardcoded due to a name conflict, resulting in the error 'Errno::ENOENT - No such file or directory @ rb_sysopen - appcenter.podspec.json' error.
+  # See https://github.com/microsoft/appcenter-sdk-react-native/issues/760
   s.name              = 'appcenter-core'
   s.version           = package['version']
   s.summary           = package['description']
