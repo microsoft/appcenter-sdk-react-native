@@ -4,7 +4,7 @@ module.exports = {
   dependency: {
     platforms: {
       ios: {
-        podspecPath: path.join(__dirname, 'ios', 'appcenter.podspec')
+        podspecPath: path.join(__dirname, 'ios', 'appcenter-core.podspec')
       },
       android: {
         packageInstance: 'new AppCenterReactNativePackage(getApplication())'
