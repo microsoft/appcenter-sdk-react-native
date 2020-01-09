@@ -3,9 +3,7 @@
 
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using System;
@@ -33,18 +31,9 @@ namespace Contoso.Forms.Demo
             { XamarinDevice.iOS, "684020093d3844b099ccc5b7d43fc253-4e03393d-1fdc-4f9e-81f4-91fe172d3894-6969" }
         };
 
-        // App Center B2C secrets
-        static readonly IReadOnlyDictionary<string, string> B2CAuthAppSecrets = new Dictionary<string, string>
+        static readonly IReadOnlyDictionary<string, string> AppSecrets = new Dictionary<string, string>
         {
-            { XamarinDevice.UWP, "5bce20c8-f00b-49ca-8580-7a49d5705d4c" }, // same for all devices
-            { XamarinDevice.Android, "987b5941-4fac-4968-933e-98a7ff29237c" },
-            { XamarinDevice.iOS, "fe2bf05d-f4f9-48a6-83d9-ea8033fbb644" }
-        };
-
-        // App Center AAD secrets
-        static readonly IReadOnlyDictionary<string, string> AADAuthAppSecrets = new Dictionary<string, string>
-        {
-            { XamarinDevice.UWP, "5bce20c8-f00b-49ca-8580-7a49d5705d4c" }, // same for all devices
+            { XamarinDevice.UWP, "5bce20c8-f00b-49ca-8580-7a49d5705d4c" },
             { XamarinDevice.Android, "739eacee-42de-454c-b0d7-c093e765e009" },
             { XamarinDevice.iOS, "e9f015c6-6c2b-4410-8053-70eaa52d90e0" }
         };
@@ -62,8 +51,7 @@ namespace Contoso.Forms.Demo
 
         private string GetAppCenterTokenString()
         {
-            var appSecrets = GetAppSecretDictionary();
-            return $"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}";
+            return $"uwp={AppSecrets[XamarinDevice.UWP]};android={AppSecrets[XamarinDevice.Android]};ios={AppSecrets[XamarinDevice.iOS]}";
         }
 
         private string GetTokensString()
@@ -104,7 +92,7 @@ namespace Contoso.Forms.Demo
 
                 AppCenterLog.Assert(LogTag, "AppCenter.Configured=" + AppCenter.Configured);
 
-                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
@@ -129,20 +117,6 @@ namespace Contoso.Forms.Demo
                 {
                     AppCenterLog.Info(LogTag, "Crashes.LastSessionCrashReport.StackTrace=" + task.Result?.StackTrace);
                 });
-            }
-        }
-
-        static IReadOnlyDictionary<string, string> GetAppSecretDictionary()
-        {
-            // If user has selected another Auth Type, override the secret dictionary accordingly.
-            var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
-            switch (persistedAuthType)
-            {
-                case AuthType.AAD:
-                    return AADAuthAppSecrets;
-                case AuthType.B2C:
-                default:
-                    return B2CAuthAppSecrets;
             }
         }
 

@@ -147,10 +147,6 @@
       <Project>{8072449c-c6a8-4b36-87dc-173f295d161c}</Project>
       <Name>Microsoft.AppCenter.Push.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum.UWP\Microsoft.AppCenter.Rum.UWP.csproj">
-      <Project>{bcd888d1-a62f-458c-a72b-9df731ee1a55}</Project>
-      <Name>Microsoft.AppCenter.Rum.UWP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\SDK\AppCenter\Microsoft.AppCenter.UWP\Microsoft.AppCenter.UWP.csproj">
       <Project>{15e3fc9b-7714-4468-a296-81627a5b8f01}</Project>
       <Name>Microsoft.AppCenter.UWP</Name>

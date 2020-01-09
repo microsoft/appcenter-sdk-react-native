@@ -75,9 +75,6 @@
     <Reference Include="HockeySDK">
       <HintPath>..\..\..\packages\HockeySDK.Xamarin.5.2.0\lib\MonoAndroid403\HockeySDK.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleGson">
-      <HintPath>..\..\..\packages\GoogleGson.2.8.5\lib\monoandroid44\GoogleGson.dll</HintPath>
-    </Reference>
     <Reference Include="Java.Interop" />
     <Reference Include="Xamarin.Android.Arch.Core.Common">
       <HintPath>..\..\..\packages\Xamarin.Android.Arch.Core.Common.1.1.1.1\lib\monoandroid90\Xamarin.Android.Arch.Core.Common.dll</HintPath>
@@ -226,6 +223,9 @@
     <Reference Include="Xamarin.Firebase.Iid.Interop">
       <HintPath>..\..\..\packages\Xamarin.Firebase.Iid.Interop.71.1601.0\lib\monoandroid90\Xamarin.Firebase.Iid.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -293,38 +293,6 @@
     <ProjectReference Include="..\..\..\SDK\AppCenterPush\Microsoft.AppCenter.Push.Android.Bindings\Microsoft.AppCenter.Push.Android.Bindings.csproj">
       <Project>{80B9A47A-7A97-4E5A-9706-43ACB25A7240}</Project>
       <Name>Microsoft.AppCenter.Push.Android.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum.Android\Microsoft.AppCenter.Rum.Android.csproj">
-      <Project>{7F7FA7ED-1386-41B5-A11E-656B7F85A8F9}</Project>
-      <Name>Microsoft.AppCenter.Rum.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterRum\Microsoft.AppCenter.Rum.Android.Bindings\Microsoft.AppCenter.Rum.Android.Bindings.csproj">
-      <Project>{7E130457-B427-4043-A5A2-9484CB5809BF}</Project>
-      <Name>Microsoft.AppCenter.Rum.Android.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android.Bindings\Microsoft.AppCenter.Auth.Android.Bindings.csproj">
-      <Project>{E2936797-F00E-4709-A696-14B3C05B336F}</Project>
-      <Name>Microsoft.AppCenter.Auth.Android.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android\Microsoft.AppCenter.Auth.Android.csproj">
-      <Project>{C566819E-C6BE-478D-B061-6F89CC7F30C2}</Project>
-      <Name>Microsoft.AppCenter.Auth.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android.Bindings.Msal\Microsoft.AppCenter.Auth.Android.Bindings.Msal.csproj">
-      <Project>{9898EDAE-E071-4098-A9DF-C909A8EB9082}</Project>
-      <Name>Microsoft.AppCenter.Auth.Android.Bindings.Msal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterAuth\Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common\Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common.csproj">
-      <Project>{C1F8B170-BEBA-4432-B88C-9789BCC4533D}</Project>
-      <Name>Microsoft.AppCenter.Auth.Android.Bindings.Msal.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.Android.Bindings\Microsoft.AppCenter.Data.Android.Bindings.csproj">
-      <Project>{715F7D40-4134-419A-9D63-DBE846F9A708}</Project>
-      <Name>Microsoft.AppCenter.Data.Android.Bindings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SDK\AppCenterData\Microsoft.AppCenter.Data.Android\Microsoft.AppCenter.Data.Android.csproj">
-      <Project>{8CCB60CC-7592-4959-A63D-826201524B11}</Project>
-      <Name>Microsoft.AppCenter.Data.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,21 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="71" android:versionName="2.6.5-SNAPSHOT" package="com.microsoft.appcenter.xamarin.forms.puppet">
 	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="28" />
 	<application android:label="ACFPuppet">
-		<activity android:name="com.microsoft.identity.client.BrowserTabActivity">
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:host="auth" android:scheme="msalbff0949b-7970-439d-9745-92cdc59b10fe" />
-			</intent-filter>
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:host="auth" android:scheme="msal9c77fb6e-7fff-4ae9-ac18-46c0041a6355" />
-			</intent-filter>
-		</activity>
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver" android:exported="false" />
 		<receiver android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
 			<intent-filter>

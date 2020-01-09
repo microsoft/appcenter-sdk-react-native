@@ -52,17 +52,6 @@
 				<string>appcenter-fe2bf05d-f4f9-48a6-83d9-ea8033fbb644</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>com.microsoft.appcenter.xamarin.forms.ios.demo</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>msalfe2bf05d-f4f9-48a6-83d9-ea8033fbb644</string>
-				<string>msale9f015c6-6c2b-4410-8053-70eaa52d90e0</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

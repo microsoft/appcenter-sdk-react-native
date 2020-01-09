@@ -3,9 +3,7 @@
 
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.AppCenter.Data;
 using Microsoft.AppCenter.Distribute;
 using Microsoft.AppCenter.Push;
 using System;
@@ -26,22 +24,14 @@ namespace Contoso.Forms.Puppet
     {
         public const string LogTag = "AppCenterXamarinPuppet";
 
-        // App Center B2C secrets
-        static readonly IReadOnlyDictionary<string, string> B2CAuthAppSecrets = new Dictionary<string, string>
+        static readonly IReadOnlyDictionary<string, string> AppSecrets = new Dictionary<string, string>
         {
-            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" }, // same for all devices
+            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" },
             { XamarinDevice.Android, "bff0949b-7970-439d-9745-92cdc59b10fe" },
             { XamarinDevice.iOS, "b889c4f2-9ac2-4e2e-ae16-dae54f2c5899" }
+
         };
 
-        // App Center AAD secrets
-        static readonly IReadOnlyDictionary<string, string> AADAuthAppSecrets = new Dictionary<string, string>
-        {
-            { XamarinDevice.UWP, "a678b499-1912-4a94-9d97-25b569284d3a" }, // same for all devices
-            { XamarinDevice.Android, "9c77fb6e-7fff-4ae9-ac18-46c0041a6355" },
-            { XamarinDevice.iOS, "4ca276ee-9a50-4ad6-9746-50c420f9df88" }
-        };
-        
         // OneCollector secrets
         static readonly IReadOnlyDictionary<string, string> OneCollectorTokens = new Dictionary<string, string>
         {
@@ -85,10 +75,8 @@ namespace Contoso.Forms.Puppet
 
                 Distribute.SetInstallUrl("https://install.portal-server-core-integration.dev.avalanch.es");
                 Distribute.SetApiUrl("https://api-gateway-core-integration.dev.avalanch.es/v0.1");
-                Auth.SetConfigUrl("https://config-integration.dev.avalanch.es");
-                Data.SetTokenExchangeUrl("https://token-exchange-mbaas-integration.dev.avalanch.es/v0.1");
 
-                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute), typeof(Auth), typeof(Data));
+                AppCenter.Start(GetTokensString(), typeof(Analytics), typeof(Crashes), typeof(Distribute));
                 if (Current.Properties.ContainsKey(Constants.UserId) && Current.Properties[Constants.UserId] is string id)
                 {
                     AppCenter.SetUserId(id);
@@ -123,8 +111,7 @@ namespace Contoso.Forms.Puppet
 
         private string GetAppCenterTokenString()
         {
-            var appSecrets = GetAppSecretDictionary();
-            return $"uwp={appSecrets[XamarinDevice.UWP]};android={appSecrets[XamarinDevice.Android]};ios={appSecrets[XamarinDevice.iOS]}";
+            return $"uwp={AppSecrets[XamarinDevice.UWP]};android={AppSecrets[XamarinDevice.Android]};ios={AppSecrets[XamarinDevice.iOS]}";
         }
 
         private string GetTokensString()
@@ -138,20 +125,6 @@ namespace Contoso.Forms.Puppet
                     return $"{GetAppCenterTokenString()};{GetOneCollectorTokenString()}";
                 default:
                     return GetAppCenterTokenString();
-            }
-        }
-
-        static IReadOnlyDictionary<string, string> GetAppSecretDictionary()
-        {
-            // If user has selected another Auth Type, override the secret dictionary accordingly.
-            var persistedAuthType = AuthTypeUtils.GetPersistedAuthType();
-            switch (persistedAuthType)
-            {
-                case AuthType.AAD:
-                    return AADAuthAppSecrets;
-                case AuthType.B2C:
-                default:
-                    return B2CAuthAppSecrets;
             }
         }
 

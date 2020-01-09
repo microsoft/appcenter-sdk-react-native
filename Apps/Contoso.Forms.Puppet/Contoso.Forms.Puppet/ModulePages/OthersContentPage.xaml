@@ -7,28 +7,8 @@
         <TableSection Title="Push">
             <SwitchCell Text="Push Enabled" On="true" x:Name="PushEnabledSwitchCell" OnChanged="UpdatePushEnabled" />
         </TableSection>
-        <TableSection Title="Auth">
-            <SwitchCell Text="Auth Enabled" On="true" x:Name="AuthEnabledSwitchCell" OnChanged="UpdateAuthEnabled" />
-            <ViewCell>
-                <Picker x:Name="AuthTypePicker" Title="Auth Type" PropertyChanged="ChangeAuthType"/>
-            </ViewCell>
-        </TableSection>
-        <TableSection Title="Rum">
-            <SwitchCell Text="Rum Enabled" x:Name="RumEnabledSwitchCell" OnChanged="UpdateRumEnabled" />
-        </TableSection>
         <TableSection Title="EventFilter">
             <SwitchCell Text="EventFilter Enabled" x:Name="EventFilterEnabledSwitchCell" OnChanged="UpdateEventFilterEnabled" />
-        </TableSection>
-        <TableSection Title="MBaaS">
-            <ViewCell Tapped="RunMBaaSAsync">
-                <Button Text="Test MBaaS (hardcoded scenario)" InputTransparent="true" Clicked="RunMBaaSAsync" />
-            </ViewCell>
-            <ViewCell Tapped="SignOut">
-                <Button Text="Sign Out" InputTransparent="true" Clicked="SignOut" />
-            </ViewCell>
-            <ViewCell Tapped="SignInInformation">
-                <Button x:Name="SignInInformationButton" Text="Unknown" InputTransparent="true" Clicked="SignInInformation" />
-            </ViewCell>
         </TableSection>
     </TableView>
 </ContentPage>
