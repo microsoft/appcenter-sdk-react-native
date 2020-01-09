@@ -75,9 +75,6 @@
     <Reference Include="HockeySDK">
       <HintPath>..\..\..\packages\HockeySDK.Xamarin.5.2.0\lib\MonoAndroid403\HockeySDK.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleGson">
-      <HintPath>..\..\..\packages\GoogleGson.2.8.5\lib\monoandroid44\GoogleGson.dll</HintPath>
-    </Reference>
     <Reference Include="Java.Interop" />
     <Reference Include="Xamarin.Android.Arch.Core.Common">
       <HintPath>..\..\..\packages\Xamarin.Android.Arch.Core.Common.1.1.1.1\lib\monoandroid90\Xamarin.Android.Arch.Core.Common.dll</HintPath>
