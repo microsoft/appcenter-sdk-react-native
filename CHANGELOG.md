@@ -1,6 +1,14 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.6.5 （Under development）
+## Version 3.0.0 （Under development）
+
+### App Center Auth
+
+App Center Auth has retired and removed from the SDK.
+
+### App Center Data
+
+App Center Data has retired and removed from the SDK.
 
 ___
 
