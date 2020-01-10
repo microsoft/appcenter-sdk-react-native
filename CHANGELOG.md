@@ -1,10 +1,16 @@
 # App Center SDK for React Native Change Log
 
-## Version 3.0.0
+## Version 3.0.0 (Under development)
 
-### App Center
+### App Center Auth
 
-* **[Breaking Change]** Removed Auth and Data modules from SDK.
+App Center Auth has retired and been removed from the SDK.
+
+### App Center Data
+
+App Center Data has retired and been removed from the SDK.
+
+___
 
 ## Version 2.6.1
 
