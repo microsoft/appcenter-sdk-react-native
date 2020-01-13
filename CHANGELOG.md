@@ -4,11 +4,11 @@
 
 ### App Center Auth
 
-App Center Auth is retired and has been removed from the SDK.
+App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
 
 ### App Center Data
 
-App Center Data is retired and has been removed from the SDK.
+App Center Data is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
 
 ___
 
