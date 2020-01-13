@@ -1,6 +1,14 @@
 # App Center SDK for .NET Change Log
 
-## Version 2.6.5 （Under development）
+## Version 3.0.0 （Under development）
+
+### App Center Auth
+
+App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
+
+### App Center Data
+
+App Center Data is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
 
 ___
 
