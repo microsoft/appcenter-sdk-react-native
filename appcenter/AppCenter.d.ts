@@ -29,6 +29,7 @@ export class CustomProperties {
     clear(key: string): CustomProperties;
 }
 
+export function startFromLibrary(service: any): Promise<void>;
 export function setLogLevel(logLevel: LogLevel | AppCenterLogLevel): Promise<void>;
 export function getLogLevel(): Promise<LogLevel | AppCenterLogLevel>;
 export function getSdkVersion(): string;
