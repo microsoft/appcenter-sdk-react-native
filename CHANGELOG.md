@@ -12,6 +12,17 @@ App Center Data is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has 
 
 ___
 
+## Version 2.6.2 (Under development)
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix an error where **appcenter.podspec.json** could not be found when using CocoaPods version 1.8.x.
+* **[Fix]** Fix issues with `use_frameworks!` directive.
+
+___
+
 ## Version 2.6.1
 
 ### App Center
