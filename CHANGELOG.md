@@ -8,6 +8,7 @@
 
 * **[Fix]** Fix an error where **appcenter.podspec.json** could not be found when using CocoaPods version 1.8.x.
 * **[Fix]** Fix issues with `use_frameworks!` directive.
+* **[Fix]** Fix an issue when React Native SDK did not send wrapperSdk information.
 
 ___
 
