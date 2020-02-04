@@ -7,13 +7,11 @@ import Toast from 'react-native-simple-toast';
 
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
 import Push from 'appcenter-push';
-import Data from 'appcenter-data';
 
 import AppCenterScreen from './screens/AppCenterScreen';
 import TransmissionScreen from './screens/TransmissionScreen';
 import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
-import DataScreen from './screens/DataScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
 YellowBox.ignoreWarnings(['Remote debugger']);
@@ -23,8 +21,7 @@ const TabNavigator = createBottomTabNavigator(
     AppCenter: AppCenterScreen,
     Analytics: AnalyticsScreen,
     Transmission: TransmissionScreen,
-    Crashes: CrashesScreen,
-    Data: DataScreen
+    Crashes: CrashesScreen
   },
   {
     tabBarOptions: {
@@ -68,12 +65,6 @@ Push.setListener({
       }
       Alert.alert(title, message);
     }
-  }
-});
-
-Data.setRemoteOperationListener({
-  onRemoteOperationCompleted(document) {
-    console.log(`onRemoteOperationCompleted called in the delegate method. document id: ${document.id}`);
   }
 });
 

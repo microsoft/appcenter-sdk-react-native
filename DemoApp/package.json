@@ -11,9 +11,7 @@
     "@react-native-community/async-storage": "1.6.2",
     "appcenter": "^2.6.1",
     "appcenter-analytics": "^2.6.1",
-    "appcenter-auth": "^2.6.1",
     "appcenter-crashes": "^2.6.1",
-    "appcenter-data": "^2.6.1",
     "appcenter-push": "^2.6.1",
     "metro": "0.54.1",
     "react": "16.8.3",
@@ -23,6 +21,7 @@
     "react-native-image-picker": "0.28.1",
     "react-native-modal-selector": "1.1.2",
     "react-native-simple-toast": "0.0.8",
+    "react-native-screens": "2.0.0-alpha.34",
     "react-navigation": "3.13.0",
     "stacktrace-parser": "0.1.7"
   },

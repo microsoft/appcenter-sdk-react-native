@@ -8,9 +8,7 @@ target 'DemoApp' do
   # Pods for DemoApp
   pod 'AppCenter/Push', '~> 2.5.3'
   pod 'AppCenter/Crashes', '~> 2.5.3'
-  pod 'AppCenter/Data', '~> 2.5.3'
   pod 'AppCenter/Analytics', '~> 2.5.3'
-  pod 'AppCenter/Auth', '~> 2.5.3'
   pod 'AppCenterReactNativeShared', '~> 2.6.1'
 
   platform :ios, '9.0'

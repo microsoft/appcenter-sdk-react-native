@@ -6,16 +6,8 @@ PODS:
     - AppCenter/Analytics
     - AppCenterReactNativeShared
     - React
-  - appcenter-auth (2.6.1):
-    - AppCenter/Auth
-    - AppCenterReactNativeShared
-    - React
   - appcenter-crashes (2.6.1):
     - AppCenter/Crashes
-    - AppCenterReactNativeShared
-    - React
-  - appcenter-data (2.6.1):
-    - AppCenter/Data
     - AppCenterReactNativeShared
     - React
   - appcenter-push (2.6.1):
@@ -24,12 +16,8 @@ PODS:
     - React
   - AppCenter/Analytics (2.5.3):
     - AppCenter/Core
-  - AppCenter/Auth (2.5.3):
-    - AppCenter/Core
   - AppCenter/Core (2.5.3)
   - AppCenter/Crashes (2.5.3):
-    - AppCenter/Core
-  - AppCenter/Data (2.5.3):
     - AppCenter/Core
   - AppCenter/Push (2.5.3):
     - AppCenter/Core
@@ -266,9 +254,7 @@ PODS:
 DEPENDENCIES:
   - appcenter (from `../node_modules/appcenter/ios`)
   - appcenter-analytics (from `../node_modules/appcenter-analytics/ios`)
-  - appcenter-auth (from `../node_modules/appcenter-auth/ios`)
   - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
-  - appcenter-data (from `../node_modules/appcenter-data/ios`)
   - appcenter-push (from `../node_modules/appcenter-push/ios`)
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/local.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -314,12 +300,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/appcenter/ios"
   appcenter-analytics:
     :path: "../node_modules/appcenter-analytics/ios"
-  appcenter-auth:
-    :path: "../node_modules/appcenter-auth/ios"
   appcenter-crashes:
     :path: "../node_modules/appcenter-crashes/ios"
-  appcenter-data:
-    :path: "../node_modules/appcenter-data/ios"
   appcenter-push:
     :path: "../node_modules/appcenter-push/ios"
   AppCenterReactNativeShared:
@@ -384,14 +366,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 82fbde26980cf21ac3a5eed23a7bb33894356e81
+  AppCenter: 765ff38c4d360fc5ec61b61a8be24d74cd6d4d83
   appcenter: f2e241f931e0865a74b3af3928066a1190814be0
   appcenter-analytics: 42e368870a904af67fd93f043f3efa75ffa772a2
-  appcenter-auth: 654c082526b644975bd599d3c8aa237cc27e4559
   appcenter-crashes: bfc5c03a6ddcfa158fcf4217d1724fd52f45d12c
-  appcenter-data: 6090e7385b8e1ac5ce70cf868831abf16e65eb78
   appcenter-push: 364163b8df17ec57588f8f14a29184405acb5de8
-  AppCenterReactNativeShared: 766cf8c9ed1f4cf51af9a0d50d55576cfb47db1d
+  AppCenterReactNativeShared: 53cc8a4d03aa06e5bd6244db03a5e5b621ceeec5
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 5bc5b1606fc9a7ac6956de049f6e30901ed31c49
