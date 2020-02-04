@@ -24,6 +24,7 @@
     "react-native-gesture-handler": "1.5.0",
     "react-native-image-picker": "1.1.0",
     "react-native-modal-selector": "1.1.2",
+    "react-native-screens": "2.0.0-alpha.34",
     "react-navigation": "3.13.0"
   },
   "devDependencies": {
