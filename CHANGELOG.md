@@ -1,5 +1,45 @@
 # App Center SDK for React Native Change Log
 
+## Version 3.0.0
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix an error where **appcenter.podspec.json** could not be found when using CocoaPods version 1.8.x.
+* **[Fix]** Fix issues with `use_frameworks!` directive.
+* **[Fix]** Fix an issue where React Native SDK would not send wrapperSdk information.
+* **[Fix]** Optimization of release objects from memory during the execution of a large number of operations.
+* **[Fix]** Disable module debugging for release mode in the SDK to fix dSYM warnings.
+* **[Fix]** Fix SDK crash at application launch on iOS 12.0 (`CTTelephonyNetworkInfo.serviceSubscriberCellularProviders` issue).
+* **[Fix]** The SDK was considering 201-299 status code as HTTP errors and is now fixed to accept all 2XX codes as successful.
+* **[Improvement]** Replaced sqlite query concatenation with more secure bindings.
+
+#### Android
+
+* **[Fix]** Fix infinite recursion when handling encryption errors.
+
+### App Center Auth
+
+App Center Auth is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
+
+### App Center Data
+
+App Center Data is [retired](https://aka.ms/MBaaS-retirement-blog-post) and has been removed from the SDK.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix incorrect app version when an NDK crash is sent after updating the app.
+* **[Behavior change]** Change the path to the minidump directory to use a subfolder in which the current contextual data (device information, etc.) is saved along with the .dmp file.
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.4.0.
+
+___
+
 ## Version 2.6.1
 
 ### App Center

@@ -21,4 +21,5 @@ Pod::Spec.new do |s|
   s.dependency 'AppCenterReactNativeShared'
   s.dependency 'AppCenter/Analytics'
   s.dependency 'React'
+  s.static_framework = true
 end

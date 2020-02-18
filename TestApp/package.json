@@ -12,13 +12,11 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "1.6.2",
-    "appcenter": "file:appcenter-2.6.1.tgz",
-    "appcenter-analytics": "file:appcenter-analytics-2.6.1.tgz",
-    "appcenter-auth": "file:appcenter-auth-2.6.1.tgz",
-    "appcenter-crashes": "file:appcenter-crashes-2.6.1.tgz",
-    "appcenter-data": "file:appcenter-data-2.6.1.tgz",
-    "appcenter-link-scripts": "file:appcenter-link-scripts-2.6.1.tgz",
-    "appcenter-push": "file:appcenter-push-2.6.1.tgz",
+    "appcenter": "file:appcenter-3.0.0.tgz",
+    "appcenter-analytics": "file:appcenter-analytics-3.0.0.tgz",
+    "appcenter-crashes": "file:appcenter-crashes-3.0.0.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-3.0.0.tgz",
+    "appcenter-push": "file:appcenter-push-3.0.0.tgz",
     "metro": "0.54.1",
     "react": "16.9.0",
     "react-native": "0.61.3",
@@ -26,6 +24,7 @@
     "react-native-gesture-handler": "1.5.0",
     "react-native-image-picker": "1.1.0",
     "react-native-modal-selector": "1.1.2",
+    "react-native-screens": "2.0.0-alpha.34",
     "react-navigation": "3.13.0"
   },
   "devDependencies": {
@@ -54,7 +53,6 @@
       "<rootDir>/node_modules/appcenter/test/AppCenterMock.js",
       "<rootDir>/node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
       "<rootDir>/node_modules/appcenter-crashes/test/AppCenterCrashesMock.js",
-      "<rootDir>/node_modules/appcenter-data/test/AppCenterDataMock.js",
       "<rootDir>/node_modules/appcenter-push/test/AppCenterPushMock.js"
     ],
     "transformIgnorePatterns": [

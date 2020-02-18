@@ -13,7 +13,6 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* DemoAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* DemoAppTests.m */; };
-		0B0A133B9C9F41D9B00598CF /* libAppCenterReactNativeAuth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BD8704C5CEC40E6A11B059B /* libAppCenterReactNativeAuth.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
@@ -30,7 +29,6 @@
 		6EA24DA06B8C4FBF9A265C29 /* libAppCenterReactNativePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAE796F70014ABDB3E6B18E /* libAppCenterReactNativePush.a */; };
 		707E4C39CE375B5D347695E4 /* libPods-DemoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BC4D14FCB559ED95B3FFE86F /* libPods-DemoApp.a */; };
 		7952C71C74CD422FA3D45057 /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D112F02EBD04B0380A1C8B4 /* libRNFS.a */; };
-		7A6575B23F744650AA3CC84B /* libAppCenterReactNativeData.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 763096DF164F43FF951A0238 /* libAppCenterReactNativeData.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		92BE79A52130C554003E7179 /* DemoAppNative.m in Sources */ = {isa = PBXBuildFile; fileRef = 92BE79792130C554003E7179 /* DemoAppNative.m */; };
 		A0831A672B5C4685BF815A1E /* libAppCenterReactNativeAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19BF517E9AF847429B62F09E /* libAppCenterReactNativeAnalytics.a */; };
@@ -181,13 +179,6 @@
 			remoteGlobalIDString = 3D3CD9321DE5FBEE00167DC4;
 			remoteInfo = "cxxreact-tvOS";
 		};
-		4A64DF5F233CFEC10073D768 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 42BB34C1EE614A659AD7FCD7 /* AppCenterReactNativeData.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 548694001D8384E600E6685A;
-			remoteInfo = AppCenterReactNativeData;
-		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
@@ -328,13 +319,6 @@
 			remoteGlobalIDString = 548694001D8384E600E6685A;
 			remoteInfo = AppCenterReactNativeAnalytics;
 		};
-		D68B4CA822C1A2D900764EFA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8F5F8C032AEC4BEB9885C80A /* AppCenterReactNativeAuth.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 548694001D8384E600E6685A;
-			remoteInfo = AppCenterReactNativeAuth;
-		};
 		DF0168AE22B7B870001DF71E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -398,16 +382,12 @@
 		2A33BC51220B4C4100BF9605 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		2B1652DB4F289FC9BD2FFBD8 /* Pods-DemoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DemoApp/Pods-DemoApp.release.xcconfig"; sourceTree = "<group>"; };
 		2D112F02EBD04B0380A1C8B4 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
-		3BD8704C5CEC40E6A11B059B /* libAppCenterReactNativeAuth.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeAuth.a; sourceTree = "<group>"; };
-		42BB34C1EE614A659AD7FCD7 /* AppCenterReactNativeData.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeData.xcodeproj; path = "../node_modules/appcenter-data/ios/AppCenterReactNativeData.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		746CEF832EC54B5A91F0FFCC /* AppCenter-Config.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "DemoApp/AppCenter-Config.plist"; sourceTree = "<group>"; };
-		763096DF164F43FF951A0238 /* libAppCenterReactNativeData.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeData.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8379829B950345F48CF8CEDC /* libLRDRCTSimpleToast.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLRDRCTSimpleToast.a; sourceTree = "<group>"; };
 		8E3F19E45A64403699AB2979 /* LRDRCTSimpleToast.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = LRDRCTSimpleToast.xcodeproj; path = "../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast.xcodeproj"; sourceTree = "<group>"; };
-		8F5F8C032AEC4BEB9885C80A /* AppCenterReactNativeAuth.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeAuth.xcodeproj; path = "../node_modules/appcenter-auth/ios/AppCenterReactNativeAuth.xcodeproj"; sourceTree = "<group>"; };
 		92BE79792130C554003E7179 /* DemoAppNative.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DemoAppNative.m; path = DemoApp/DemoAppNative.m; sourceTree = "<group>"; };
 		92BE79A42130C554003E7179 /* DemoAppNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DemoAppNative.h; path = DemoApp/DemoAppNative.h; sourceTree = "<group>"; };
 		9912D82CF3BA42C594AE76D9 /* AppCenterReactNativePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativePush.xcodeproj; path = "../node_modules/appcenter-push/ios/AppCenterReactNativePush.xcodeproj"; sourceTree = "<group>"; };
@@ -458,8 +438,6 @@
 				7952C71C74CD422FA3D45057 /* libRNFS.a in Frameworks */,
 				B803E41D894F4DA8B9358E44 /* libRNImagePicker.a in Frameworks */,
 				1FF53A92748D482FA7386B77 /* libLRDRCTSimpleToast.a in Frameworks */,
-				0B0A133B9C9F41D9B00598CF /* libAppCenterReactNativeAuth.a in Frameworks */,
-				7A6575B23F744650AA3CC84B /* libAppCenterReactNativeData.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,14 +572,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4A64DF5C233CFEC10073D768 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4A64DF60233CFEC10073D768 /* libAppCenterReactNativeData.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -651,8 +621,6 @@
 				1B42BC4469AC41BEB1A648E3 /* RNFS.xcodeproj */,
 				BF6B34EE9AC34CC0BD56C9F8 /* RNImagePicker.xcodeproj */,
 				8E3F19E45A64403699AB2979 /* LRDRCTSimpleToast.xcodeproj */,
-				8F5F8C032AEC4BEB9885C80A /* AppCenterReactNativeAuth.xcodeproj */,
-				42BB34C1EE614A659AD7FCD7 /* AppCenterReactNativeData.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -709,8 +677,6 @@
 				2D112F02EBD04B0380A1C8B4 /* libRNFS.a */,
 				D798BE1486E2436DAB2F0D08 /* libRNImagePicker.a */,
 				8379829B950345F48CF8CEDC /* libLRDRCTSimpleToast.a */,
-				3BD8704C5CEC40E6A11B059B /* libAppCenterReactNativeAuth.a */,
-				763096DF164F43FF951A0238 /* libAppCenterReactNativeData.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -760,14 +726,6 @@
 			isa = PBXGroup;
 			children = (
 				9CF9D3EE1FB573BA00F8C247 /* libAppCenterReactNativeAnalytics.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		D68B4CA522C1A2D900764EFA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D68B4CA922C1A2D900764EFA /* libAppCenterReactNativeAuth.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -867,16 +825,8 @@
 					ProjectRef = 215F4EFB8D904740854A4CCF /* AppCenterReactNativeAnalytics.xcodeproj */;
 				},
 				{
-					ProductGroup = D68B4CA522C1A2D900764EFA /* Products */;
-					ProjectRef = 8F5F8C032AEC4BEB9885C80A /* AppCenterReactNativeAuth.xcodeproj */;
-				},
-				{
 					ProductGroup = 9CF9D3DB1FB573BA00F8C247 /* Products */;
 					ProjectRef = A74770D89B674F5AAB7B567F /* AppCenterReactNativeCrashes.xcodeproj */;
-				},
-				{
-					ProductGroup = 4A64DF5C233CFEC10073D768 /* Products */;
-					ProjectRef = 42BB34C1EE614A659AD7FCD7 /* AppCenterReactNativeData.xcodeproj */;
 				},
 				{
 					ProductGroup = 9CF9D3E51FB573BA00F8C247 /* Products */;
@@ -1085,13 +1035,6 @@
 			remoteRef = 3DAD3EAA1DF850E9000B6D8A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		4A64DF60233CFEC10073D768 /* libAppCenterReactNativeData.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAppCenterReactNativeData.a;
-			remoteRef = 4A64DF5F233CFEC10073D768 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1230,13 +1173,6 @@
 			fileType = archive.ar;
 			path = libAppCenterReactNativeAnalytics.a;
 			remoteRef = 9CF9D3ED1FB573BA00F8C247 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D68B4CA922C1A2D900764EFA /* libAppCenterReactNativeAuth.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAppCenterReactNativeAuth.a;
-			remoteRef = D68B4CA822C1A2D900764EFA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		DF0168AF22B7B870001DF71E /* libjsi.a */ = {
@@ -1458,8 +1394,6 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
-					"$(SRCROOT)/../node_modules/appcenter-auth/ios/AppCenterReactNativeAuth",
-					"$(SRCROOT)/../node_modules/appcenter-data/ios/AppCenterReactNativeData",
 				);
 				INFOPLIST_FILE = DemoApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1494,8 +1428,6 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
-					"$(SRCROOT)/../node_modules/appcenter-auth/ios/AppCenterReactNativeAuth",
-					"$(SRCROOT)/../node_modules/appcenter-data/ios/AppCenterReactNativeData",
 				);
 				INFOPLIST_FILE = DemoApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
