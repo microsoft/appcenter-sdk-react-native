@@ -16,6 +16,4 @@ target 'DemoApp' do
   # This commented line is to avoid react-native link adding an optional dependency that is way too heavy.
   # pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
-  pod 'RNScreens', :path => '../node_modules/react-native-screens'
-
 end

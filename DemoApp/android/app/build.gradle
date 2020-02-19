@@ -144,7 +144,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-screens')
     implementation project(':react-native-gesture-handler')
     implementation project(':appcenter')
     implementation project(':appcenter-analytics')
