@@ -249,8 +249,6 @@ PODS:
     - React
   - RNGestureHandler (1.5.0):
     - React
-  - RNScreens (2.0.0-alpha.34):
-    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -290,7 +288,6 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -366,8 +363,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
-  RNScreens:
-    :path: "../node_modules/react-native-screens"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -407,7 +402,6 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 5ae4d57458804e99f73d427214442a6b10a53856
   RNFS: 795866388a01de4e470f3b1041a99cf20a343844
   RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
-  RNScreens: 9d8a2900cd4f967af70dbfed74b64f77fbb6600a
   Yoga: 02036f6383c0008edb7ef0773a0e6beb6ce82bd1
 
 PODFILE CHECKSUM: 64162dc4bf7d5a1f1b45d18a8143677b2578e20e
