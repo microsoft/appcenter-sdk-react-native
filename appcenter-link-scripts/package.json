@@ -20,7 +20,7 @@
   "dependencies": {
     "debug": "4.1.1",
     "glob": "5.0.15",
-    "mkdirp": "0.5.1",
+    "mkdirp": "0.5.3",
     "plist": "3.0.1",
     "which": "1.2.11",
     "xcode": "2.0.0"
