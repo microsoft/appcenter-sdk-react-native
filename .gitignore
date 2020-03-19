@@ -31,6 +31,7 @@ local.properties
 *.class
 *.project
 *.prefs
+.classpath
 
 # node.js
 #
