@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter/README.md",
   "dependencies": {
-    "appcenter-link-scripts": "3.0.0"
+    "appcenter-link-scripts": "3.0.0",
+    "audit": "0.0.6"
   },
   "rnpm": {
     "android": {
@@ -31,7 +32,7 @@
   },
   "devDependencies": {
     "babel-eslint": "7.2.3",
-    "babel-jest": "21.0.2",
+    "babel-jest": "25.1.0",
     "babel-preset-react-native": "4.0.0",
     "eslint": "6.5.1",
     "eslint-config-airbnb": "18.0.1",
@@ -39,6 +40,8 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.16.0",
     "jest": "24.8.0",
+    "mkdirp": "0.5.3",
+    "minimist": "1.2.5",
     "react": "16.6.3",
     "react-native": "0.57.3"
   },

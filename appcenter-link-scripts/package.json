@@ -20,10 +20,11 @@
   "dependencies": {
     "debug": "4.1.1",
     "glob": "5.0.15",
-    "mkdirp": "0.5.1",
+    "mkdirp": "0.5.3",
     "plist": "3.0.1",
     "which": "1.2.11",
-    "xcode": "2.0.0"
+    "xcode": "2.0.0",
+    "minimist": "1.2.5"
   },
   "devDependencies": {
     "babel-eslint": "7.2.3",
@@ -31,7 +32,9 @@
     "eslint-config-airbnb": "18.0.1",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.16.0"
+    "eslint-plugin-react": "7.16.0",
+    "mkdirp": "0.5.3",
+    "minimist": "1.2.5"
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint ."
