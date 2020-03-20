@@ -294,10 +294,9 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - boost-for-react-native
   trunk:
     - AppCenter
+    - boost-for-react-native
 
 EXTERNAL SOURCES:
   appcenter-analytics:
