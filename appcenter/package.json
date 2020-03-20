@@ -39,8 +39,6 @@
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-react": "7.16.0",
     "jest": "24.8.0",
-    "mkdirp": "0.5.3",
-    "minimist": "1.2.5",
     "react": "16.6.3",
     "react-native": "0.57.3"
   },

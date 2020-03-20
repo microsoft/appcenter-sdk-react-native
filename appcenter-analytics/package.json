@@ -39,9 +39,7 @@
     "eslint-plugin-react": "7.16.0",
     "jest": "24.8.0",
     "react": "16.6.3",
-    "react-native": "0.57.3",
-    "mkdirp": "0.5.3",
-    "minimist": "1.2.5"
+    "react-native": "0.57.3"
   },
   "jest": {
     "preset": "react-native",
