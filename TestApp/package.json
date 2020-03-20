@@ -26,7 +26,8 @@
     "react-native-modal-selector": "1.1.2",
     "react-navigation": "3.13.0",
     "mkdirp": "0.5.3",
-    "minimist": "1.2.5"
+    "minimist": "1.2.5",
+    "react-native-screens": "2.3.0"
   },
   "devDependencies": {
     "@babel/core": "7.6.4",
