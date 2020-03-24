@@ -1,6 +1,6 @@
 {
   "name": "appcenter",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Node module that contains common functionality needed to appcenter-* modules",
   "main": "AppCenter.js",
   "types": "AppCenter.d.ts",
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter/README.md",
   "dependencies": {
-    "appcenter-link-scripts": "3.0.0"
+    "appcenter-link-scripts": "3.0.1"
   },
   "rnpm": {
     "android": {
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "babel-eslint": "7.2.3",
-    "babel-jest": "21.0.2",
+    "babel-jest": "25.1.0",
     "babel-preset-react-native": "4.0.0",
     "eslint": "6.5.1",
     "eslint-config-airbnb": "18.0.1",

@@ -1,5 +1,11 @@
 # App Center SDK for React Native Change Log
 
+## Version 3.0.1
+
+### App Center
+
+* **[Fix]** Fix dependency vulnerabilities in the **appcenter-link-scripts** package and in the **appcenter** package `devDependencies`.
+
 ## Version 3.0.0
 
 ### App Center
