@@ -1,10 +1,29 @@
 # App Center SDK for React Native Change Log
 
+## Version 3.0.2
+
+### App Center Crashes
+
+* **[Fix]** Remove the multiple attachments warning as that is now supported by the portal.
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.5.1.
+
+#### Android
+
+* **[Fix]** Change minidump filter to use file extension instead of name.
+* **[Fix]** Fix removing minidump files when the sending crash report was discarded.
+
+___
+
 ## Version 3.0.1
 
 ### App Center
 
 * **[Fix]** Fix dependency vulnerabilities in the **appcenter-link-scripts** package and in the **appcenter** package `devDependencies`.
+
+___
 
 ## Version 3.0.0
 
