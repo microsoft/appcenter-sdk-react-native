@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License.
  */
- 
+
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
@@ -169,7 +169,8 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'com.facebook.react:react-native:+'
-    
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
