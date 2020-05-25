@@ -1,5 +1,21 @@
 # App Center SDK for React Native Change Log
 
+## Version 3.0.3
+
+### App Center
+
+#### iOS
+
+* **[Improvement]** Use namespaced `NSUserDefaults` keys with the **MSAppCenter** prefix for all the keys set by the SDK. Fixed a few keys missing namespace.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.6.0.
+
+___
+
 ## Version 3.0.2
 
 ### App Center Crashes
