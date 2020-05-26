@@ -30,7 +30,6 @@ allprojects {
         maven {
             url  "https://dl.bintray.com/vsappcenter/appcenter-snapshot"
         }
-        maven { url 'https://www.jitpack.io' }
     }
 }
 
