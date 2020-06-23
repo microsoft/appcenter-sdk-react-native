@@ -1,5 +1,26 @@
 # App Center SDK for React Native Change Log
 
+## Version 3.0.4
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix crash when local binary data (where unsent logs or unprocessed crashed are stored) is corrupted.
+* **[Fix]** When carrier name is retrieved incorrectly by iOS, show `nil` as expected instead of "carrier" string.
+
+#### Android
+
+* **[Fix]** Fix possible delays in UI thread when queueing a large number of events.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Improvement]** Update PLCrashReporter to 1.7.0.
+
+___
+
 ## Version 3.0.3
 
 ### App Center
