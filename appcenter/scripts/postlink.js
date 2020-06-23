@@ -32,7 +32,7 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
         .then((file) => {
             console.log(`Added code to initialize iOS AppCenter SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
-                [{ pod: 'AppCenterReactNativeShared', version: '3.0.3' }],
+                [{ pod: 'AppCenterReactNativeShared', version: '3.0.4' }],
                 { platform: 'ios', version: '9.0' }
             );
         })
