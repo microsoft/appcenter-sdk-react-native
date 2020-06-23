@@ -1,28 +1,28 @@
 PODS:
-  - appcenter-analytics (3.0.3):
+  - appcenter-analytics (3.0.4):
     - AppCenter/Analytics
     - AppCenterReactNativeShared
     - React
-  - appcenter-core (3.0.3):
+  - appcenter-core (3.0.4):
     - AppCenterReactNativeShared
     - React
-  - appcenter-crashes (3.0.3):
+  - appcenter-crashes (3.0.4):
     - AppCenter/Crashes
     - AppCenterReactNativeShared
     - React
-  - appcenter-push (3.0.3):
+  - appcenter-push (3.0.4):
     - AppCenter/Push
     - AppCenterReactNativeShared
     - React
-  - AppCenter/Analytics (3.2.0):
+  - AppCenter/Analytics (3.3.0):
     - AppCenter/Core
-  - AppCenter/Core (3.2.0)
-  - AppCenter/Crashes (3.2.0):
+  - AppCenter/Core (3.3.0)
+  - AppCenter/Crashes (3.3.0):
     - AppCenter/Core
-  - AppCenter/Push (3.2.0):
+  - AppCenter/Push (3.3.0):
     - AppCenter/Core
-  - AppCenterReactNativeShared (3.0.3):
-    - AppCenter/Core (= 3.2.0)
+  - AppCenterReactNativeShared (3.0.4):
+    - AppCenter/Core (= 3.3.0)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.62.2)
@@ -395,12 +395,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: ca66175050d538b157959382dd43f1ab96cdab84
-  appcenter-analytics: 4fdc885acb8a3bfac835515a8b9610d054ba8b9f
-  appcenter-core: 84a1c69361d10272bf08b2ff906c37f4e422b940
-  appcenter-crashes: e9008710be7612c585c39f3dc2cf3894172dc6e2
-  appcenter-push: f7c9c350e73ffd8e41524262a46df7abe02b7332
-  AppCenterReactNativeShared: fe56fbcdd0b101e02837db51d678cba9aef94b84
+  AppCenter: d360362c7ae4a265916c4e7866e76fc91427ea5d
+  appcenter-analytics: cdccc91b922b287b3f23f8fc1cf0d913900c2b6b
+  appcenter-core: 39a45ffdf2a1b529b5ea8e9bfbe83670f3d2e377
+  appcenter-crashes: 46293eb6b70e29746143f2a3554e04c5725e8ac9
+  appcenter-push: a9c0304c39c2f1eb2fc564d4313cc78408b2f6a8
+  AppCenterReactNativeShared: d709462d54fcc3eca14a011c4152dfa6a762154f
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
@@ -435,4 +435,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ed32689948346cac201e4e7e481f0ab8f9a788e6
 
-COCOAPODS: 1.9.2
+COCOAPODS: 1.9.3
