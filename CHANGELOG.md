@@ -1,6 +1,8 @@
 # App Center SDK for React Native Change Log
 
-## Version 3.0.4
+## Version 3.1.0
+
+This version has a breaking change on iOS - it drops Xcode 10 support, Xcode 11 is a minimal supported version now.
 
 ### App Center
 
@@ -17,7 +19,8 @@
 
 #### iOS
 
-* **[Improvement]** Update PLCrashReporter to 1.7.0.
+* **[Improvement]** Update PLCrashReporter to 1.7.1.
+* **[Fix]** Fix reporting stacktraces on iOS simulator.
 
 ___
 
