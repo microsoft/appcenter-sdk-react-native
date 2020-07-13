@@ -165,6 +165,31 @@ export default class CrashesScreen extends Component {
                   title: 'Select image as binary error attachment',
                   action: this.showFilePicker
                 },
+                {
+                  title: 'Select listener',
+                  action: () => {
+                    Crashes.setListener({
+                      onBeforeSending: function (report) {
+                        Alert.alert('onBeforeSending');
+                      },
+                      onSendingSucceeded: function (report) {
+                        Alert.alert('onSendingSucceeded');
+                      },
+                      onSendingFailed: function (report) {
+                        Alert.alert('onSendingFailed');
+                      },
+                      getErrorAttachments(report) {
+                        const textAttachment = ErrorAttachmentLog.attachmentWithText('Hello text attachment!', 'hello.txt');
+                        const binaryAttachment = ErrorAttachmentLog.attachmentWithBinary(`${imageAsBase64string}`, 'logo.png', 'image/png');
+                        return [textAttachment, binaryAttachment];
+                      },
+                      shouldAwaitUserConfirmation: function (report) {
+                        Alert.alert('shouldAwaitUserConfirmation');
+                        return true;
+                      },
+                    });
+                  },
+                }
               ],
               renderItem: actionRenderItem
             },

@@ -39,7 +39,8 @@
     "eslint-plugin-react": "7.16.0",
     "jest": "24.8.0",
     "react": "16.6.3",
-    "react-native": "0.57.3"
+    "react-native": "0.62",
+    "react-native-windows": "0.62"
   },
   "jest": {
     "preset": "react-native",
@@ -53,5 +54,8 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
     "test": "jest"
+  },
+  "peerDependencies": {
+    "react-native-windows": "0.62"
   }
 }

@@ -40,7 +40,8 @@
     "eslint-plugin-react": "7.16.0",
     "jest": "24.8.0",
     "react": "16.6.3",
-    "react-native": "0.57.3"
+    "react-native": "0.62",
+    "react-native-windows": "0.62"
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint .",
@@ -51,5 +52,8 @@
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
     }
+  },
+  "peerDependencies": {
+    "react-native-windows": "0.62"
   }
 }

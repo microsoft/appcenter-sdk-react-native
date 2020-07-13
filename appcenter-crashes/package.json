@@ -38,9 +38,14 @@
     "eslint-config-airbnb": "18.0.1",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.16.0"
+    "eslint-plugin-react": "7.16.0",
+    "react-native": "0.62",
+    "react-native-windows": "0.62"
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint ."
+  },
+  "peerDependencies": {
+    "react-native-windows": "0.62"
   }
 }
