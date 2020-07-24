@@ -1,5 +1,16 @@
 # App Center SDK for React Native Change Log
 
+## Version 3.1.1
+
+### App Center
+
+#### Android
+
+* **[Fix]** Fix an `IncorrectContextUseViolation` warning when calculating screen size on Android 11.
+* **[Fix]** All SQL commands used in SDK are presented as raw strings to avoid any possible static analyzer's SQL injection false alarms.
+
+___
+
 ## Version 3.1.0
 
 This version has a breaking change on iOS - it drops Xcode 10 support, Xcode 11 is a minimal supported version now.
