@@ -6,10 +6,10 @@ target 'DemoApp' do
   # use_frameworks!
 
   # Pods for DemoApp
-  pod 'AppCenter/Push', '~> 3.3.1'
-  pod 'AppCenter/Crashes', '~> 3.3.1'
-  pod 'AppCenter/Analytics', '~> 3.3.1'
-  pod 'AppCenterReactNativeShared', '~> 3.1.0'
+  pod 'AppCenter/Push', '~> 3.3.2'
+  pod 'AppCenter/Crashes', '~> 3.3.2'
+  pod 'AppCenter/Analytics', '~> 3.3.2'
+  pod 'AppCenterReactNativeShared', '~> 3.1.1'
 
   platform :ios, '9.0'
 
