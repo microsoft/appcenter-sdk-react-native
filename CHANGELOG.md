@@ -1,5 +1,15 @@
 # App Center SDK for React Native Change Log
 
+## Version 3.1.2
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix sending attachments with a `null` text value.
+
+___
+
 ## Version 3.1.1
 
 ### App Center
