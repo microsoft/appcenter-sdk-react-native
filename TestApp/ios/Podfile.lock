@@ -1,28 +1,28 @@
 PODS:
-  - appcenter-analytics (3.1.1):
+  - appcenter-analytics (3.1.2):
     - AppCenter/Analytics
     - AppCenterReactNativeShared
     - React
-  - appcenter-core (3.1.1):
+  - appcenter-core (3.1.2):
     - AppCenterReactNativeShared
     - React
-  - appcenter-crashes (3.1.1):
+  - appcenter-crashes (3.1.2):
     - AppCenter/Crashes
     - AppCenterReactNativeShared
     - React
-  - appcenter-push (3.1.1):
+  - appcenter-push (3.1.2):
     - AppCenter/Push
     - AppCenterReactNativeShared
     - React
-  - AppCenter/Analytics (3.3.2):
+  - AppCenter/Analytics (3.3.4):
     - AppCenter/Core
-  - AppCenter/Core (3.3.2)
-  - AppCenter/Crashes (3.3.2):
+  - AppCenter/Core (3.3.4)
+  - AppCenter/Crashes (3.3.4):
     - AppCenter/Core
-  - AppCenter/Push (3.3.2):
+  - AppCenter/Push (3.3.4):
     - AppCenter/Core
-  - AppCenterReactNativeShared (3.1.1):
-    - AppCenter/Core (= 3.3.2)
+  - AppCenterReactNativeShared (3.1.2):
+    - AppCenter/Core (= 3.3.4)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.62.2)
@@ -395,12 +395,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 8e7a2eb738ba1eb9701ea4d6622de6c2c70d5f73
-  appcenter-analytics: bce201b504c8138d235e6f42de1f36d30d2cd7f5
-  appcenter-core: 086ab16077baef60368c6a119af6e9e127406286
-  appcenter-crashes: 10790bf670f79150f1654d79f76c10a8b4936688
-  appcenter-push: 57fadb8efec66bacf7632a85f2b81e60b37b8c24
-  AppCenterReactNativeShared: eb9d329568dfbdbdd3db059514975a3ecebce380
+  AppCenter: 0b97aad227dcd8bf851c5b4a970ba66239f23721
+  appcenter-analytics: 86931681ba39a34856727e415d39e7d4693ad7fe
+  appcenter-core: 1cca3f4d1f01e820710dc82e14ad2b4806a4f907
+  appcenter-crashes: 5da5dca952c3d1a3eea2d596748d94ec0412fbd1
+  appcenter-push: e7f8e31fef89fb50c795abf653c6860139a40522
+  AppCenterReactNativeShared: d4f5241663fc1f3b1d99b57cc33efc12cd406b7d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
