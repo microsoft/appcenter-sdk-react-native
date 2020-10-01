@@ -1,5 +1,31 @@
 # App Center SDK for React Native Change Log
 
+## Version 3.1.3
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix Xcode 12 compatibility.
+
+### App Center Analytics
+
+#### iOS
+
+* **[Fix]** Fix Xcode 12 compatibility.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Fix Xcode 12 compatibility.
+
+### App Center Push
+
+#### iOS
+
+* **[Fix]** Fix Xcode 12 compatibility.
+
 ## Version 3.1.2
 
 ### App Center Crashes
