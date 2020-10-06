@@ -1,5 +1,13 @@
 # App Center SDK for React Native Change Log
 
+## Version 3.1.3
+
+### iOS
+
+**[Fix]** Fix naming conflict with iOS 14 private Apple framework.
+
+___
+
 ## Version 3.1.2
 
 ### App Center Crashes
