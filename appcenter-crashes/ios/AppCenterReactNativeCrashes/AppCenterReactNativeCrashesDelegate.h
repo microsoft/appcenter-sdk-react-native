@@ -11,9 +11,9 @@
 #import "RCTEventEmitter.h"
 #endif
 
-@protocol MSCrashesDelegate;
+@protocol MSACCrashesDelegate;
 
-@interface AppCenterReactNativeCrashesDelegate : NSObject<MSCrashesDelegate>
+@interface AppCenterReactNativeCrashesDelegate : NSObject<MSACCrashesDelegate>
 
 @property RCTEventEmitter* eventEmitter;
 
