@@ -1,8 +1,10 @@
+source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private'
+
 target 'AppCenterReactNativeShared' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for AppCenterReactNativeShared
-  pod 'AppCenter', '~> 3.3.4'
+  pod 'AppCenter', '~> 4.0.0+a17972050'
 
 end
