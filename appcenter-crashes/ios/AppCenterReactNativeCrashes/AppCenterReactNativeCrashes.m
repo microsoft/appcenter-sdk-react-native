@@ -26,18 +26,18 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wincomplete-umbrella"
-#import <AppCenterCrashes/MSWrapperCrashesHelper.h>
+#import <AppCenterCrashes/MSACWrapperCrashesHelper.h>
 #pragma GCC diagnostic pop
 
-#import <AppCenter/MSAppCenter.h>
+#import <AppCenter/MSACAppCenter.h>
 #import <AppCenterCrashes/AppCenterCrashes.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @implementation AppCenterReactNativeCrashes
 
-static const int kMSUserConfirmationDontSendJS = 0;
-static const int kMSUserConfirmationSendJS = 1;
-static const int kMSUserConfirmationAlwaysSendJS = 2;
+static const int kMSACUserConfirmationDontSendJS = 0;
+static const int kMSACUserConfirmationSendJS = 1;
+static const int kMSACUserConfirmationAlwaysSendJS = 2;
 
 static dispatch_once_t onceToken;
 static AppCenterReactNativeCrashesDelegate *crashesDelegate = nil;
@@ -45,19 +45,19 @@ static AppCenterReactNativeCrashesDelegate *crashesDelegate = nil;
 RCT_EXPORT_MODULE();
 
 + (void)register {
-  [MSWrapperCrashesHelper setAutomaticProcessing:NO];
-  [MSCrashes setDelegate:[AppCenterReactNativeCrashes sharedCrashesDelegate]];
+  [MSACWrapperCrashesHelper setAutomaticProcessing:NO];
+  [MSACCrashes setDelegate:[AppCenterReactNativeCrashes sharedCrashesDelegate]];
   [AppCenterReactNativeShared configureAppCenter];
-  if ([MSAppCenter isConfigured]) {
-    [MSAppCenter startService:[MSCrashes class]];
+  if ([MSACAppCenter isConfigured]) {
+    [MSACAppCenter startService:[MSACCrashes class]];
   }
 }
 
 + (void)registerWithAutomaticProcessing {
   [AppCenterReactNativeShared configureAppCenter];
-  [MSCrashes setDelegate:[AppCenterReactNativeCrashes sharedCrashesDelegate]];
+  [MSACCrashes setDelegate:[AppCenterReactNativeCrashes sharedCrashesDelegate]];
 
-  [MSAppCenter startService:[MSCrashes class]];
+  [MSACAppCenter startService:[MSACCrashes class]];
 }
 
 - (instancetype)init {
@@ -94,7 +94,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(hasCrashedInLastSession : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   void (^fetchHasCrashedInLastSession)(void) = ^void() {
-    MSErrorReport *report = [MSCrashes lastSessionCrashReport];
+    MSACErrorReport *report = [MSACCrashes lastSessionCrashReport];
     resolve(report != nil ? @YES : @NO);
   };
   dispatch_async(dispatch_get_main_queue(), fetchHasCrashedInLastSession);
@@ -102,7 +102,7 @@ RCT_EXPORT_METHOD(hasCrashedInLastSession : (RCTPromiseResolveBlock)resolve reje
 
 RCT_EXPORT_METHOD(hasReceivedMemoryWarningInLastSession : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   void (^fetchHasReceivedMemoryWarning)(void) = ^void() {
-    BOOL memoryWarning = [MSCrashes hasReceivedMemoryWarningInLastSession];
+    BOOL memoryWarning = [MSACCrashes hasReceivedMemoryWarningInLastSession];
     resolve(@(memoryWarning));
   };
   dispatch_async(dispatch_get_main_queue(), fetchHasReceivedMemoryWarning);
@@ -110,27 +110,27 @@ RCT_EXPORT_METHOD(hasReceivedMemoryWarningInLastSession : (RCTPromiseResolveBloc
 
 RCT_EXPORT_METHOD(lastSessionCrashReport : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   void (^fetchLastSessionCrashReport)(void) = ^void() {
-    MSErrorReport *report = [MSCrashes lastSessionCrashReport];
+    MSACErrorReport *report = [MSACCrashes lastSessionCrashReport];
     resolve(convertReportToJS(report));
   };
   dispatch_async(dispatch_get_main_queue(), fetchLastSessionCrashReport);
 }
 
 RCT_EXPORT_METHOD(isDebuggerAttached : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  resolve([NSNumber numberWithBool:[MSAppCenter isDebuggerAttached]]);
+  resolve([NSNumber numberWithBool:[MSACAppCenter isDebuggerAttached]]);
 }
 
 RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  resolve(@([MSCrashes isEnabled]));
+  resolve(@([MSACCrashes isEnabled]));
 }
 
 RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  [MSCrashes setEnabled:shouldEnable];
+  [MSACCrashes setEnabled:shouldEnable];
   resolve(nil);
 }
 
 RCT_EXPORT_METHOD(generateTestCrash : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  [MSCrashes generateTestCrash];
+  [MSACCrashes generateTestCrash];
   resolve(nil);
 }
 
@@ -139,31 +139,31 @@ RCT_EXPORT_METHOD(notifyWithUserConfirmation
                   : (RCTPromiseResolveBlock)resolve rejecter
                   : (RCTPromiseRejectBlock)reject) {
   switch (userConfirmation) {
-  case kMSUserConfirmationDontSendJS:
-    [MSCrashes notifyWithUserConfirmation:MSUserConfirmationDontSend];
+  case kMSACUserConfirmationDontSendJS:
+    [MSACCrashes notifyWithUserConfirmation:MSACUserConfirmationDontSend];
     break;
-  case kMSUserConfirmationSendJS:
-    [MSCrashes notifyWithUserConfirmation:MSUserConfirmationSend];
+  case kMSACUserConfirmationSendJS:
+    [MSACCrashes notifyWithUserConfirmation:MSACUserConfirmationSend];
     break;
-  case kMSUserConfirmationAlwaysSendJS:
-    [MSCrashes notifyWithUserConfirmation:MSUserConfirmationAlways];
+  case kMSACUserConfirmationAlwaysSendJS:
+    [MSACCrashes notifyWithUserConfirmation:MSACUserConfirmationAlways];
     break;
   default:
     // Let native SDK valitade and log an error for unknown value
-    [MSCrashes notifyWithUserConfirmation:userConfirmation];
+    [MSACCrashes notifyWithUserConfirmation:userConfirmation];
     break;
   }
   resolve(nil);
 }
 
-#pragma mark MSWrapperCrashesHelper Methods
+#pragma mark MSACWrapperCrashesHelper Methods
 
 /**
  * Gets a list of unprocessed crash reports.
  */
 RCT_EXPORT_METHOD(getUnprocessedCrashReports : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   void (^fetchUnprocessedCrashReports)(void) = ^void() {
-    NSArray *unprocessedCrashReports = [MSWrapperCrashesHelper unprocessedCrashReports];
+    NSArray *unprocessedCrashReports = [MSACWrapperCrashesHelper unprocessedCrashReports];
     resolve(convertReportsToJS(unprocessedCrashReports));
   };
   dispatch_async(dispatch_get_main_queue(), fetchUnprocessedCrashReports);
@@ -177,7 +177,7 @@ RCT_EXPORT_METHOD(sendCrashReportsOrAwaitUserConfirmationForFilteredIds
                   : (NSArray *)filteredIds resolver
                   : (RCTPromiseResolveBlock)resolve rejecter
                   : (RCTPromiseRejectBlock)reject) {
-  BOOL alwaysSend = [MSWrapperCrashesHelper sendCrashReportsOrAwaitUserConfirmationForFilteredIds:filteredIds];
+  BOOL alwaysSend = [MSACWrapperCrashesHelper sendCrashReportsOrAwaitUserConfirmationForFilteredIds:filteredIds];
   resolve([NSNumber numberWithBool:alwaysSend]);
 }
 
@@ -189,7 +189,7 @@ RCT_EXPORT_METHOD(sendErrorAttachments
                   : (NSString *)incidentId resolver
                   : (RCTPromiseResolveBlock)resolve rejecter
                   : (RCTPromiseRejectBlock)reject) {
-  [MSWrapperCrashesHelper sendErrorAttachments:convertJSAttachmentsToNativeAttachments(errorAttachments) withIncidentIdentifier:incidentId];
+  [MSACWrapperCrashesHelper sendErrorAttachments:convertJSAttachmentsToNativeAttachments(errorAttachments) withIncidentIdentifier:incidentId];
   resolve(nil);
 }
 

@@ -27,21 +27,21 @@ static NSString *ON_SENDING_SUCCEEDED_EVENT = @"AppCenterErrorReportOnSendingSuc
     hasListeners = NO;
 }
 
-- (void)crashes:(MSCrashes *)crashes willSendErrorReport:(MSErrorReport *)errorReport
+- (void)crashes:(MSACCrashes *)crashes willSendErrorReport:(MSACErrorReport *)errorReport
 {
     if (hasListeners) {
         [self.eventEmitter sendEventWithName:ON_BEFORE_SENDING_EVENT body:convertReportToJS(errorReport)];
     }
 }
 
-- (void)crashes:(MSCrashes *)crashes didSucceedSendingErrorReport:(MSErrorReport *)errorReport
+- (void)crashes:(MSACCrashes *)crashes didSucceedSendingErrorReport:(MSACErrorReport *)errorReport
 {
     if (hasListeners) {
         [self.eventEmitter sendEventWithName:ON_SENDING_SUCCEEDED_EVENT body:convertReportToJS(errorReport)];
     }
 }
 
-- (void)crashes:(MSCrashes *)crashes didFailSendingErrorReport:(MSErrorReport *)errorReport withError:(NSError *)sendError
+- (void)crashes:(MSACCrashes *)crashes didFailSendingErrorReport:(MSACErrorReport *)errorReport withError:(NSError *)sendError
 {
     if (hasListeners) {
         [self.eventEmitter sendEventWithName:ON_SENDING_FAILED_EVENT body:convertReportToJS(errorReport)];
