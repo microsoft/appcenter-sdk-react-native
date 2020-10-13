@@ -2,29 +2,12 @@
 
 ## Version 3.1.3
 
-### App Center
+### iOS
 
-#### iOS
+**[Fix]** Fix `Undefined symbols for architecture x86_64` on Xcode 12.
+**[Fix]** Fix naming conflict with iOS 14 private Apple framework.
 
-* **[Fix]** Fix Xcode 12 compatibility.
-
-### App Center Analytics
-
-#### iOS
-
-* **[Fix]** Fix Xcode 12 compatibility.
-
-### App Center Crashes
-
-#### iOS
-
-* **[Fix]** Fix Xcode 12 compatibility.
-
-### App Center Push
-
-#### iOS
-
-* **[Fix]** Fix Xcode 12 compatibility.
+___
 
 ## Version 3.1.2
 

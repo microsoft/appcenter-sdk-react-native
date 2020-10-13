@@ -23,7 +23,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [MSAppCenter setLogLevel: MSLogLevelVerbose];
+  [MSACAppCenter setLogLevel: MSLogLevelVerbose];
 
   [AppCenterReactNativePush register];  // Initialize AppCenter push
 

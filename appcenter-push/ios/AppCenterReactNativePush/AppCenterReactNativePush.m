@@ -21,7 +21,7 @@
 #import "RCTUtils.h"
 #endif
 
-#import <AppCenter/MSAppCenter.h>
+#import <AppCenter/MSACAppCenter.h>
 #import <AppCenterPush/AppCenterPush.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
@@ -69,14 +69,14 @@ RCT_EXPORT_MODULE();
   pushDelegate = [[AppCenterReactNativePushDelegateBase alloc] init];
   [MSPush setDelegate:pushDelegate];
   [AppCenterReactNativeShared configureAppCenter];
-  if ([MSAppCenter isConfigured]) {
+  if ([MSACAppCenter isConfigured]) {
     BOOL startPush = YES;
     id enablePushInJavascript = [AppCenterReactNativeShared getConfiguration][kEnablePushInJavascript];
     if ([enablePushInJavascript isKindOfClass:[NSNumber class]] && [enablePushInJavascript boolValue]) {
       startPush = [[NSUserDefaults standardUserDefaults] boolForKey:kPushOnceEnabled];
     }
     if (startPush) {
-      [MSAppCenter startService:[MSPush class]];
+      [MSACAppCenter startService:[MSPush class]];
       startedPush = YES;
     }
   }
@@ -99,7 +99,7 @@ RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveB
   // main thread.
   dispatch_async(dispatch_get_main_queue(), ^(void) {
     if (!startedPush && shouldEnable) {
-      [MSAppCenter startService:[MSPush class]];
+      [MSACAppCenter startService:[MSPush class]];
       startedPush = YES;
     }
     [MSPush setEnabled:shouldEnable];
