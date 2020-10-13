@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 
 namespace Microsoft.AppCenter.Crashes.ReactNative
 {
-	class RedBoxHandler : IRedBoxHandler
+	sealed public class RedBoxHandler : IRedBoxHandler
 	{
 		private IRedBoxHandler defaultHandler;
 		public RedBoxHandler(ReactNativeHost host) {
