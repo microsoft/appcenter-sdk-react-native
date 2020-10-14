@@ -12,7 +12,6 @@
 
 #import "AppDelegate.h"
 #import <AppCenterReactNative/AppCenterReactNative.h>
-#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
@@ -40,7 +39,6 @@
   [AppCenterReactNative register];                                   // Initialize AppCenter
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true]; // Initialize AppCenter Analytics
   [AppCenterReactNativeCrashes register];                            // Initialize AppCenter Crashes
-  [AppCenterReactNativePush register];                               // Initialize AppCenter Push
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"DemoApp" initialProperties:nil];

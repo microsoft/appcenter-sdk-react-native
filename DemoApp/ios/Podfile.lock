@@ -4,15 +4,13 @@ PODS:
   - AppCenter/Core (3.3.4)
   - AppCenter/Crashes (3.3.4):
     - AppCenter/Core
-  - AppCenter/Push (3.3.4):
-    - AppCenter/Core
+
   - AppCenterReactNativeShared (3.1.2):
     - AppCenter/Core (= 3.3.4)
 
 DEPENDENCIES:
   - AppCenter/Analytics (~> 3.3.4)
   - AppCenter/Crashes (~> 3.3.4)
-  - AppCenter/Push (~> 3.3.4)
   - AppCenterReactNativeShared (~> 3.1.2)
 
 SPEC REPOS:

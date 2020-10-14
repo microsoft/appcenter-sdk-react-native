@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-npm uninstall --save appcenter appcenter-analytics appcenter-crashes appcenter-push
+npm uninstall --save appcenter appcenter-analytics appcenter-crashes
 
-npm install --save appcenter appcenter-analytics appcenter-crashes appcenter-push
+npm install --save appcenter appcenter-analytics appcenter-crashes
 
 pod repo update
 
