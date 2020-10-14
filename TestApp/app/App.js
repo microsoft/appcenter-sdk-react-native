@@ -5,7 +5,6 @@ import { AppState, Alert, Platform, ToastAndroid, YellowBox } from 'react-native
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
-import Push from 'appcenter-push';
 
 import AppCenterScreen from './screens/AppCenterScreen';
 import TransmissionScreen from './screens/TransmissionScreen';
@@ -31,41 +30,6 @@ const TabNavigator = createBottomTabNavigator(
 );
 
 export default createAppContainer(TabNavigator);
-
-Push.setListener({
-  onPushNotificationReceived(pushNotification) {
-    let message = pushNotification.message;
-    const title = pushNotification.title;
-
-    // Message can be null on iOS silent push or Android background notifications.
-    if (message === null) {
-      message = '';
-    } else {
-      message += '\n';
-    }
-
-    // Any custom name/value pairs added in the portal are in customProperties
-    if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
-      message += `Custom properties:\n${JSON.stringify(pushNotification.customProperties)}`;
-    }
-
-    if (AppState.currentState === 'active') {
-      Alert.alert(title, message);
-    } else {
-      // Sometimes the push callback is received shortly before the app is fully active in the foreground.
-      // In this case you'll want to save off the notification info and wait until the app is fully shown
-      // in the foreground before displaying any UI. You could use AppState.addEventListener to be notified
-      // when the app is fully in the foreground.
-
-      // Showing an alert when not in the "active" state seems to work on iOS; for Android, we show a toast
-      // message instead
-      if (Platform.OS === 'android') {
-        ToastAndroid.show(`Notification while inactive:\n${message}`, ToastAndroid.LONG);
-      }
-      Alert.alert(title, message);
-    }
-  }
-});
 
 Crashes.setListener({
   shouldProcess(report) {

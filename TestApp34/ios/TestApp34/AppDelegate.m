@@ -12,7 +12,6 @@
 
 #import "AppDelegate.h"
 #import <AppCenterReactNative/AppCenterReactNative.h>
-#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 
@@ -31,8 +30,6 @@
   NSURL *jsCodeLocation;
 
   [AppCenterReactNative register];  // Initialize AppCenter 
-
-  [AppCenterReactNativePush register];  // Initialize AppCenter push
 
   [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
 
