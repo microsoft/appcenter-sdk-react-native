@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { AppState, Alert, Platform, ToastAndroid, YellowBox } from 'react-native';
+import { Alert, YellowBox } from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
 import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
