@@ -51,22 +51,20 @@ echo "React-Native SDK $oldWrapperSdkVersion will be updated to $newWrapperSdkVe
 echo "React-Native SDK Android VersionCode $oldAndroidVersionCode will be updated to $newAndroidVersionCode"
 
 # Update wrapper sdk version in package.json for appcenter, appcenter-crashes, appcenter-analytics, 
-# appcenter-push, and appcenter-link-script NPM packages
+# and appcenter-link-script NPM packages
 
 export newVersion=$newWrapperSdkVersion
 cat ./appcenter/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter-link-scripts" = env.newVersion' > ./appcenter/package.json.temp && mv ./appcenter/package.json.temp ./appcenter/package.json
 cat ./appcenter-crashes/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter" = env.newVersion' > ./appcenter-crashes/package.json.temp && mv ./appcenter-crashes/package.json.temp ./appcenter-crashes/package.json 
 cat ./appcenter-analytics/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter" = env.newVersion' > ./appcenter-analytics/package.json.temp && mv ./appcenter-analytics/package.json.temp ./appcenter-analytics/package.json
-cat ./appcenter-push/package.json | jq -r '.version = env.newVersion' | jq -r '.dependencies."appcenter" = env.newVersion' > ./appcenter-push/package.json.temp && mv ./appcenter-push/package.json.temp ./appcenter-push/package.json
 cat ./appcenter-link-scripts/package.json | jq -r '.version = env.newVersion' > ./appcenter-link-scripts/package.json.temp && mv ./appcenter-link-scripts/package.json.temp ./appcenter-link-scripts/package.json
 
 # Update wrapper sdk version and android VersionCode in Android build.gradle for appcenter, appcenter-crashes, appcenter-analytics,
-# appcenter-push, and AppCenterReactNativeShared projects
+# and AppCenterReactNativeShared projects
 for file in \
     "appcenter/android/build.gradle" \
     "appcenter-analytics/android/build.gradle" \
     "appcenter-crashes/android/build.gradle" \
-    "appcenter-push/android/build.gradle" \
     "AppCenterReactNativeShared/android/build.gradle"
 do
     sed -E -i '' "s#(com\.microsoft\.appcenter\.reactnative:appcenter-react-native:)([^:'])+#\1$newWrapperSdkVersion#g" $file
@@ -77,7 +75,6 @@ do
 done
 
 # Update wrapper sdk version in postlink.js for appcenter, appcenter-crashes, appcenter-analytics,
-# and appcenter-push
 postlinkFileContent="$(cat ./appcenter/scripts/postlink.js)"
 echo "${postlinkFileContent/$oldWrapperSdkVersion/$newWrapperSdkVersion}" > ./appcenter/scripts/postlink.js
 
@@ -86,9 +83,6 @@ echo "${postlinkFileContent/$oldWrapperSdkVersion/$newWrapperSdkVersion}" > ./ap
 
 postlinkFileContent="$(cat ./appcenter-analytics/scripts/postlink.js)"
 echo "${postlinkFileContent/$oldWrapperSdkVersion/$newWrapperSdkVersion}" > ./appcenter-analytics/scripts/postlink.js
-
-postlinkFileContent="$(cat ./appcenter-push/scripts/postlink.js)"
-echo "${postlinkFileContent/$oldWrapperSdkVersion/$newWrapperSdkVersion}" > ./appcenter-push/scripts/postlink.js
 
 # Update wrapper sdk version in AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec
 podspecFileContent="$(cat ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec)"

@@ -436,7 +436,6 @@
 		BC79987968644793A9ECB792 /* AppCenter-Config.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "TestAppTypescript/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		C12B8E71B0E6423B87D0C839 /* AppCenterReactNativeCrashes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeCrashes.xcodeproj; path = "../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes.xcodeproj"; sourceTree = "<group>"; };
 		C14EE6BCEBD04EAB9F22C2DD /* Pods-TestAppTypescript-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppTypescript-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestAppTypescript-tvOS/Pods-TestAppTypescript-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		CDAB9DBB029445B78ECA850C /* AppCenterReactNativePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativePush.xcodeproj; path = "../node_modules/appcenter-push/ios/AppCenterReactNativePush.xcodeproj"; sourceTree = "<group>"; };
 		D0E6A63059F1443BA3948EFE /* Pods-TestAppTypescript.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppTypescript.release.xcconfig"; path = "Pods/Target Support Files/Pods-TestAppTypescript/Pods-TestAppTypescript.release.xcconfig"; sourceTree = "<group>"; };
 		D7432BCDF408096271705716 /* Pods-TestAppTypescript-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestAppTypescript-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestAppTypescript-tvOS/Pods-TestAppTypescript-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		DF28272D22B8DF2F009C654D /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
@@ -1564,13 +1563,11 @@
 					"$(SRCROOT)..\node_modules\appcenteriosAppCenterReactNative",
 					"$(SRCROOT)..\node_modules\appcenter-analyticsiosAppCenterReactNativeAnalytics",
 					"$(SRCROOT)..\node_modules\appcenter-crashesiosAppCenterReactNativeCrashes",
-					"$(SRCROOT)..\node_modules\appcenter-pushiosAppCenterReactNativePush",
 					"$(SRCROOT)..\node_modules\neact-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-push/ios/AppCenterReactNativePush",
 				);
 				INFOPLIST_FILE = TestAppTypescriptTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1603,13 +1600,11 @@
 					"$(SRCROOT)..\node_modules\appcenteriosAppCenterReactNative",
 					"$(SRCROOT)..\node_modules\appcenter-analyticsiosAppCenterReactNativeAnalytics",
 					"$(SRCROOT)..\node_modules\appcenter-crashesiosAppCenterReactNativeCrashes",
-					"$(SRCROOT)..\node_modules\appcenter-pushiosAppCenterReactNativePush",
 					"$(SRCROOT)..\node_modules\neact-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-push/ios/AppCenterReactNativePush",
 				);
 				INFOPLIST_FILE = TestAppTypescriptTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1644,13 +1639,11 @@
 					"$(SRCROOT)..\node_modules\appcenteriosAppCenterReactNative",
 					"$(SRCROOT)..\node_modules\appcenter-analyticsiosAppCenterReactNativeAnalytics",
 					"$(SRCROOT)..\node_modules\appcenter-crashesiosAppCenterReactNativeCrashes",
-					"$(SRCROOT)..\node_modules\appcenter-pushiosAppCenterReactNativePush",
 					"$(SRCROOT)..\node_modules\neact-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-push/ios/AppCenterReactNativePush",
 				);
 				INFOPLIST_FILE = TestAppTypescript/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1678,13 +1671,11 @@
 					"$(SRCROOT)..\node_modules\appcenteriosAppCenterReactNative",
 					"$(SRCROOT)..\node_modules\appcenter-analyticsiosAppCenterReactNativeAnalytics",
 					"$(SRCROOT)..\node_modules\appcenter-crashesiosAppCenterReactNativeCrashes",
-					"$(SRCROOT)..\node_modules\appcenter-pushiosAppCenterReactNativePush",
 					"$(SRCROOT)..\node_modules\neact-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-push/ios/AppCenterReactNativePush",
 				);
 				INFOPLIST_FILE = TestAppTypescript/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1718,13 +1709,11 @@
 					"$(SRCROOT)..\node_modules\appcenteriosAppCenterReactNative",
 					"$(SRCROOT)..\node_modules\appcenter-analyticsiosAppCenterReactNativeAnalytics",
 					"$(SRCROOT)..\node_modules\appcenter-crashesiosAppCenterReactNativeCrashes",
-					"$(SRCROOT)..\node_modules\appcenter-pushiosAppCenterReactNativePush",
 					"$(SRCROOT)..\node_modules\neact-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-push/ios/AppCenterReactNativePush",
 				);
 				INFOPLIST_FILE = "TestAppTypescript-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1766,13 +1755,11 @@
 					"$(SRCROOT)..\node_modules\appcenteriosAppCenterReactNative",
 					"$(SRCROOT)..\node_modules\appcenter-analyticsiosAppCenterReactNativeAnalytics",
 					"$(SRCROOT)..\node_modules\appcenter-crashesiosAppCenterReactNativeCrashes",
-					"$(SRCROOT)..\node_modules\appcenter-pushiosAppCenterReactNativePush",
 					"$(SRCROOT)..\node_modules\neact-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/appcenter/ios/AppCenterReactNative",
 					"$(SRCROOT)/../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics",
 					"$(SRCROOT)/../node_modules/appcenter-crashes/ios/AppCenterReactNativeCrashes",
-					"$(SRCROOT)/../node_modules/appcenter-push/ios/AppCenterReactNativePush",
 				);
 				INFOPLIST_FILE = "TestAppTypescript-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
