@@ -9,7 +9,6 @@
 
 #import "AppDelegate.h"
 #import <AppCenterReactNative/AppCenterReactNative.h>
-#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
@@ -24,8 +23,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   [MSACAppCenter setLogLevel: MSLogLevelVerbose];
-
-  [AppCenterReactNativePush register];  // Initialize AppCenter push
 
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes
 
