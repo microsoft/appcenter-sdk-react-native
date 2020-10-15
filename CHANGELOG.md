@@ -4,6 +4,7 @@
 
 ### iOS
 
+**[Fix]** Fix `Undefined symbols for architecture x86_64` on Xcode 12.
 **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
 
 ___
