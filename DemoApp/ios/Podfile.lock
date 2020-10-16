@@ -4,7 +4,6 @@ PODS:
   - AppCenter/Core (3.3.4)
   - AppCenter/Crashes (3.3.4):
     - AppCenter/Core
-
   - AppCenterReactNativeShared (3.1.2):
     - AppCenter/Core (= 3.3.4)
 
