@@ -68,7 +68,6 @@
 		CDA6FCB10AC53184BCAAD836C503595E /* Pods-TestAppTypescript-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TestAppTypescript-acknowledgements.markdown"; sourceTree = "<group>"; };
 		CE8EDF7B96B30D6DA364A52AF7097E80 /* Pods-TestAppTypescriptTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TestAppTypescriptTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DFE6A5873944A865A627E5EFA48677EA /* AppCenterReactNativeShared.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = AppCenterReactNativeShared.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		E37CA864159FBF3DEE874F4F3805C8EA /* AppCenterPush.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppCenterPush.framework; path = "AppCenter-SDK-Apple/iOS/AppCenterPush.framework"; sourceTree = "<group>"; };
 		F0F320CBABDF978307379D32E80AA528 /* Pods-TestAppTypescript-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TestAppTypescript-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		FA0855C147E9FA5ABE9F26162DCF507A /* Pods-TestAppTypescript-tvOS-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TestAppTypescript-tvOS-acknowledgements.markdown"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,14 +127,6 @@
 			name = Core;
 			sourceTree = "<group>";
 		};
-		4F23C05264DCFC9473AE0733D8F2853A /* Push */ = {
-			isa = PBXGroup;
-			children = (
-				A165067F8C931D2C85742D6B4FB304C3 /* Frameworks */,
-			);
-			name = Push;
-			sourceTree = "<group>";
-		};
 		5336F404421CA81DF90C0A438BFD2F11 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,7 +144,6 @@
 				A07553EBE79A777A566BB7D08F489EE4 /* Analytics */,
 				4E9569E6C11D65F2A830BC8DEDE55DBE /* Core */,
 				EF9FEC41A271EB8FC7AAD0BEB08B8C36 /* Crashes */,
-				4F23C05264DCFC9473AE0733D8F2853A /* Push */,
 			);
 			name = AppCenter;
 			path = AppCenter;
@@ -241,14 +231,6 @@
 				007B2DD257A5EE864C1BAD7389D7215A /* Frameworks */,
 			);
 			name = Analytics;
-			sourceTree = "<group>";
-		};
-		A165067F8C931D2C85742D6B4FB304C3 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E37CA864159FBF3DEE874F4F3805C8EA /* AppCenterPush.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		A694257B58A9384C84D72CC7CFF6A71E /* Pods-TestAppTypescriptTests */ = {

@@ -387,7 +387,6 @@
 		BA2361311EEA06E5006D9A55 /* DemoApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = DemoApp.entitlements; path = DemoApp/DemoApp.entitlements; sourceTree = "<group>"; };
 		BC4D14FCB559ED95B3FFE86F /* libPods-DemoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DemoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF6B34EE9AC34CC0BD56C9F8 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
-		CCAE796F70014ABDB3E6B18E /* libAppCenterReactNativePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativePush.a; sourceTree = "<group>"; };
 		CE936B92998F47548FB0AE0D /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		D03308DBB24D4345AEB6FBAF /* AppCenterReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNative.xcodeproj; path = ../node_modules/appcenter/ios/AppCenterReactNative.xcodeproj; sourceTree = "<group>"; };
 		D798BE1486E2436DAB2F0D08 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
@@ -662,7 +661,6 @@
 				CE936B92998F47548FB0AE0D /* libAppCenterReactNative.a */,
 				19BF517E9AF847429B62F09E /* libAppCenterReactNativeAnalytics.a */,
 				DE74112E919B490DA39ED8AD /* libAppCenterReactNativeCrashes.a */,
-				CCAE796F70014ABDB3E6B18E /* libAppCenterReactNativePush.a */,
 				2D112F02EBD04B0380A1C8B4 /* libRNFS.a */,
 				D798BE1486E2436DAB2F0D08 /* libRNImagePicker.a */,
 				8379829B950345F48CF8CEDC /* libLRDRCTSimpleToast.a */,
