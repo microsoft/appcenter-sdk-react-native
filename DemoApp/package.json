@@ -12,7 +12,6 @@
     "appcenter": "^3.1.2",
     "appcenter-analytics": "^3.1.2",
     "appcenter-crashes": "^3.1.2",
-    "appcenter-push": "^3.1.2",
     "metro": "0.54.1",
     "react": "16.8.3",
     "react-native": "0.59.9",
@@ -50,8 +49,7 @@
     "setupFiles": [
       "<rootDir>/node_modules/appcenter/test/AppCenterMock.js",
       "<rootDir>/node_modules/appcenter-analytics/test/AppCenterAnalyticsMock.js",
-      "<rootDir>/node_modules/appcenter-crashes/test/AppCenterCrashesMock.js",
-      "<rootDir>/node_modules/appcenter-push/test/AppCenterPushMock.js"
+      "<rootDir>/node_modules/appcenter-crashes/test/AppCenterCrashesMock.js"
     ],
     "transformIgnorePatterns": [
       "!node_modules/react-native"

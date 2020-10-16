@@ -137,7 +137,6 @@ android {
 }
 
 dependencies {
-    implementation project(':appcenter-push')
     implementation project(':appcenter-crashes')
     implementation project(':appcenter-analytics')
     implementation project(':appcenter')
@@ -155,5 +154,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
-
-apply plugin: 'com.google.gms.google-services'

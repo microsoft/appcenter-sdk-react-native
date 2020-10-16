@@ -8,7 +8,6 @@ import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
 
 import AppCenter, { CustomProperties } from 'appcenter';
-import Push from 'appcenter-push';
 
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
@@ -70,7 +69,6 @@ export default class AppCenterScreen extends Component {
 
   state = {
     appCenterEnabled: false,
-    pushEnabled: false,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
@@ -103,9 +101,6 @@ export default class AppCenterScreen extends Component {
   async refreshUI() {
     const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
-
-    const pushEnabled = await Push.isEnabled();
-    this.setState({ pushEnabled });
 
     const installId = await AppCenter.getInstallId();
     this.setState({ installId });
@@ -204,19 +199,9 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await AppCenter.setEnabled(!this.state.appCenterEnabled);
                     const appCenterEnabled = await AppCenter.isEnabled();
-                    const pushEnabled = await Push.isEnabled();
-                    this.setState({ appCenterEnabled, pushEnabled });
+                    this.setState({ appCenterEnabled });
                   }
-                },
-                {
-                  title: 'Push Enabled',
-                  value: 'pushEnabled',
-                  toggle: async () => {
-                    await Push.setEnabled(!this.state.pushEnabled);
-                    const pushEnabled = await Push.isEnabled();
-                    this.setState({ pushEnabled });
-                  }
-                },
+                }
               ],
               renderItem: switchRenderItem
             },

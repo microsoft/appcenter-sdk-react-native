@@ -1,7 +1,7 @@
 #!/bin/bash
 echo 'Copy SDK code changes made inside node_modules to git...'
 cd `dirname $0`
-for i in '' '-analytics' '-crashes' '-push'
+for i in '' '-analytics' '-crashes'
 do
     for j in '*.js' 'android' 'ios' 'scripts'
     do

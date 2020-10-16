@@ -4,15 +4,12 @@ PODS:
   - AppCenter/Core (1.11.0)
   - AppCenter/Crashes (1.11.0):
     - AppCenter/Core
-  - AppCenter/Push (1.11.0):
-    - AppCenter/Core
   - AppCenterReactNativeShared (1.10.0):
     - AppCenter/Core (= 1.11.0)
 
 DEPENDENCIES:
   - AppCenter/Analytics (~> 1.11.0)
   - AppCenter/Crashes (~> 1.11.0)
-  - AppCenter/Push (~> 1.11.0)
   - AppCenterReactNativeShared (from `../../AppCenterReactNativeShared/Products/`)
 
 SPEC REPOS:
