@@ -74,7 +74,7 @@ do
     sed -E -i '' "s#//(api 'com\.microsoft\.appcenter\.reactnative)#\1#g" $file
 done
 
-# Update wrapper sdk version in postlink.js for appcenter, appcenter-crashes, appcenter-analytics,
+# Update wrapper sdk version in postlink.js for appcenter, appcenter-crashes and appcenter-analytics.
 postlinkFileContent="$(cat ./appcenter/scripts/postlink.js)"
 echo "${postlinkFileContent/$oldWrapperSdkVersion/$newWrapperSdkVersion}" > ./appcenter/scripts/postlink.js
 
