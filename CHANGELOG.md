@@ -2,6 +2,10 @@
 
 ## Version 3.1.3
 
+#### Android
+
+* **[Breaking change]** Bump the minimum Android SDK version to API level 21.
+
 ### iOS
 
 **[Fix]** Fix `Undefined symbols for architecture x86_64` on Xcode 12.
