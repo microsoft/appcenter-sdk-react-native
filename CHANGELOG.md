@@ -2,6 +2,10 @@
 
 ## Version 3.1.3
 
+#### Android
+
+* **[Breaking change]** Bumping the minimum Android SDK version to 21 API level (Android 5.0), because old Android versions do not support root certificate authority used by App Center and would not get CA certificates updates anymore.
+
 ### iOS
 
 **[Fix]** Fix `Undefined symbols for architecture x86_64` on Xcode 12.
