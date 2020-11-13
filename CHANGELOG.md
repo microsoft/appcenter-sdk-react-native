@@ -13,7 +13,7 @@
 * **[Fix]** Fix `Undefined symbols for architecture x86_64` on Xcode 12.
 * **[Fix]** Fix `NSInvalidArgumentException` when using non-string object as a key in `NSUserDefaults`.
 * **[Fix]** Fix `NSDateFormatter` initialization in a concurrent environment.
-* **[Fix]** Fix naming conflict with ios 14 private Apple framework.
+* **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
 
 ### App Center Crashes
 
