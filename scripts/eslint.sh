@@ -4,7 +4,7 @@ set -e
 # ESLint should be installed locally in order to work reliably.
 # Please make sure ESLint is only installed locally not globally.
 
-directories=("appcenter" "appcenter-analytics" "appcenter-crashes" "appcenter-link-scripts" "appcenter-push" "DemoApp" "TestApp")
+directories=("appcenter" "appcenter-analytics" "appcenter-crashes" "appcenter-link-scripts" "DemoApp" "TestApp")
 for directory in "${directories[@]}"
 do
     cd ${directory}

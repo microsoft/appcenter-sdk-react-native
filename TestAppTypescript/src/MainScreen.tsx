@@ -14,7 +14,6 @@ import Crashes, {
   UserConfirmation,
   ErrorAttachmentLog
 } from "appcenter-crashes";
-import Push from "appcenter-push";
 import AttachmentsProvider from "./AttachmentsProvider";
 
 export default class MainScreen extends Component<
@@ -44,7 +43,6 @@ export default class MainScreen extends Component<
         </Text>
         <Button title="Test Crashes" onPress={() => navigate("Crashes")} />
         <Button title="Test Analytics" onPress={() => navigate("Analytics")} />
-        <Button title="Test Push" onPress={() => navigate("Push")} />
         <Button
           title="Test Other AppCenter APIs"
           onPress={() => navigate("AppCenter")}
@@ -53,51 +51,6 @@ export default class MainScreen extends Component<
     );
   }
 }
-
-Push.setListener({
-  onPushNotificationReceived(pushNotification) {
-    let message = pushNotification.message;
-    let title = pushNotification.title;
-    if (title === null) {
-      title = "";
-    }
-
-    if (message === null) {
-      message = "";
-    } else {
-      message += "\n";
-    }
-
-    // Any custom name/value pairs added in the portal are in customProperties
-    if (
-      pushNotification.customProperties &&
-      Object.keys(pushNotification.customProperties).length > 0
-    ) {
-      message += `\nCustom properties:\n${JSON.stringify(
-        pushNotification.customProperties
-      )}`;
-    }
-
-    if (AppState.currentState === "active") {
-      Alert.alert(title, message);
-    } else {
-      // Sometimes the push callback is received shortly before the app is fully active in the foreground.
-      // In this case you'll want to save off the notification info and wait until the app is fully shown
-      // in the foreground before displaying any UI. You could use AppState.addEventListener to be notified
-      // when the app is fully in the foreground.
-
-      // Showing an alert when not in the "active" state seems to work on iOS; for Android, we show a toast
-      // message instead
-      if (Platform.OS === "android") {
-        ToastAndroid.show(
-          `Notification while inactive:\n${message}`,
-          ToastAndroid.LONG
-        );
-      }
-      Alert.alert(title, message);
-    }
-  }
-});
 
 Crashes.setListener({
   shouldProcess(report) {

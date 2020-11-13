@@ -42,7 +42,7 @@ RCT_EXPORT_METHOD(startFromLibrary:(NSDictionary*)service
     if ([bindingType isKindOfClass:[NSString class]]) {
         id serviceClass = NSClassFromString(bindingType);
         if (serviceClass) {
-            [MSAppCenter startFromLibraryWithServices:@[serviceClass]];
+            [MSACAppCenter startFromLibraryWithServices:@[serviceClass]];
         }
     }
     resolve(nil);
@@ -52,41 +52,41 @@ RCT_EXPORT_METHOD(setEnabled:(BOOL)enabled
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [MSAppCenter setEnabled:enabled];
+    [MSACAppCenter setEnabled:enabled];
     resolve(nil);
 }
 
 RCT_EXPORT_METHOD(isEnabled:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([NSNumber numberWithBool:[MSAppCenter isEnabled]]);
+    resolve([NSNumber numberWithBool:[MSACAppCenter isEnabled]]);
 }
 
 RCT_EXPORT_METHOD(setLogLevel:(NSInteger)logLevel
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [MSAppCenter setLogLevel:logLevel];
+    [MSACAppCenter setLogLevel:logLevel];
     resolve(nil);
 }
 
 RCT_EXPORT_METHOD(getLogLevel:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([NSNumber numberWithInt:[MSAppCenter logLevel]]);
+    resolve([NSNumber numberWithInt:[MSACAppCenter logLevel]]);
 }
 
 RCT_EXPORT_METHOD(getInstallId:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    resolve([[MSAppCenter installId] UUIDString]);
+    resolve([[MSACAppCenter installId] UUIDString]);
 }
 
 RCT_EXPORT_METHOD(setUserId:(NSString *)userId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    [MSAppCenter setUserId:userId];
+    [MSACAppCenter setUserId:userId];
     resolve(nil);
 }
 
@@ -94,7 +94,7 @@ RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
-    MSCustomProperties *customProperties = [MSCustomProperties new];
+    MSACCustomProperties *customProperties = [MSACCustomProperties new];
     for (NSString *key in properties) {
         id valueObject = [properties objectForKey:key];
         if (valueObject && [valueObject isKindOfClass:[NSDictionary class]]) {
@@ -123,7 +123,7 @@ RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
             }
         }
     }
-    [MSAppCenter setCustomProperties:customProperties];
+    [MSACAppCenter setCustomProperties:customProperties];
     resolve(nil);
 }
 

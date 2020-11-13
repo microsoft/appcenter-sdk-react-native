@@ -1,6 +1,6 @@
 {
   "name": "appcenter-analytics",
-  "version": "3.1.2",
+  "version": "4.0.0",
   "description": "React Native plugin for AppCenter Analytics",
   "main": "Analytics.js",
   "types": "Analytics.d.ts",
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-analytics/README.md",
   "dependencies": {
-    "appcenter": "3.1.2"
+    "appcenter": "4.0.0"
   },
   "rnpm": {
     "android": {
@@ -32,11 +32,11 @@
   },
   "devDependencies": {
     "babel-eslint": "7.2.3",
-    "eslint": "6.5.1",
-    "eslint-config-airbnb": "18.0.1",
-    "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.16.0",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-react": "7.21.5",
     "jest": "24.8.0",
     "react": "16.6.3",
     "react-native": "0.57.3"

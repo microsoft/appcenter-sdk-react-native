@@ -1,8 +1,6 @@
 rootProject.name = 'TestApp34'
 
 include ':app'
-include ':appcenter-push'
-project(':appcenter-push').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-push/android')
 include ':appcenter-crashes'
 project(':appcenter-crashes').projectDir = new File(rootProject.projectDir, '../node_modules/appcenter-crashes/android')
 include ':appcenter-analytics'

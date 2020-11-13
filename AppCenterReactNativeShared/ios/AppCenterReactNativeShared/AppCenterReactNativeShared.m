@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 #import "AppCenterReactNativeShared.h"
-#import <AppCenter/MSAppCenter.h>
-#import <AppCenter/MSWrapperSdk.h>
+#import <AppCenter/MSACAppCenter.h>
+#import <AppCenter/MSACWrapperSdk.h>
 
 @implementation AppCenterReactNativeShared
 
@@ -13,7 +13,7 @@ static NSString *const kAppCenterConfigResource = @"AppCenter-Config";
 
 static NSString *appSecret;
 static BOOL startAutomatically;
-static MSWrapperSdk *wrapperSdk;
+static MSACWrapperSdk *wrapperSdk;
 static NSDictionary *configuration;
 
 + (void)setAppSecret:(NSString *)secret {
@@ -39,7 +39,7 @@ static NSDictionary *configuration;
 
 + (void)configureAppCenter {
   if (!wrapperSdk) {
-    MSWrapperSdk *wrapperSdk = [[MSWrapperSdk alloc] initWithWrapperSdkVersion:@"3.1.2"
+    MSACWrapperSdk *wrapperSdk = [[MSACWrapperSdk alloc] initWithWrapperSdkVersion:@"4.0.0"
                                                                 wrapperSdkName:@"appcenter.react-native"
                                                          wrapperRuntimeVersion:nil
                                                         liveUpdateReleaseLabel:nil
@@ -49,21 +49,21 @@ static NSDictionary *configuration;
     [AppCenterReactNativeShared getAppSecret];
     if (startAutomatically) {
       if ([appSecret length] == 0) {
-        [MSAppCenter configure];
+        [MSACAppCenter configure];
       } else {
-        [MSAppCenter configureWithAppSecret:appSecret];
+        [MSACAppCenter configureWithAppSecret:appSecret];
       }
     }
   }
 }
 
-+ (MSWrapperSdk *)getWrapperSdk {
++ (MSACWrapperSdk *)getWrapperSdk {
   return wrapperSdk;
 }
 
-+ (void)setWrapperSdk:(MSWrapperSdk *)sdk {
++ (void)setWrapperSdk:(MSACWrapperSdk *)sdk {
   wrapperSdk = sdk;
-  [MSAppCenter setWrapperSdk:sdk];
+  [MSACAppCenter setWrapperSdk:sdk];
 }
 
 + (void)setStartAutomatically:(BOOL)shouldStartAutomatically {

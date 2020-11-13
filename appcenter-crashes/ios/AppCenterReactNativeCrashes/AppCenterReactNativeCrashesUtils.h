@@ -3,8 +3,8 @@
 
 #import <Foundation/Foundation.h>
 
-@class MSErrorReport;
+@class MSACErrorReport;
 
-NSDictionary* convertReportToJS(MSErrorReport* report);
+NSDictionary* convertReportToJS(MSACErrorReport* report);
 NSArray* convertReportsToJS(NSArray* reports);
 NSArray* convertJSAttachmentsToNativeAttachments(NSArray* jsAttachments);

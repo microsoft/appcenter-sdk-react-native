@@ -148,7 +148,6 @@ dependencies {
     implementation project(':appcenter')
     implementation project(':appcenter-analytics')
     implementation project(':appcenter-crashes')
-    implementation project(':appcenter-push')
     implementation project(':react-native-fs')
     implementation project(':react-native-image-picker')
     implementation project(':@react-native-community_async-storage')
@@ -164,5 +163,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
-
-apply plugin: 'com.google.gms.google-services'

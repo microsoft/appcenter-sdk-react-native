@@ -12,7 +12,6 @@
 
 #import "AppDelegate.h"
 #import <AppCenterReactNative/AppCenterReactNative.h>
-#import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 
@@ -25,14 +24,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [MSAppCenter setLogLevel: MSLogLevelVerbose];
-  //[MSAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
+  [MSACAppCenter setLogLevel: MSLogLevelVerbose];
+  //[MSACAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
 
   NSURL *jsCodeLocation;
 
   [AppCenterReactNative register];  // Initialize AppCenter 
-
-  [AppCenterReactNativePush register];  // Initialize AppCenter push
 
   [AppCenterReactNativeCrashes register];  // Initialize AppCenter crashes
 

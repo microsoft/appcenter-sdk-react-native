@@ -3,15 +3,15 @@
 
 #import "AppCenterReactNativeCrashesUtils.h"
 
-#import <AppCenterCrashes/MSErrorReport.h>
-#import <AppCenterCrashes/MSErrorAttachmentLog.h>
-#import <AppCenterCrashes/MSErrorAttachmentLog+Utility.h>
+#import <AppCenterCrashes/MSACErrorReport.h>
+#import <AppCenterCrashes/MSACErrorAttachmentLog.h>
+#import <AppCenterCrashes/MSACErrorAttachmentLog+Utility.h>
 
-#import <AppCenter/MSDevice.h>
+#import <AppCenter/MSACDevice.h>
 
 NSArray* convertReportsToJS(NSArray* reports) {
     NSMutableArray* jsReadyReports = [[NSMutableArray alloc] init];
-    [reports enumerateObjectsUsingBlock:^(MSErrorReport* report, NSUInteger idx, BOOL * stop) {
+    [reports enumerateObjectsUsingBlock:^(MSACErrorReport* report, NSUInteger idx, BOOL * stop) {
         [jsReadyReports addObject:convertReportToJS(report)];
     }];
     return jsReadyReports;
@@ -34,7 +34,7 @@ static NSString *const kMSCarrierCountry = @"carrierCountry";
 static NSString *const kMSAppBuild = @"appBuild";
 static NSString *const kMSAppNamespace = @"appNamespace";
 
-static NSDictionary *serializeDeviceToDictionary(MSDevice* device) {
+static NSDictionary *serializeDeviceToDictionary(MSACDevice* device) {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     
     if (device.sdkName) {
@@ -88,7 +88,7 @@ static NSDictionary *serializeDeviceToDictionary(MSDevice* device) {
     return dict;
 }
 
-NSDictionary* convertReportToJS(MSErrorReport* report) {
+NSDictionary* convertReportToJS(MSACErrorReport* report) {
     if (report == nil) {
         return nil;
     }
@@ -141,7 +141,7 @@ NSArray* convertJSAttachmentsToNativeAttachments(NSArray* jsAttachments) {
         // Check for text versus binary attachment.
         id text = [jsAttachment objectForKey:@"text"];
         if (text && [text isKindOfClass:[NSString class]]) {
-            id attachmentLog = [MSErrorAttachmentLog attachmentWithText:text filename:fileNameString];
+            id attachmentLog = [MSACErrorAttachmentLog attachmentWithText:text filename:fileNameString];
             [attachmentLogs addObject:attachmentLog];
         }
         else {
@@ -155,7 +155,7 @@ NSArray* convertJSAttachmentsToNativeAttachments(NSArray* jsAttachments) {
                 if (contentType && [contentType isKindOfClass:[NSString class]]) {
                     contentTypeString = (NSString *) contentType;
                 }
-                id attachmentLog = [MSErrorAttachmentLog attachmentWithBinary:decodedData filename:fileNameString contentType:contentTypeString];
+                id attachmentLog = [MSACErrorAttachmentLog attachmentWithBinary:decodedData filename:fileNameString contentType:contentTypeString];
                 [attachmentLogs addObject:attachmentLog];
             }
         }

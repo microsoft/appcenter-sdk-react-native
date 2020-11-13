@@ -21,17 +21,17 @@
 #import "RCTUtils.h"
 #endif
 
-#import <AppCenter/MSAppCenter.h>
-#import <AppCenterAnalytics/MSAnalytics.h>
-#import <AppCenterAnalytics/MSAnalyticsTransmissionTarget.h>
-#import <AppCenterAnalytics/MSPropertyConfigurator.h>
+#import <AppCenter/MSACAppCenter.h>
+#import <AppCenterAnalytics/MSACAnalytics.h>
+#import <AppCenterAnalytics/MSACAnalyticsTransmissionTarget.h>
+#import <AppCenterAnalytics/MSACPropertyConfigurator.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
-typedef NSMutableDictionary<NSString *, MSAnalyticsTransmissionTarget *> MSTargetsDictionary;
+typedef NSMutableDictionary<NSString *, MSACAnalyticsTransmissionTarget *> MSACTargetsDictionary;
 
 @interface AppCenterReactNativeAnalytics () <RCTBridgeModule>
 
-@property(nonatomic) MSTargetsDictionary *transmissionTargets;
+@property(nonatomic) MSACTargetsDictionary *transmissionTargets;
 
 @end
 
@@ -41,27 +41,27 @@ RCT_EXPORT_MODULE();
 
 + (void)registerWithInitiallyEnabled:(BOOL)enabled {
   [AppCenterReactNativeShared configureAppCenter];
-  if ([MSAppCenter isConfigured]) {
-    [MSAppCenter startService:[MSAnalytics class]];
+  if ([MSACAppCenter isConfigured]) {
+    [MSACAppCenter startService:[MSACAnalytics class]];
     if (!enabled) {
-      [MSAnalytics setEnabled:enabled];
+      [MSACAnalytics setEnabled:enabled];
     }
   }
 }
 
-- (MSTargetsDictionary *)targetsForTokens {
+- (MSACTargetsDictionary *)targetsForTokens {
   if (self.transmissionTargets == nil) {
-    self.transmissionTargets = [MSTargetsDictionary new];
+    self.transmissionTargets = [MSACTargetsDictionary new];
   }
   return self.transmissionTargets;
 }
 
 RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  resolve(@([MSAnalytics isEnabled]));
+  resolve(@([MSACAnalytics isEnabled]));
 }
 
 RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
-  [MSAnalytics setEnabled:shouldEnable];
+  [MSACAnalytics setEnabled:shouldEnable];
   resolve(nil);
 }
 
@@ -78,7 +78,7 @@ RCT_EXPORT_METHOD(trackEvent
   }] allObjects];
   NSArray *newValues = [properties objectsForKeys:allowedKeys notFoundMarker:@""];
   NSDictionary *filteredProperties = [NSDictionary dictionaryWithObjects:newValues forKeys:allowedKeys];
-  [MSAnalytics trackEvent:eventName withProperties:filteredProperties];
+  [MSACAnalytics trackEvent:eventName withProperties:filteredProperties];
   resolve(nil);
 }
 
@@ -92,7 +92,7 @@ RCT_EXPORT_METHOD(trackTransmissionTargetEvent
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -117,7 +117,7 @@ RCT_EXPORT_METHOD(getTransmissionTarget
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [MSAnalytics transmissionTargetForToken:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [MSACAnalytics transmissionTargetForToken:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -134,7 +134,7 @@ RCT_EXPORT_METHOD(isTransmissionTargetEnabled
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -151,7 +151,7 @@ RCT_EXPORT_METHOD(setTransmissionTargetEnabled
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -170,7 +170,7 @@ RCT_EXPORT_METHOD(setTransmissionTargetEventProperty
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -188,7 +188,7 @@ RCT_EXPORT_METHOD(removeTransmissionTargetEventProperty
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -205,7 +205,7 @@ RCT_EXPORT_METHOD(collectTransmissionTargetDeviceId
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -223,12 +223,12 @@ RCT_EXPORT_METHOD(getChildTransmissionTarget
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:parentToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:parentToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *childTarget = [transmissionTarget transmissionTargetForToken:childToken];
+  MSACAnalyticsTransmissionTarget *childTarget = [transmissionTarget transmissionTargetForToken:childToken];
   if (childTarget == nil) {
     resolve(nil);
     return;
@@ -246,7 +246,7 @@ RCT_EXPORT_METHOD(setTransmissionTargetAppName
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -264,7 +264,7 @@ RCT_EXPORT_METHOD(setTransmissionTargetAppVersion
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;
@@ -282,7 +282,7 @@ RCT_EXPORT_METHOD(setTransmissionTargetAppLocale
     resolve(nil);
     return;
   }
-  MSAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
+  MSACAnalyticsTransmissionTarget *transmissionTarget = [[self targetsForTokens] objectForKey:targetToken];
   if (transmissionTarget == nil) {
     resolve(nil);
     return;

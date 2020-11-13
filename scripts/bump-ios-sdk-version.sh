@@ -33,16 +33,12 @@ fi
 
 echo "React-Native iOS version $oldiOSSdkVersion will be updated to $newiOSSdkVersion"
 
-# Update iOS sdk version in postlink.js for appcenter-crashes, appcenter-analytics,
-# appcenter-push projects
+# Update iOS sdk version in postlink.js for appcenter-crashes, appcenter-analytics projects
 fileContent="$(cat ./appcenter-crashes/scripts/postlink.js)"
 echo "${fileContent/\'AppCenter\/Crashes\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Crashes', version: '$newiOSSdkVersion'}" > ./appcenter-crashes/scripts/postlink.js
 
 fileContent="$(cat ./appcenter-analytics/scripts/postlink.js)"
 echo "${fileContent/\'AppCenter\/Analytics\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Analytics', version: '$newiOSSdkVersion'}" > ./appcenter-analytics/scripts/postlink.js
-
-fileContent="$(cat ./appcenter-push/scripts/postlink.js)"
-echo "${fileContent/\'AppCenter\/Push\', version\: \'$oldiOSSdkVersion\'/'AppCenter/Push', version: '$newiOSSdkVersion'}" > ./appcenter-push/scripts/postlink.js
 
 # Update iOS sdk version in AppCenterReactNativeShared podspec
 fileContent="$(cat ./AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec)"
