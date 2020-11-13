@@ -12,10 +12,9 @@
 
 * **[Feature]** **[Breaking change]** Make SDK API more Swift-friendly. You can find the API updates in the [swift migration table](https://docs.microsoft.com/appcenter/sdk/getting-started/migration/apple-sdk-update#swift-api-changes).
 * **[Breaking change]** The App Center prefix `MS` in Objective-C is consolidated to `MSAC` for collision prevention. Please follow the [migration guide](https://docs.microsoft.com/appcenter/sdk/getting-started/migration/apple-sdk-update) for adopting the new naming.
-* **[Fix]** `Undefined symbols for architecture x86_64` on Xcode 12.
-* **[Fix]** Naming conflict with iOS 14 private Apple framework.
-* **[Fix]** `NSInvalidArgumentException` when using non-string object as a key in `NSUserDefaults`.
-* **[Fix]** `NSDateFormatter` initialization in a concurrent environment.
+* **[Fix]** Fix `Undefined symbols for architecture x86_64` on Xcode 12.
+* **[Fix]** Fix `NSInvalidArgumentException` when using non-string object as a key in `NSUserDefaults`.
+* **[Fix]** Fix `NSDateFormatter` initialization in a concurrent environment.
 
 ### App Center Crashes
 
