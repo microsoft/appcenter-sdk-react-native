@@ -10,17 +10,12 @@
 
 ### iOS
 
-* **[Feature]** **[Breaking change]** Make SDK API more Swift-friendly. You can find the API updates in the [swift migration table](https://docs.microsoft.com/appcenter/sdk/getting-started/migration/apple-sdk-update#swift-api-changes).
-* **[Breaking change]** The App Center prefix `MS` in Objective-C is consolidated to `MSAC` for collision prevention. Please follow the [migration guide](https://docs.microsoft.com/appcenter/sdk/getting-started/migration/apple-sdk-update) for adopting the new naming.
 * **[Fix]** Fix `Undefined symbols for architecture x86_64` on Xcode 12.
 * **[Fix]** Fix `NSInvalidArgumentException` when using non-string object as a key in `NSUserDefaults`.
 * **[Fix]** Fix `NSDateFormatter` initialization in a concurrent environment.
+* **[Fix]** Fix naming conflict with iOS 14 private Apple framework.
 
 ### App Center Crashes
-
-#### Android
-
-* **[Feature]** Convert the `saveUncaughtException` method to public and return error log identifier when calling it.
 
 ### iOS
 
@@ -30,6 +25,7 @@
 
 App Center Push has been removed from the SDK and will be [retired on December 31st, 2020](https://devblogs.microsoft.com/appcenter/migrating-off-app-center-push/). 
 As an alternative to App Center Push, we recommend you migrate to [Azure Notification Hubs](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-push-notification-overview) by following the [Push Migration Guide](https://docs.microsoft.com/en-us/appcenter/migration/push/).
+
 ___
 
 ## Version 3.1.2
