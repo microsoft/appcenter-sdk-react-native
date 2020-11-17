@@ -1,16 +1,16 @@
 PODS:
-  - AppCenter/Analytics (3.3.4):
+  - AppCenter/Analytics (4.0.0):
     - AppCenter/Core
-  - AppCenter/Core (3.3.4)
-  - AppCenter/Crashes (3.3.4):
+  - AppCenter/Core (4.0.0)
+  - AppCenter/Crashes (4.0.0):
     - AppCenter/Core
-  - AppCenterReactNativeShared (3.1.2):
-    - AppCenter/Core (= 3.3.4)
+  - AppCenterReactNativeShared (4.0.0):
+    - AppCenter/Core (= 4.0.0)
 
 DEPENDENCIES:
-  - AppCenter/Analytics (~> 3.3.4)
-  - AppCenter/Crashes (~> 3.3.4)
-  - AppCenterReactNativeShared (~> 3.1.2)
+  - AppCenter/Analytics (~> 4.0.0)
+  - AppCenter/Crashes (~> 4.0.0)
+  - AppCenterReactNativeShared (~> 4.0.0)
 
 SPEC REPOS:
   https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private:
@@ -18,10 +18,11 @@ SPEC REPOS:
   trunk:
     - AppCenter
 
+
 SPEC CHECKSUMS:
-  AppCenter: 0487be185c038ed2ecc5ed38219af1dcd280af23
-  AppCenterReactNativeShared: 66667cd2dfad295b84bbf0f462e0e139e2128284
+  AppCenter: 943e814f1e3ab4faa2de720002962af71717006b
+  AppCenterReactNativeShared: 5b417e86e2fce944fe687c070c90f0354641306e
 
-PODFILE CHECKSUM: 9aea7c1ab2a4aa87b11c88cff09dc088f4d85ad5
+PODFILE CHECKSUM: 4639cfa23b08c0ceec084f4c170a504aa400ae7a
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0
