@@ -6,30 +6,31 @@ import mockAsyncStorage from '@react-native-community/async-storage/jest/async-s
 // https://github.com/expo/expo/issues/1705#issuecomment-385338032
 require('stacktrace-parser');
 
-const React = require('react')
-const ReactNative = require('react-native')
+const React = require('react');
+const ReactNative = require('react-native');
 
 // Switch is mocked to fix the issue: https://github.com/callstack/react-native-testing-library/issues/329
-const Switch = function(props) {
-  const [value, setValue] = React.useState(props.value)
+const Switch = function (props) {
+  const [value, setValue] = React.useState(props.value);
 
   return (
     <ReactNative.TouchableOpacity
       onPress={() => {
-        props.onValueChange(!value)
-        setValue(!value)
+        props.onValueChange(!value);
+        setValue(!value);
       }}
-      testID={props.testID}>
+      testID={props.testID}
+    >
       <ReactNative.Text>{value.toString()}</ReactNative.Text>
     </ReactNative.TouchableOpacity>
-  )
-}
+  );
+};
 
 Object.defineProperty(ReactNative, 'Switch', {
-  get: function() {
-    return Switch
+  get() {
+    return Switch;
   }
-})
+});
 
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
