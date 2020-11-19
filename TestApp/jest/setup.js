@@ -39,11 +39,11 @@ jest.mock('react-native-image-picker', () => null);
 
 // Jest fake timers are used to fix the issue: https://github.com/facebook/jest/issues/6434
 beforeEach(() => {
-  jest.useFakeTimers()
+  jest.useFakeTimers();
 });
 
 // Running all pending timers and switching to real timers using Jest
 afterEach(() => {
-  jest.runOnlyPendingTimers()
-  jest.useRealTimers()
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
 });
