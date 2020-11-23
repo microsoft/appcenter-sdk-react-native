@@ -28,6 +28,14 @@ As an alternative to App Center Push, we recommend you migrate to [Azure Notific
 
 ___
 
+## Version 3.1.3
+
+### App Center
+
+* **[Fix]** Pin podspec dependencies to prevent a conflict between major releases of npm packages and dependant pods.
+
+___
+
 ## Version 3.1.2
 
 ### App Center Crashes
