@@ -18,8 +18,8 @@ Pod::Spec.new do |s|
 
   s.vendored_frameworks = 'AppCenterReactNativeShared/AppCenterReactNativeShared.framework'
 
-  s.dependency 'AppCenterReactNativeShared'
-  s.dependency 'AppCenter/Analytics'
+  s.dependency 'AppCenterReactNativeShared', '~> 4.0'
+  s.dependency 'AppCenter/Analytics', '~> 4.0'
   s.dependency 'React-Core'
   s.static_framework = true
 end
