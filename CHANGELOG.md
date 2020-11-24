@@ -1,5 +1,13 @@
 # App Center SDK for React Native Change Log
 
+## Version 4.0.1
+
+### App Center
+
+* **[Fix]** Pin podspec dependencies to prevent a conflict between major releases of npm packages and dependant pods.
+
+___
+
 ## Version 4.0.0
 
 ### App Center
