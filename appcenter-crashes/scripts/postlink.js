@@ -35,8 +35,8 @@ if (rnpmlink.ios.checkIfAppDelegateExists()) {
             console.log(`Added code to initialize iOS Crashes SDK in ${file}`);
             return rnpmlink.ios.addPodDeps(
                 [
-                    { pod: 'AppCenter/Crashes', version: '4.0.0' },
-                    { pod: 'AppCenterReactNativeShared', version: '4.0.0' } // in case people don't link appcenter (core)
+                    { pod: 'AppCenter/Crashes', version: '4.1.0' },
+                    { pod: 'AppCenterReactNativeShared', version: '4.0.2' } // in case people don't link appcenter (core)
                 ],
                 { platform: 'ios', version: '9.0' }
             );

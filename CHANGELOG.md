@@ -1,5 +1,35 @@
 # App Center SDK for React Native Change Log
 
+## Version 4.0.2
+
+### App Center
+
+#### iOS
+
+* **[Fix]** Fix `double-quoted` warnings in Xcode 12.
+* **[Fix]** Fix a crash when SQLite returns zero for `page_size`.
+* **[Feature]** Use XCFramework format for the binary distribution via CocoaPods. CocoaPods version 1.9+ is a requirement now.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix removing throwable files after rewriting error logs due to small database size.
+
+#### iOS
+
+* **[Fix]** Fix nullability for attachments methods in crashes delegate. `nil` is valid return value now (4.0.0 regression).
+
+___
+
+## Version 4.0.1
+
+### App Center
+
+* **[Fix]** Pin podspec dependencies to prevent a conflict between major releases of npm packages and dependant pods.
+
+___
+
 ## Version 4.0.0
 
 ### App Center
@@ -25,6 +55,14 @@
 
 App Center Push has been removed from the SDK and will be [retired on December 31st, 2020](https://devblogs.microsoft.com/appcenter/migrating-off-app-center-push/). 
 As an alternative to App Center Push, we recommend you migrate to [Azure Notification Hubs](https://docs.microsoft.com/en-us/azure/notification-hubs/notification-hubs-push-notification-overview) by following the [Push Migration Guide](https://docs.microsoft.com/en-us/appcenter/migration/push/).
+
+___
+
+## Version 3.1.3
+
+### App Center
+
+* **[Fix]** Pin podspec dependencies to prevent a conflict between major releases of npm packages and dependant pods.
 
 ___
 
