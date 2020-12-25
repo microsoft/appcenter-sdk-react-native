@@ -37,7 +37,7 @@ public class MainApplication extends Application implements ReactApplication {
         protected List<ReactPackage> getPackages() {
             return Arrays.asList(
                     new MainReactPackage(),
-            new RNScreensPackage(),
+                    new RNScreensPackage(),
                     new RNGestureHandlerPackage(),
                     new ImagePickerPackage(),
                     new RNFSPackage(),
