@@ -28,10 +28,7 @@ pod repo update
 echo "Install shared framework pods..."
 (cd ../AppCenterReactNativeShared/ios && pod install)
 
-echo "Build shared framework..."
-(cd ../AppCenterReactNativeShared/ios && SRCROOT=`pwd` ./build-fat-framework.sh)
-
-echo "Running pod install..."
+echo "Running pod install and building shared framework..."
 (cd ios && pod install)
 
 echo "Copy shared framework pod..."
