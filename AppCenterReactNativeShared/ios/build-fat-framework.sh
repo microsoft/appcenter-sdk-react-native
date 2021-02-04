@@ -6,7 +6,17 @@ FMK_NAME=AppCenterReactNativeShared
 PRODUCTS_DIR=${SRCROOT}/../Products
 ZIP_FOLDER=${FMK_NAME}
 TEMP_DIR=${PRODUCTS_DIR}/${ZIP_FOLDER}
-INSTALL_DIR=${TEMP_DIR}/${FMK_NAME}.framework
+
+# Separated directories to be able to use same framework's name
+INSTALL_DIR_IPHONEOS=${TEMP_DIR}/Release-iphoneos
+INSTALL_DIR_IPHONESIMULATOR=${TEMP_DIR}/Release-iphonesimulator
+
+# Temporary frameworks directories
+FMK_DIR_IPHONEOS=${INSTALL_DIR_IPHONEOS}/${FMK_NAME}.framework
+FMK_DIR_IPHONESIMULATOR=${INSTALL_DIR_IPHONESIMULATOR}/${FMK_NAME}.framework
+
+# Directory of final xcframework
+INSTALL_DIR_XCFRAMEWORK=${TEMP_DIR}/${FMK_NAME}.xcframework
 
 # Working dir will be deleted after the framework creation.
 DERIVED_DATA_PATH=build
@@ -14,34 +24,60 @@ WRK_DIR=${DERIVED_DATA_PATH}/Build/Products
 DEVICE_DIR=${WRK_DIR}/Release-iphoneos
 SIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator
 
-# Cleaning previous build
-xcodebuild -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" clean
-
-# Building both architectures.
-xcodebuild -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" -sdk iphoneos -derivedDataPath "$DERIVED_DATA_PATH"
-xcodebuild -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" -sdk iphonesimulator -derivedDataPath "$DERIVED_DATA_PATH"
-
-# Cleaning the oldest.
+# # Cleaning the oldest.
 if [ -d "${TEMP_DIR}" ]
 then
 rm -rf "${TEMP_DIR}"
 fi
 
-# Creates and renews the final product folder.
-mkdir -p "${INSTALL_DIR}"
-mkdir -p "${INSTALL_DIR}/Headers"
-mkdir -p "${INSTALL_DIR}/Modules"
+# Cleaning previous build
+xcodebuild -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" clean
 
-# Copy the swift import file
-cp -f "${SRCROOT}/${FMK_NAME}/Support/module.modulemap" "${INSTALL_DIR}/Modules/"
+# Building Release-iphoneos temporary framework.
+xcodebuild -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" -sdk iphoneos -derivedDataPath "$DERIVED_DATA_PATH"
 
-# Copies the headers and resources files to the final product folder.
-cp -R "${WRK_DIR}/Release-iphoneos/include/${FMK_NAME}/" "${INSTALL_DIR}/Headers/"
+# Creates and renews Release-iphoneos temporary framework folder.
+mkdir -p "${INSTALL_DIR_IPHONEOS}"
+mkdir -p "${FMK_DIR_IPHONEOS}"
+mkdir -p "${FMK_DIR_IPHONEOS}/Headers"
+mkdir -p "${FMK_DIR_IPHONEOS}/Modules"
+
+# Copy the swift import file to the temporary framework folder.
+cp -f "${SRCROOT}/${FMK_NAME}/Support/module.modulemap" "${FMK_DIR_IPHONEOS}/Modules/"
+
+# Copies the headers files to the temporary framework folder.
+cp -R "${WRK_DIR}/Release-iphoneos/include/${FMK_NAME}/" "${FMK_DIR_IPHONEOS}/Headers/"
+
+# Copies the static library files to the temporary framework folder.
+cp -R "${DEVICE_DIR}/lib${FMK_NAME}.a" "${FMK_DIR_IPHONEOS}/${FMK_NAME}"
+
+# Building Release-iphonesimulator temporary framework.
+xcodebuild -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" -sdk iphonesimulator -derivedDataPath "$DERIVED_DATA_PATH"
+
+# Creates and renews Release-iphonesimulator temporary framework folder.
+mkdir -p "${INSTALL_DIR_IPHONESIMULATOR}"
+mkdir -p "${FMK_DIR_IPHONESIMULATOR}"
+mkdir -p "${FMK_DIR_IPHONESIMULATOR}/Headers"
+mkdir -p "${FMK_DIR_IPHONESIMULATOR}/Modules"
+
+# Copy the swift import file to the temporary framework folder.
+cp -f "${SRCROOT}/${FMK_NAME}/Support/module.modulemap" "${FMK_DIR_IPHONESIMULATOR}/Modules/"
+
+# Copies the headers files to the temporary framework folder.
+cp -R "${WRK_DIR}/Release-iphonesimulator/include/${FMK_NAME}/" "${FMK_DIR_IPHONESIMULATOR}/Headers/"
+
+# Copies the static library files to the temporary framework folder.
+cp -R "${SIMULATOR_DIR}/lib${FMK_NAME}.a" "${FMK_DIR_IPHONESIMULATOR}/${FMK_NAME}"
+
+# Building fina xcframework
+xcodebuild -create-xcframework -framework "${FMK_DIR_IPHONEOS}" -framework "${FMK_DIR_IPHONESIMULATOR}" -output "${INSTALL_DIR_XCFRAMEWORK}"
 
 # Copies the license file to the products directory (required for cocoapods)
 cp -f "../LICENSE" "${TEMP_DIR}"
 
-# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7/armv7s/arm64) into one Universal final product.
-lipo -create "${DEVICE_DIR}/lib${FMK_NAME}.a" "${SIMULATOR_DIR}/lib${FMK_NAME}.a" -output "${INSTALL_DIR}/${FMK_NAME}"
+# Remove temporary install folders
+rm -r "${INSTALL_DIR_IPHONEOS}"
+rm -r "${INSTALL_DIR_IPHONESIMULATOR}"
 
+# Remove build folder
 rm -r "${DERIVED_DATA_PATH}"

@@ -355,10 +355,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 584FB52F2068661D9D22E696 /* Pods-AppCenterReactNativeShared.debug.xcconfig */;
 			buildSettings = {
-				"ARCHS[sdk=iphonesimulator*]" = (
-					x86_64,
-					i386,
-				);
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -366,7 +362,6 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = AppCenterReactNativeShared;
 				SKIP_INSTALL = YES;
-				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 i386";
 			};
 			name = Debug;
 		};
@@ -374,10 +369,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 17A4C484FBBB7AF52F8BDB1C /* Pods-AppCenterReactNativeShared.release.xcconfig */;
 			buildSettings = {
-				"ARCHS[sdk=iphonesimulator*]" = (
-					i386,
-					x86_64,
-				);
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -385,7 +376,6 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = AppCenterReactNativeShared;
 				SKIP_INSTALL = YES;
-				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 i386";
 			};
 			name = Release;
 		};
