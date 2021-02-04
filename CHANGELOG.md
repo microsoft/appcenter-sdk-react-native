@@ -2,6 +2,12 @@
 
 ## Version 4.0.3 (Under development)
 
+### App Center
+
+#### iOS
+
+* **[Feature]** Use XCFramework format for the AppCenterReactNativeShared pod.
+
 ___
 
 ## Version 4.0.2
