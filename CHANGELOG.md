@@ -6,7 +6,7 @@
 
 #### iOS
 
-* **[Feature]** Use XCFramework format for the AppCenterReactNativeShared pod.
+* **[Feature]** Use XCFramework format for the AppCenterReactNativeShared pod, it allows running the SDK on Apple Silicon simulators.
 
 ___
 
