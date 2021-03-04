@@ -40,8 +40,6 @@ create_versions_dir_for_mac_framework() {
 
     # Create the required symlinks
     /bin/ln -sfh A "${framework_dir}/Versions/Current"
-    /bin/ln -sfh Versions/Current/Headers "${framework_dir}/Headers"
-    /bin/ln -sfh "Versions/Current/${FMK_NAME}" "${framework_dir}/${FMK_NAME}"
 
     # Copy the public headers into the framework
     /bin/cp -a ${headers_dir} "${framework_dir}/Versions/A/Headers"
@@ -62,7 +60,6 @@ for sdk in iphoneos iphonesimulator maccatalyst; do
     # Creates and renews Release-iphoneos temporary framework folder.
     INSTALL_DIR=${TEMP_DIR}/Release-${sdk}
     FMK_DIR=${INSTALL_DIR}/${FMK_NAME}.framework
-    HEADERS_DIR="${WRK_DIR}/Release-${sdk}/include/${FMK_NAME}/"
 
     mkdir -p "${INSTALL_DIR}"
     mkdir -p "${FMK_DIR}"
@@ -76,7 +73,7 @@ for sdk in iphoneos iphonesimulator maccatalyst; do
     cp -R "${WRK_DIR}/Release-${sdk}/include/${FMK_NAME}/" "${FMK_DIR}/Headers/"
 
     if [ ${sdk} == "maccatalyst" ]; then
-        create_versions_dir_for_mac_framework ${FMK_DIR} ${HEADERS_DIR}
+        create_versions_dir_for_mac_framework ${FMK_DIR} "${FMK_DIR}/Headers/"
     fi
 
     # Copies the static library files to the temporary framework folder.
