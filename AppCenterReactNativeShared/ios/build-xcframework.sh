@@ -7,26 +7,15 @@ PRODUCTS_DIR=${SRCROOT}/../Products
 ZIP_FOLDER=${FMK_NAME}
 TEMP_DIR=${PRODUCTS_DIR}/${ZIP_FOLDER}
 
-# Separated directories to be able to use same framework's name
-INSTALL_DIR_IPHONEOS=${TEMP_DIR}/Release-iphoneos
-INSTALL_DIR_IPHONESIMULATOR=${TEMP_DIR}/Release-iphonesimulator
-
-# Temporary frameworks directories
-FMK_DIR_IPHONEOS=${INSTALL_DIR_IPHONEOS}/${FMK_NAME}.framework
-FMK_DIR_IPHONESIMULATOR=${INSTALL_DIR_IPHONESIMULATOR}/${FMK_NAME}.framework
-
 # Directory of final xcframework
 INSTALL_DIR_XCFRAMEWORK=${TEMP_DIR}/${FMK_NAME}.xcframework
 
 # Working dir will be deleted after the framework creation.
 DERIVED_DATA_PATH=build
 WRK_DIR=${DERIVED_DATA_PATH}/Build/Products
-DEVICE_DIR=${WRK_DIR}/Release-iphoneos
-SIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator
 
 # # Cleaning the oldest.
-if [ -d "${TEMP_DIR}" ]
-then
+if [ -d "${TEMP_DIR}" ]; then
 rm -rf "${TEMP_DIR}"
 fi
 
@@ -83,7 +72,7 @@ for sdk in iphoneos iphonesimulator maccatalyst; do
     frameworks+=( -framework "${FMK_DIR}")
 done
 
-# Building fina xcframework
+# Building final xcframework
 xcodebuild -create-xcframework "${frameworks[@]}" -output "${INSTALL_DIR_XCFRAMEWORK}"
 
 # Copies the license file to the products directory (required for cocoapods)
