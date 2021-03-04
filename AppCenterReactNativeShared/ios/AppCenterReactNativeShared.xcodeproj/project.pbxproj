@@ -235,7 +235,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ${SRCROOT}\n\n./build-fat-framework.sh\n";
+			shellScript = "cd ${SRCROOT}\n\n./build-xcframework.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
