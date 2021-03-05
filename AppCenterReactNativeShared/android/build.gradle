@@ -33,6 +33,11 @@ allprojects {
     }
 
     def ext = rootProject.ext
+    
+    // Setup signing values.
+    ext."signing.keyId" = ext.mavenSigningKeyId
+    ext."signing.secretKeyRingFile" = ext.mavenSecretKeyPath
+    ext."signing.password" = ext.mavenPublicKeyPassword
 
     android {
         compileSdkVersion 29
@@ -108,10 +113,7 @@ allprojects {
                 }
             }
 
-            signing {
-                required { gradle.taskGraph.hasTask("uploadArchives") }
-                sign configurations.archives
-            }
+            
         }
     }
 }
@@ -122,4 +124,9 @@ dependencies {
 
 artifacts {
     archives sourcesJar
+}
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
 }
