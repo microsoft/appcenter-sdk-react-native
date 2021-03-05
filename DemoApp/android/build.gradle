@@ -10,6 +10,7 @@ buildscript {
     }
     repositories {
         google()
+        mavenCentral()
         jcenter()
     }
     dependencies {
@@ -20,6 +21,7 @@ buildscript {
 allprojects {
     repositories {
         mavenLocal()
+        mavenCentral()
         google()
         jcenter()
         maven {
@@ -27,7 +29,7 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
         maven {
-            url  "https://dl.bintray.com/vsappcenter/appcenter-snapshot"
+            url "https://oss.sonatype.org/content/repositories/snapshots"
         }
     }
 }
