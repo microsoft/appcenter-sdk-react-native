@@ -20,6 +20,8 @@ apply plugin: 'maven-publish'
 apply plugin: 'signing'
 apply plugin: 'com.github.dcendents.android-maven'
 
+def wasSigned = false
+
 allprojects {
     repositories {
         google()
@@ -66,10 +68,18 @@ allprojects {
         }
     }
 
+    
     afterEvaluate {
         uploadArchives {
             repositories.mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                beforeDeployment { MavenDeployment deployment -> 
+                    // workaround to prevent the script from failing because of double uploading of pom files
+                    // related issue: https://github.com/gradle/gradle/issues/3003
+                    if (!wasSigned) {
+                        signing.signPom(deployment)
+                        wasSigned = true
+                    }
+                }
 
                 repository(url: ext.mavenRepoUrl) {
                     authentication(userName: ext.mavenUser, password: ext.mavenKey)
