@@ -14,12 +14,30 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:3.5.2')
+        classpath('com.android.tools.build:gradle:3.5.4')
     }
+}
+
+def readFromLocalProperties(propertyName) {
+    // Load credentials from local.properties file.
+    File localProperties = project.rootProject.file('local.properties')
+    if (localProperties.exists()) {
+        Properties properties = new Properties()
+        properties.load(localProperties.newDataInputStream())
+        return properties.getProperty(propertyName)
+    }
+    return null
 }
 
 allprojects {
     repositories {
+        maven {
+            credentials {
+                username = readFromLocalProperties('AZURE_USERNAME')
+                password = readFromLocalProperties('AZURE_PASSWORD')
+            }
+            url "https://msmobilecenter.pkgs.visualstudio.com/_packaging/AppCenter/maven/v1/"
+        }
         mavenLocal()
         mavenCentral()
         google()
@@ -27,9 +45,6 @@ allprojects {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
-        }
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
         }
     }
 }

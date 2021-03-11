@@ -19,8 +19,26 @@ buildscript {
 
 apply from: '../../AppCenterReactNativeShared/android/publish.gradle'
 
+def readFromLocalProperties(propertyName) {
+    // Load credentials from local.properties file.
+    File localProperties = project.rootProject.file('local.properties')
+    if (localProperties.exists()) {
+        Properties properties = new Properties()
+        properties.load(localProperties.newDataInputStream())
+        return properties.getProperty(propertyName)
+    }
+    return null
+}
+
 allprojects {
     repositories {
+        maven {
+            credentials {
+                username = readFromLocalProperties('AZURE_USERNAME')
+                password = readFromLocalProperties('AZURE_PASSWORD')
+            }
+            url "https://msmobilecenter.pkgs.visualstudio.com/_packaging/AppCenter/maven/v1/"
+        }
         mavenLocal()
         google()
         jcenter()
@@ -32,9 +50,6 @@ allprojects {
         maven {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
-        }
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
         }
         maven { url 'https://www.jitpack.io' }
     }
