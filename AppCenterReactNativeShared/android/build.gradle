@@ -1,11 +1,11 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -16,16 +16,30 @@ buildscript {
 apply from: 'publish.gradle'
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 apply plugin: 'com.github.dcendents.android-maven'
+
+def wasSigned = false
 
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        jcenter {
+            content {
+                // https://youtrack.jetbrains.com/issue/IDEA-261387
+                includeModule("org.jetbrains.trove4j", "trove4j")
+            }
+        }
     }
 
     def ext = rootProject.ext
+    
+    // Setup signing values.
+    ext."signing.keyId" = ext.mavenSigningKeyId
+    ext."signing.secretKeyRingFile" = ext.mavenSecretKeyPath
+    ext."signing.password" = ext.mavenPublicKeyPassword
 
     android {
         compileSdkVersion 29
@@ -54,55 +68,57 @@ allprojects {
         }
     }
 
-    bintray {
-        user = ext.bintrayUser
-        key = ext.bintrayKey
+    
+    afterEvaluate {
+        uploadArchives {
+            repositories.mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> 
+                    // workaround to prevent the script from failing because of double uploading of pom files
+                    // related issue: https://github.com/gradle/gradle/issues/3003
+                    if (!wasSigned) {
+                        signing.signPom(deployment)
+                        wasSigned = true
+                    }
+                }
 
-        configurations = ['archives']
+                repository(url: ext.mavenRepoUrl) {
+                    authentication(userName: ext.mavenUser, password: ext.mavenKey)
+                }
 
-        publish = true
+                pom.project {
 
-        pkg {
-            repo = ext.bintrayRepo
-            name = "appcenter-react-native"
-            userOrg = ext.bintrayUserOrg
-            vcsUrl = ext.gitUrl
-            websiteUrl = ext.siteUrl
-            licenses = [licenseCode]
-        }
-    }
-
-    install {
-        repositories.mavenInstaller {
-            pom {
-                //noinspection GroovyAssignabilityCheck
-                project {
-                    packaging 'aar'
-
-                    //noinspection GroovyAssignabilityCheck
-                    name project.name
+                    // Set base information about assemble.
+                    packaging = 'aar'
+                    name = project.name
                     description = sdkDescription
                     url = siteUrl
 
+                    // Set identifiers of assemble.
+                    groupId = ext.groupId
+                    artifactId = project.name
+
+                    // Set license information.
                     licenses {
                         license {
-                            //noinspection GroovyAssignabilityCheck
-                            name licenseName
-                            url licenseSite
+                            name = licenseName
+                            url = licenseSite
                         }
                     }
+
+                    // Set information about developers.
                     developers {
                         developer {
-                            id developerId
-                            //noinspection GroovyAssignabilityCheck
-                            name developerName
-                            email developerEmail
+                            id = developerId
+                            name = developerName
+                            email = developerEmail
                         }
                     }
+
+                    // Set information about connection with developers.
                     scm {
-                        connection gitUrl
-                        developerConnection gitUrl
-                        url siteUrl
+                        connection = gitUrl
+                        developerConnection = gitUrl
+                        url = siteUrl
                     }
                 }
             }
@@ -116,4 +132,9 @@ dependencies {
 
 artifacts {
     archives sourcesJar
+}
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
 }
