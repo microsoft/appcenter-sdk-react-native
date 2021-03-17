@@ -1,6 +1,8 @@
 # Sets the target folders and the final framework product.
 FMK_NAME=AppCenterReactNativeShared
 
+# SRCROOT="."
+
 # Install dir will be the final output to the framework.
 # The following line create it in the root folder of the current project.
 PRODUCTS_DIR=${SRCROOT}/../Products
@@ -19,23 +21,29 @@ if [ -d "${TEMP_DIR}" ]; then
 rm -rf "${TEMP_DIR}"
 fi
 
-create_versions_dir_for_mac_framework() {
+create_mac_framework() {
     local framework_dir=$1
     local headers_dir=$2
+    local binary_path=$3
+
     mkdir -p "${framework_dir}/Versions"
 
     # Create the path to the real Headers
     mkdir -p "${framework_dir}/Versions/A/Headers"
 
+    # Copy static library file to Versions/A
+    cp -R "${binary_path}" "${framework_dir}/Versions/A/${FMK_NAME}"
+
     # Create the required symlinks
     /bin/ln -sfh A "${framework_dir}/Versions/Current"
+    /bin/ln -sfh "A/Headers" "${framework_dir}/Headers"
+    /bin/ln -sfh "A/${FMK_NAME}" "${framework_dir}/${FMK_NAME}"
 
     # Copy the public headers into the framework
     /bin/cp -a ${headers_dir} "${framework_dir}/Versions/A/Headers"
 }
 
-
-for sdk in iphoneos iphonesimulator maccatalyst; do
+for sdk in maccatalyst iphoneos iphonesimulator; do
     # Cleaning previous build
     xcodebuild -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" clean
 
@@ -52,22 +60,51 @@ for sdk in iphoneos iphonesimulator maccatalyst; do
 
     mkdir -p "${INSTALL_DIR}"
     mkdir -p "${FMK_DIR}"
-    mkdir -p "${FMK_DIR}/Headers"
-    mkdir -p "${FMK_DIR}/Modules"
 
-    # Copy the swift import file to the temporary framework folder.
-    cp -f "${SRCROOT}/${FMK_NAME}/Support/module.modulemap" "${FMK_DIR}/Modules/"
+    # # Copy the swift import file to the temporary framework folder.
+    # cp -f "${SRCROOT}/${FMK_NAME}/Support/module.modulemap" "${FMK_DIR}/Modules/"
 
-    # Copies the headers files to the temporary framework folder.
-    cp -R "${WRK_DIR}/Release-${sdk}/include/${FMK_NAME}/" "${FMK_DIR}/Headers/"
+    # # Copies the headers files to the temporary framework folder.
+    # cp -R "${WRK_DIR}/Release-${sdk}/include/${FMK_NAME}/" "${FMK_DIR}/Headers/"
+
+    binary_path="${WRK_DIR}/Release-${sdk}/lib${FMK_NAME}.a"
+    headers_dir="${WRK_DIR}/Release-${sdk}/include/${FMK_NAME}/"
+    modulemap_path="${SRCROOT}/${FMK_NAME}/Support/module.modulemap"
 
     if [ ${sdk} == "maccatalyst" ]; then
-        create_versions_dir_for_mac_framework ${FMK_DIR} "${FMK_DIR}/Headers/"
-    fi
+        mkdir -p "${FMK_DIR}/Versions"
+        mkdir -p "${FMK_DIR}/Versions/A/Headers"
+        mkdir "${FMK_DIR}/Versions/A/Modules"
 
-    # Copies the static library files to the temporary framework folder.
-    SDK_DIR=${WRK_DIR}/Release-${sdk}
-    cp -R "${SDK_DIR}/lib${FMK_NAME}.a" "${FMK_DIR}/${FMK_NAME}"
+        # Copy static library file to Versions/A
+        cp -R "${binary_path}" "${FMK_DIR}/Versions/A/${FMK_NAME}"
+        # cp -R "${binary_path}" "${FMK_DIR}/${FMK_NAME}"
+
+        # Create the required symlinks
+        ln -sfh A "${FMK_DIR}/Versions/Current"
+        ln -sfh "Versions/A/Headers" "${FMK_DIR}/Headers"
+        ln -sfh "Versions/A/Modules" "${FMK_DIR}/Modules"
+        ln -sfh "Versions/A/${FMK_NAME}" "${FMK_DIR}/${FMK_NAME}"
+
+        # Copy the public headers into the framework
+        cp -f "${modulemap_path}" "${FMK_DIR}/Versions/A/Modules/"
+        cp -R "${headers_dir}/" "${FMK_DIR}/Versions/A/Headers/"
+
+        # create_mac_framework ${FMK_DIR} "${WRK_DIR}/Release-${sdk}/include/${FMK_NAME}/" "${SDK_DIR}/lib${FMK_NAME}.a"
+    else
+        mkdir -p "${FMK_DIR}/Headers"
+        mkdir -p "${FMK_DIR}/Modules"
+
+        # Copy the swift import file to the temporary framework folder.
+        cp -f "${modulemap_path}" "${FMK_DIR}/Modules/"
+
+        # Copies the headers files to the temporary framework folder.
+        cp -R "${headers_dir}/" "${FMK_DIR}/Headers/"
+
+        # Copies the static library files to the temporary framework folder.
+        # SDK_DIR=${WRK_DIR}/Release-${sdk}
+        cp -R "${binary_path}" "${FMK_DIR}/${FMK_NAME}"
+    fi
 
     frameworks+=( -framework "${FMK_DIR}")
 done
