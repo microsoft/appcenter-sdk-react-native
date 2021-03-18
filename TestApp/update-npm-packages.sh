@@ -33,8 +33,5 @@ echo "Install shared framework pods..."
 echo "Running pod install and building shared framework..."
 (cd ios && pod install)
 
-echo "Copy shared framework pod..."
-cp -r ../AppCenterReactNativeShared/Products/AppCenterReactNativeShared ios/Pods/AppCenterReactNativeShared
-
 # workaround for macs on arm64 (uncomment when running on arm64 mac)
 # (cd ios && pod install)
