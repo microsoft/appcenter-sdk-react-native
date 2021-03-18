@@ -20,4 +20,4 @@ echo "Installing other packages..."
 npm install
 
 echo "Build shared framework..."
-(cd ../AppCenterReactNativeShared/ios && SRCROOT=`pwd` ./build-fat-framework.sh)
+(cd ../AppCenterReactNativeShared/ios && SRCROOT=`pwd` ./build-xcframework.sh)

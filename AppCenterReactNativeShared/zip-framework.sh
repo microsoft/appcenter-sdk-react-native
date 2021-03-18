@@ -13,5 +13,5 @@ if [ -f $zipfilename ] ; then
     echo "  removed old zip"
 fi
 cp ../LICENSE AppCenterReactNativeShared
-zip -r $zipfilename AppCenterReactNativeShared
+zip -ry $zipfilename AppCenterReactNativeShared
 echo "output is here: Products/$zipfilename"
