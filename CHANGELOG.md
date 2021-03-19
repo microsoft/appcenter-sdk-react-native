@@ -8,6 +8,13 @@
 
 * **[Feature]** Use XCFramework format for the AppCenterReactNativeShared pod, it allows running the SDK on Apple Silicon simulators.
 * **[Feature]** Support Mac Catalyst. Cocoapods 1.10.1+ is required.
+* **[Improvement]** Use ASWebAuthenticationSession for authentication on iOS 12 or later.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix formatting of stack trace in the `ErrorReport`.
 
 ___
 
