@@ -8,15 +8,6 @@
 
 * **[Feature]** Use XCFramework format for the AppCenterReactNativeShared pod, it allows running the SDK on Apple Silicon simulators.
 * **[Feature]** Support Mac Catalyst. Cocoapods 1.10.1+ is required.
-* **[Improvement]** Use ASWebAuthenticationSession for authentication on iOS 12 or later.
-* **[Fix]** Fix Objective-C properties attributes warnings in MRC projects.
-
-### App Center Crashes
-
-#### Android
-
-* **[Fix]** Fix formatting of stack trace in the `ErrorReport`.
-* **[Fix]** Fix setting `userId` value in NDK crashes before sending.
 
 ___
 
