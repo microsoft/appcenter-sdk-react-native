@@ -1,5 +1,23 @@
 # App Center SDK for React Native Change Log
 
+## Version 4.1.0
+
+### App Center
+
+#### iOS
+
+* **[Feature]** Use XCFramework format for the AppCenterReactNativeShared pod, it allows running the SDK on Apple Silicon simulators.
+* **[Feature]** Support Mac Catalyst. Cocoapods 1.10.1+ is required.
+* **[Improvement]** Use ASWebAuthenticationSession for authentication on iOS 12 or later.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix formatting of stack trace in the `ErrorReport`.
+
+___
+
 ## Version 4.0.2
 
 ### App Center
@@ -8,17 +26,13 @@
 
 * **[Fix]** Fix `double-quoted` warnings in Xcode 12.
 * **[Fix]** Fix a crash when SQLite returns zero for `page_size`.
-* **[Feature]** Use XCFramework format for the binary distribution via CocoaPods. CocoaPods version 1.9+ is a requirement now.
+* **[Feature]** Use XCFramework format for the binary distribution via CocoaPods. CocoaPods version 1.10+ is a requirement now.
 
 ### App Center Crashes
 
 #### Android
 
 * **[Fix]** Fix removing throwable files after rewriting error logs due to small database size.
-
-#### iOS
-
-* **[Fix]** Fix nullability for attachments methods in crashes delegate. `nil` is valid return value now (4.0.0 regression).
 
 ___
 

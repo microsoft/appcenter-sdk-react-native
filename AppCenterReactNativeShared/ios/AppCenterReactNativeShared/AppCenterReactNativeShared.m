@@ -39,7 +39,7 @@ static NSDictionary *configuration;
 
 + (void)configureAppCenter {
   if (!wrapperSdk) {
-    MSACWrapperSdk *wrapperSdk = [[MSACWrapperSdk alloc] initWithWrapperSdkVersion:@"4.0.2"
+    MSACWrapperSdk *wrapperSdk = [[MSACWrapperSdk alloc] initWithWrapperSdkVersion:@"4.1.0"
                                                                 wrapperSdkName:@"appcenter.react-native"
                                                          wrapperRuntimeVersion:nil
                                                         liveUpdateReleaseLabel:nil

@@ -9,6 +9,8 @@ npm pack ../appcenter
 npm pack ../appcenter-analytics
 npm pack ../appcenter-crashes
 npm pack ../appcenter-link-scripts
+# workaround for macs on arm64
+npm install react-native-fs --save --legacy-peer-deps
 
 echo "Installing appcenter* packages..."
 npm install appcenter*.tgz
@@ -28,11 +30,8 @@ pod repo update
 echo "Install shared framework pods..."
 (cd ../AppCenterReactNativeShared/ios && pod install)
 
-echo "Build shared framework..."
-(cd ../AppCenterReactNativeShared/ios && SRCROOT=`pwd` ./build-fat-framework.sh)
-
-echo "Running pod install..."
+echo "Running pod install and building shared framework..."
 (cd ios && pod install)
 
-echo "Copy shared framework pod..."
-cp -r ../AppCenterReactNativeShared/Products/AppCenterReactNativeShared ios/Pods/AppCenterReactNativeShared
+# workaround for macs on arm64 (uncomment when running on arm64 mac)
+# (cd ios && pod install)
