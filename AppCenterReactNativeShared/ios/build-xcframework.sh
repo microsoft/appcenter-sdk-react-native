@@ -1,13 +1,16 @@
 #!/bin/bash
 
-# Build initial xcframework under Xcode 11.3
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# Builds initial(no arm64 for iphonesimulator and maccatalyst slices) xcframework under Xcode 11.3 or the final xcframework if is used under Xcode 12+.
+# Usage: export SRCROOT=`pwd` && ./build-xcframework.sh
+
+set -e
 
 # Sets the target folders and the final framework product.
 export FMK_NAME=AppCenterReactNativeShared
 IOS_PLATFORMS="iphoneos iphonesimulator maccatalyst"
-
-# Install dir will be the final output to the framework.
-# The following line create it in the root folder of the current project.
 PRODUCTS_DIR=${SRCROOT}/../Products
 ZIP_FOLDER=${FMK_NAME}
 export TEMP_DIR=${PRODUCTS_DIR}/${ZIP_FOLDER}
@@ -28,7 +31,6 @@ for sdk in $IOS_PLATFORMS; do
     export INSTALL_DIR=${TEMP_DIR}/Release-${sdk}
     export FMK_DIR=${INSTALL_DIR}/${FMK_NAME}.framework
 
-    #call subscript
     $SRCROOT/build-framework.sh $sdk
 
     frameworks+=( -framework "${FMK_DIR}")

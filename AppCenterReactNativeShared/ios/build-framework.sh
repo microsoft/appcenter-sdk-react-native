@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# Builds a framework for a platform provided in the first argument.
+# Usage: ./build-framework.sh <platform> <xcodebuild arguments>
+
+set -e
+
 # Read arguments
 CURRENT_PLATFORM=$1
 BUILD_ARGUMENTS=$2
@@ -15,14 +23,14 @@ cd $SRCROOT
 # Cleaning previous build
 xcodebuild -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" -quiet clean
 
-# Building framework.
+# Building framework
 if [ ${CURRENT_PLATFORM} == "maccatalyst" ]; then
-    xcodebuild $BUILD_ARGUMENTS -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" -destination 'platform=macOS,variant=Mac Catalyst' -derivedDataPath "$DERIVED_DATA_PATH" -quiet
+    xcodebuild $BUILD_ARGUMENTS -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" -destination 'platform=macOS,variant=Mac Catalyst' -derivedDataPath "$DERIVED_DATA_PATH"
 else
-    xcodebuild $BUILD_ARGUMENTS -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" -sdk "${CURRENT_PLATFORM}" -derivedDataPath "$DERIVED_DATA_PATH" -quiet
+    xcodebuild $BUILD_ARGUMENTS -workspace "${FMK_NAME}.xcworkspace" -configuration "Release" -scheme "${FMK_NAME}" -sdk "${CURRENT_PLATFORM}" -derivedDataPath "$DERIVED_DATA_PATH"
 fi
 
-# Creates and renews Release-*platform* temporary framework folder.
+# Create and renew Release-*platform* temporary framework folder
 INSTALL_DIR=${TEMP_DIR}/Release-${CURRENT_PLATFORM}
 FMK_DIR=${INSTALL_DIR}/${FMK_NAME}.framework
 
