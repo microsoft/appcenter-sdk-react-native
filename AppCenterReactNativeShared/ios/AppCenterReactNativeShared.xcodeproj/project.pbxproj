@@ -6,20 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		CB732A521DCBA94900720B25 /* Fat Framework */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = CB732A531DCBA94900720B25 /* Build configuration list for PBXAggregateTarget "Fat Framework" */;
-			buildPhases = (
-				CB732A561DCBA95000720B25 /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = "Fat Framework";
-			productName = "Fat Framework";
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		04DB2A06646C1BB719107C2F /* Pods_AppCenterReactNativeShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DC442297923E7CCD669E385 /* Pods_AppCenterReactNativeShared.framework */; };
 		5419C25A1D81FDA300DDF3A1 /* AppCenterReactNativeShared.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5419C2591D81FDA300DDF3A1 /* AppCenterReactNativeShared.h */; };
@@ -161,11 +147,6 @@
 					5419C2551D81FDA300DDF3A1 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
-					CB732A521DCBA94900720B25 = {
-						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = UBF8T346G9;
-						ProvisioningStyle = Automatic;
-					};
 				};
 			};
 			buildConfigurationList = 5419C2511D81FDA300DDF3A1 /* Build configuration list for PBXProject "AppCenterReactNativeShared" */;
@@ -182,7 +163,6 @@
 			projectRoot = "";
 			targets = (
 				5419C2551D81FDA300DDF3A1 /* AppCenterReactNativeShared */,
-				CB732A521DCBA94900720B25 /* Fat Framework */,
 			);
 		};
 /* End PBXProject section */
@@ -223,19 +203,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport FRAMEWORK_LOCN=\"${BUILT_PRODUCTS_DIR}/AppCenterReactNativeShared.framework\"\n\n# Create the path to the real Headers\nmkdir -p \"${FRAMEWORK_LOCN}/Versions/A/Headers\"\n\n# Create the required symlinks\n/bin/ln -sfh A \"${FRAMEWORK_LOCN}/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${FRAMEWORK_LOCN}/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \\\n\"${FRAMEWORK_LOCN}/${PRODUCT_NAME}\"\n\n# Copy the public headers into the framework\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \\\n\"${FRAMEWORK_LOCN}/Versions/A/Headers\"";
-		};
-		CB732A561DCBA95000720B25 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd ${SRCROOT}\n\n./build-xcframework.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -379,24 +346,6 @@
 			};
 			name = Release;
 		};
-		CB732A541DCBA94900720B25 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEVELOPMENT_TEAM = UBF8T346G9;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		CB732A551DCBA94900720B25 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEVELOPMENT_TEAM = UBF8T346G9;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -414,15 +363,6 @@
 			buildConfigurations = (
 				5419C2601D81FDA300DDF3A1 /* Debug */,
 				5419C2611D81FDA300DDF3A1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CB732A531DCBA94900720B25 /* Build configuration list for PBXAggregateTarget "Fat Framework" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CB732A541DCBA94900720B25 /* Debug */,
-				CB732A551DCBA94900720B25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
