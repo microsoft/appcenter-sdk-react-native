@@ -2,6 +2,10 @@
 
 ## Version 4.1.1 (Under development)
 
+### App Center
+
+* **[Feature]** Add a `setNetworkRequestsAllowed` API to block network requests.
+
 ___
 
 ## Version 4.1.0
