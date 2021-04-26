@@ -12,6 +12,7 @@ import android.util.Log;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.crashes.model.TestCrashException;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 
@@ -31,6 +32,8 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
 
     private static final String START_AUTOMATICALLY = "start_automatically";
 
+    private static final String NETWORK_REQUESTS_ALLOWED = "network_requests_allowed";
+
     private final SharedPreferences mSharedPreferences;
 
     private native void nativeAllocateLargeBuffer();
@@ -42,6 +45,8 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
 
     static void initSecrets(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(TEST_APP_NATIVE, Context.MODE_PRIVATE);
+        boolean isAllowed = sharedPreferences.getBoolean(NETWORK_REQUESTS_ALLOWED, true);
+        AppCenter.setNetworkRequestsAllowed(isAllowed);
         String secretOverride = sharedPreferences.getString(APP_SECRET, null);
         AppCenterReactNativeShared.setAppSecret(secretOverride);
         boolean startAutomaticallyOverride = sharedPreferences.getBoolean(START_AUTOMATICALLY, true);
@@ -65,6 +70,14 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
         mSharedPreferences.edit()
                 .putString(APP_SECRET, secretString)
                 .putBoolean(START_AUTOMATICALLY, startAutomatically)
+                .apply();
+    }
+
+    @SuppressWarnings("unused")
+    @ReactMethod
+    public void saveNetworkRequestsAllowedValue(boolean isAllowed) {
+        mSharedPreferences.edit()
+                .putBoolean(NETWORK_REQUESTS_ALLOWED, isAllowed)
                 .apply();
     }
 

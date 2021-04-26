@@ -1,23 +1,23 @@
 PODS:
-  - AppCenter (4.1.1):
-    - AppCenter/Analytics (= 4.1.1)
-    - AppCenter/Crashes (= 4.1.1)
-  - AppCenter/Analytics (4.1.1):
+  - AppCenter (4.1.2-6):
+    - AppCenter/Analytics (= 4.1.2-6)
+    - AppCenter/Crashes (= 4.1.2-6)
+  - AppCenter/Analytics (4.1.2-6):
     - AppCenter/Core
-  - AppCenter/Core (4.1.1)
-  - AppCenter/Crashes (4.1.1):
+  - AppCenter/Core (4.1.2-6)
+  - AppCenter/Crashes (4.1.2-6):
     - AppCenter/Core
 
 DEPENDENCIES:
-  - AppCenter (= 4.1.1)
+  - "AppCenter (= 4.1.2-6+c0eb1358b885e0ab16c0ae70e4969efed2ecb1bd)"
 
 SPEC REPOS:
-  trunk:
+  https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private:
     - AppCenter
 
 SPEC CHECKSUMS:
-  AppCenter: cd53e3ed3563cc720bcb806c9731a12389b40d44
+  AppCenter: c77e8024ce37ea91b9ac703c76e385b5605491d7
 
-PODFILE CHECKSUM: 3cfa4ac00df70f4a17d6cf6206bacfdc24c7a267
+PODFILE CHECKSUM: 260e1bd8a6f829628f37b2f80fb699b43680c295
 
 COCOAPODS: 1.10.1

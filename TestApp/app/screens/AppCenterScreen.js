@@ -68,6 +68,7 @@ export default class AppCenterScreen extends Component {
 
   state = {
     appCenterEnabled: false,
+    networkRequestsAllowed: true,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
@@ -98,6 +99,9 @@ export default class AppCenterScreen extends Component {
   }
 
   async refreshUI() {
+    const networkRequestsAllowed = await AppCenter.isNetworkRequestsAllowed();
+    this.setState({ networkRequestsAllowed });
+
     const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
 
@@ -116,6 +120,11 @@ export default class AppCenterScreen extends Component {
       .set('now', new Date());
     await AppCenter.setCustomProperties(properties);
     console.log('Scheduled custom properties log. Please check verbose logs.');
+  }
+
+  async saveNetworkRequestsAllowedValue(isAllowed) {
+    await NativeModules.TestAppNative.saveNetworkRequestsAllowedValue(isAllowed);
+    console.log('Relaunch app for changes to be applied.');
   }
 
   async configureStartup(secretString, startAutomatically) {
@@ -200,6 +209,23 @@ export default class AppCenterScreen extends Component {
                     const appCenterEnabled = await AppCenter.isEnabled();
                     this.setState({ appCenterEnabled });
                   }
+                },
+              ],
+              renderItem: switchRenderItem
+            },
+            {
+              title: 'Network requests allowed',
+              data: [
+                {
+                  title: 'Network requests allowed',
+                  value: 'networkRequestsAllowed',
+                  toggle: async () => {
+                    const isAllowed = !this.state.networkRequestsAllowed;
+                    await AppCenter.setNetworkRequestsAllowed(!this.state.networkRequestsAllowed);
+                    this.saveNetworkRequestsAllowedValue(isAllowed);
+                    const networkRequestsAllowed = await AppCenter.isNetworkRequestsAllowed();
+                    this.setState({ networkRequestsAllowed });
+                  },
                 },
               ],
               renderItem: switchRenderItem
