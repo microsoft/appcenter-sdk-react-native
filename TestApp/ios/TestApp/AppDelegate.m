@@ -27,11 +27,6 @@
   [MSACAppCenter setLogLevel:MSACLogLevelVerbose];
   [MSACAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
 
-  id isAllowed = [[NSUserDefaults standardUserDefaults] objectForKey:@"NetworkRequestsAllowed"];
-  if ([isAllowed isKindOfClass:[NSNumber class]]) {
-    [MSACAppCenter setNetworkRequestsAllowed:[isAllowed boolValue]];
-  }
-
   id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
   if ([appSecret isKindOfClass:[NSString class]]) {
     [AppCenterReactNativeShared setAppSecret:appSecret];

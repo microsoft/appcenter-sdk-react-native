@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
   s.platform          = :ios, '9.0'
   s.requires_arc      = true
   s.vendored_frameworks = 'AppCenterReactNativeShared/AppCenterReactNativeShared.xcframework'
-  s.dependency 'AppCenter/Core', '4.1.2-6+c0eb1358b885e0ab16c0ae70e4969efed2ecb1bd'
+  s.dependency 'AppCenter/Core', '4.1.2-8+3368f36c784312b44d11a3f09607e1693165aa05'
 end

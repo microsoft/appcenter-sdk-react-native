@@ -122,11 +122,6 @@ export default class AppCenterScreen extends Component {
     console.log('Scheduled custom properties log. Please check verbose logs.');
   }
 
-  async saveNetworkRequestsAllowedValue(isAllowed) {
-    await NativeModules.TestAppNative.saveNetworkRequestsAllowedValue(isAllowed);
-    console.log('Relaunch app for changes to be applied.');
-  }
-
   async configureStartup(secretString, startAutomatically) {
     await NativeModules.TestAppNative.configureStartup(secretString, startAutomatically);
     console.log('Relaunch app for changes to be applied.');
@@ -220,9 +215,7 @@ export default class AppCenterScreen extends Component {
                   title: 'Network requests allowed',
                   value: 'networkRequestsAllowed',
                   toggle: async () => {
-                    const isAllowed = !this.state.networkRequestsAllowed;
                     await AppCenter.setNetworkRequestsAllowed(!this.state.networkRequestsAllowed);
-                    this.saveNetworkRequestsAllowedValue(isAllowed);
                     const networkRequestsAllowed = await AppCenter.isNetworkRequestsAllowed();
                     this.setState({ networkRequestsAllowed });
                   },
