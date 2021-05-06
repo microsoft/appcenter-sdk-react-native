@@ -32,6 +32,8 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
 
     private static final String START_AUTOMATICALLY = "start_automatically";
 
+    private static final String NETWORK_REQUESTS_ALLOWED = "network_requests_allowed";
+
     private final SharedPreferences mSharedPreferences;
 
     private native void nativeAllocateLargeBuffer();
@@ -39,6 +41,15 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
     TestAppNativeModule(ReactApplicationContext context) {
         super(context);
         mSharedPreferences = context.getSharedPreferences(getName(), Context.MODE_PRIVATE);
+    }
+
+    static void prepareAppCenter(Context context)
+    {
+        AppCenter.setLogLevel(Log.VERBOSE);
+        AppCenter.setLogUrl("https://in-integration.dev.avalanch.es");
+        SharedPreferences sharedPreferences = context.getSharedPreferences(TEST_APP_NATIVE, Context.MODE_PRIVATE);
+        boolean isAllowed = sharedPreferences.getBoolean(NETWORK_REQUESTS_ALLOWED, true);
+        AppCenter.setNetworkRequestsAllowed(isAllowed);
     }
 
     static void initSecrets(Context context) {
@@ -94,5 +105,13 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
                 handler.post(this);
             }
         });
+    }
+
+    @SuppressWarnings("unused")
+    @ReactMethod
+    public void saveIsNetworkAllowed(boolean isAllowed) {
+        mSharedPreferences.edit()
+                .putBoolean(NETWORK_REQUESTS_ALLOWED, isAllowed)
+                .apply();
     }
 }
