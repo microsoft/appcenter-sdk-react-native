@@ -10,13 +10,13 @@ PODS:
     - AppCenter/Crashes (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
-  - AppCenter/Analytics (4.1.2-8):
+  - AppCenter/Analytics (4.1.2-9):
     - AppCenter/Core
-  - AppCenter/Core (4.1.2-8)
-  - AppCenter/Crashes (4.1.2-8):
+  - AppCenter/Core (4.1.2-9)
+  - AppCenter/Crashes (4.1.2-9):
     - AppCenter/Core
   - AppCenterReactNativeShared (4.1.1):
-    - "AppCenter/Core (= 4.1.2-8+3368f36c784312b44d11a3f09607e1693165aa05)"
+    - AppCenter/Core (= 4.1.2-9)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.62.2)
@@ -263,7 +263,7 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.2)
   - RNCAsyncStorage (1.6.2):
     - React
-  - RNFS (2.17.0):
+  - RNFS (2.18.0):
     - React
   - RNGestureHandler (1.5.0):
     - React
@@ -387,11 +387,11 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: a7fa1d1917ec02d2f8943d15ddae62e6e3cf30f7
+  AppCenter: e6a5ce3956a96c28b29f1081a0d8398b915bca67
   appcenter-analytics: aa074250b2cb182d6f7d67d9c236dd4606673ab5
   appcenter-core: c97920e79eba2321a262d3733cb2a6f1097db539
   appcenter-crashes: 804ae51c5d1742ce20fdb6a68b3d06208a404ad5
-  AppCenterReactNativeShared: 399a6f85e65e7066ef3ce196b69016518e40f969
+  AppCenterReactNativeShared: efd6bc7f553676b6e81a97e6c08786fb0476c75d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
@@ -407,7 +407,7 @@ SPEC CHECKSUMS:
   React-jsi: b6dc94a6a12ff98e8877287a0b7620d365201161
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
-  react-native-image-picker: 3637d63fef7e32a230141ab4660d3ceb773c824f
+  react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
   React-RCTBlob: a332773f0ebc413a0ce85942a55b064471587a71
@@ -418,8 +418,8 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
-  RNCAsyncStorage: 5ae4d57458804e99f73d427214442a6b10a53856
-  RNFS: 93d5b5535eb39d98e6b19009faa8fe717f7ea45d
+  RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
+  RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
   RNScreens: 03bf608b92ac0acf323f47d8f5b63a8f829340c8
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
