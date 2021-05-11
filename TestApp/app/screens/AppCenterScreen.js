@@ -217,7 +217,6 @@ export default class AppCenterScreen extends Component {
                   toggle: async () => {
                     await AppCenter.setNetworkRequestsAllowed(!this.state.networkRequestsAllowed);
                     const networkRequestsAllowed = await AppCenter.isNetworkRequestsAllowed();
-                    await NativeModules.TestAppNative.saveIsNetworkAllowed(networkRequestsAllowed);
                     this.setState({ networkRequestsAllowed });
                   },
                 },

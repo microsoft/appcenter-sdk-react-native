@@ -37,11 +37,6 @@
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
 
-  id isNetworkRequestsAllowed = [[NSUserDefaults standardUserDefaults] objectForKey:@"IsNetworkAllowed"];
-  if ([isNetworkRequestsAllowed isKindOfClass:[NSNumber class]]) {
-    [MSACAppCenter setNetworkRequestsAllowed:[isNetworkRequestsAllowed boolValue]];
-  }
-
   [AppCenterReactNative register];                                   // Initialize AppCenter
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true]; // Initialize AppCenter Analytics
   [AppCenterReactNativeCrashes register];                            // Initialize AppCenter Crashes

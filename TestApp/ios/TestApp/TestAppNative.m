@@ -32,7 +32,6 @@
 static int const blockSize = 256 * 1024 * 1024;
 static NSString* const kAppCenterSecretKey = @"AppSecret";
 static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
-static NSString* const kAppCenterIsNetworkAllowedKey = @"IsNetworkAllowed";
 
 - (instancetype) init {
   self = [super init];
@@ -54,12 +53,6 @@ RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString
   }
   [userDefaults setObject:secretString forKey:kAppCenterSecretKey];
   [userDefaults setBool:startAutomatically forKey:kAppCenterStartAutomaticallyKey];
-}
-
-RCT_EXPORT_METHOD(saveIsNetworkAllowed:(BOOL)isNetworkAllowed)
-{
-  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  [userDefaults setBool:isNetworkAllowed forKey:kAppCenterIsNetworkAllowedKey];
 }
 
 RCT_EXPORT_METHOD(generateTestCrash)
