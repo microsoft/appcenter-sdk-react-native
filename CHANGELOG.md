@@ -4,7 +4,7 @@
 
 ### App Center
 
-* **[Feature]** Add a `setNetworkRequestsAllowed` API to block network requests.
+* **[Feature]** Add a `AppCenter.setNetworkRequestsAllowed(bool)` API to block any network requests without disabling the SDK.
 
 ___
 
