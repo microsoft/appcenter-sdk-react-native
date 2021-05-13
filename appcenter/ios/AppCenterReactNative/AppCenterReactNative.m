@@ -127,4 +127,18 @@ RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
     resolve(nil);
 }
 
+RCT_EXPORT_METHOD(setNetworkRequestsAllowed:(BOOL)isAllowed
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [MSACAppCenter setNetworkRequestsAllowed:isAllowed];
+    resolve(nil);
+}
+
+RCT_EXPORT_METHOD(isNetworkRequestsAllowed:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    resolve([NSNumber numberWithBool:[MSACAppCenter isNetworkRequestsAllowed]]);
+}
+
 @end

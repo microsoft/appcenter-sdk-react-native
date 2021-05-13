@@ -2,6 +2,10 @@
 
 ## Version 4.1.1 (Under development)
 
+### App Center
+
+* **[Feature]** Add a `AppCenter.setNetworkRequestsAllowed(bool)` API to block any network requests without disabling the SDK.
+
 ___
 
 ## Version 4.1.0

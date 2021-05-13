@@ -52,11 +52,20 @@ allprojects {
             url("$rootDir/../node_modules/jsc-android/dist")
         }
         maven { url 'https://www.jitpack.io' }
+
+        // force dependency versions on all subprojects
+        configurations.all {
+            resolutionStrategy {
+
+                // use 0.9.0 to fix crash on Android 11: https://github.com/facebook/SoLoader/issues/59
+                force "com.facebook.soloader:soloader:0.9.0"
+            }
+        }
     }
 }
 
 subprojects {
-    afterEvaluate {project ->
+    afterEvaluate { project ->
         if (project.hasProperty("android")) {
             android {
                 // Force all the submodules to use the specified compileSdkVersion and buildToolsVersion.

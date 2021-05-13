@@ -12,6 +12,7 @@ import android.util.Log;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.crashes.model.TestCrashException;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 

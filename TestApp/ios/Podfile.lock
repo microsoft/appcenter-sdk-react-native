@@ -10,13 +10,13 @@ PODS:
     - AppCenter/Crashes (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
-  - AppCenter/Analytics (4.1.1):
+  - AppCenter/Analytics (4.1.2-9):
     - AppCenter/Core
-  - AppCenter/Core (4.1.1)
-  - AppCenter/Crashes (4.1.1):
+  - AppCenter/Core (4.1.2-9)
+  - AppCenter/Crashes (4.1.2-9):
     - AppCenter/Core
-  - AppCenterReactNativeShared (4.1.0):
-    - AppCenter/Core (= 4.1.1)
+  - AppCenterReactNativeShared (4.1.1):
+    - AppCenter/Core (= 4.1.2-9)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.62.2)
@@ -263,7 +263,7 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.2)
   - RNCAsyncStorage (1.6.2):
     - React
-  - RNFS (2.16.1):
+  - RNFS (2.18.0):
     - React
   - RNGestureHandler (1.5.0):
     - React
@@ -311,9 +311,10 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  trunk:
-    - AppCenter
+  https://github.com/CocoaPods/Specs.git:
     - boost-for-react-native
+  https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private:
+    - AppCenter
 
 EXTERNAL SOURCES:
   appcenter-analytics:
@@ -386,11 +387,11 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: cd53e3ed3563cc720bcb806c9731a12389b40d44
+  AppCenter: e6a5ce3956a96c28b29f1081a0d8398b915bca67
   appcenter-analytics: aa074250b2cb182d6f7d67d9c236dd4606673ab5
   appcenter-core: c97920e79eba2321a262d3733cb2a6f1097db539
   appcenter-crashes: 804ae51c5d1742ce20fdb6a68b3d06208a404ad5
-  AppCenterReactNativeShared: e97e9ff27a4305d8f0da471bb3ed67d57e1a11db
+  AppCenterReactNativeShared: efd6bc7f553676b6e81a97e6c08786fb0476c75d
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
@@ -418,11 +419,11 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   RNCAsyncStorage: 60a80e72d95bf02a01cace55d3697d9724f0d77f
-  RNFS: 795866388a01de4e470f3b1041a99cf20a343844
+  RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a4ddde1ffc6e590c8127b8b7eabfdade45475c74
   RNScreens: 03bf608b92ac0acf323f47d8f5b63a8f829340c8
   Yoga: 3ebccbdd559724312790e7742142d062476b698e
 
-PODFILE CHECKSUM: ed32689948346cac201e4e7e481f0ab8f9a788e6
+PODFILE CHECKSUM: 5523256fea95f994fd212b1f9568454fbebe205a
 
 COCOAPODS: 1.10.1

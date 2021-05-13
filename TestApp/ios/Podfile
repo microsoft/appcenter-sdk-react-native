@@ -1,4 +1,6 @@
-platform :ios, '9.0'
+source 'https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private'
+source 'https://github.com/CocoaPods/Specs.git'
+
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'TestApp' do
