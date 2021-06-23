@@ -9,11 +9,12 @@ npm pack ../appcenter
 npm pack ../appcenter-analytics
 npm pack ../appcenter-crashes
 npm pack ../appcenter-link-scripts
-# workaround for macs on arm64
-npm install react-native-fs --save --legacy-peer-deps
 
 echo "Installing appcenter* packages..."
 npm install appcenter*.tgz
+
+echo "workaround for macs on arm64"
+npm install react-native-fs --save --legacy-peer-deps
 
 echo "Cleanup appcenter*.tgz"
 rm appcenter*.tgz
