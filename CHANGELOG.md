@@ -1,10 +1,26 @@
 # App Center SDK for React Native Change Log
 
-## Version 4.1.1 (Under development)
+## Version 4.2.0
 
 ### App Center
 
 * **[Feature]** Add a `AppCenter.setNetworkRequestsAllowed(bool)` API to block any network requests without disabling the SDK.
+
+#### iOS
+
+* **[Fix]** Fix umbrella header warnings in Xcode 12.5.
+
+#### Android
+
+* **[Fix]** Remove old support libraries for compatibility with apps without enabled Jetifier tool.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Fix error nullability in crashes delegate.
+* **[Fix]** Merge the device information from the crash report with the SDK's device information in order to fix some time sensitive cases where the reported application information was incorrect.
+* **[Improvement]** Update PLCrashReporter to 1.9.0.
 
 ___
 
