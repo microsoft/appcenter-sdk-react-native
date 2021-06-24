@@ -91,6 +91,16 @@ const AppCenter = {
     },
 
     // async - returns a Promise
+    isNetworkRequestsAllowed() {
+        return AppCenterReactNative.isNetworkRequestsAllowed();
+    },
+
+    // async - returns a Promise
+    setNetworkRequestsAllowed(isAllowed) {
+        return AppCenterReactNative.setNetworkRequestsAllowed(isAllowed);
+    },
+
+    // async - returns a Promise
     setCustomProperties(properties) {
         if (properties instanceof AppCenter.CustomProperties) {
             return AppCenterReactNative.setCustomProperties(properties);
