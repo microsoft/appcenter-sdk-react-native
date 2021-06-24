@@ -22,7 +22,7 @@ rm appcenter*.tgz
 echo "Installing other packages..."
 npm install
 
-echo "Apply patch to react-native package that fix build on Xcode 12.5..."
+echo "Applying patch to react-native package that fixes build on Xcode 12.5..."
 npx patch-package
 
 echo "Running jetify to resolve AndroidX compatibility issues..."
