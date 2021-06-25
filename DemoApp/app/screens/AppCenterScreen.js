@@ -69,6 +69,7 @@ export default class AppCenterScreen extends Component {
 
   state = {
     appCenterEnabled: false,
+    networkRequestsAllowed: true,
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
@@ -99,6 +100,9 @@ export default class AppCenterScreen extends Component {
   }
 
   async refreshUI() {
+    const networkRequestsAllowed = await AppCenter.isNetworkRequestsAllowed();
+    this.setState({ networkRequestsAllowed });
+
     const appCenterEnabled = await AppCenter.isEnabled();
     this.setState({ appCenterEnabled });
 
@@ -201,7 +205,22 @@ export default class AppCenterScreen extends Component {
                     const appCenterEnabled = await AppCenter.isEnabled();
                     this.setState({ appCenterEnabled });
                   }
-                }
+                },
+              ],
+              renderItem: switchRenderItem
+            },
+            {
+              title: 'Network requests allowed',
+              data: [
+                {
+                  title: 'Network requests allowed',
+                  value: 'networkRequestsAllowed',
+                  toggle: async () => {
+                    await AppCenter.setNetworkRequestsAllowed(!this.state.networkRequestsAllowed);
+                    const networkRequestsAllowed = await AppCenter.isNetworkRequestsAllowed();
+                    this.setState({ networkRequestsAllowed });
+                  },
+                },
               ],
               renderItem: switchRenderItem
             },
