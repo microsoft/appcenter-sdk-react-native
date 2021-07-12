@@ -22,6 +22,24 @@ export class ErrorAttachmentLog {
   ): ErrorAttachmentLog;
 }
 
+export interface StackFrame {
+  address :string;
+  code : string;
+  className :string;
+  methodName:string;
+  lineNumber:number;
+  fileName: string;
+}
+
+export class ExceptionModel {
+  wrapperSdkName: string;
+  innerException: ExceptionModel[];
+  type: string;
+  message: string;
+  stacktrace: string;
+  frames: StackFrame[];
+}
+
 export interface Device {
   sdkName: string;
   sdkVersion: string;
@@ -53,12 +71,16 @@ export interface ErrorReport {
   appProcessIdentifier?: number;
 }
 
-
 export function generateTestCrash(): Promise<void>;
 export function hasCrashedInLastSession(): Promise<boolean>;
 export function hasReceivedMemoryWarningInLastSession(): Promise<boolean>;
 export function lastSessionCrashReport(): Promise<ErrorReport>;
 export function isEnabled(): Promise<boolean>;
 export function setEnabled(shouldEnable: boolean): Promise<void>;
+export function trackError(
+  error: ExceptionModel, 
+  properties?: { [name: string]: string },
+  attachments?: ErrorAttachmentLog[]
+): void;
 export function notifyUserConfirmation(userConfirmation: UserConfirmation): void;
 export function setListener(crashesListener: CrashesListener): Promise<void>;

@@ -52,8 +52,8 @@ const Crashes = {
         return AppCenterReactNativeCrashes.lastSessionCrashReport();
     },
 
-     // async - returns a Promise
-     hasReceivedMemoryWarningInLastSession() {
+    // async - returns a Promise
+    hasReceivedMemoryWarningInLastSession() {
         return AppCenterReactNativeCrashes.hasReceivedMemoryWarningInLastSession();
     },
 
@@ -65,6 +65,11 @@ const Crashes = {
     // async - returns a Promise
     setEnabled(shouldEnable) {
         return AppCenterReactNativeCrashes.setEnabled(shouldEnable);
+    },
+
+    // error value should have ExceptionModel type.
+    trackError(error, properties, attachments) {
+        return AppCenterReactNativeCrashes.trackException(error, sanitizeProperties(properties), sanitizeProperties(attachments));
     },
 
     notifyUserConfirmation(userConfirmation) {
@@ -152,6 +157,63 @@ const Helper = {
 // Exports with "curly braces".
 Crashes.UserConfirmation = UserConfirmation;
 Crashes.ErrorAttachmentLog = ErrorAttachmentLog;
+Crashes.ExceptionModel = class {
+    wrapperSdkName = "react-native-sdk";
+
+    // error value should have Error type.
+    constructor(type, message, stacktrace) {
+        this["type"] = type;
+        this["message"] = message;
+        this["stackTrace"] = stacktrace;
+
+        // TODO Add stacktrace parse.
+        // this["frames"] = frames;
+    }
+
+    static ExceptionModelFromError(error) {
+        return new ExceptionModel(error.name, error.message, error.stack);
+    }
+
+    static ExceptionModelFromValues(type, message, stacktrace) {
+        return new ExceptionModel(type, message, stacktrace);
+    }
+};
+Crashes.StackFrame = class {
+    setAddress(address) {
+        this["address"] = address;
+        return this;
+    }
+
+    setCode(code) {
+        this["code"] = code;
+        return this;
+    }
+
+    setClassName(className) {
+        this["className"] = className;
+        return this;
+    }
+
+    setMethodName(methodName) {
+        this["methodName"] = methodName;
+        return methodName;
+    }
+
+    setLineNumber(lineNumber) {
+        this["lineNumber"] = lineNumber;
+    }
+
+    setFileName(fileName) {
+        this["fileName"] = fileName;
+    }
+}
 
 // Export main class without "curly braces".
 module.exports = Crashes;
+
+function sanitizeProperties(props) {
+    if (props === null) {
+        return undefined;
+    }
+    return props;
+}

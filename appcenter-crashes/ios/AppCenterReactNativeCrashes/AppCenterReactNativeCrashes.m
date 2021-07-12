@@ -124,6 +124,46 @@ RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPro
   resolve(@([MSACCrashes isEnabled]));
 }
 
+RCT_EXPORT_METHOD(trackException :(NSDictionary *)exception
+                   withProperties:(nullable NSDictionary *)properties
+                      attachments:(nullable NSDictionary *)attachments
+                         resolver:(RCTPromiseResolveBlock)resolve 
+                         rejecter:(RCTPromiseRejectBlock)reject) {
+  NSString *type = exception[@"type"];
+  NSString *message = exception[@"message"];
+  NSArray<NSString *> *stackTrace = exception[@"stacktrace"];
+  NSArray<NSDictionary *> *frames = exception[@"frames"];
+  if (!type || [type isEqual: @""]) {
+    reject(@"appcenter_failure", @"Type value shouldn't be nil or empty.", nil);
+    return;
+  }
+  if (!message || [message isEqual: @""]) {
+    reject(@"appcenter_failure", @"Message value shouldn't be nil or empty.", nil);
+    return;
+  }
+  if (!stackTrace) {
+    stackTrace = [NSThread callStackSymbols];
+  }
+  NSArray<MSACStackFrame *> *msFrames = [NSArray<MSACStackFrame *> new];
+  if (frames) {
+      // TODO uncomment
+      // for (NSDictionary *frame in frames) {
+      //     MSACStackFrame *msFrame = [MSACStackFrame new];
+      //     [msFrame fileName:[frame objectForKey:@"fileName"]];
+      //     [msFrame lineNumber:[frame objectForKey:@"lineNumber"]];
+      //     [msFrame methodName:[frame objectForKey:@"methodName"]];
+      //     [msFrame className:[frame objectForKey:@"className"]];
+      //     [msFrame code:[frame objectForKey:@"code"]];
+      //     [msFrame address:[frame objectForKey:@"address"]];
+      //     [msFrames addObject:msFrame];
+      // }
+  }
+  MSACExceptionModel *exceptionModel = [[MSACExceptionModel alloc] initWithType:type exceptionMessage:message stackTrace:stackTrace];
+  exceptionModel.frames = msFrames;
+  [MSACCrashes trackException:exceptionModel withProperties:properties attachments:convertJSAttachmentsToNativeAttachments(attachments)];
+  resolve(nil);
+}
+
 RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveBlock)resolve rejecter : (RCTPromiseRejectBlock)reject) {
   [MSACCrashes setEnabled:shouldEnable];
   resolve(nil);
