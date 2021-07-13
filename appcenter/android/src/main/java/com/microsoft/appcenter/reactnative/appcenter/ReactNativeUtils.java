@@ -29,7 +29,6 @@ import javax.annotation.Nullable;
 
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.CustomProperties;
-import com.microsoft.appcenter.crashes.ingestion.models.Exception;
 
 import static com.facebook.react.bridge.ReadableType.String;
 
@@ -138,66 +137,6 @@ public class ReactNativeUtils {
 
     public static void logDebug(String message) {
         Log.d(LOG_TAG, message);
-    }
-
-    static Exception toExceptionModel(ReadableMap readableMap) {
-        Exception model = new Exception();
-        try {
-            String type = readableMap.getString("type");
-            String message = readableMap.getString("message");
-            if (type == null || type == "") {
-                throw new Exception("Type value shouldn't be null ot empty"); 
-            }
-            if (message == null || message == "") {
-                throw new Exception("Message value shouldn't be null or empty");
-            }
-            model.setType(type);
-            model.setMessage(message);
-            model.setStackTrace(readableMap.getString("stackTrace"));
-            List<StackFrame> msFrames = new List<StackFrame>();
-            Array<ReadableMap> frames = readableMap.getArray("frames"));
-            for (ReadableMap frame in frames) {
-                StackFrame msFrame = new StackFrame();
-                msFrame.setFileName(frame.getString("fileName"));
-                msFrame.selLineNumber(frame.getString("lineNumber"));
-                msFrame.setMethodName(frame.getString("methodName"));
-                msFrame.setClassName(frame.getString("className"));
-                msFrame.setCode(frame.getString("code"));
-                msFrame.setAddress(frame.getString("address"));
-                msFrames.add(msFrame)
-            }
-            model.setFrames(frames);
-        } catch (Exception e) {
-            AppCenterReactNativeCrashesUtils.logError("Failed to get exception model");
-            AppCenterReactNativeCrashesUtils.logError(Log.getStackTraceString(e));
-        }
-        return model;
-    }
-
-    static Collection<ErrorAttachmentLog> toCustomErrorAttachments(ReadableArray attachments) {
-        Collection<ErrorAttachmentLog> attachmentLogs = new LinkedList<>();
-        try {
-            for (int i = 0; i < attachments.size(); i++) {
-                ReadableMap jsAttachment = attachments.getMap(i);
-                String fileName = null;
-                if (jsAttachment.hasKey(FILE_NAME_FIELD)) {
-                    fileName = jsAttachment.getString(FILE_NAME_FIELD);
-                }
-                if (jsAttachment.hasKey(TEXT_FIELD)) {
-                    String text = jsAttachment.getString(TEXT_FIELD);
-                    attachmentLogs.add(ErrorAttachmentLog.attachmentWithText(text, fileName));
-                } else {
-                    String encodedData = jsAttachment.getString(DATA_FIELD);
-                    byte[] data = Base64.decode(encodedData, Base64.DEFAULT);
-                    String contentType = jsAttachment.getString(CONTENT_TYPE_FIELD);
-                    attachmentLogs.add(.attachmentWithBinary(data, fileName, contentType));
-                }
-            }
-        } catch (Exception e) {
-            AppCenterReactNativeCrashesUtils.logError("Failed to get error attachment for report: " + errorId);
-            AppCenterReactNativeCrashesUtils.logError(Log.getStackTraceString(e));
-        }
-        return attachmentLogs;
     }
 
     static CustomProperties toCustomProperties(ReadableMap readableMap) {
