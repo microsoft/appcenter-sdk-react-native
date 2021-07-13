@@ -171,11 +171,11 @@ Crashes.ExceptionModel = class {
     }
 
     static ExceptionModelFromError(error) {
-        return new ExceptionModel(error.name, error.message, error.stack);
+        return new Crashes.ExceptionModel(error.name, error.message, error.stack);
     }
 
     static ExceptionModelFromValues(type, message, stacktrace) {
-        return new ExceptionModel(type, message, stacktrace);
+        return new Crashes.ExceptionModel(type, message, stacktrace);
     }
 };
 Crashes.StackFrame = class {
