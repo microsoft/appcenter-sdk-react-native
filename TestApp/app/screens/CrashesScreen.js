@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
-import Crashes, {ExceptionModel} from 'appcenter-crashes';
+import Crashes, { ExceptionModel } from 'appcenter-crashes';
 
 import AttachmentsProvider from '../AttachmentsProvider';
 import SharedStyles from '../SharedStyles';
@@ -79,7 +79,7 @@ export default class CrashesScreen extends Component {
     } catch(error) {
       let properties = hasProperties ?  { 'key' : 'value' } : null;
       let attachments = await AttachmentsProvider.getErrorAttachments();
-      Crashes.trackError(ExceptionModel.ExceptionModelFromError(error), properties, attachments);
+      Crashes.trackError(ExceptionModel.InstanceExceptionModelFromError(error), properties, attachments);
     }
   }
 
