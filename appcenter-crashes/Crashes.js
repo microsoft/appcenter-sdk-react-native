@@ -165,16 +165,25 @@ Crashes.ExceptionModel = class {
         this["type"] = type;
         this["message"] = message;
         this["stackTrace"] = stacktrace;
+        this["frames"] = stacktrace.split('\n').map((line) => {
 
-        // TODO Add stacktrace parse.
-        // this["frames"] = frames;
+            // Get column number.
+            let columnNumber = line.substring(line.lastIndexOf(':') + 1, line.length);
+            line = line.replace(':' + columnNumber,  '');
+
+            // Get line number.
+            let functionName = line.substring(0, line.lastIndexOf(':'));
+
+            // Get function.
+            return new Crashes.StackFrame().setMethodName(functionName).setLineNumber(columnNumber);
+        });
     }
 
-    static ExceptionModelFromError(error) {
+    static InstanceExceptionModelFromError(error) {
         return new Crashes.ExceptionModel(error.name, error.message, error.stack);
     }
 
-    static ExceptionModelFromValues(type, message, stacktrace) {
+    static InstanceExceptionModelFromValues(type, message, stacktrace) {
         return new Crashes.ExceptionModel(type, message, stacktrace);
     }
 };
@@ -196,15 +205,17 @@ Crashes.StackFrame = class {
 
     setMethodName(methodName) {
         this["methodName"] = methodName;
-        return methodName;
+        return this;
     }
 
     setLineNumber(lineNumber) {
         this["lineNumber"] = lineNumber;
+        return this;
     }
 
     setFileName(fileName) {
         this["fileName"] = fileName;
+        return this;
     }
 }
 
