@@ -141,10 +141,11 @@ RCT_EXPORT_METHOD(trackException :(NSDictionary *)exception
     reject(@"appcenter_failure", @"Message value shouldn't be nil or empty.", nil);
     return;
   }
-  NSArray<NSString *> *stackTrace = [NSThread callStackSymbols];
   MSACWrapperExceptionModel *exceptionModel = [MSACWrapperExceptionModel new];
+  exceptionModel.type = type;
+  exceptionModel.message = message;
   exceptionModel.wrapperSdkName = wrapperSdkName;
-  exceptionModel.stackTrace = stackTrace.description;
+  exceptionModel.stackTrace = [NSThread callStackSymbols].description;
   [MSACCrashes trackException:exceptionModel withProperties:properties attachments:convertJSAttachmentsToNativeAttachments(attachments)];
   resolve(nil);
 }
