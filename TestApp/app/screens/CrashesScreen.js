@@ -180,23 +180,6 @@ export default class CrashesScreen extends Component {
               renderItem: actionRenderItem
             },
             {
-              title: 'Miscellaneous',
-              data: [
-                { title: 'Last session status', value: 'lastSessionStatus' },
-                { title: 'Memory warning', value: 'memoryWarning' },
-                { title: 'Binary attachment', value: 'binaryAttachment' },
-                {
-                  title: 'Text attachment',
-                  value: 'textAttachment',
-                  onChange: (textAttachment) => {
-                    this.setState({ textAttachment });
-                    AttachmentsProvider.saveTextAttachment(textAttachment);
-                  }
-                }
-              ],
-              renderItem: valueRenderItem
-            },
-            {
               title: 'Track error properties settings',
               data: [
                 {
@@ -220,6 +203,23 @@ export default class CrashesScreen extends Component {
                 },
               ],
               renderItem: actionRenderItem
+            },
+            {
+              title: 'Miscellaneous',
+              data: [
+                { title: 'Last session status', value: 'lastSessionStatus' },
+                { title: 'Memory warning', value: 'memoryWarning' },
+                { title: 'Binary attachment', value: 'binaryAttachment' },
+                {
+                  title: 'Text attachment',
+                  value: 'textAttachment',
+                  onChange: (textAttachment) => {
+                    this.setState({ textAttachment });
+                    AttachmentsProvider.saveTextAttachment(textAttachment);
+                  }
+                }
+              ],
+              renderItem: valueRenderItem
             },
           ]}
         />

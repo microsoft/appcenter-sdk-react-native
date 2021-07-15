@@ -22,22 +22,12 @@ export class ErrorAttachmentLog {
   ): ErrorAttachmentLog;
 }
 
-export interface StackFrame {
-  address :string;
-  code : string;
-  className :string;
-  methodName:string;
-  lineNumber:number;
-  fileName: string;
-}
-
 export class ExceptionModel {
   wrapperSdkName: string;
   innerException: ExceptionModel[];
   type: string;
   message: string;
   stacktrace: string;
-  frames: StackFrame[];
 }
 
 export interface Device {

@@ -31,7 +31,7 @@
 
 #import <AppCenter/MSACAppCenter.h>
 #import <AppCenterCrashes/AppCenterCrashes.h>
-#import <AppCenterCrashes/MSACStackFrame.h>
+#import <AppCenterCrashes/MSACWrapperExceptionModel.h>
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @implementation AppCenterReactNativeCrashes
@@ -127,13 +127,12 @@ RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPro
 
 RCT_EXPORT_METHOD(trackException :(NSDictionary *)exception
                    withProperties:(nullable NSDictionary *)properties
-                      attachments:(nullable NSDictionary *)attachments
+                      attachments:(nullable NSArray *)attachments
                          resolver:(RCTPromiseResolveBlock)resolve 
                          rejecter:(RCTPromiseRejectBlock)reject) {
   NSString *type = exception[@"type"];
   NSString *message = exception[@"message"];
-  NSArray<NSString *> *stackTrace = exception[@"stackTrace"];
-  NSArray<NSDictionary *> *frames = exception[@"frames"];
+  NSString *wrapperSdkName = exception[@"wrapperSdkName"];
   if (!type || [type isEqual: @""]) {
     reject(@"appcenter_failure", @"Type value shouldn't be nil or empty.", nil);
     return;
@@ -142,25 +141,10 @@ RCT_EXPORT_METHOD(trackException :(NSDictionary *)exception
     reject(@"appcenter_failure", @"Message value shouldn't be nil or empty.", nil);
     return;
   }
-  if (!stackTrace) {
-    stackTrace = [NSThread callStackSymbols];
-  }
-  MSACExceptionModel *exceptionModel = [[MSACExceptionModel alloc] initWithType:type exceptionMessage:message stackTrace:nil];
+  NSArray<NSString *> *stackTrace = [NSThread callStackSymbols];
+  MSACWrapperExceptionModel *exceptionModel = [MSACWrapperExceptionModel new];
+  exceptionModel.wrapperSdkName = wrapperSdkName;
   exceptionModel.stackTrace = stackTrace.description;
-  NSMutableArray<MSACStackFrame *> *msFrames = [NSMutableArray<MSACStackFrame *> new];
-  if (frames) {
-    for (NSDictionary *frame in frames) {
-      MSACStackFrame *msFrame = [MSACStackFrame new];
-      msFrame.fileName = [frame objectForKey:@"fileName"];
-      msFrame.lineNumber = [frame objectForKey:@"lineNumber"];
-      msFrame.methodName = [frame objectForKey:@"methodName"];
-      msFrame.className = [frame objectForKey:@"className"];
-      msFrame.code = [frame objectForKey:@"code"];
-      msFrame.address = [frame objectForKey:@"address"];
-      [msFrames addObject:msFrame];
-    }
-    exceptionModel.frames = msFrames;
-  }
   [MSACCrashes trackException:exceptionModel withProperties:properties attachments:convertJSAttachmentsToNativeAttachments(attachments)];
   resolve(nil);
 }

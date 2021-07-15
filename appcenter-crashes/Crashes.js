@@ -161,63 +161,19 @@ Crashes.ExceptionModel = class {
     wrapperSdkName = "react-native-sdk";
 
     // error value should have Error type.
-    constructor(type, message, stacktrace) {
+    constructor(type, message) {
         this["type"] = type;
         this["message"] = message;
-        this["stackTrace"] = stacktrace;
-        this["frames"] = stacktrace.split('\n').map((line) => {
-
-            // Get column number.
-            let columnNumber = line.substring(line.lastIndexOf(':') + 1, line.length);
-            line = line.replace(':' + columnNumber,  '');
-
-            // Get line number.
-            let functionName = line.substring(0, line.lastIndexOf(':'));
-
-            // Get function.
-            return new Crashes.StackFrame().setMethodName(functionName).setLineNumber(columnNumber);
-        });
     }
 
     static InstanceExceptionModelFromError(error) {
         return new Crashes.ExceptionModel(error.name, error.message, error.stack);
     }
 
-    static InstanceExceptionModelFromValues(type, message, stacktrace) {
-        return new Crashes.ExceptionModel(type, message, stacktrace);
+    static InstanceExceptionModelFromValues(type, message) {
+        return new Crashes.ExceptionModel(type, message);
     }
 };
-Crashes.StackFrame = class {
-    setAddress(address) {
-        this["address"] = address;
-        return this;
-    }
-
-    setCode(code) {
-        this["code"] = code;
-        return this;
-    }
-
-    setClassName(className) {
-        this["className"] = className;
-        return this;
-    }
-
-    setMethodName(methodName) {
-        this["methodName"] = methodName;
-        return this;
-    }
-
-    setLineNumber(lineNumber) {
-        this["lineNumber"] = lineNumber;
-        return this;
-    }
-
-    setFileName(fileName) {
-        this["fileName"] = fileName;
-        return this;
-    }
-}
 
 // Export main class without "curly braces".
 module.exports = Crashes;
