@@ -38,11 +38,6 @@ import java.util.Map;
 @SuppressWarnings("WeakerAccess")
 public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
 
-    private static final String DATA_FIELD = "data";
-    private static final String TEXT_FIELD = "text";
-    private static final String FILE_NAME_FIELD = "fileName";
-    private static final String CONTENT_TYPE_FIELD = "contentType";
-
     /**
      * Constant for DO NOT SEND crash report.
      */
@@ -142,19 +137,27 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
         });
     }
 
-    public void trackError(ReadableMap error, ReadableMap properties, ReadableArray attachments, final Promise promise) {
+    @ReactMethod
+    public void trackException(ReadableMap error, ReadableMap properties, ReadableArray attachments, final Promise promise) {
 
         Exception exceptionModel;
-        Map<String, String> convertedProperties;
+        Map<String, String> convertedProperties = null;
+        Iterable<ErrorAttachmentLog> convertedAttachments = null;
         try {
-            exceptionModel = toExceptionModel(error);
-            convertedProperties = convertReadableMapToStringMap(properties);
+            exceptionModel = AppCenterReactNativeCrashesUtils.toExceptionModel(error);
+
+            if (properties != null) {
+                convertedProperties = AppCenterReactNativeCrashesUtils.convertReadableMapToStringMap(properties);
+            }
+            if (attachments != null) {
+                convertedAttachments = AppCenterReactNativeCrashesUtils.toCustomErrorAttachments(attachments);
+            }
         } catch (java.lang.Exception ex) {
             return;
         }
 
-        String errorId = WrapperSdkExceptionManager.trackException(exceptionModel, convertedProperties, toCustomErrorAttachments(attachments));
-        promise.resolve(errorId);
+        String errorReportId = WrapperSdkExceptionManager.trackException(exceptionModel, convertedProperties, convertedAttachments);
+        promise.resolve(errorReportId);
     }
 
     @ReactMethod
@@ -221,87 +224,6 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
 
     @ReactMethod
     public void sendErrorAttachments(ReadableArray attachments, String errorId) {
-        WrapperSdkExceptionManager.sendErrorAttachments(errorId, toCustomErrorAttachments(attachments));
+        WrapperSdkExceptionManager.sendErrorAttachments(errorId, AppCenterReactNativeCrashesUtils.toCustomErrorAttachments(attachments));
     }
-
-    static Collection<ErrorAttachmentLog> toCustomErrorAttachments(ReadableArray attachments) {
-        Collection<ErrorAttachmentLog> attachmentLogs = new LinkedList<>();
-        try {
-            for (int i = 0; i < attachments.size(); i++) {
-                ReadableMap jsAttachment = attachments.getMap(i);
-                String fileName = null;
-                if (jsAttachment.hasKey(FILE_NAME_FIELD)) {
-                    fileName = jsAttachment.getString(FILE_NAME_FIELD);
-                }
-                if (jsAttachment.hasKey(TEXT_FIELD)) {
-                    String text = jsAttachment.getString(TEXT_FIELD);
-                    attachmentLogs.add(ErrorAttachmentLog.attachmentWithText(text, fileName));
-                } else {
-                    String encodedData = jsAttachment.getString(DATA_FIELD);
-                    byte[] data = Base64.decode(encodedData, Base64.DEFAULT);
-                    String contentType = jsAttachment.getString(CONTENT_TYPE_FIELD);
-                    attachmentLogs.add(ErrorAttachmentLog.attachmentWithBinary(data, fileName, contentType));
-                }
-            }
-        } catch (java.lang.Exception e) {
-            AppCenterReactNativeCrashesUtils.logError("Failed to get error attachment for report: " + attachments);
-            AppCenterReactNativeCrashesUtils.logError(Log.getStackTraceString(e));
-        }
-        return attachmentLogs;
-    }
-
-       static Exception toExceptionModel(ReadableMap readableMap)
-               throws java.lang.Exception {
-        Exception model = new Exception();
-        try {
-            String type = readableMap.getString("type");
-            String message = readableMap.getString("message");
-            if (type == null || type == "") {
-                throw new java.lang.Exception("Type value shouldn't be null ot empty");
-            }
-            if (message == null || message == "") {
-                throw new java.lang.Exception("Message value shouldn't be null or empty");
-            }
-            model.setType(type);
-            model.setMessage(message);
-            model.setStackTrace(readableMap.getString("stackTrace"));
-            List<StackFrame> msFrames = new ArrayList<StackFrame>();
-            ReadableArray frames = readableMap.getArray("frames");
-            for (int i = 0; i < frames.size(); ++i)
-            {
-                ReadableMap frame = frames.getMap(i);
-                StackFrame msFrame = new StackFrame();
-                msFrame.setFileName(frame.getString("fileName"));
-
-
-                msFrame.setLineNumber(frame.getInt("lineNumber"));
-                msFrame.setMethodName(frame.getString("methodName"));
-                msFrame.setClassName(frame.getString("className"));
-//                msFrame.setCode(frame.getString("code"));
-//                msFrame.setAddress(frame.getString("address"));
-                msFrames.add(msFrame);
-            }
-            model.setFrames(msFrames);
-        } catch (java.lang.Exception e) {
-            AppCenterReactNativeCrashesUtils.logError("Failed to get exception model");
-            AppCenterReactNativeCrashesUtils.logError(Log.getStackTraceString(e));
-        }
-        return model;
-    }
-
-    static Map<String, String> convertReadableMapToStringMap(ReadableMap map) throws JSONException {
-        Map<String, String> stringMap = new HashMap<>();
-        ReadableMapKeySetIterator it = map.keySetIterator();
-        while (it.hasNextKey()) {
-            String key = it.nextKey();
-            ReadableType type = map.getType(key);
-            // Only support storing strings. Non-string data must be stringified in JS.
-            if (type == ReadableType.String) {
-                stringMap.put(key, map.getString(key));
-            }
-        }
-
-        return stringMap;
-    }
-
 }
