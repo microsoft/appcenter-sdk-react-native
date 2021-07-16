@@ -161,17 +161,18 @@ Crashes.ExceptionModel = class {
     wrapperSdkName = "react-native-sdk";
 
     // error value should have Error type.
-    constructor(type, message) {
+    constructor(type, message, stack) {
         this["type"] = type;
         this["message"] = message;
+        this["stackTrace"] = stack;
     }
 
-    static InstanceExceptionModelFromError(error) {
+    static createFromError(error) {
         return new Crashes.ExceptionModel(error.name, error.message, error.stack);
     }
 
-    static InstanceExceptionModelFromValues(type, message) {
-        return new Crashes.ExceptionModel(type, message);
+    static createFromTypeAndMessage(type, message, stacktrace) {
+        return new Crashes.ExceptionModel(type, message, stacktrace);
     }
 };
 

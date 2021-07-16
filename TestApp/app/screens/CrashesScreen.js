@@ -79,7 +79,7 @@ export default class CrashesScreen extends Component {
     } catch(error) {
       let properties = hasProperties ?  { 'key' : 'value' } : null;
       let attachments = await AttachmentsProvider.getErrorAttachments();
-      Crashes.trackError(ExceptionModel.InstanceExceptionModelFromError(error), properties, attachments);
+      Crashes.trackError(ExceptionModel.createFromError(error), properties, attachments);
     }
   }
 

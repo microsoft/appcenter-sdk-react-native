@@ -132,6 +132,7 @@ RCT_EXPORT_METHOD(trackException :(NSDictionary *)exception
                          rejecter:(RCTPromiseRejectBlock)reject) {
   NSString *type = exception[@"type"];
   NSString *message = exception[@"message"];
+  NSArray<NSString *> *stackTrace = exception[@"stackTrace"];
   NSString *wrapperSdkName = exception[@"wrapperSdkName"];
   if (!type || [type isEqual: @""]) {
     reject(@"appcenter_failure", @"Type value shouldn't be nil or empty.", nil);
@@ -145,7 +146,10 @@ RCT_EXPORT_METHOD(trackException :(NSDictionary *)exception
   exceptionModel.type = type;
   exceptionModel.message = message;
   exceptionModel.wrapperSdkName = wrapperSdkName;
-  exceptionModel.stackTrace = [NSThread callStackSymbols].description;
+  if (!stackTrace) {
+    stackTrace = [NSThread callStackSymbols];
+  }
+  exceptionModel.stackTrace = stackTrace.description;
   [MSACCrashes trackException:exceptionModel withProperties:properties attachments:convertJSAttachmentsToNativeAttachments(attachments)];
   resolve(nil);
 }
