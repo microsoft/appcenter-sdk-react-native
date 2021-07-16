@@ -168,6 +168,7 @@ class AppCenterReactNativeCrashesUtils {
         while (it.hasNextKey()) {
             String key = it.nextKey();
             ReadableType type = map.getType(key);
+            
             // Only support storing strings. Non-string data must be stringified in JS.
             if (type == ReadableType.String) {
                 stringMap.put(key, map.getString(key));

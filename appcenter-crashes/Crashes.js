@@ -160,13 +160,13 @@ Crashes.ErrorAttachmentLog = ErrorAttachmentLog;
 Crashes.ExceptionModel = class {
     wrapperSdkName = "react-native-sdk";
 
-    // error value should have Error type.
     constructor(type, message, stack) {
         this["type"] = type;
         this["message"] = message;
         this["stackTrace"] = stack;
     }
 
+    // error value should have Error type.
     static createFromError(error) {
         return new Crashes.ExceptionModel(error.name, error.message, error.stack);
     }

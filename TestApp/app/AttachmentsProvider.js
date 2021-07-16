@@ -3,7 +3,7 @@
 
 import AsyncStorage from '@react-native-community/async-storage';
 import RNFS from 'react-native-fs';
-import {ErrorAttachmentLog} from 'appcenter-crashes';
+import { ErrorAttachmentLog } from 'appcenter-crashes';
 
 const TEXT_ATTACHMENT_KEY = 'TEXT_ATTACHMENT_KEY';
 const BINARY_FILENAME_KEY = 'BINARY_FILENAME_KEY';

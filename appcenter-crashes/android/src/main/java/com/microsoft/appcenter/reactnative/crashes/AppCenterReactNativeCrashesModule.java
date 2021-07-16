@@ -139,13 +139,11 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
 
     @ReactMethod
     public void trackException(ReadableMap error, ReadableMap properties, ReadableArray attachments, final Promise promise) {
-
         Exception exceptionModel;
         Map<String, String> convertedProperties = null;
         Iterable<ErrorAttachmentLog> convertedAttachments = null;
         try {
             exceptionModel = AppCenterReactNativeCrashesUtils.toExceptionModel(error);
-
             if (properties != null) {
                 convertedProperties = AppCenterReactNativeCrashesUtils.convertReadableMapToStringMap(properties);
             }
@@ -155,7 +153,6 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
         } catch (java.lang.Exception ex) {
             return;
         }
-
         String errorReportId = WrapperSdkExceptionManager.trackException(exceptionModel, convertedProperties, convertedAttachments);
         promise.resolve(errorReportId);
     }

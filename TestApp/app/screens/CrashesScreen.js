@@ -193,7 +193,6 @@ export default class CrashesScreen extends Component {
               ],
               renderItem: switchRenderItem
             },
-
             {
               title: 'Track error settings',
               data: [
