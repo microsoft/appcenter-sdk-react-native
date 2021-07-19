@@ -67,7 +67,7 @@ const Crashes = {
         return AppCenterReactNativeCrashes.setEnabled(shouldEnable);
     },
 
-    // error value should have ExceptionModel type.
+    // Error value should have type `ExceptionModel`.
     trackError(error, properties, attachments) {
         return AppCenterReactNativeCrashes.trackException(error, sanitizeProperties(properties), sanitizeProperties(attachments));
     },
@@ -166,13 +166,13 @@ Crashes.ExceptionModel = class {
         this.stackTrace = stack;
     }
 
-    // error value should have Error type.
+    // Error value should have Error type.
     static createFromError(error) {
-        return new Crashes.ExceptionModel(error.name, error.message, error.stack);
+        return new this(error.name, error.message, error.stack);
     }
 
     static createFromTypeAndMessage(type, message, stacktrace) {
-        return new Crashes.ExceptionModel(type, message, stacktrace);
+        return new this(type, message, stacktrace);
     }
 };
 
