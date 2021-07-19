@@ -125,20 +125,21 @@ RCT_EXPORT_METHOD(isEnabled : (RCTPromiseResolveBlock)resolve rejecter : (RCTPro
   resolve(@([MSACCrashes isEnabled]));
 }
 
-RCT_EXPORT_METHOD(trackException :(NSDictionary *)exception
-                   withProperties:(nullable NSDictionary *)properties
-                      attachments:(nullable NSArray *)attachments
-                         resolver:(RCTPromiseResolveBlock)resolve 
-                         rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(trackException
+                  : (NSDictionary *)exception withProperties
+                  : (nullable NSDictionary *)properties attachments
+                  : (nullable NSArray *)attachments resolver
+                  : (RCTPromiseResolveBlock)resolve rejecter
+                  : (RCTPromiseRejectBlock)reject) {
   NSString *type = exception[@"type"];
   NSString *message = exception[@"message"];
   NSArray<NSString *> *stackTrace = exception[@"stackTrace"];
   NSString *wrapperSdkName = exception[@"wrapperSdkName"];
-  if (!type || [type isEqual: @""]) {
+  if (!type || [type isEqual:@""]) {
     reject(@"appcenter_failure", @"Type value shouldn't be nil or empty.", nil);
     return;
   }
-  if (!message || [message isEqual: @""]) {
+  if (!message || [message isEqual:@""]) {
     reject(@"appcenter_failure", @"Message value shouldn't be nil or empty.", nil);
     return;
   }
@@ -219,7 +220,8 @@ RCT_EXPORT_METHOD(sendErrorAttachments
                   : (NSString *)incidentId resolver
                   : (RCTPromiseResolveBlock)resolve rejecter
                   : (RCTPromiseRejectBlock)reject) {
-  [MSACWrapperCrashesHelper sendErrorAttachments:convertJSAttachmentsToNativeAttachments(errorAttachments) withIncidentIdentifier:incidentId];
+  [MSACWrapperCrashesHelper sendErrorAttachments:convertJSAttachmentsToNativeAttachments(errorAttachments)
+                          withIncidentIdentifier:incidentId];
   resolve(nil);
 }
 

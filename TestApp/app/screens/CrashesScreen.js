@@ -73,12 +73,12 @@ export default class CrashesScreen extends Component {
     foo.method1();
   }
 
-  async sendTrackError(hasProperties){
+  async sendTrackError(hasProperties) {
     try {
-      throw new Error("Custom error");
-    } catch(error) {
-      let properties = hasProperties ?  { 'key' : 'value' } : null;
-      let attachments = await AttachmentsProvider.getErrorAttachments();
+      throw new Error('Custom error');
+    } catch (error) {
+      const properties = hasProperties ? { 'key' : 'value' } : null;
+      const attachments = await AttachmentsProvider.getErrorAttachments();
       Crashes.trackError(ExceptionModel.createFromError(error), properties, attachments);
     }
   }
@@ -183,7 +183,7 @@ export default class CrashesScreen extends Component {
               title: 'Track error properties settings',
               data: [
                 {
-                  title: 'Track with properties', 
+                  title: 'Track with properties',
                   value: 'hasTrackErrorProperties',
                   toggle: () => {
                     const hasTrackErrorProperties = !this.state.hasTrackErrorProperties;
