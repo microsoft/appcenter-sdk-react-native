@@ -77,7 +77,7 @@ export default class CrashesScreen extends Component {
     try {
       throw new Error('Custom error');
     } catch (error) {
-      const properties = hasProperties ? { 'key' : 'value' } : null;
+      const properties = hasProperties ? { key: 'value' } : null;
       const attachments = await AttachmentsProvider.getErrorAttachments();
       Crashes.trackError(ExceptionModel.createFromError(error), properties, attachments);
     }
