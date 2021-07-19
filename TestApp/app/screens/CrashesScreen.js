@@ -72,11 +72,11 @@ export default class CrashesScreen extends Component {
     foo.method1();
   }
 
-  async trackError(includeProperties){
+  async trackError(includeProperties) {
     try {
-      throw new Error("Custom error");
-    } catch(error) {
-      const properties = includeProperties ?  { property1: '100', property2: '200' } : null;
+      throw new Error('Custom error');
+    } catch (error) {
+      const properties = includeProperties ? { property1: '100', property2: '200' } : null;
       const attachments = await AttachmentsProvider.getErrorAttachments();
       Crashes.trackError(ExceptionModel.createFromError(error), properties, attachments);
     }
