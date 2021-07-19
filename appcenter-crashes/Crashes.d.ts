@@ -28,8 +28,8 @@ export class ExceptionModel {
   type: string;
   message: string;
   stacktrace: string;
-  public static createFromError(error: Error);
-  public static createFromTypeAndMessage(type: string, message: string, stacktrace: string);
+  public static createFromError(error: Error): ExceptionModel;
+  public static createFromTypeAndMessage(type: string, message: string, stacktrace: string): ExceptionModel;
 }
 
 export interface Device {
