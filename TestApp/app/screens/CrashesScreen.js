@@ -31,8 +31,7 @@ export default class CrashesScreen extends Component {
     memoryWarning: '',
     textAttachment: '',
     binaryAttachment: '',
-    userId: '',
-    hasTrackErrorProperties: false
+    userId: ''
   }
 
   async componentDidMount() {
@@ -73,11 +72,11 @@ export default class CrashesScreen extends Component {
     foo.method1();
   }
 
-  async trackError(hasProperties){
+  async trackError(includeProperties){
     try {
       throw new Error("Custom error");
     } catch(error) {
-      const properties = hasProperties ?  { property1: '100', property2: '200' } : null;
+      const properties = includeProperties ?  { property1: '100', property2: '200' } : null;
       const attachments = await AttachmentsProvider.getErrorAttachments();
       Crashes.trackError(ExceptionModel.createFromError(error), properties, attachments);
     }
@@ -180,25 +179,15 @@ export default class CrashesScreen extends Component {
               renderItem: actionRenderItem
             },
             {
-              title: 'Track error properties settings',
-              data: [
-                {
-                  title: 'Track with properties',
-                  value: 'hasTrackErrorProperties',
-                  toggle: () => {
-                    const hasTrackErrorProperties = !this.state.hasTrackErrorProperties;
-                    this.setState({ hasTrackErrorProperties });
-                  }
-                },
-              ],
-              renderItem: switchRenderItem
-            },
-            {
-              title: 'Track error settings',
+              title: 'Track error',
               data: [
                 {
                  title: 'Track error',
-                 action: () => this.trackError(this.state.hasTrackErrorProperties)
+                 action: () => this.trackError(false)
+                },
+                {
+                  title: 'Track error with properties',
+                  action: () => this.trackError(true)
                 },
               ],
               renderItem: actionRenderItem
