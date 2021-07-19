@@ -158,12 +158,12 @@ const Helper = {
 Crashes.UserConfirmation = UserConfirmation;
 Crashes.ErrorAttachmentLog = ErrorAttachmentLog;
 Crashes.ExceptionModel = class {
-    wrapperSdkName = 'react-native-sdk';
+    wrapperSdkName = 'appcenter.react-native';
 
     constructor(type, message, stack) {
-        this['type'] = type;
-        this['message'] = message;
-        this['stackTrace'] = stack;
+        this.type = type;
+        this.message = message;
+        this.stackTrace = stack;
     }
 
     // error value should have Error type.
