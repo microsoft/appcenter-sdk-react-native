@@ -4,7 +4,7 @@
 import { Alert, YellowBox } from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
 
-import Crashes, { UserConfirmation, ErrorAttachmentLog } from 'appcenter-crashes';
+import Crashes, { UserConfirmation } from 'appcenter-crashes';
 
 import AppCenterScreen from './screens/AppCenterScreen';
 import TransmissionScreen from './screens/TransmissionScreen';
