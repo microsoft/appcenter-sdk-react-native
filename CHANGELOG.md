@@ -2,6 +2,12 @@
 
 ## Version 4.2.1 (Under development)
 
+### App Center Crashes
+
+#### Android/iOS
+
+* **[Feature]** Add support for tracking handled errors with `Crashes.trackError`.
+
 ___
 
 ## Version 4.2.0

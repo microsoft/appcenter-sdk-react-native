@@ -52,8 +52,8 @@ const Crashes = {
         return AppCenterReactNativeCrashes.lastSessionCrashReport();
     },
 
-     // async - returns a Promise
-     hasReceivedMemoryWarningInLastSession() {
+    // async - returns a Promise
+    hasReceivedMemoryWarningInLastSession() {
         return AppCenterReactNativeCrashes.hasReceivedMemoryWarningInLastSession();
     },
 
@@ -65,6 +65,11 @@ const Crashes = {
     // async - returns a Promise
     setEnabled(shouldEnable) {
         return AppCenterReactNativeCrashes.setEnabled(shouldEnable);
+    },
+
+    // Error value should have type `ExceptionModel`.
+    trackError(error, properties, attachments) {
+        return AppCenterReactNativeCrashes.trackException(error, sanitizeProperties(properties), sanitizeProperties(attachments));
     },
 
     notifyUserConfirmation(userConfirmation) {
@@ -152,6 +157,31 @@ const Helper = {
 // Exports with "curly braces".
 Crashes.UserConfirmation = UserConfirmation;
 Crashes.ErrorAttachmentLog = ErrorAttachmentLog;
+Crashes.ExceptionModel = class {
+    wrapperSdkName = 'appcenter.react-native';
+
+    constructor(type, message, stack) {
+        this.type = type;
+        this.message = message;
+        this.stackTrace = stack;
+    }
+
+    // Error value should have Error type.
+    static createFromError(error) {
+        return new this(error.name, error.message, error.stack);
+    }
+
+    static createFromTypeAndMessage(type, message, stacktrace) {
+        return new this(type, message, stacktrace);
+    }
+};
 
 // Export main class without "curly braces".
 module.exports = Crashes;
+
+function sanitizeProperties(props) {
+    if (props === null) {
+        return undefined;
+    }
+    return props;
+}
