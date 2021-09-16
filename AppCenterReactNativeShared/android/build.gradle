@@ -127,7 +127,7 @@ allprojects {
 }
 
 dependencies {
-    api 'com.microsoft.appcenter:appcenter:4.3.0'
+    api 'com.microsoft.appcenter:appcenter:4.3.1'
 }
 
 artifacts {
