@@ -13,7 +13,7 @@ android {
         minSdkVersion 21
         targetSdkVersion rootProject.properties.get('targetSdkVersion', 29)
         versionCode 60
-        versionName '4.3.0'
+        versionName '4.3.1'
         ndk {
             abiFilters 'armeabi-v7a', 'x86'
         }
@@ -27,5 +27,5 @@ dependencies {
     api 'com.microsoft.appcenter:appcenter-analytics:4.3.1'
 
     //api project(':AppCenterReactNativeShared')   // For testing with TestApp
-    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:4.3.0'
+    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:4.3.1'
 }
