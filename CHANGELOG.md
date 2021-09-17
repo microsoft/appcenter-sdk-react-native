@@ -2,7 +2,6 @@
 
 ## Version 4.2.1 (Under development)
 
-___
 
 ## Version 4.3.0
 
@@ -11,7 +10,6 @@ ___
 #### Android/iOS
 
 * **[Feature]** Improved `AES` token encryption algorithm using `Encrypt-then-MAC` data authentication approach.
-
 
 ### App Center Crashes
 
