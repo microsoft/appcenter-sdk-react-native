@@ -6,6 +6,13 @@ ___
 
 ## Version 4.3.0
 
+### App Center
+
+#### Android/iOS
+
+* **[Feature]** Improved `AES` token encryption algorithm using `Encrypt-then-MAC` data authentication approach.
+
+
 ### App Center Crashes
 
 #### Android/iOS
@@ -14,17 +21,9 @@ ___
 
 #### iOS
 
-### App Center Crashes
-
-* **[Feature]** Add support for tracking handled errors with `Crashes.trackError` and `Crashes.trackException` APIs.
 * **[Fix]** Fix build failure on Xcode 13, because of warning `completion handler is never used`. Only observable when SDK is integrated as source code. Workaround: Set `Treat Warnings as Errors` to `No` in target's build settings.
-* **[Improvement]** Update PLCrashReporter to 1.10.0
+* **[Improvement]** Update PLCrashReporter to 1.10.0.
 
-#### Android
-
-### App Center
-
-* **[Feature]** Improved `AES` token encryption algorithm using `Encrypt-then-MAC` data authentication approach.
 
 ___
 
