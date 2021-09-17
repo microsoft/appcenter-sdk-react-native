@@ -1,12 +1,23 @@
 # App Center SDK for React Native Change Log
 
-## Version 4.2.1 (Under development)
+## Version 4.3.0
+
+### App Center
+
+#### Android/iOS
+
+* **[Feature]** Improved `AES` token encryption algorithm using `Encrypt-then-MAC` data authentication approach.
 
 ### App Center Crashes
 
 #### Android/iOS
 
 * **[Feature]** Add support for tracking handled errors with `Crashes.trackError`.
+
+#### iOS
+
+* **[Fix]** Fix build failure on Xcode 13, because of warning `completion handler is never used`. Only observable when SDK is integrated as source code. Workaround: Set `Treat Warnings as Errors` to `No` in target's build settings.
+* **[Improvement]** Update PLCrashReporter to 1.10.0.
 
 ___
 
