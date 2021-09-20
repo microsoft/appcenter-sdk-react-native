@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
-import Crashes from 'appcenter-crashes';
+import Crashes, { ExceptionModel } from 'appcenter-crashes';
 
 import AttachmentsProvider from '../AttachmentsProvider';
 import SharedStyles from '../SharedStyles';
@@ -70,6 +70,16 @@ export default class CrashesScreen extends Component {
   jsCrash() {
     const foo = new FooClass();
     foo.method1();
+  }
+
+  async trackError(includeProperties) {
+    try {
+      throw new Error('Custom error');
+    } catch (error) {
+      const properties = includeProperties ? { property1: '100', property2: '200' } : null;
+      const attachments = await AttachmentsProvider.getErrorAttachments();
+      Crashes.trackError(ExceptionModel.createFromError(error), properties, attachments);
+    }
   }
 
   async nativeCrash() {
@@ -169,6 +179,20 @@ export default class CrashesScreen extends Component {
               renderItem: actionRenderItem
             },
             {
+              title: 'Track error',
+              data: [
+                {
+                 title: 'Track error',
+                 action: () => this.trackError(false)
+                },
+                {
+                  title: 'Track error with properties',
+                  action: () => this.trackError(true)
+                },
+              ],
+              renderItem: actionRenderItem
+            },
+            {
               title: 'Miscellaneous',
               data: [
                 { title: 'Last session status', value: 'lastSessionStatus' },
@@ -184,7 +208,7 @@ export default class CrashesScreen extends Component {
                 }
               ],
               renderItem: valueRenderItem
-            }
+            },
           ]}
         />
       </View>
