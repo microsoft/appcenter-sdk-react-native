@@ -32,7 +32,6 @@ Object.defineProperty(ReactNative, 'Switch', {
   }
 });
 
-
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
 // Mock the native image picker library
