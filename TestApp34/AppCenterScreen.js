@@ -15,8 +15,7 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
-
-import AppCenter, { CustomProperties } from 'appcenter';
+import AppCenter from 'appcenter';
 import SharedStyles from './SharedStyles';
 
 export default class Screen extends React.Component {
@@ -29,7 +28,6 @@ export default class Screen extends React.Component {
     };
     this.toggleEnabled = this.toggleEnabled.bind(this);
     this.toggleLogging = this.toggleLogging.bind(this);
-    this.setCustomProperties = this.setCustomProperties.bind(this);
   }
 
   async componentDidMount() {
@@ -70,18 +68,6 @@ export default class Screen extends React.Component {
     this.setState({ logLevel });
   }
 
-  async setCustomProperties() {
-    const properties = new CustomProperties()
-      .set('pi', 3.14)
-      .clear('old')
-      .set('color', 'blue')
-      .set('optin', true)
-      .set('optout', false)
-      .set('score', 7)
-      .set('now', new Date());
-    await AppCenter.setCustomProperties(properties);
-  }
-
   render() {
     return (
       <View style={SharedStyles.container}>
@@ -112,12 +98,6 @@ export default class Screen extends React.Component {
           <TouchableOpacity onPress={this.toggleLogging}>
             <Text style={SharedStyles.toggleEnabled}>
               Change log level
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.setCustomProperties}>
-            <Text style={SharedStyles.toggleEnabled}>
-              Set Custom Properties
             </Text>
           </TouchableOpacity>
 

@@ -28,7 +28,6 @@ import android.util.Log;
 import javax.annotation.Nullable;
 
 import com.microsoft.appcenter.AppCenter;
-import com.microsoft.appcenter.CustomProperties;
 
 import static com.facebook.react.bridge.ReadableType.String;
 
@@ -137,37 +136,5 @@ public class ReactNativeUtils {
 
     public static void logDebug(String message) {
         Log.d(LOG_TAG, message);
-    }
-
-    static CustomProperties toCustomProperties(ReadableMap readableMap) {
-        CustomProperties properties = new CustomProperties();
-        ReadableMapKeySetIterator keyIt = readableMap.keySetIterator();
-        while (keyIt.hasNextKey()) {
-            String key = keyIt.nextKey();
-            ReadableMap valueObject = readableMap.getMap(key);
-            String type = valueObject.getString("type");
-            switch (type) {
-                case "clear":
-                    properties.clear(key);
-                    break;
-
-                case "string":
-                    properties.set(key, valueObject.getString("value"));
-                    break;
-
-                case "number":
-                    properties.set(key, valueObject.getDouble("value"));
-                    break;
-
-                case "boolean":
-                    properties.set(key, valueObject.getBoolean("value"));
-                    break;
-
-                case "date-time":
-                    properties.set(key, new Date((long) valueObject.getDouble("value")));
-                    break;
-            }
-        }
-        return properties;
     }
 }

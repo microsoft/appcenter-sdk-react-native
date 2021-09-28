@@ -5,9 +5,7 @@ import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ModalSelector from 'react-native-modal-selector';
-
-import AppCenter, { CustomProperties } from 'appcenter';
-
+import AppCenter from 'appcenter';
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
 
@@ -107,19 +105,6 @@ export default class AppCenterScreen extends Component {
 
     const installId = await AppCenter.getInstallId();
     this.setState({ installId });
-  }
-
-  async setCustomProperties() {
-    const properties = new CustomProperties()
-      .set('pi', 3.14)
-      .clear('old')
-      .set('color', 'blue')
-      .set('optin', true)
-      .set('optout', false)
-      .set('score', 7)
-      .set('now', new Date());
-    await AppCenter.setCustomProperties(properties);
-    console.log('Scheduled custom properties log. Please check verbose logs.');
   }
 
   async configureStartup(secretString, startAutomatically) {
@@ -231,16 +216,6 @@ export default class AppCenterScreen extends Component {
                 }
               ],
               renderItem: startupModeRenderItem
-            },
-            {
-              title: 'Actions',
-              data: [
-                {
-                  title: 'Set Custom Properties',
-                  action: this.setCustomProperties
-                },
-              ],
-              renderItem: actionRenderItem
             },
             {
               title: 'Miscellaneous',

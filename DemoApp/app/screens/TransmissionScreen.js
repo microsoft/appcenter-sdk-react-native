@@ -32,22 +32,6 @@ export default class TransmissionScreen extends Component {
     return map;
   }, {});
 
-  customProperties = targetTokens.reduce((map, el) => {
-    map[el.key] = [];
-    return map;
-  }, {});
-
-  transmissionTargets = {};
-
-  state = {
-    targetToken: targetTokens[0],
-    showProperties: true,
-    standardProperties: this.standardProperties[targetTokens[0].key],
-    customProperties: this.customProperties[targetTokens[0].key],
-    deviceIdEnabled: {},
-    targetEnabled: true
-  }
-
   async componentDidMount() {
     await AppCenter.startFromLibrary(Analytics);
     await this.createTargetsFromTokens(0, Analytics);
@@ -95,38 +79,6 @@ export default class TransmissionScreen extends Component {
     });
   }
 
-  async addProperty(property) {
-    const target = this.transmissionTargets[this.state.targetToken.key];
-    await target.propertyConfigurator.setEventProperty(property.name, property.value);
-    this.setState((state) => {
-      state.customProperties.push(property);
-      this.customProperties[this.state.targetToken.key] = state.customProperties;
-      return state;
-    });
-  }
-
-  async removeProperty(propertyName) {
-    const target = this.transmissionTargets[this.state.targetToken.key];
-    await target.propertyConfigurator.removeEventProperty(propertyName);
-    this.setState((state) => {
-      state.customProperties = state.customProperties.filter(item => item.name !== propertyName);
-      this.customProperties[this.state.targetToken.key] = state.customProperties;
-      return state;
-    });
-  }
-
-  async replaceProperty(oldPropertyName, newProperty) {
-    const target = this.transmissionTargets[this.state.targetToken.key];
-    await target.propertyConfigurator.removeEventProperty(oldPropertyName);
-    await target.propertyConfigurator.setEventProperty(newProperty.name, newProperty.value);
-    this.setState((state) => {
-      const index = state.customProperties.findIndex(el => el.name === oldPropertyName);
-      state.customProperties[index] = newProperty;
-      this.customProperties[this.state.targetToken.key] = state.customProperties;
-      return state;
-    });
-  }
-
   render() {
     const pickerRenderItem = ({ item: { title, valueChanged, tokens } }) => (
       <ModalSelector
@@ -160,19 +112,6 @@ export default class TransmissionScreen extends Component {
       </View>
     );
 
-    const customPropertiesRenderItem = () => (
-      <PropertiesConfiguratorView
-        onPropertyAdded={() => {
-          const nextItem = this.state.customProperties.length + 1;
-          this.addProperty({ name: `key${nextItem}`, value: `value${nextItem}` });
-        }}
-        onPropertyRemoved={propertyName => this.removeProperty(propertyName)}
-        onPropertyChanged={(oldPropertyName, newProperty) => this.replaceProperty(oldPropertyName, newProperty)}
-        properties={this.state.customProperties}
-        allowChanges={this.state.showProperties}
-      />
-    );
-
     const showEventToast = eventName => Toast.show(`Scheduled event '${eventName}'.`);
 
     return (
@@ -194,7 +133,6 @@ export default class TransmissionScreen extends Component {
                       targetToken: option,
                       showProperties: !!option.key,
                       standardProperties: this.standardProperties[option.key],
-                      customProperties: this.customProperties[option.key],
                       targetEnabled
                     });
                   },
@@ -281,11 +219,6 @@ export default class TransmissionScreen extends Component {
                 },
               ],
               renderItem: standardPropertiesRenderItem
-            },
-            {
-              title: 'Properties',
-              data: [{}],
-              renderItem: customPropertiesRenderItem
             },
           ]}
         />

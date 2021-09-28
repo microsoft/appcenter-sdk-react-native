@@ -8,6 +8,5 @@ jest.mock('appcenter', () => ({
     setUserId: jest.fn(),
     isEnabled: jest.fn(),
     setEnabled: jest.fn(),
-    setCustomProperties: jest.fn(),
     getSdkVersion: jest.fn()
 }));
