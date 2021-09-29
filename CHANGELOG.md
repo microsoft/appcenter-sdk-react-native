@@ -1,6 +1,11 @@
 # App Center SDK for React Native Change Log
 
 ## Version 4.3.1 (Under development)
+
+### App Center
+
+* **[Breaking change]** Remove `AppCenter.setCustomProperties` API.
+
 ___
 
 ## Version 4.3.0
