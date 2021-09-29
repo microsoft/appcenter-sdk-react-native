@@ -7,8 +7,6 @@ const { AppCenterReactNative } = ReactNative.NativeModules;
 const AppCenterLog = require('appcenter/appcenter-log');
 const PackageJson = require('./package.json');
 
-const logTag = 'AppCenter';
-
 const AppCenter = {
     LogLevel: {
         VERBOSE: AppCenterLog.LogLevelVerbose,     // Logging will be very chatty
