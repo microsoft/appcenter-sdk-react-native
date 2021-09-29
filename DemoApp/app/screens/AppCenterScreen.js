@@ -152,12 +152,6 @@ export default class AppCenterScreen extends Component {
       </View>
     );
 
-    const actionRenderItem = ({ item: { title, action } }) => (
-      <TouchableOpacity style={SharedStyles.item} onPress={action}>
-        <Text style={SharedStyles.itemButton}>{title}</Text>
-      </TouchableOpacity>
-    );
-
     const startupModeRenderItem = ({ item: { startupModes } }) => (
       <ModalSelector
         data={startupModes}

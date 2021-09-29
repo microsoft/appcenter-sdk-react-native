@@ -9,8 +9,6 @@ import Toast from 'react-native-simple-toast';
 import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
 
-import PropertiesConfiguratorView from './PropertiesConfiguratorView';
-
 import SharedStyles from '../SharedStyles';
 import TransmissionTabBarIcon from '../assets/fuel.png';
 
@@ -131,7 +129,6 @@ export default class TransmissionScreen extends Component {
                     const targetEnabled = transmissionTarget ? await transmissionTarget.isEnabled() : false;
                     this.setState({
                       targetToken: option,
-                      showProperties: !!option.key,
                       standardProperties: this.standardProperties[option.key],
                       targetEnabled
                     });
