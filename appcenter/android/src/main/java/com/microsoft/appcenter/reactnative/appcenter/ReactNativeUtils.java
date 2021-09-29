@@ -110,11 +110,6 @@ public class ReactNativeUtils {
 
     private static Date tryToGetDate(@Nullable ReadableMap readableMap) {
         Map<String, Object> map = toMap(readableMap);
-        //it is not allowed that there should be more than one date at a time for Custom Properties
-        if (map == null || map.size() != 1){
-            return null;
-        }
-
         Date date = null;
         if (map.containsKey(DATE_KEY)){
             try {
