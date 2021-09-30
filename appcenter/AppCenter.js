@@ -7,8 +7,6 @@ const { AppCenterReactNative } = ReactNative.NativeModules;
 const AppCenterLog = require('appcenter/appcenter-log');
 const PackageJson = require('./package.json');
 
-const logTag = 'AppCenter';
-
 const AppCenter = {
     LogLevel: {
         VERBOSE: AppCenterLog.LogLevelVerbose,     // Logging will be very chatty
@@ -100,56 +98,8 @@ const AppCenter = {
         return AppCenterReactNative.setNetworkRequestsAllowed(isAllowed);
     },
 
-    // async - returns a Promise
-    setCustomProperties(properties) {
-        if (properties instanceof AppCenter.CustomProperties) {
-            return AppCenterReactNative.setCustomProperties(properties);
-        }
-        const type = Object.prototype.toString.apply(properties);
-        AppCenterLog.error(logTag, `SetCustomProperties: Invalid type, expected CustomProperties but got ${type}.`);
-        return Promise.resolve(null);
-    },
-
     getSdkVersion() {
         return PackageJson.version;
-    }
-};
-
-AppCenter.CustomProperties = class {
-    set(key, value) {
-        if (typeof key === 'string') {
-            const type = typeof value;
-            switch (type) {
-                case 'string':
-                case 'number':
-                case 'boolean':
-                    this[key] = { type, value };
-                    break;
-
-                case 'object':
-                    if (value instanceof Date) {
-                        this[key] = { type: 'date-time', value: value.getTime() };
-                    } else {
-                        AppCenterLog.error(logTag, 'CustomProperties: Invalid value type, expected string|number|boolean|Date.');
-                    }
-                    break;
-
-                default:
-                    AppCenterLog.error(logTag, 'CustomProperties: Invalid value type, expected string|number|boolean|Date.');
-            }
-        } else {
-            AppCenterLog.error(logTag, 'CustomProperties: Invalid key type, expected string.');
-        }
-        return this;
-    }
-
-    clear(key) {
-        if (typeof key === 'string') {
-            this[key] = { type: 'clear' };
-        } else {
-            AppCenterLog.error(logTag, 'CustomProperties: Invalid key type, expected string.');
-        }
-        return this;
     }
 };
 

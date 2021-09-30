@@ -1,12 +1,6 @@
 #import <Foundation/Foundation.h>
 
 /**
- * Custom properties builder.
- * Collects multiple properties to send in one log.
- */
-@interface MSCustomProperties : NSObject
-
-/**
  * Set the specified property value with the specified key.
  * If the properties previously contained a property for the key, the old value is replaced.
  *
