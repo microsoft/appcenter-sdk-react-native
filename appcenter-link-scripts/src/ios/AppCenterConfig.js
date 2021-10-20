@@ -86,7 +86,7 @@ function addConfigToProject(file) {
 }
 
 AppCenterConfigPlist.searchForFile = function (cwd) {
-    const configPaths = glob.sync(path.join(cwd, 'AppCenter-Config.plist').replace(/\\/g, '/'), {
+    const configPaths = glob.sync(path.join(cwd, 'Info.plist').replace(/\\/g, '/'), {
         ignore: 'node_modules/**'
     });
     if (configPaths.length > 1) {
@@ -98,7 +98,7 @@ AppCenterConfigPlist.searchForFile = function (cwd) {
     } else if (configPaths.length === 1) {
         return configPaths[0];
     } else {
-        return path.join(cwd, 'AppCenter-Config.plist');
+        return path.join(cwd, 'Info.plist');
     }
 };
 

@@ -27,10 +27,10 @@
   [MSACAppCenter setLogLevel:MSACLogLevelVerbose];
   [MSACAppCenter setLogUrl:@"https://in-integration.dev.avalanch.es"];
 
-  id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
-  if ([appSecret isKindOfClass:[NSString class]]) {
-    [AppCenterReactNativeShared setAppSecret:appSecret];
-  }
+//id appSecret = @"b251dd8e-b9c7-43a4-bd9f-94b269c6b64f";
+//  if ([appSecret isKindOfClass:[NSString class]]) {
+//[AppCenterReactNativeShared setAppSecret:appSecret];
+// }
 
   id startAutomatically = [[NSUserDefaults standardUserDefaults] objectForKey:@"StartAutomatically"];
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
