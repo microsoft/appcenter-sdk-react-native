@@ -24,7 +24,7 @@ static NSDictionary *configuration;
   if (appSecret == nil) {
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:kAppCenterConfigResource ofType:@"plist"];
     configuration = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-    appSecret = [[NSBundle mainBundle].infoDictionary objectForKey:kAppCenterSecretKey];
+    appSecret = [configuration objectForKey:kAppCenterSecretKey];
 
     // Read start automatically flag, by default it's true if not set.
     id rawStartAutomatically = [configuration objectForKey:kAppCenterStartAutomaticallyKey];

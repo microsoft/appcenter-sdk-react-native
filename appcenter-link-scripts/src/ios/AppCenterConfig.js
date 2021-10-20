@@ -16,7 +16,7 @@ const AppCenterConfigPlist = function (plistPath) {
         this.parsedInfoPlist = plist.parse(plistContents);
         debug('Read contents of', plistPath);
     } catch (e) {
-        debug(`Could not read contents of AppCenter-Config.plist - ${e.message}`);
+        debug(`Could not read contents of Info.plist - ${e.message}`);
         this.parsedInfoPlist = plist.parse(plist.build({}));
     }
 };
@@ -46,7 +46,7 @@ function addConfigToProject(file) {
 
         if (projectPaths.length !== 1) {
             reject(new Error(`
-                Could not locate the xcode project to add AppCenter-Config.plist file to. 
+                Could not locate the xcode project to add Info.plist file to. 
                 Looked in paths - 
                 ${JSON.stringify(projectPaths)}`));
             return;
@@ -91,9 +91,9 @@ AppCenterConfigPlist.searchForFile = function (cwd) {
     });
     if (configPaths.length > 1) {
         debug(configPaths);
-        throw new Error(`Found more than one AppCenter-Config.plist in this project and hence, could not write App Secret.
-            Please add "AppSecret" to the correct AppCenter-Config.plist file
-            AppCenter-config.plist found at ${configPaths}
+        throw new Error(`Found more than one Info.plist in this project and hence, could not write App Secret.
+            Please add "AppSecret" to the correct Info.plist file
+            Info.plist found at ${configPaths}
         `);
     } else if (configPaths.length === 1) {
         return configPaths[0];
