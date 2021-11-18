@@ -12,6 +12,16 @@ const Analytics = {
     }),
 
     // async - returns a Promise
+    enableManualSessionTracker() {
+        return AppCenterReactNativeAnalytics.enableManualSessionTracker();
+    },
+
+    // async - returns a Promise
+    startSession() {
+        return AppCenterReactNativeAnalytics.startSession();
+    },
+
+    // async - returns a Promise
     trackEvent(eventName, properties) {
         return AppCenterReactNativeAnalytics.trackEvent(eventName, sanitizeProperties(properties));
     },
