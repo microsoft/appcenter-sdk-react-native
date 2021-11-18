@@ -20,6 +20,7 @@
 #import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
 
 @import AppCenter;
+@import AppCenterAnalytics;
 
 @implementation AppDelegate
 
@@ -36,7 +37,10 @@
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
-
+  BOOL sessionAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"SessionTrackerEnabled"];
+  if (sessionAuto == true) {
+    [MSACAnalytics enableManualSessionTracker];
+  }
   [AppCenterReactNative register];                                   // Initialize AppCenter
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true]; // Initialize AppCenter Analytics
   [AppCenterReactNativeCrashes register];                            // Initialize AppCenter Crashes

@@ -32,6 +32,7 @@
 static int const blockSize = 256 * 1024 * 1024;
 static NSString* const kAppCenterSecretKey = @"AppSecret";
 static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
+static NSString* const kSessionTrackerEnabled = @"SessionTrackerEnabled";
 
 - (instancetype) init {
   self = [super init];
@@ -53,6 +54,21 @@ RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString
   }
   [userDefaults setObject:secretString forKey:kAppCenterSecretKey];
   [userDefaults setBool:startAutomatically forKey:kAppCenterStartAutomaticallyKey];
+}
+
+RCT_EXPORT_METHOD(saveSessionTrackerState:(BOOL)state)
+{
+  NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+  [userDefaults setBool:state forKey:kSessionTrackerEnabled];
+}
+
+RCT_EXPORT_METHOD(getSessionTrackerState:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+{
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kSessionTrackerEnabled]){
+    resolve(@(1));
+  } else {
+    resolve(@(0));
+  }
 }
 
 RCT_EXPORT_METHOD(generateTestCrash)

@@ -2,12 +2,15 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Switch, SectionList, NativeModules, TouchableOpacity } from 'react-native';
 
 import Analytics from 'appcenter-analytics';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import SharedStyles from '../SharedStyles';
 import AnalyticsTabBarIcon from '../assets/analytics.png';
+
+const MANUAL_SESSION = 'MANUAL_SESSION';
 
 export default class AnalyticsScreen extends Component {
   static navigationOptions = {
@@ -24,12 +27,18 @@ export default class AnalyticsScreen extends Component {
   }
 
   state = {
-    analyticsEnabled: false
+    analyticsEnabled: false,
+    isManualSessionEnabled: false
   }
 
   async componentDidMount() {
-    await this.refreshToggle();
-
+    NativeModules.TestAppNative.getSessionTrackerState().then((arr) => {
+      const isManualSessionEnabled = arr == 1;
+      this.setState({ isManualSessionEnabled });
+    }).catch((err) => {
+      console.error(err)
+    });
+    await this.refreshToggle();    
     this.props.navigation.setParams({
       refreshAnalytics: this.refreshToggle.bind(this)
     });
@@ -73,6 +82,15 @@ export default class AnalyticsScreen extends Component {
                     this.setState({ analyticsEnabled });
                   }
                 },
+                {
+                  title: 'Manual Session Tracking',
+                  value: 'isManualSessionEnabled',
+                  toggle: async () => {
+                    const isManualSessionEnabled = !this.state.isManualSessionEnabled;
+                    await NativeModules.TestAppNative.saveSessionTrackerState(isManualSessionEnabled);
+                    this.setState({ isManualSessionEnabled });
+                  }
+                },
               ],
               renderItem: switchRenderItem
             },
@@ -101,6 +119,14 @@ export default class AnalyticsScreen extends Component {
                     const eventName = 'EventWithLongProperties';
                     Analytics.trackEvent(eventName, { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' });
                     console.log(`Scheduled event '${eventName}'.`);
+                  }
+                },
+                {
+                  title: 'Start session',
+                  action: () => {
+                    const eventName = 'startSession';
+                    Analytics.startSession();
+                    console.log(`Session started`);
                   }
                 },
               ],
