@@ -13,6 +13,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.microsoft.appcenter.AppCenter;
+import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.model.TestCrashException;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
 import com.facebook.react.bridge.Promise;
@@ -50,6 +51,14 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
         AppCenterReactNativeShared.setAppSecret(secretOverride);
         boolean startAutomaticallyOverride = sharedPreferences.getBoolean(START_AUTOMATICALLY, true);
         AppCenterReactNativeShared.setStartAutomatically(startAutomaticallyOverride);
+    }
+
+    static void sessionAuto(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(TEST_APP_NATIVE, Context.MODE_PRIVATE);
+        boolean sessionAuto = sharedPreferences.getBoolean(MANUAL_SESSION_TRACKER_ENABLED_KEY, false);
+        if (sessionAuto) {
+            Analytics.enableManualSessionTracker();
+        }
     }
 
     @Override

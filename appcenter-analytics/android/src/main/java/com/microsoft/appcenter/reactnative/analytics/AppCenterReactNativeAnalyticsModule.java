@@ -77,6 +77,12 @@ public class AppCenterReactNativeAnalyticsModule extends BaseJavaModule {
     }
 
     @ReactMethod
+    public void startSession(Promise promise) {
+        Analytics.startSession();
+        promise.resolve(null);
+    }
+
+    @ReactMethod
     public void trackTransmissionTargetEvent(String eventName, ReadableMap properties, String targetToken, Promise promise) {
         AnalyticsTransmissionTarget transmissionTarget = mTransmissionTargets.get(targetToken);
         if (transmissionTarget != null) {
