@@ -10,7 +10,7 @@
 
 #### Android/iOS
 
- * **[Feature]** Add `Analytics.enableManualSessionTracker` and `Analytics.startSession` APIs for control start session time manually.
+ * **[Feature]** Add `Analytics.enableManualSessionTracker` and `Analytics.startSession` APIs for tracking session manually.
 ___
 
 ## Version 4.3.0

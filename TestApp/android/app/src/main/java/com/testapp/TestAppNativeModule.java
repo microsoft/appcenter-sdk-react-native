@@ -33,7 +33,7 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
 
     private static final String START_AUTOMATICALLY = "start_automatically";
 
-    private static final String SESSION_TRACKER_ENABLED_KEY = "session_tracker_enabled";
+    private static final String MANUAL_SESSION_TRACKER_ENABLED_KEY = "manual_session_tracker_enabled";
 
     private final SharedPreferences mSharedPreferences;
 
@@ -100,14 +100,14 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void saveSessionTrackerState(boolean state) {
+    public void saveManualSessionTrackerState(boolean state) {
         mSharedPreferences.edit()
-                .putBoolean(SESSION_TRACKER_ENABLED_KEY, state)
+                .putBoolean(MANUAL_SESSION_TRACKER_ENABLED_KEY, state)
                 .apply();
     }
 
     @ReactMethod
-    public void getSessionTrackerState(Promise promise) {
-        promise.resolve(mSharedPreferences.getBoolean(SESSION_TRACKER_ENABLED_KEY, false)? 1:0);
+    public void getManualSessionTrackerState(Promise promise) {
+        promise.resolve(mSharedPreferences.getBoolean(MANUAL_SESSION_TRACKER_ENABLED_KEY, false) ? 1 : 0);
     }
 }

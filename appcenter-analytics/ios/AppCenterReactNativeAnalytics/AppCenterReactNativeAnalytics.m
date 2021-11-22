@@ -65,8 +65,7 @@ RCT_EXPORT_METHOD(setEnabled : (BOOL)shouldEnable resolver : (RCTPromiseResolveB
   resolve(nil);
 }
 
-RCT_EXPORT_METHOD(startSession:(RCTPromiseResolveBlock) resolve
-                  rejecter:(RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(startSession : (RCTPromiseResolveBlock) resolve rejecter : (RCTPromiseRejectBlock)reject) {
   [MSACAnalytics startSession];
   resolve(nil);
 }

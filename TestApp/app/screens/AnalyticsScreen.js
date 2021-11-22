@@ -10,8 +10,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import SharedStyles from '../SharedStyles';
 import AnalyticsTabBarIcon from '../assets/analytics.png';
 
-const MANUAL_SESSION = 'MANUAL_SESSION';
-
 export default class AnalyticsScreen extends Component {
   static navigationOptions = {
     tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={AnalyticsTabBarIcon} />,
@@ -32,11 +30,9 @@ export default class AnalyticsScreen extends Component {
   }
 
   async componentDidMount() {
-    NativeModules.TestAppNative.getSessionTrackerState().then((arr) => {
-      const isManualSessionEnabled = arr == 1;
+    NativeModules.TestAppNative.getManualSessionTrackerState().then((isEnabled) => {
+      const isManualSessionEnabled = isEnabled == 1;
       this.setState({ isManualSessionEnabled });
-    }).catch((err) => {
-      console.error(err)
     });
     await this.refreshToggle();    
     this.props.navigation.setParams({
@@ -83,11 +79,11 @@ export default class AnalyticsScreen extends Component {
                   }
                 },
                 {
-                  title: 'Manual Session Tracking',
+                  title: 'Manual Session Tracking Enabled',
                   value: 'isManualSessionEnabled',
                   toggle: async () => {
                     const isManualSessionEnabled = !this.state.isManualSessionEnabled;
-                    await NativeModules.TestAppNative.saveSessionTrackerState(isManualSessionEnabled);
+                    await NativeModules.TestAppNative.saveManualSessionTrackerState(isManualSessionEnabled);
                     this.setState({ isManualSessionEnabled });
                   }
                 },
@@ -124,9 +120,7 @@ export default class AnalyticsScreen extends Component {
                 {
                   title: 'Start session',
                   action: () => {
-                    const eventName = 'startSession';
                     Analytics.startSession();
-                    console.log(`Session started`);
                   }
                 },
               ],

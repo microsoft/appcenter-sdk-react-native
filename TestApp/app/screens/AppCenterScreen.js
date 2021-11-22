@@ -13,7 +13,7 @@ const USER_ID_KEY = 'USER_ID_KEY';
 
 const SecretStrings = {
   ios: {
-    appSecret: '312a7087-3807-4d7b-b354-66f6ce76e6d2',
+    appSecret: '6c4207ab-6816-47b9-a692-e59d0f012938',
     target: 'target=c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906'
   },
   android: {

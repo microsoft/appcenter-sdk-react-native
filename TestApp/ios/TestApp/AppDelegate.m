@@ -37,8 +37,8 @@
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
   }
-  BOOL sessionAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"SessionTrackerEnabled"];
-  if (sessionAuto == true) {
+  BOOL sessionAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"ManualSessionTrackerEnabled"];
+  if (sessionAuto) {
     [MSACAnalytics enableManualSessionTracker];
   }
   [AppCenterReactNative register];                                   // Initialize AppCenter

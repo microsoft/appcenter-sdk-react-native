@@ -32,7 +32,7 @@
 static int const blockSize = 256 * 1024 * 1024;
 static NSString* const kAppCenterSecretKey = @"AppSecret";
 static NSString* const kAppCenterStartAutomaticallyKey = @"StartAutomatically";
-static NSString* const kSessionTrackerEnabled = @"SessionTrackerEnabled";
+static NSString* const kManualSessionTrackerEnabled = @"ManualSessionTrackerEnabled";
 
 - (instancetype) init {
   self = [super init];
@@ -56,15 +56,15 @@ RCT_EXPORT_METHOD(configureStartup:(NSString*)secretString
   [userDefaults setBool:startAutomatically forKey:kAppCenterStartAutomaticallyKey];
 }
 
-RCT_EXPORT_METHOD(saveSessionTrackerState:(BOOL)state)
+RCT_EXPORT_METHOD(saveManualSessionTrackerState:(BOOL)state)
 {
   NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-  [userDefaults setBool:state forKey:kSessionTrackerEnabled];
+  [userDefaults setBool:state forKey:kManualSessionTrackerEnabled];
 }
 
-RCT_EXPORT_METHOD(getSessionTrackerState:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXPORT_METHOD(getManualSessionTrackerState:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:kSessionTrackerEnabled]){
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kManualSessionTrackerEnabled]){
     resolve(@(1));
   } else {
     resolve(@(0));
