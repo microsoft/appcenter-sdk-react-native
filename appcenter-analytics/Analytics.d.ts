@@ -5,4 +5,3 @@ export function trackEvent(
 export function isEnabled(): Promise<boolean>;
 export function setEnabled(enabled: boolean): Promise<void>;
 export function startSession(): Promise<void>;
-export function enableManualSessionTracker(): Promise<void>;

@@ -47,7 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
         super.onCreate();
         AppCenter.setLogLevel(Log.VERBOSE);
         AppCenter.setLogUrl("https://in-integration.dev.avalanch.es");
-        TestAppNativeModule.sessionAuto(this);
+        TestAppNativeModule.initManualSessionTrackerState(this);
         TestAppNativeModule.initSecrets(this);
         SoLoader.init(this, /* native exopackage */ false);
     }

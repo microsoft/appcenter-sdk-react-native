@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -16,7 +17,6 @@ import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.model.TestCrashException;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
-import com.facebook.react.bridge.Promise;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -53,10 +53,10 @@ public class TestAppNativeModule extends ReactContextBaseJavaModule {
         AppCenterReactNativeShared.setStartAutomatically(startAutomaticallyOverride);
     }
 
-    static void sessionAuto(Context context) {
+    static void initManualSessionTrackerState(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(TEST_APP_NATIVE, Context.MODE_PRIVATE);
-        boolean sessionAuto = sharedPreferences.getBoolean(MANUAL_SESSION_TRACKER_ENABLED_KEY, false);
-        if (sessionAuto) {
+        boolean isManualSessionTrackerEnabled = sharedPreferences.getBoolean(MANUAL_SESSION_TRACKER_ENABLED_KEY, false);
+        if (isManualSessionTrackerEnabled) {
             Analytics.enableManualSessionTracker();
         }
     }
