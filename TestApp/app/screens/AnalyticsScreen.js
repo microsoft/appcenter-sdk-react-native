@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import { Image, View, Text, Switch, SectionList, NativeModules, TouchableOpacity } from 'react-native';
 
 import Analytics from 'appcenter-analytics';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import SharedStyles from '../SharedStyles';
 import AnalyticsTabBarIcon from '../assets/analytics.png';
@@ -31,10 +30,10 @@ export default class AnalyticsScreen extends Component {
 
   async componentDidMount() {
     NativeModules.TestAppNative.getManualSessionTrackerState().then((isEnabled) => {
-      const isManualSessionEnabled = isEnabled == 1;
+      const isManualSessionEnabled = isEnabled === 1;
       this.setState({ isManualSessionEnabled });
     });
-    await this.refreshToggle();    
+    await this.refreshToggle();
     this.props.navigation.setParams({
       refreshAnalytics: this.refreshToggle.bind(this)
     });
