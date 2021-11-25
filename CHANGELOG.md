@@ -6,6 +6,11 @@
 
 * **[Breaking change]** Remove `AppCenter.setCustomProperties` API.
 
+### App Center Analytics
+
+#### Android/iOS
+
+ * **[Feature]** Add `Analytics.enableManualSessionTracker` and `Analytics.startSession` APIs for tracking session manually.
 ___
 
 ## Version 4.3.0
