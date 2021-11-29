@@ -223,4 +223,14 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
     public void sendErrorAttachments(ReadableArray attachments, String errorId) {
         WrapperSdkExceptionManager.sendErrorAttachments(errorId, AppCenterReactNativeCrashesUtils.toCustomErrorAttachments(attachments));
     }
+
+    @ReactMethod
+    public void addListener(String eventName) {
+    /* Required for RN built in Event Emitter Calls. */
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+    /* Required for RN built in Event Emitter Calls. */
+    }
 }
