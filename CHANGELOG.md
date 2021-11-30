@@ -11,6 +11,12 @@
 #### Android/iOS
 
  * **[Feature]** Add `Analytics.enableManualSessionTracker` and `Analytics.startSession` APIs for tracking session manually.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix NativeEventEmitter warnings.
 ___
 
 ## Version 4.3.0
