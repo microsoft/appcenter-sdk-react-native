@@ -16,7 +16,7 @@
 
 #### Android
 
-* **[Fix]** Fix NativeEventEmitter warnings which can appear while using react-native versions above 0.65.0.
+* **[Fix]** Fix `"new NativeEventEmitter()" was called with a non-null argument without the required "some" method` warnings which appear with using react-native versions `0.65.0` or higher.
 ___
 
 ## Version 4.3.0
