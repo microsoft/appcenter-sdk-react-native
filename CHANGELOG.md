@@ -16,7 +16,7 @@
 
 #### Android
 
-* **[Fix]** Fix NativeEventEmitter warnings.
+* **[Fix]** Fix NativeEventEmitter warnings which can appear while using react-native versions above 0.65.0.
 ___
 
 ## Version 4.3.0
