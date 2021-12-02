@@ -11,6 +11,12 @@
 #### Android/iOS
 
  * **[Feature]** Add `Analytics.enableManualSessionTracker` and `Analytics.startSession` APIs for tracking session manually.
+
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix `"new NativeEventEmitter()" was called with a non-null argument without the required "some" method` warnings which appear with using react-native versions `0.65.0` or higher.
 ___
 
 ## Version 4.3.0
