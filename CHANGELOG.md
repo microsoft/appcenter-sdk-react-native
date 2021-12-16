@@ -1,10 +1,23 @@
 # App Center SDK for React Native Change Log
 
-## Version 4.3.1 (Under development)
+## Version 4.4.0
 
 ### App Center
 
+#### Android/iOS
+
 * **[Breaking change]** Remove `AppCenter.setCustomProperties` API.
+
+#### iOS
+
+* **[Fix]** Fix `Undefined symbol: OBJC_CLASS$_CTTelephonyNetworkInfo` error for Mac Catalyst platform when integrating the SDK via Swift Package Manager with Swift 5.5 and higher.
+* **[Fix]** Fix throw an exception when checking to authenticate MAC value during decryption.
+* **[Improvement]** Specified minimum cocoapods version in podspec to 1.10.0.
+
+#### Android
+
+* **[Fix]** Remove `android.support.test.InstrumentationRegistry` string that caused an error when checking applications on availability of android support libraries.
+* **[Feature]** Add `AppCenter.setCountryCode(string)` API to set the country code manually.
 
 ### App Center Analytics
 
@@ -12,7 +25,21 @@
 
  * **[Feature]** Add `Analytics.enableManualSessionTracker` and `Analytics.startSession` APIs for tracking session manually.
 
+* **[Feature]** Increase the interval between sending logs from 3 to 6 seconds for the backend load optimization.
+
+#### Android
+
+* **[Feature]** Add `AppCenter.setLogger` API to set custom logger.
+
 ### App Center Crashes
+
+#### iOS
+
+* **[Feature]** Add `(NSString *)description` method to convert `MSACErrorReport` to a string and additional useful information about sending error.
+* **[Feature]** Save a crash report from the Xamarin.Mac platform.
+* **[Fix]** Fix build failure on Xcode 13, because of warning `Сompletion handler is never used`. Only observable when SDK is integrated as source code. Continuation of the previous fix that fixed the issue on the beta version.
+* **[Fix]** Fix sending `Crashes.trackError` logs after allowing network requests after the launch app.
+* **[Improvement]** Update PLCrashReporter to 1.10.1.
 
 #### Android
 
