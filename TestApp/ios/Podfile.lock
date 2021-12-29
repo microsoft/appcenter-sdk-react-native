@@ -1,22 +1,22 @@
 PODS:
-  - appcenter-analytics (4.4.0):
+  - appcenter-analytics (4.4.1):
     - AppCenter/Analytics (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
-  - appcenter-core (4.4.0):
+  - appcenter-core (4.4.1):
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
-  - appcenter-crashes (4.4.0):
+  - appcenter-crashes (4.4.1):
     - AppCenter/Crashes (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
-  - AppCenter/Analytics (4.4.0):
+  - AppCenter/Analytics (4.4.1):
     - AppCenter/Core
-  - AppCenter/Core (4.4.0)
-  - AppCenter/Crashes (4.4.0):
+  - AppCenter/Core (4.4.1)
+  - AppCenter/Crashes (4.4.1):
     - AppCenter/Core
-  - AppCenterReactNativeShared (4.4.0):
-    - AppCenter/Core (= 4.4.0)
+  - AppCenterReactNativeShared (4.4.1):
+    - AppCenter/Core (= 4.4.1)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.62.2)
@@ -387,11 +387,11 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 07a7c29713843b8ee8f1d1d97227523cf09fe986
-  appcenter-analytics: 3eb09297a9521c995b0a19c3c4beb76192be7576
-  appcenter-core: 530349a8690095ef7411f94b1f922a498abc5970
-  appcenter-crashes: 30b6f8f6d210d6300e69a0dac9d6eb521b7ed50b
-  AppCenterReactNativeShared: 72692347662d0ceda0bc4a8bb07f00025aba0ad3
+  AppCenter: f972fab2a9b76ab4774a96a8535e5a4dec2e525d
+  appcenter-analytics: 2a8a55d2feba193c3c8a51b9902ef4757386414e
+  appcenter-core: 0293b8aeee457a25b44323a311de49c29d9defa7
+  appcenter-crashes: ad135405e148a9ed1c8bd169a9d2ea7bbaecd34c
+  AppCenterReactNativeShared: ece18bd0e6de5eb167f1aed7ed8bd95e4777d422
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
