@@ -1,12 +1,12 @@
 PODS:
-  - appcenter-analytics (4.4.1):
+  - appcenter-analytics (4.4.0):
     - AppCenter/Analytics (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
-  - appcenter-core (4.4.1):
+  - appcenter-core (4.4.0):
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
-  - appcenter-crashes (4.4.1):
+  - appcenter-crashes (4.4.0):
     - AppCenter/Crashes (~> 4.0)
     - AppCenterReactNativeShared (~> 4.0)
     - React-Core
@@ -388,9 +388,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppCenter: f972fab2a9b76ab4774a96a8535e5a4dec2e525d
-  appcenter-analytics: 2a8a55d2feba193c3c8a51b9902ef4757386414e
-  appcenter-core: 0293b8aeee457a25b44323a311de49c29d9defa7
-  appcenter-crashes: ad135405e148a9ed1c8bd169a9d2ea7bbaecd34c
+  appcenter-analytics: 3eb09297a9521c995b0a19c3c4beb76192be7576
+  appcenter-core: 530349a8690095ef7411f94b1f922a498abc5970
+  appcenter-crashes: 30b6f8f6d210d6300e69a0dac9d6eb521b7ed50b
   AppCenterReactNativeShared: ece18bd0e6de5eb167f1aed7ed8bd95e4777d422
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
