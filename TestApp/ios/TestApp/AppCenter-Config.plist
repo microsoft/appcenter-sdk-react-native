@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>AppSecret</key>
-	<string>6c4207ab-6816-47b9-a692-e59d0f012938</string>
+	<string>{RN_IOS_INT}</string>
 </dict>
 </plist>
