@@ -6,7 +6,6 @@
 #import "MSChannelGroupProtocol.h"
 #import "MSChannelProtocol.h"
 #import "MSConstants.h"
-#import "MSCustomProperties.h"
 #import "MSDevice.h"
 #import "MSEnable.h"
 #import "MSLog.h"

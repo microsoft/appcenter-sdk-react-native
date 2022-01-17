@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules, Platform } from 'react-native';
+import { Image, View, Text, TextInput, Switch, SectionList, NativeModules, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 import Toast from 'react-native-simple-toast';
-
-import AppCenter, { CustomProperties } from 'appcenter';
-
+import AppCenter from 'appcenter';
 import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
 
@@ -110,19 +108,6 @@ export default class AppCenterScreen extends Component {
     this.setState({ installId });
   }
 
-  async setCustomProperties() {
-    const properties = new CustomProperties()
-      .set('pi', 3.14)
-      .clear('old')
-      .set('color', 'blue')
-      .set('optin', true)
-      .set('optout', false)
-      .set('score', 7)
-      .set('now', new Date());
-    await AppCenter.setCustomProperties(properties);
-    Toast.show('Scheduled custom properties log. Please check verbose logs.');
-  }
-
   async configureStartup(secretString, startAutomatically) {
     await NativeModules.DemoAppNative.configureStartup(secretString, startAutomatically);
     Toast.show('Relaunch app for changes to be applied.');
@@ -165,12 +150,6 @@ export default class AppCenterScreen extends Component {
         <Text style={SharedStyles.itemTitle}>{title}</Text>
         {onChange ? <TextInput style={SharedStyles.itemInput} onSubmitEditing={onSubmit} onChangeText={onChange}>{String(this.state[value])}</TextInput> : <Text>{String(this.state[value])}</Text>}
       </View>
-    );
-
-    const actionRenderItem = ({ item: { title, action } }) => (
-      <TouchableOpacity style={SharedStyles.item} onPress={action}>
-        <Text style={SharedStyles.itemButton}>{title}</Text>
-      </TouchableOpacity>
     );
 
     const startupModeRenderItem = ({ item: { startupModes } }) => (
@@ -232,16 +211,6 @@ export default class AppCenterScreen extends Component {
                 }
               ],
               renderItem: startupModeRenderItem
-            },
-            {
-              title: 'Actions',
-              data: [
-                {
-                  title: 'Set Custom Properties',
-                  action: this.setCustomProperties
-                },
-              ],
-              renderItem: actionRenderItem
             },
             {
               title: 'Miscellaneous',

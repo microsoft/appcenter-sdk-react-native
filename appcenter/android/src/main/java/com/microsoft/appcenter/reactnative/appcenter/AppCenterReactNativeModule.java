@@ -94,11 +94,6 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
     }
 
     @ReactMethod
-    public void setCustomProperties(ReadableMap properties) {
-        AppCenter.setCustomProperties(ReactNativeUtils.toCustomProperties(properties));
-    }
-
-    @ReactMethod
     public void setNetworkRequestsAllowed(boolean isAllowed) {
         AppCenter.setNetworkRequestsAllowed(isAllowed);
     }

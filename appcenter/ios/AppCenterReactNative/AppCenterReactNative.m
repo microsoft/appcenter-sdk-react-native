@@ -90,43 +90,6 @@ RCT_EXPORT_METHOD(setUserId:(NSString *)userId
     resolve(nil);
 }
 
-RCT_EXPORT_METHOD(setCustomProperties:(NSDictionary*)properties
-                  resolver:(RCTPromiseResolveBlock)resolve
-                  rejecter:(RCTPromiseRejectBlock)reject)
-{
-    MSACCustomProperties *customProperties = [MSACCustomProperties new];
-    for (NSString *key in properties) {
-        id valueObject = [properties objectForKey:key];
-        if (valueObject && [valueObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *valueDict = (NSDictionary *) valueObject;
-            id type = [valueDict objectForKey:@"type"];
-            id value = [valueDict objectForKey:@"value"];
-            if (type && [type isKindOfClass:[NSString class]]) {
-                NSString *typeString = (NSString *) type;
-                if ([typeString isEqualToString:@"string"]) {
-                    [customProperties setString:value forKey:key];
-                }
-                else if ([typeString isEqualToString:@"number"]) {
-                    [customProperties setNumber:value forKey:key];
-                }
-                else if ([typeString isEqualToString:@"boolean"]) {
-                    NSNumber *num = value;
-                    [customProperties setBool:[num boolValue] forKey:key];
-                }
-                else if ([typeString isEqualToString:@"date-time"]) {
-                    NSDate *date = [RCTConvert NSDate:value];
-                    [customProperties setDate:date forKey:key];
-                }
-                else if ([typeString isEqualToString:@"clear"]) {
-                    [customProperties clearPropertyForKey:key];
-                }
-            }
-        }
-    }
-    [MSACAppCenter setCustomProperties:customProperties];
-    resolve(nil);
-}
-
 RCT_EXPORT_METHOD(setNetworkRequestsAllowed:(BOOL)isAllowed
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)

@@ -1,5 +1,37 @@
 # App Center SDK for React Native Change Log
 
+## Version 4.4.0
+
+### App Center
+
+#### Android/iOS
+
+* **[Breaking change]** Remove `AppCenter.setCustomProperties` API.
+
+#### iOS
+
+* **[Fix]** Fix throw an exception when checking to authenticate MAC value during decryption.
+* **[Improvement]** Specified minimum cocoapods version in podspec to 1.10.0.
+
+### App Center Analytics
+
+#### Android/iOS
+
+* **[Feature]** Add `Analytics.startSession` and `Analytics.enableManualSessionTracker` APIs for tracking session manually. Method `Analytics.enableManualSessionTracker` can be used only in native code before AppCenter start. See [React Native Analytics Guide](https://docs.microsoft.com/en-us/appcenter/sdk/analytics/react-native) for more information.
+* **[Feature]** Increase the interval between sending logs from 3 to 6 seconds for the backend load optimization.
+
+### App Center Crashes
+
+#### iOS
+
+* **[Fix]** Fix sending `Crashes.trackError` logs after allowing network requests after the launch app.
+* **[Improvement]** Update PLCrashReporter to 1.10.1.
+
+#### Android
+
+* **[Fix]** Fix `"new NativeEventEmitter()" was called with a non-null argument without the required "some" method` warnings which appear with using react-native versions `0.65.0` or higher.
+___
+
 ## Version 4.3.0
 
 ### App Center

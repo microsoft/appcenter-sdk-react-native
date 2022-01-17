@@ -24,11 +24,6 @@ export enum AppCenterLogLevel {
     NONE = 99
 }
 
-export class CustomProperties {
-    set(key: string, value: string | number | boolean | Date): CustomProperties;
-    clear(key: string): CustomProperties;
-}
-
 export function setLogLevel(logLevel: LogLevel | AppCenterLogLevel): Promise<void>;
 export function getLogLevel(): Promise<LogLevel | AppCenterLogLevel>;
 export function getSdkVersion(): string;
@@ -38,4 +33,3 @@ export function isNetworkRequestsAllowed(): Promise<boolean>;
 export function setNetworkRequestsAllowed(isAllowed: boolean): Promise<void>;
 export function setUserId(userId: string | null): Promise<void>;
 export function getInstallId(): Promise<string>;
-export function setCustomProperties(properties: CustomProperties): Promise<void>;

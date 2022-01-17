@@ -18,7 +18,3 @@
 #import "MSServiceAbstract.h"
 #import "MSWrapperLogger.h"
 #import "MSWrapperSdk.h"
-
-#if !TARGET_OS_TV
-#import "MSCustomProperties.h"
-#endif
