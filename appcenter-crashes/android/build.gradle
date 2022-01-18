@@ -26,6 +26,6 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
     api 'com.microsoft.appcenter:appcenter-crashes:4.4.2'
 
-    api project(':AppCenterReactNativeShared')   // For testing with TestApp
-    //api 'com.microsoft.appcenter.reactnative:appcenter-react-native:4.4.2'
+    // api project(':AppCenterReactNativeShared')   // For testing with TestApp
+    api 'com.microsoft.appcenter.reactnative:appcenter-react-native:4.4.2'
 }
