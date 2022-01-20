@@ -57,6 +57,7 @@ public class MainApplication extends Application implements ReactApplication {
     public void onCreate() {
         super.onCreate();
         AppCenter.setLogLevel(Log.VERBOSE);
+        DemoAppNativeModule.initManualSessionTrackerState(this);
         DemoAppNativeModule.initSecrets(this);
         SoLoader.init(this, /* native exopackage */ false);
     }
