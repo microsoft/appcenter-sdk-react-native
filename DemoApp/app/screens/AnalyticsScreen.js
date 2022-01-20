@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import React, { Component } from 'react';
-import { Image, View, Text, Switch, SectionList, TouchableOpacity } from 'react-native';
+import { Image, View, Text, Switch, SectionList, NativeModules, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-simple-toast';
 
 import Analytics from 'appcenter-analytics';
@@ -25,10 +25,15 @@ export default class AnalyticsScreen extends Component {
   }
 
   state = {
-    analyticsEnabled: false
+    analyticsEnabled: false,
+    isManualSessionEnabled: false
   }
 
   async componentDidMount() {
+    NativeModules.DemoAppNative.getManualSessionTrackerState().then((isEnabled) => {
+      const isManualSessionEnabled = isEnabled === 1;
+      this.setState({ isManualSessionEnabled });
+    });
     await this.refreshToggle();
 
     this.props.navigation.setParams({
@@ -76,6 +81,15 @@ export default class AnalyticsScreen extends Component {
                     this.setState({ analyticsEnabled });
                   }
                 },
+                {
+                  title: 'Manual Session Tracking Enabled',
+                  value: 'isManualSessionEnabled',
+                  toggle: async () => {
+                    const isManualSessionEnabled = !this.state.isManualSessionEnabled;
+                    await NativeModules.DemoAppNative.saveManualSessionTrackerState(isManualSessionEnabled);
+                    this.setState({ isManualSessionEnabled });
+                  }
+                },
               ],
               renderItem: switchRenderItem
             },
@@ -104,6 +118,12 @@ export default class AnalyticsScreen extends Component {
                     const eventName = 'EventWithLongProperties';
                     Analytics.trackEvent(eventName, { propertyValueTooLong: '12345678901234567890123456789012345678901234567890123456789012345' });
                     showEventToast(eventName);
+                  }
+                },
+                {
+                  title: 'Start session',
+                  action: () => {
+                    Analytics.startSession();
                   }
                 },
               ],
