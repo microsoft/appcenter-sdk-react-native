@@ -12,3 +12,15 @@ echo 'Add private cocoapods repository'
 pod repo add $REPO_NAME https://$USER_ACCOUNT:$ACCESS_TOKEN@$PRIVATE_REPO_BASE_URL/$REPO_NAME
 pod repo update
 cd ios && pod install
+
+# Remove all NDKs except NDK 21 to avoid failures on App Center CI with error:
+# > No toolchains found in the NDK toolchains folder for ABI with prefix: arm-linux-androideabi 
+echo 'Clean unnessesary NDKs'
+cd $NDK_PATH
+
+# Enable extended globbing for using regular expression in rm command.
+shopt -s extglob
+rm -rf !($NDK_VERSION_FOR_BUILD)
+
+echo 'NDKs after clean:'
+ls $NDK_PATH
