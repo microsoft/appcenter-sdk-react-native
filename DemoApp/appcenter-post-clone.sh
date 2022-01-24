@@ -14,13 +14,14 @@ pod repo add $REPO_NAME https://$USER_ACCOUNT:$ACCESS_TOKEN@$PRIVATE_REPO_BASE_U
 pod repo update
 cd ios && pod install
 
-# Remove unnessesary NDKs, this clean is needed to avoid failures on AppCenter CI which requires only NDK21. 
+# Remove all NDKs except NDK 21 to avoid failures on App Center CI with error:
+# > No toolchains found in the NDK toolchains folder for ABI with prefix: arm-linux-androideabi 
 echo 'Clean unnessesary NDKs'
 cd $NDK_PATH
 
 # Enable extended globbing for using regular expression in rm command.
 shopt -s extglob
-rm -rf !(21.4.7075529)
+rm -rf !($NDK_VERSION_FOR_BUILD)
 
 echo 'NDKs after clean:'
 ls $NDK_PATH
