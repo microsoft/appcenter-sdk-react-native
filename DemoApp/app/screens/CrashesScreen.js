@@ -72,6 +72,11 @@ export default class CrashesScreen extends Component {
     foo.method1();
   }
 
+  customerCrash(){
+    const test = {}; 
+    test.should.crash;
+  }
+
   async trackError(includeProperties) {
     try {
       throw new Error('Custom error');
@@ -174,6 +179,10 @@ export default class CrashesScreen extends Component {
                 {
                   title: 'Select image as binary error attachment',
                   action: this.showFilePicker
+                },
+                {
+                  title: 'Customer crash',
+                  action: this.customerCrash
                 },
               ],
               renderItem: actionRenderItem
