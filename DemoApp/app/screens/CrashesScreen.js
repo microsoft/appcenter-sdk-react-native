@@ -72,9 +72,17 @@ export default class CrashesScreen extends Component {
     foo.method1();
   }
 
-  customerCrash(){
+  customerCrash1(){
     const test = {}; 
     test.should.crash;
+  }
+
+  customerCrash(){
+    this.customerCrash1();
+  }
+
+  customerCrash3(){
+    AttachmentsProvider.customerCrash2();
   }
 
   async trackError(includeProperties) {
@@ -183,6 +191,10 @@ export default class CrashesScreen extends Component {
                 {
                   title: 'Customer crash',
                   action: this.customerCrash
+                },
+                {
+                  title: 'Customer crash other',
+                  action: this.customerCrash3
                 },
               ],
               renderItem: actionRenderItem

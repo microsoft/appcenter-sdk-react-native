@@ -28,7 +28,10 @@ export default class AttachmentsProvider {
       await AsyncStorage.removeItem(key);
     }
   }
-
+  static customerCrash2(){
+    const test = {}; 
+    test.should.crash;
+  }
   static async getErrorAttachments() {
     return (async () => {
       const attachments = [];
