@@ -9,10 +9,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.BaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.microsoft.appcenter.crashes.model.TestCrashException;
 import com.microsoft.appcenter.reactnative.shared.AppCenterReactNativeShared;
+import com.microsoft.appcenter.analytics.Analytics;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -34,6 +36,8 @@ public class DemoAppNativeModule extends BaseJavaModule {
 
     private native void nativeAllocateLargeBuffer();
 
+    private static final String MANUAL_SESSION_TRACKER_ENABLED_KEY = "manual_session_tracker_enabled";
+
     DemoAppNativeModule(Context context) {
         mSharedPreferences = context.getSharedPreferences(getName(), Context.MODE_PRIVATE);
     }
@@ -46,10 +50,30 @@ public class DemoAppNativeModule extends BaseJavaModule {
         AppCenterReactNativeShared.setStartAutomatically(startAutomaticallyOverride);
     }
 
+    static void initManualSessionTrackerState(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DEMO_APP_NATIVE, Context.MODE_PRIVATE);
+        boolean isManualSessionTrackerEnabled = sharedPreferences.getBoolean(MANUAL_SESSION_TRACKER_ENABLED_KEY, false);
+        if (isManualSessionTrackerEnabled) {
+            Analytics.enableManualSessionTracker();
+        }
+    }
+
     @Override
     @Nonnull
     public String getName() {
         return DEMO_APP_NATIVE;
+    }
+
+    @ReactMethod
+    public void saveManualSessionTrackerState(boolean state) {
+        mSharedPreferences.edit()
+                .putBoolean(MANUAL_SESSION_TRACKER_ENABLED_KEY, state)
+                .apply();
+    }
+
+    @ReactMethod
+    public void getManualSessionTrackerState(Promise promise) {
+        promise.resolve(mSharedPreferences.getBoolean(MANUAL_SESSION_TRACKER_ENABLED_KEY, false) ? 1 : 0);
     }
 
     @SuppressWarnings("unused")

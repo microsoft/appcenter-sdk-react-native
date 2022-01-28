@@ -20,6 +20,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 @import AppCenter;
+@import AppCenterAnalytics;
 
 @implementation AppDelegate
 
@@ -34,6 +35,11 @@
   id startAutomatically = [[NSUserDefaults standardUserDefaults] objectForKey:@"StartAutomatically"];
   if ([startAutomatically isKindOfClass:[NSNumber class]]) {
     [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
+  }
+
+  BOOL sessionAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"ManualSessionTrackerEnabled"];
+  if (sessionAuto) {
+    [MSACAnalytics enableManualSessionTracker];
   }
 
   [AppCenterReactNative register];                                   // Initialize AppCenter
