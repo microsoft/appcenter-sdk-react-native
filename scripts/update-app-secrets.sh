@@ -33,9 +33,7 @@ declare -a targetFiles=("${appName}/app/Constants.android.js"
     "${appName}/app/Constants.ios.js"
     "${appName}/app/screens/AppCenterScreen.js"
     "${appName}/ios/${appName}/AppCenter-Config.plist"
-    "${appName}/ios/${appName}/Info.plist"
-    "${appName}/android/app/src/main/assets/appcenter-config.json"
-    "${appName}/android/app/src/main/AndroidManifest.xml")
+    "${appName}/ios/${appName}/Info.plist")
 
 # Print info about current job.
 echo "Insert secrets to ${appName} app."
