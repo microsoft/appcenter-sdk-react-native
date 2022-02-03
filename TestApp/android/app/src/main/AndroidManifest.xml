@@ -34,10 +34,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:host="auth"
-                    android:scheme="msalec226b05-8eb0-4af7-a908-bfc9e153791d" />
-                <data
-                    android:host="auth"
-                    android:scheme="msalbe23fc61-f73b-4feb-8815-c8ad31804202" />
+                    android:scheme="msal{RN_ANDROID_INT}" />
             </intent-filter>
         </activity>
     </application>

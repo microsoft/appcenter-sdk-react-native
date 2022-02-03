@@ -13,12 +13,12 @@ const USER_ID_KEY = 'USER_ID_KEY';
 
 const SecretStrings = {
   ios: {
-    appSecret: '6c4207ab-6816-47b9-a692-e59d0f012938',
-    target: 'target=c10075a08d114205b3d67118c0028cf5-70b2d0e7-e693-4fe0-be1f-a1e9801dcf12-6906'
+    appSecret: '{RN_IOS_INT}',
+    target: 'target={RN_IOS_TARGET_TOKEN_INT}'
   },
   android: {
-    appSecrets: 'ec226b05-8eb0-4af7-a908-bfc9e153791d',
-    target: 'target=4dacd24d0b1b42db9894926d0db2f4c7-39311d37-fb55-479c-b7b6-9893b53d0186-7306'
+    appSecrets: '{RN_ANDROID_INT}',
+    target: 'target={RN_ANDROID_TARGET_TOKEN_INT}'
   }
 };
 
