@@ -15,7 +15,7 @@ PODS:
   - AppCenter/Core (4.4.1)
   - AppCenter/Crashes (4.4.1):
     - AppCenter/Core
-  - AppCenterReactNativeShared (4.4.1):
+  - AppCenterReactNativeShared (4.4.3):
     - AppCenter/Core (= 4.4.1)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
@@ -391,7 +391,7 @@ SPEC CHECKSUMS:
   appcenter-analytics: 1b32062da2e250c5e1396c678df8c6011ccbcf5a
   appcenter-core: 6ea4754df4a3d8917a5803e2681a58179d7f7a21
   appcenter-crashes: b079913ac0f0059e6cf39b7a805135223e508666
-  AppCenterReactNativeShared: ece18bd0e6de5eb167f1aed7ed8bd95e4777d422
+  AppCenterReactNativeShared: 2d5cb31e89702ea09cd150813cb554e0e6f804b1
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
