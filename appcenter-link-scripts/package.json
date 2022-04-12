@@ -23,8 +23,7 @@
     "mkdirp": "0.5.3",
     "plist": "^3.0.2",
     "which": "1.2.11",
-    "xcode": "2.0.0",
-    "minimist": "1.2.6"
+    "xcode": "2.0.0"
   },
   "devDependencies": {
     "babel-eslint": "7.2.3",
