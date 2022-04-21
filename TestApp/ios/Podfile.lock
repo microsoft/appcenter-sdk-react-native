@@ -391,7 +391,7 @@ SPEC CHECKSUMS:
   appcenter-analytics: 4403fa85b98266f0672aa3676cb0416755ce2ff6
   appcenter-core: 9b90e7b8581598cf4f61d2efe41581cc69631da8
   appcenter-crashes: 02e9432ed23579e258af9742356d74271539fb85
-  AppCenterReactNativeShared: 81d0002424b91cda234a98f74c9d11baf6753570
+  AppCenterReactNativeShared: 7b4c674ea4f77e505fd5cf1d68eb599fde317a68
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245
