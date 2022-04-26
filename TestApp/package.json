@@ -18,7 +18,7 @@
     "appcenter-link-scripts": "file:appcenter-link-scripts-4.4.4.tgz",
     "metro": "0.59.0",
     "react": "16.11.0",
-    "react-native": "0.62.2",
+    "react-native": "0.62.3",
     "react-native-fs": "^2.19.0",
     "react-native-gesture-handler": "1.5.0",
     "react-native-image-picker": "1.1.0",
