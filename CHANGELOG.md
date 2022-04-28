@@ -1,5 +1,13 @@
 # App Center SDK for React Native Change Log
 
+## Version 4.4.4
+
+### App Center
+
+* **[Fix]** Fix "minimist" vulnerability issue (https://github.com/advisories/GHSA-xvch-5gv4-984h) in appcenter-link-scripts.
+
+ ___
+
 ## Version 4.4.3
 
 ### App Center
