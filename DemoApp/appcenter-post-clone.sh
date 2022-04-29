@@ -24,6 +24,7 @@ cd $NDK_PATH
 
 # Enable extended globbing for using regular expression in rm command.
 shopt -s extglob
+rm -rf !($NDK_VERSION_FOR_BUILD)
 
 echo 'NDKs after clean:'
 ls $NDK_PATH
