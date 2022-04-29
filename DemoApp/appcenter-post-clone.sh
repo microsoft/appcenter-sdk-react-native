@@ -11,8 +11,8 @@ touch -a android/local.properties
 echo 'Setting AppSecrets'
 cd ..
 ./scripts/update-app-secrets.sh PROD
-echo 'AppSecret set to:'
-echo $RN_ANDROID_PROD
+cd DemoApp
+ls
 
 echo 'Add private cocoapods repository'
 pod repo add $REPO_NAME https://$USER_ACCOUNT:$ACCESS_TOKEN@$PRIVATE_REPO_BASE_URL/$REPO_NAME
