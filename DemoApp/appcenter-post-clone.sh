@@ -9,9 +9,7 @@ touch -a android/local.properties
 ./put-azure-credentials.zh $USER_ACCOUNT $ACCESS_TOKEN
 
 echo 'Setting AppSecrets'
-cd ..
-./scripts/update-app-secrets.sh PROD
-cd DemoApp
+cd .. && ./scripts/update-app-secrets.sh PROD && cd DemoApp
 ls
 
 echo 'Add private cocoapods repository'
