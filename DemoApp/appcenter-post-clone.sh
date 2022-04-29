@@ -25,6 +25,7 @@ echo 'NDKs after clean:'
 ls $NDK_PATH
 
 echo 'Setting AppSecrets'
+cd ..
 ./scripts/update-app-secrets.sh PROD
 echo 'AppSecret set to:'
 echo $RN_ANDROID_PROD
