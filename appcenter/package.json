@@ -1,6 +1,6 @@
 {
   "name": "appcenter",
-  "version": "4.4.4",
+  "version": "4.4.4-fix-rn-69",
   "description": "Node module that contains common functionality needed to appcenter-* modules",
   "main": "AppCenter.js",
   "types": "AppCenter.d.ts",

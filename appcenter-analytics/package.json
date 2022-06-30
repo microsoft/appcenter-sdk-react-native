@@ -1,6 +1,6 @@
 {
   "name": "appcenter-analytics",
-  "version": "4.4.4",
+  "version": "4.4.4-fix-rn-69",
   "description": "React Native plugin for AppCenter Analytics",
   "main": "Analytics.js",
   "types": "Analytics.d.ts",
