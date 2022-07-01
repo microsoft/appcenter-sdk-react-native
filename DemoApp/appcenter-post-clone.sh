@@ -27,3 +27,6 @@ rm -rf !($NDK_VERSION_FOR_BUILD)
 
 echo 'NDKs after clean:'
 ls $NDK_PATH
+
+echo 'Installing nvm'
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
