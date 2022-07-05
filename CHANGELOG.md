@@ -2,6 +2,10 @@
 
 ## Version 4.4.5 (Under development)
 
+### App Center
+
+* **[Fix]** Fix Autolinking for React Native 0.69.
+
   ___
 
 ## Version 4.4.4
