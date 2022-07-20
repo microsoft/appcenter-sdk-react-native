@@ -1,6 +1,6 @@
 {
   "name": "appcenter-link-scripts",
-  "version": "4.4.4",
+  "version": "4.4.5",
   "description": "Node module that contains common functionality needed to link appcenter-* modules",
   "main": "src/index.js",
   "repository": {
