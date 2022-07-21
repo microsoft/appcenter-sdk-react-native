@@ -1,6 +1,6 @@
 {
   "name": "appcenter-analytics",
-  "version": "4.4.4",
+  "version": "4.4.5",
   "description": "React Native plugin for AppCenter Analytics",
   "main": "Analytics.js",
   "types": "Analytics.d.ts",
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-analytics/README.md",
   "dependencies": {
-    "appcenter": "4.4.4"
+    "appcenter": "4.4.5"
   },
   "rnpm": {
     "android": {

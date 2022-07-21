@@ -1,6 +1,6 @@
 {
   "name": "appcenter-crashes",
-  "version": "4.4.4",
+  "version": "4.4.5",
   "description": "React Native plugin for AppCenter Crashes",
   "main": "Crashes.js",
   "types": "Crashes.d.ts",
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter-crashes/README.md",
   "dependencies": {
-    "appcenter": "4.4.4"
+    "appcenter": "4.4.5"
   },
   "rnpm": {
     "android": {
