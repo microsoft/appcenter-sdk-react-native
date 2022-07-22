@@ -1,5 +1,17 @@
 # App Center SDK for React Native Change Log
 
+## Version 4.4.6 (Under development)
+
+ ___
+ 
+## Version 4.4.5
+
+### App Center
+
+* **[Fix]** Fix Autolinking for React Native 0.69.
+
+  ___
+
 ## Version 4.4.4
 
 ### App Center
