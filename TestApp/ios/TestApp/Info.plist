@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>msal88599399-d89e-499a-abe5-92a673dab571</string>
+				<string>msal{RN_IOS_INT}</string>
 			</array>
 		</dict>
 	</array>
