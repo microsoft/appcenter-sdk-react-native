@@ -2,6 +2,12 @@
 
 ## Version 4.4.6 (Under development)
 
+### App Center Crashes
+
+#### Android
+
+* **[Fix]** Fix blocking crashes channel if empty or incomplete error object is passed to `Crashes.trackError`.
+
  ___
  
 ## Version 4.4.5
