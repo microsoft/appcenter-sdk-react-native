@@ -48,8 +48,8 @@ allprojects {
         defaultConfig {
             minSdkVersion 21
             targetSdkVersion 29
-            versionCode 64
-            versionName '4.4.5'
+            versionCode 65
+            versionName '5.0.0'
             group groupId
             version versionName
             buildConfigField 'String', "SDK_NAME", "\"appcenter.react-native\""
@@ -127,7 +127,7 @@ allprojects {
 }
 
 dependencies {
-    api 'com.microsoft.appcenter:appcenter:4.4.5'
+    api 'com.microsoft.appcenter:appcenter:5.0.2'
 }
 
 artifacts {
