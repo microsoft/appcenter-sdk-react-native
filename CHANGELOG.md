@@ -6,6 +6,8 @@
 
 * **[Fix]** Fix blocking crashes channel if empty or incomplete error object is passed to `Crashes.trackError`.
 * **[Fix]** Fix SDK crash if the `ConnectivityManager.getNetworkInfo` method call throws an exception.
+* **[Fix]** Fix Concurrent Modification Exception in DefaultChannel on setNetworkRequestsAllowed.
+* **[Fix]** Fix ignoring maximum storage size limit in case logs contain large payloads.
 
 #### iOS
 
