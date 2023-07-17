@@ -139,9 +139,9 @@ class AppCenterReactNativeCrashesUtils {
                throws java.lang.Exception {
         Exception model = new Exception();
         try {
-            String type = readableMap.getString("type");
-            String message = readableMap.getString("message");
-            String wrapperSdkName = readableMap.getString("wrapperSdkName");
+            String type = readableMap.hasKey("type") ? readableMap.getString("type") : null;
+            String message = readableMap.hasKey("message") ? readableMap.getString("message") : null;
+            String wrapperSdkName = readableMap.hasKey("wrapperSdkName") ? readableMap.getString("wrapperSdkName") : null;
             if (type == null || type == "") {
                 throw new java.lang.Exception("Type value shouldn't be null ot empty");
             }
@@ -154,10 +154,14 @@ class AppCenterReactNativeCrashesUtils {
             model.setWrapperSdkName(wrapperSdkName);
             model.setType(type);
             model.setMessage(message);
-            model.setStackTrace(readableMap.getString("stackTrace"));
+
+            if (readableMap.hasKey("stackTrace")) {
+                model.setStackTrace(readableMap.getString("stackTrace"));
+            }
         } catch (java.lang.Exception e) {
             AppCenterReactNativeCrashesUtils.logError("Failed to get exception model");
             AppCenterReactNativeCrashesUtils.logError(Log.getStackTraceString(e));
+            throw e;
         }
         return model;
     }

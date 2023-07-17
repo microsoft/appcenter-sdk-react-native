@@ -151,6 +151,7 @@ public class AppCenterReactNativeCrashesModule extends BaseJavaModule {
                 convertedAttachments = AppCenterReactNativeCrashesUtils.toCustomErrorAttachments(attachments);
             }
         } catch (java.lang.Exception ex) {
+            promise.reject("Failed to track error.", ex);
             return;
         }
         String errorReportId = WrapperSdkExceptionManager.trackException(exceptionModel, convertedProperties, convertedAttachments);

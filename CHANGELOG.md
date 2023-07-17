@@ -1,7 +1,23 @@
 # App Center SDK for React Native Change Log
 
-## Version 4.4.6 (Under development)
+## Version 5.0.0
 
+#### Android
+
+* **[Fix]** Fix blocking crashes channel if empty or incomplete error object is passed to `Crashes.trackError`.
+* **[Fix]** Fix SDK crash if the `ConnectivityManager.getNetworkInfo` method call throws an exception.
+* **[Fix]** Fix Concurrent Modification Exception in DefaultChannel on setNetworkRequestsAllowed.
+* **[Fix]** Fix ignoring maximum storage size limit in case logs contain large payloads.
+
+#### iOS
+
+* **[Feature] Add Xcode 14 support. Xcode 11 and Xcode 12 are out of support now. Bump minumum supported iOS version to iOS 11.
+* **[Fix]** Fix NSLog congestion on Apple's Framework Thread.
+* **[Fix]** Fix Unsafe Object Deserialization.
+* **[Fix]** Fix "Collection was mutated while being enumerated" exception in MSACChannelGroupDefault.
+* **[Fix]** Fix crash channel:didPrepareLog in MSACChannelGroupDefault
+* **[Improvement]** Always specify `isDirectory` parameter for `[NSURL URLByAppendingPathComponent:]` for better performace.
+* **[Improvement]** Update PLCrashReporter to 1.11.0.
  ___
  
 ## Version 4.4.5
