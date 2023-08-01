@@ -6,11 +6,11 @@ target 'DemoApp' do
   # use_frameworks!
 
   # Pods for DemoApp
-  pod 'AppCenter/Crashes', '~> 4.4.3'
-  pod 'AppCenter/Analytics', '~> 4.4.3'
-  pod 'AppCenterReactNativeShared', '~> 4.4.5'
+  pod 'AppCenter/Crashes', '~> 5.0.3'
+  pod 'AppCenter/Analytics', '~> 5.0.3'
+  pod 'AppCenterReactNativeShared', '~> 5.0.0'
 
-  platform :ios, '9.0'
+  platform :ios, '11.0'
 
   # This commented line is to avoid react-native link adding an optional dependency that is way too heavy.
   # pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'

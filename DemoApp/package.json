@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "1.6.2",
-    "appcenter": "^4.4.5",
-    "appcenter-analytics": "^4.4.5",
-    "appcenter-crashes": "^4.4.5",
+    "appcenter": "^5.0.0",
+    "appcenter-analytics": "^5.0.0",
+    "appcenter-crashes": "^5.0.0",
     "metro": "0.54.1",
     "react": "16.8.3",
     "react-native": "0.59.9",
