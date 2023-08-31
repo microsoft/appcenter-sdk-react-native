@@ -90,6 +90,14 @@ RCT_EXPORT_METHOD(setUserId:(NSString *)userId
     resolve(nil);
 }
 
+RCT_EXPORT_METHOD(setDataResidencyRegion:(NSString *)dataResidencyRegion
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+{
+    [MSACAppCenter setDataResidencyRegion:dataResidencyRegion];
+    resolve(nil);
+}
+
 RCT_EXPORT_METHOD(setNetworkRequestsAllowed:(BOOL)isAllowed
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
