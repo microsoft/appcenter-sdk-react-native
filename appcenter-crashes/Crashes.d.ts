@@ -24,10 +24,9 @@ export class ErrorAttachmentLog {
 
 export class ExceptionModel {
   wrapperSdkName: string;
-  innerException: ExceptionModel[];
   type: string;
   message: string;
-  stacktrace: string;
+  stackTrace: string;
   public static createFromError(error: Error): ExceptionModel;
   public static createFromTypeAndMessage(type: string, message: string, stacktrace: string): ExceptionModel;
 }
