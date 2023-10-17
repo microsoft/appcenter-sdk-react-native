@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/microsoft/appcenter-sdk-react-native#readme",
   "dependencies": {
-    "debug": "4.1.1",
+    "debug": "4.3.1",
     "glob": "5.0.15",
     "mkdirp": "0.5.3",
     "plist": "^3.0.2",
