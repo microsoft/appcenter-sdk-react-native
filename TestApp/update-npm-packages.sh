@@ -37,7 +37,7 @@ echo "Install shared framework pods..."
 (cd ../AppCenterReactNativeShared/ios && pod install)
 
 echo "Running pod install and building shared framework..."
-(cd ios && pod install)
+(cd ios && APPCENTER_POD_URL_TOKEN="TOKEN" pod install --repo-update)
 
 # workaround for macs on arm64 (uncomment when running on arm64 mac)
 # (cd ios && pod install)

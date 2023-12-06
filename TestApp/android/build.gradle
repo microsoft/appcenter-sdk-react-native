@@ -32,13 +32,13 @@ def readFromLocalProperties(propertyName) {
 
 allprojects {
     repositories {
-        maven {
-            credentials {
-                username = readFromLocalProperties('AZURE_USERNAME')
-                password = readFromLocalProperties('AZURE_PASSWORD')
-            }
-            url "https://msmobilecenter.pkgs.visualstudio.com/_packaging/AppCenter/maven/v1/"
-        }
+        // maven {
+        //     credentials {
+        //         username = readFromLocalProperties('AZURE_USERNAME')
+        //         password = readFromLocalProperties('AZURE_PASSWORD')
+        //     }
+        //     url "https://msmobilecenter.pkgs.visualstudio.com/_packaging/AppCenter/maven/v1/"
+        // }
         mavenLocal()
         google()
         jcenter()
