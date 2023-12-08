@@ -74,7 +74,7 @@ const AppCenter = {
     },
 
     // async - returns a Promise
-    setDataResidecnyRegion(dataResidencyRegion) {
+    setDataResidencyRegion(dataResidencyRegion) {
         return AppCenterReactNative.setDataResidencyRegion(dataResidencyRegion);
     },
 
