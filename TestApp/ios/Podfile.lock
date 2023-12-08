@@ -391,7 +391,7 @@ SPEC CHECKSUMS:
   appcenter-analytics: b3a60e025b8db7013a71053c1ced96bcf7acba75
   appcenter-core: 53cc7b5d9a2cdd6a484cae8e50977bab91e0780e
   appcenter-crashes: 9cb825ee8f89715a1b0a7164a71fc8c582b0e796
-  AppCenterReactNativeShared: b46f779c20891295dc9a738146611be69859b073
+  AppCenterReactNativeShared: eef1f752d56331857b50891792c169c65b3fed47
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: a93c5eef764b16789fa7875aac4e09119e806ad4
@@ -426,4 +426,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 5523256fea95f994fd212b1f9568454fbebe205a
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.11.3
