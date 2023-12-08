@@ -15,7 +15,7 @@
     "appcenter": "file:appcenter-5.0.1.tgz",
     "appcenter-analytics": "file:appcenter-analytics-5.0.1.tgz",
     "appcenter-crashes": "file:appcenter-crashes-5.0.1.tgz",
-    "appcenter-link-scripts": "file:appcenter-link-scripts-5.0.1.tgz",
+    "appcenter-link-scripts": "file:appcenter-link-scripts-5.0.0.tgz",
     "metro": "0.59.0",
     "react": "16.11.0",
     "react-native": "0.62.3",

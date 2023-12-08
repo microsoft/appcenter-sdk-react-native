@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/Microsoft/appcenter-sdk-react-native/blob/master/appcenter/README.md",
   "dependencies": {
-    "appcenter-link-scripts": "5.0.1"
+    "appcenter-link-scripts": "5.0.0"
   },
   "rnpm": {
     "android": {
