@@ -94,6 +94,11 @@ public class AppCenterReactNativeModule extends BaseJavaModule {
     }
 
     @ReactMethod
+    public void setDataResidencyRegion(String dataResidencyRegion) {
+        AppCenter.setDataResidencyRegion(dataResidencyRegion);
+    }
+
+    @ReactMethod
     public void setNetworkRequestsAllowed(boolean isAllowed) {
         AppCenter.setNetworkRequestsAllowed(isAllowed);
     }
