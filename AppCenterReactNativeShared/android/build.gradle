@@ -6,7 +6,6 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,7 +17,6 @@ apply from: 'publish.gradle'
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
-apply plugin: 'com.github.dcendents.android-maven'
 
 def wasSigned = false
 
@@ -68,62 +66,67 @@ allprojects {
         }
     }
 
-    
-    afterEvaluate {
-        uploadArchives {
-            repositories.mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> 
-                    // workaround to prevent the script from failing because of double uploading of pom files
-                    // related issue: https://github.com/gradle/gradle/issues/3003
-                    if (!wasSigned) {
-                        signing.signPom(deployment)
-                        wasSigned = true
-                    }
-                }
+    publishing {
+        repositories {
+            maven {
+                url = uri("${System.env.BUILD_DIR}")
+            }
+        }
 
-                repository(url: ext.mavenRepoUrl) {
-                    authentication(userName: ext.mavenUser, password: ext.mavenKey)
-                }
+        afterEvaluate { project ->
+            publications {
+                release(MavenPublication) {
+                    from components.release
 
-                pom.project {
+                    artifact javadocJar
+                    artifact sourcesJar
 
-                    // Set base information about assemble.
-                    packaging = 'aar'
-                    name = project.name
-                    description = sdkDescription
-                    url = siteUrl
+                    pom {
 
-                    // Set identifiers of assemble.
-                    groupId = ext.groupId
-                    artifactId = project.name
+                        // Set base information about assemble.
+                        packaging = 'aar'
+                        name = project.name
+                        description = project.description
+                        url = ext.siteUrl
 
-                    // Set license information.
-                    licenses {
-                        license {
-                            name = licenseName
-                            url = licenseSite
+                        // Set identifiers of assemble.
+                        groupId = ext.groupId
+                        artifactId = project.name
+
+                        // Set license information.
+                        licenses {
+                            license {
+                                name = ext.licenseName
+                                url = ext.licenseSite
+                            }
                         }
-                    }
 
-                    // Set information about developers.
-                    developers {
-                        developer {
-                            id = developerId
-                            name = developerName
-                            email = developerEmail
+                        // Set information about developers.
+                        developers {
+                            developer {
+                                id = ext.developerId
+                                name = ext.developerName
+                                email = ext.developerEmail
+                            }
                         }
-                    }
 
-                    // Set information about connection with developers.
-                    scm {
-                        connection = gitUrl
-                        developerConnection = gitUrl
-                        url = siteUrl
+                        // Set information about connection with developers.
+                        scm {
+                            connection = ext.gitUrl
+                            developerConnection = ext.gitUrl
+                            url = ext.siteUrl
+                        }
                     }
                 }
             }
+
+            signing {
+                required { gradle.taskGraph.hasTask("publish") }
+                sign publishing.publications.release
+            }
         }
     }
+
 }
 
 dependencies {
@@ -134,7 +137,4 @@ artifacts {
     archives sourcesJar
 }
 
-signing {
-    required { gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
+

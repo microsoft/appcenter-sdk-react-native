@@ -13,9 +13,7 @@ ext {
         properties.load(file.newDataInputStream())
     }
 
-    mavenUser = properties.getProperty("maven.user")
     mavenKey = properties.getProperty("maven.key")
-    mavenRepoUrl = properties.getProperty("maven.repoUrl")
     mavenSigningKeyId = properties.getProperty("maven.signingKeyId")
     mavenPublicKeyPassword = properties.getProperty("maven.publicKeyPassword")
     mavenSecretKeyPath = properties.getProperty("maven.secretKeyPath")
