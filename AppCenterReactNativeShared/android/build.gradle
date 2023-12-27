@@ -14,16 +14,12 @@ buildscript {
 
 apply from: 'publish.gradle'
 
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
-
 def wasSigned = false
 
 allprojects {
     repositories {
         google()
-        mavenCentral()
+        //mavenCentral()
         jcenter {
             content {
                 // https://youtrack.jetbrains.com/issue/IDEA-261387
@@ -31,6 +27,10 @@ allprojects {
             }
         }
     }
+
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing' 
+    apply plugin: 'com.android.library'
 
     def ext = rootProject.ext
     
@@ -80,11 +80,15 @@ allprojects {
             }
         }
 
-        afterEvaluate { project ->
             publications {
                 release(MavenPublication) {
                     from components.release
+                    
+                    artifact sourcesJar
 
+                    logger.info("Publishing ${project.name} to ${System.env.BUILD_DIR}")
+                    components.each { element -> logger.info("Components value ${element}")}       
+                    //logger.info("Components value ${components}")
 
                     pom {
 
@@ -96,7 +100,7 @@ allprojects {
 
                         // Set identifiers of assemble.
                         groupId = ext.groupId
-                        artifactId = project.name
+                        artifactId = rootProject.name
 
                         // Set license information.
                         licenses {
@@ -129,17 +133,14 @@ allprojects {
                 required { gradle.taskGraph.hasTask("publish") }
                 sign publishing.publications.release
             }
-        }
+        
     }
 
+    // dependencies {
+    //     api 'com.microsoft.appcenter:appcenter:5.0.3'
+    // }
+
+    artifacts {
+        archives sourcesJar
+    }
 }
-
-dependencies {
-    api 'com.microsoft.appcenter:appcenter:5.0.3'
-}
-
-artifacts {
-    archives sourcesJar
-}
-
-
