@@ -61,7 +61,7 @@ task sourcesJar(type: Jar) {
 publishing {
     repositories {
         maven {
-            url = uri("maven-output")
+            url = uri("${System.env.BUILD_DIR}")
         }
     }
 
