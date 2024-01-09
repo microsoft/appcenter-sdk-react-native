@@ -5,89 +5,74 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.android.tools.build:gradle:4.2.1'
     }
 }
 
-apply from: 'publish.gradle'
+repositories {
+    google()
+    mavenCentral()
+}
 
-apply plugin: 'com.android.library'
+apply from: 'publish.gradle'
+apply from: 'version.gradle'
+
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.android.library'
 
 def wasSigned = false
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        jcenter {
-            content {
-                // https://youtrack.jetbrains.com/issue/IDEA-261387
-                includeModule("org.jetbrains.trove4j", "trove4j")
-            }
+def ext = rootProject.ext
+
+// Setup signing values.
+ext."signing.keyId" = ext.mavenSigningKeyId
+ext."signing.secretKeyRingFile" = ext.mavenSecretKeyPath
+ext."signing.password" = ext.mavenPublicKeyPassword
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 66
+        versionName '5.0.1'
+        group groupId
+        version versionName
+        buildConfigField 'String', "SDK_NAME", "\"appcenter.react-native\""
+        buildConfigField 'String', 'VERSION_NAME', "\"${ext.versionName}\""
+
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
         }
+        consumerProguardFiles 'proguard-rules.pro'
     }
+}
 
-    def ext = rootProject.ext
-    
-    // Setup signing values.
-    ext."signing.keyId" = ext.mavenSigningKeyId
-    ext."signing.secretKeyRingFile" = ext.mavenSecretKeyPath
-    ext."signing.password" = ext.mavenPublicKeyPassword
-
-    android {
-        compileSdkVersion 29
-        buildToolsVersion '29.0.2'
-
-        defaultConfig {
-            minSdkVersion 21
-            targetSdkVersion 29
-            versionCode 66
-            versionName '5.0.1'
-            group groupId
-            version versionName
-            buildConfigField 'String', "SDK_NAME", "\"appcenter.react-native\""
-
-            ndk {
-                abiFilters "armeabi-v7a", "x86"
-            }
-            consumerProguardFiles 'proguard-rules.pro'
-        }
-    }
-
-    task sourcesJar(type: Jar) {
-        afterEvaluate {
-            from android.sourceSets.main.java.srcDirs
-            classifier = 'sources'
-        }
-    }
-
-    
+task sourcesJar(type: Jar) {
     afterEvaluate {
-        uploadArchives {
-            repositories.mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> 
-                    // workaround to prevent the script from failing because of double uploading of pom files
-                    // related issue: https://github.com/gradle/gradle/issues/3003
-                    if (!wasSigned) {
-                        signing.signPom(deployment)
-                        wasSigned = true
-                    }
-                }
+        from android.sourceSets.main.java.srcDirs
+        classifier = 'sources'
+    }
+}
 
-                repository(url: ext.mavenRepoUrl) {
-                    authentication(userName: ext.mavenUser, password: ext.mavenKey)
-                }
+publishing {
+    repositories {
+        maven {
+            url = uri("${System.env.BUILD_DIR}")
+        }
+    }
 
-                pom.project {
+    afterEvaluate { project ->
+        publications {
+            maven(MavenPublication) {
+                from components.release
 
-                    // Set base information about assemble.
+                artifact sourcesJar
+
+                pom {
                     packaging = 'aar'
                     name = project.name
                     description = sdkDescription
@@ -135,6 +120,6 @@ artifacts {
 }
 
 signing {
-    required { gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
+    required { gradle.taskGraph.hasTask("publish") }
+    sign publishing.publications
 }
