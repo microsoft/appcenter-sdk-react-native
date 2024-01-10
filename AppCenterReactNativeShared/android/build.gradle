@@ -37,7 +37,7 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 66
+        versionCode 67
         versionName '5.0.1'
         group groupId
         version versionName
@@ -112,7 +112,7 @@ publishing {
 }
 
 dependencies {
-    api 'com.microsoft.appcenter:appcenter:5.0.3'
+    api 'com.microsoft.appcenter:appcenter:5.0.4'
 }
 
 artifacts {
