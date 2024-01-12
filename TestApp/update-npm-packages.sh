@@ -36,8 +36,9 @@ pod repo update
 echo "Install shared framework pods..."
 (cd ../AppCenterReactNativeShared/ios && pod install)
 
+# for testing with not released apple and android sdks, you will need to provide the storage access key
 echo "Running pod install and building shared framework..."
-(cd ios && pod install)
+(cd ios && pod install --repo-update)
 
 # workaround for macs on arm64 (uncomment when running on arm64 mac)
 # (cd ios && pod install)

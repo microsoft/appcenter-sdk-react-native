@@ -32,4 +32,5 @@ export function setEnabled(enabled: boolean): Promise<void>;
 export function isNetworkRequestsAllowed(): Promise<boolean>;
 export function setNetworkRequestsAllowed(isAllowed: boolean): Promise<void>;
 export function setUserId(userId: string | null): Promise<void>;
+export function setDataResidencyRegion(dataResidencyRegion: string | null): Promise<void>;
 export function getInstallId(): Promise<string>;

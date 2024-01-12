@@ -30,15 +30,23 @@ def readFromLocalProperties(propertyName) {
     return null
 }
 
+def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
+
 allprojects {
-    repositories {
-        maven {
-            credentials {
-                username = readFromLocalProperties('AZURE_USERNAME')
-                password = readFromLocalProperties('AZURE_PASSWORD')
-            }
-            url "https://msmobilecenter.pkgs.visualstudio.com/_packaging/AppCenter/maven/v1/"
+    configurations.all {
+        resolutionStrategy {
+            // Remove this override in 0.66, as a proper fix is included in react-native itself.
+            force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
         }
+    }
+    repositories {
+        // maven {
+        //     credentials {
+        //         username = readFromLocalProperties('AZURE_USERNAME')
+        //         password = readFromLocalProperties('AZURE_PASSWORD')
+        //     }
+        //     url "https://msmobilecenter.pkgs.visualstudio.com/_packaging/AppCenter/maven/v1/"
+        // }
         mavenLocal()
         google()
         jcenter()

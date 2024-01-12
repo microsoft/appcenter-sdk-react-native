@@ -1,5 +1,20 @@
 # App Center SDK for React Native Change Log
 
+## Version 5.0.1
+
+### App Center
+
+* **[Fix]** Fix Regular Expression Denial of Service in debug vulnerability issue (https://github.com/advisories/GHSA-gxpj-cx7g-858c).
+
+### App Center Crashes
+
+* **[Fix]** Fix the typing contract for the Crashes class.
+
+#### Android/iOS
+
+* **[Internal] Add dataResidencyRegion option.
+ ___
+
 ## Version 5.0.0
 
 #### Android

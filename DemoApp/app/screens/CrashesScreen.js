@@ -31,7 +31,8 @@ export default class CrashesScreen extends Component {
     memoryWarning: '',
     textAttachment: '',
     binaryAttachment: '',
-    userId: ''
+    userId: '',
+    dataResidencyRegion: ''
   }
 
   async componentDidMount() {

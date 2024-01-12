@@ -6,6 +6,7 @@ jest.mock('appcenter', () => ({
     setLogLevel: jest.fn(),
     getInstallId: jest.fn(),
     setUserId: jest.fn(),
+    setDataResidencyRegion: jest.fn(),
     isEnabled: jest.fn(),
     setEnabled: jest.fn(),
     getSdkVersion: jest.fn()

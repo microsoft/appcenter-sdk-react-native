@@ -74,6 +74,11 @@ const AppCenter = {
     },
 
     // async - returns a Promise
+    setDataResidencyRegion(dataResidencyRegion) {
+        return AppCenterReactNative.setDataResidencyRegion(dataResidencyRegion);
+    },
+
+    // async - returns a Promise
     getInstallId() {
         return AppCenterReactNative.getInstallId();
     },

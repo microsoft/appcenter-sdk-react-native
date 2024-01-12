@@ -11,6 +11,7 @@ import SharedStyles from '../SharedStyles';
 import DialsTabBarIcon from '../assets/dials.png';
 
 const USER_ID_KEY = 'USER_ID_KEY';
+const DATA_RESIDENCY_KEY = 'DATA_RESIDENCY_KEY';
 
 const SecretStrings = {
   ios: {
@@ -71,7 +72,8 @@ export default class AppCenterScreen extends Component {
     installId: '',
     sdkVersion: AppCenter.getSdkVersion(),
     startupMode: StartupModes[0],
-    userId: ''
+    userId: '',
+    dataResidencyRegion: ''
   }
 
   async componentDidMount() {
@@ -89,6 +91,15 @@ export default class AppCenterScreen extends Component {
     if (userId !== null) {
       this.state.userId = userId;
       await AppCenter.setUserId(userId);
+    }
+    this.props.navigation.setParams({
+      refreshAppCenterScreen: this.refreshUI.bind(this)
+    });
+
+    const dataResidencyRegion = await AsyncStorage.getItem(DATA_RESIDENCY_KEY);
+    if (dataResidencyRegion !== null) {
+      this.state.dataResidencyRegion = dataResidencyRegion;
+      await AppCenter.setDataResidencyRegion(dataResidencyRegion);
     }
     this.props.navigation.setParams({
       refreshAppCenterScreen: this.refreshUI.bind(this)
@@ -232,6 +243,23 @@ export default class AppCenterScreen extends Component {
                       await AsyncStorage.removeItem(USER_ID_KEY);
                     }
                     await AppCenter.setUserId(userId);
+                  }
+                },
+                {
+                  title: 'Data Residency Region',
+                  value: 'dataResidencyRegion',
+                  onChange: async (dataResidencyRegion) => {
+                    this.setState({ dataResidencyRegion });
+                  },
+                  onSubmit: async () => {
+                    // We use empty text in UI to delete Data Residency Region (null for AppCenter API).
+                    const dataResidencyRegion = this.state.dataResidencyRegion.length === 0 ? null : this.state.dataResidencyRegion;
+                    if (dataResidencyRegion !== null) {
+                      await AsyncStorage.setItem(DATA_RESIDENCY_KEY, dataResidencyRegion);
+                    } else {
+                      await AsyncStorage.removeItem(DATA_RESIDENCY_KEY);
+                    }
+                    await AppCenter.setDataResidencyRegion(dataResidencyRegion);
                   }
                 }
               ],
