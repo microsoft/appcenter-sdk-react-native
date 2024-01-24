@@ -10,7 +10,7 @@ target 'DemoApp' do
   pod 'AppCenter/Analytics', '~> 4.4.3'
   pod 'AppCenterReactNativeShared', '~> 4.4.5'
 
-  platform :ios, '9.0'
+  platform :ios, '11.0'
 
   # This commented line is to avoid react-native link adding an optional dependency that is way too heavy.
   # pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
