@@ -1,0 +1,77 @@
+trigger:
+- master
+- develop
+pr:
+- master
+- develop
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/develop
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+name: $(Date:yyyyMMdd).$(Rev:r)
+variables:
+- name: EOCompliance-Mac
+  value: true
+- name: XCODE_PATH
+  value: /Applications/Xcode_13.2.1.app/Contents/Developer
+extends:
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  ${{ else }}:
+    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: Azure Pipelines
+      image: macos-latest
+      os: macOS
+    customBuildTags:
+    - ES365AIMigrationTooling-BulkMigrated
+    stages:
+    - stage: stage
+      jobs:
+      - job: sdkBuildJob
+        displayName: MacOs
+        cancelTimeoutInMinutes: 1
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish Artifact: framework'
+            path: '$(Build.ArtifactStagingDirectory)'
+            artifactName: zip
+        steps:
+        - checkout: self
+          fetchTags: false
+        - task: Bash@3
+          displayName: Install AppCenterReactNativeShared Pods
+          inputs:
+            filePath: AppCenterReactNativeShared/ios/post-clone.sh
+            workingDirectory: AppCenterReactNativeShared/ios
+        - task: Bash@3
+          displayName: Select Xcode $(XCODE_PATH)
+          inputs:
+            targetType: inline
+            script: sudo xcode-select -s '$(XCODE_PATH)'
+        - task: Bash@3
+          displayName: Build xc-framework
+          inputs:
+            targetType: inline
+            script: |
+              export SRCROOT=`pwd`
+              ./build-xcframework.sh
+            workingDirectory: AppCenterReactNativeShared/ios/
+        - task: Bash@3
+          displayName: Zip framework
+          inputs:
+            filePath: AppCenterReactNativeShared/zip-framework.sh
+            workingDirectory: AppCenterReactNativeShared
+        - task: CopyFiles@2
+          displayName: Copy artifact
+          inputs:
+            SourceFolder: $(Build.SourcesDirectory)/AppCenterReactNativeShared/Products/
+            Contents: AppCenter-SDK-ReactNative-iOS-Pod-*.zip
+            TargetFolder: $(Build.ArtifactStagingDirectory)
