@@ -36,9 +36,9 @@ extends:
       eslint:
         enableExclusions: true
         exclusionPatterns: |
-          TestApp/
-          TestApp34/
-          DemoApp/    
+          TestApp/**
+          TestApp34/**
+          DemoApp/**    
     stages:
     - stage: stage
       jobs:
