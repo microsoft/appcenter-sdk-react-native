@@ -39,6 +39,9 @@ extends:
           TestApp/
           TestApp34/
           DemoApp/
+      baseline:
+        baselineSet: default
+        baselineFile: $(Build.SourcesDirectory)/.gdn/.gdnbaselines
     stages:
     - stage: stage
       jobs:
