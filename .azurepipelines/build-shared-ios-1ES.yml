@@ -13,7 +13,7 @@ resources:
     type: git
     name: 1ESPipelineTemplates/1ESPipelineTemplates
     ref: refs/tags/release
-name: $(Date:yyyyMMdd).$(Rev:r)
+name: $(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
 variables:
 - name: EOCompliance-Mac
   value: true
@@ -39,9 +39,6 @@ extends:
           TestApp/
           TestApp34/
           DemoApp/
-      baseline:
-        baselineSet: default
-        baselineFile: $(Build.SourcesDirectory)/.gdn/.gdnbaselines
     stages:
     - stage: stage
       jobs:
