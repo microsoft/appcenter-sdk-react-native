@@ -40,7 +40,7 @@ extends:
           TestApp34/
           DemoApp/
         credscan:
-        suppressionsFile: $(Build.SourcesDirectory)/.config/CredScanSuppressions.json
+          suppressionsFile: $(Build.SourcesDirectory)/.config/CredScanSuppressions.json
     stages:
     - stage: stage
       jobs:
