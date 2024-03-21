@@ -112,8 +112,9 @@ extends:
           inputs:
             softwareFolder: '$(Agent.BuildDirectory)\zip'
             softwareName: 'appcenter-sdk-react-native'
-            softwareVersionNum: Latest
+            softwareVersionNum: '$(Build.BuildId)'
             isLargeApp: false
+            toolVersion: 'Latest'
             verbosityLevel: verbose
           condition: and(succeeded(), ne(variables['DisableAPIScan'], 'true'))
           env:
