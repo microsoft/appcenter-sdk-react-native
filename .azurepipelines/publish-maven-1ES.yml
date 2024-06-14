@@ -3,7 +3,7 @@ name: $(date:yyyyMMdd)$(rev:.r)
 variables:
 - name: BUILD_DIR
   value: $(Build.ArtifactStagingDirectory)
-- group: AppCenter-SDK-React-Native Bintray and Maven
+- group: AppCenter-SDK-Android Bintray and Maven
 resources:
   repositories:
   - repository: 1ESPipelineTemplates
