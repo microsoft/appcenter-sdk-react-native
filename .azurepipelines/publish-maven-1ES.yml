@@ -55,9 +55,10 @@ extends:
         - task: Gradle@1
           displayName: Gradle publish to Maven local
           inputs:
-            gradleWrapperFile: ./AppCenterReactNativeShared/android/gradlew
+            gradleWrapperFile: './AppCenterReactNativeShared/android/gradlew'
             tasks: publish
             publishJUnitResults: false
+            workingDirectory: './AppCenterReactNativeShared/android'
 
     - stage: APIScan
       dependsOn: Stage
