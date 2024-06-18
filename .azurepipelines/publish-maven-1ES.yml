@@ -24,6 +24,12 @@ extends:
     - ES365AIMigrationTooling-BulkMigrated
     sdl:
       sourceAnalysisPool: 1ES-PT-Windows-2022
+      eslint:
+        enableExclusions: true
+        exclusionPatterns: |
+          TestApp/
+          TestApp34/
+          DemoApp/
     stages:
     - stage: stage
       jobs:
