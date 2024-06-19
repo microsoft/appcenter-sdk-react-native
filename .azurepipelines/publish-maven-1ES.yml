@@ -1,0 +1,101 @@
+trigger: none
+name: $(date:yyyyMMdd)$(rev:.r)
+variables:
+- name: BUILD_DIR
+  value: $(Build.ArtifactStagingDirectory)
+- group: AppCenter-SDK-Android Bintray and Maven
+resources:
+  repositories:
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+extends:
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  ${{ else }}:
+    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: Azure Pipelines
+      image: macos-latest
+      os: macOS
+    customBuildTags:
+    - ES365AIMigrationTooling-BulkMigrated
+    sdl:
+      sourceAnalysisPool: 1ES-PT-Windows-2022
+      eslint:
+        enableExclusions: true
+        exclusionPatterns: |
+          TestApp/
+          TestApp34/
+          DemoApp/
+    stages:
+    - stage: stage
+      jobs:
+      - job: Phase_1
+        displayName: MacOS
+        cancelTimeoutInMinutes: 1
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish Artifact: Release'
+            targetPath: $(Build.ArtifactStagingDirectory)/com/microsoft
+            artifactName: Release
+        steps:
+        - checkout: self
+          clean: true
+          submodules: recursive
+          fetchTags: false
+        - task: DownloadSecureFile@1
+          displayName: Download GPG-key
+          inputs:
+            secureFile: 98b107ca-fab1-42c0-819d-2871c022869c
+        - task: Bash@3
+          displayName: Configure Maven
+          inputs:
+            targetType: filePath
+            filePath: ./scripts/put-maven-secrets-gradle.sh
+            arguments: '"$(MAVEN_USER)" "$(MAVEN_KEY)" "$(GDP_SIGNING_KEY_ID)" "$(Agent.TempDirectory)/appcenter-gpg-key.gpg" "$(GDP_KEY_PASSWORD)"'
+            failOnStderr: true
+        - task: Gradle@1
+          displayName: Gradle publish to Maven local
+          inputs:
+            gradleWrapperFile: './AppCenterReactNativeShared/android/gradlew'
+            tasks: publish
+            publishJUnitResults: false
+            workingDirectory: './AppCenterReactNativeShared/android'
+
+    - stage: APIScan
+      dependsOn: Stage
+      pool:
+        name: 1ES-PT-Windows-2022
+        os: windows
+      variables:
+        "agent.source.skip": true
+      jobs:
+      - job: APIScan
+        steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: Download Build Artifacts for APIScan
+          inputs:
+            artifactName: Release
+            targetPath: '$(Agent.BuildDirectory)/Release'
+        - task: AzureKeyVault@2
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcenter-sdk-managed-identity-clientid'
+            RunAsPreJob: false
+        - task: APIScan@2
+          displayName: 'Run APIScan'
+          inputs:
+            softwareFolder: '$(Agent.BuildDirectory)\Release'
+            softwareName: 'appcenter-sdk-react-native'
+            softwareVersionNum: '$(Build.BuildId)'
+            isLargeApp: false
+            toolVersion: 'Latest'
+            verbosityLevel: verbose
+          condition: and(succeeded(), ne(variables['DisableAPIScan'], 'true'))
+          env:
+            AzureServicesAuthConnectionString: 'runAs=App;AppId=$(appcenter-sdk-managed-identity-clientid)'
