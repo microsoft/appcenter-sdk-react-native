@@ -6,6 +6,7 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace "com.microsoft.appcenter.reactnative.appcenter"
     compileSdkVersion rootProject.properties.get('compileSdkVersion', 29)
     buildToolsVersion rootProject.properties.get('buildToolsVersion', '29.0.2')
 
