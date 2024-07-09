@@ -2,6 +2,13 @@
 
 ## Version 5.0.1
 
+#### Android/iOS
+
+* **[Improvement] Move namespace definition from AndroidManifest.xml to build.gradle files.
+___
+
+## Version 5.0.1
+
 ### App Center
 
 * **[Fix]** Fix Regular Expression Denial of Service in debug vulnerability issue (https://github.com/advisories/GHSA-gxpj-cx7g-858c).
