@@ -48,6 +48,9 @@ extends:
         displayName: MacOs
         cancelTimeoutInMinutes: 1
         templateContext:
+          sdl:
+            codeql:
+              language: javascript
           outputs:
           - output: pipelineArtifact
             displayName: 'Publish Artifact: framework'
