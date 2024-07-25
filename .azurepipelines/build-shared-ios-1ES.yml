@@ -20,10 +20,10 @@ variables:
 - name: XCODE_PATH
   value: /Applications/Xcode_13.2.1.app/Contents/Developer
 extends:
-  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
-    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
-  ${{ else }}:
-    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+  # ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  # ${{ else }}:
+  #   template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
     pool:
       name: Azure Pipelines
