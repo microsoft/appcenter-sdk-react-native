@@ -85,6 +85,27 @@ extends:
             SourceFolder: $(Build.SourcesDirectory)/AppCenterReactNativeShared/Products/
             Contents: AppCenter-SDK-ReactNative-iOS-Pod-*.zip
             TargetFolder: $(Build.ArtifactStagingDirectory)
+      - job: collectVersionInfo
+        displayName: Version Information
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish Version Information'
+            targetPath: '$(Build.ArtifactStagingDirectory)/Info'
+            artifactName: Info
+            sbomEnabled: false
+        steps:
+        - bash: |
+            swift --version
+            swift package describe
+          displayName: 'Print Swift Package Information'
+        - bash: |
+            VERSION=$(Scripts/framework-version.sh)
+            mkdir -p $(Build.ArtifactStagingDirectory)/Info
+            echo $VERSION > $(Build.ArtifactStagingDirectory)/Info/VERSION
+            echo $BUILD_SOURCEVERSION > $(Build.ArtifactStagingDirectory)/Info/COMMIT
+            Scripts/get-release-notes.sh $VERSION > $(Build.ArtifactStagingDirectory)/Info/RELEASE.md
+          displayName: 'Collect Version Information'
 
     - stage: APIScan
       dependsOn: Stage
