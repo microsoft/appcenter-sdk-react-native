@@ -87,13 +87,19 @@ extends:
             TargetFolder: $(Build.ArtifactStagingDirectory)
       - job: collectVersionInfo
         displayName: Version Information
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish Version Information'
+            targetPath: '$(Build.ArtifactStagingDirectory)/Info'
+            artifactName: Info
+            sbomEnabled: false
         steps:
-        - bash: |
-            pod --version
-          displayName: 'Print CocoaPods Version Information'
         - bash: |
             VERSION=$(grep -E 's.version.*=' appcenter/appcenter-core.podspec | awk -F "'" '{print $2}')
             mkdir -p $(Build.ArtifactStagingDirectory)/Info
+            echo "Version: $VERSION"
+            echo "Commit: $BUILD_SOURCEVERSION"
             echo $VERSION > $(Build.ArtifactStagingDirectory)/Info/VERSION    
             echo $BUILD_SOURCEVERSION > $(Build.ArtifactStagingDirectory)/Info/COMMIT
           displayName: 'Collect Version and Commit Information'
