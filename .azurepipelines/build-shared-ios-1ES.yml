@@ -87,25 +87,23 @@ extends:
             TargetFolder: $(Build.ArtifactStagingDirectory)
       - job: collectVersionInfo
         displayName: Version Information
-        templateContext:
-          outputs:
-          - output: pipelineArtifact
-            displayName: 'Publish Version Information'
-            targetPath: '$(Build.ArtifactStagingDirectory)/Info'
-            artifactName: Info
-            sbomEnabled: false
         steps:
         - bash: |
             pod --version
-            pod spec lint appcenter/appcenter-core.podspec --verbose
-          displayName: 'Print CocoaPods Information'
+          displayName: 'Print CocoaPods Version Information'
         - bash: |
-            VERSION=$(grep -E 's.version.*=' appcenter/appcenter-core.podspec | awk -F "'" '{print $2}')
+            PODS=("appcenter/appcenter-core.podspec" "appcenter/appcenter-analytics.podspec" "appcenter/appcenter-crashes.podspec")
+            NAMES=("VERSION_CORE" "VERSION_ANALYTICS" "VERSION_CRASHES")
+            
             mkdir -p $(Build.ArtifactStagingDirectory)/Info
-            echo $VERSION > $(Build.ArtifactStagingDirectory)/Info/VERSION
+            
+            for i in "${!PODS[@]}"; do
+              VERSION=$(grep -E 's.version.*=' ${PODS[$i]} | awk -F "'" '{print $2}')
+              echo $VERSION > $(Build.ArtifactStagingDirectory)/Info/${NAMES[$i]}
+            done
+            
             echo $BUILD_SOURCEVERSION > $(Build.ArtifactStagingDirectory)/Info/COMMIT
-            Scripts/get-release-notes.sh $VERSION > $(Build.ArtifactStagingDirectory)/Info/RELEASE.md
-          displayName: 'Collect Version Information'
+          displayName: 'Collect Version and Commit Information'
 
     - stage: APIScan
       dependsOn: Stage
