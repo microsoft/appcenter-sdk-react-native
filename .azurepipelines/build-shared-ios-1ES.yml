@@ -96,11 +96,11 @@ extends:
             sbomEnabled: false
         steps:
         - bash: |
-            swift --version
-            swift package describe
-          displayName: 'Print Swift Package Information'
+            pod --version
+            pod spec lint appcenter/appcenter-core.podspec --verbose
+          displayName: 'Print CocoaPods Information'
         - bash: |
-            VERSION=$(Scripts/framework-version.sh)
+            VERSION=$(grep -E 's.version.*=' appcenter/appcenter-core.podspec | awk -F "'" '{print $2}')
             mkdir -p $(Build.ArtifactStagingDirectory)/Info
             echo $VERSION > $(Build.ArtifactStagingDirectory)/Info/VERSION
             echo $BUILD_SOURCEVERSION > $(Build.ArtifactStagingDirectory)/Info/COMMIT
