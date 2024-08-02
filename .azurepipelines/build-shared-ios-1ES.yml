@@ -96,7 +96,7 @@ extends:
             sbomEnabled: false
         steps:
         - bash: |
-            VERSION=$(grep -E 's.version.*=' appcenter/appcenter-core.podspec | awk -F "'" '{print $2}')
+            VERSION=$(grep -E '"version":' appcenter/package.json | awk -F '"' '{print $4}')
             mkdir -p $(Build.ArtifactStagingDirectory)/Info
             echo "Version: $VERSION"
             echo "Commit: $BUILD_SOURCEVERSION"
