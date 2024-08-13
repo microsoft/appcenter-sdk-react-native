@@ -96,7 +96,7 @@ extends:
             sbomEnabled: false
         steps:
       - task: Bash@3
-          displayName: 'Collect Version and Commit Information'
+        displayName: 'Collect Version and Commit Information'
           inputs:
             targetType: 'inline'
             script: |
