@@ -37,8 +37,8 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 67
-        versionName '5.0.1'
+        versionCode 68
+        versionName '5.0.2'
         group groupId
         version versionName
         buildConfigField 'String', "SDK_NAME", "\"appcenter.react-native\""
