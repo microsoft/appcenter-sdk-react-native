@@ -1,22 +1,22 @@
 PODS:
-  - appcenter-analytics (5.0.1):
+  - appcenter-analytics (5.0.2):
     - AppCenter/Analytics (~> 5.0)
     - AppCenterReactNativeShared (~> 5.0)
     - React-Core
-  - appcenter-core (5.0.1):
+  - appcenter-core (5.0.2):
     - AppCenterReactNativeShared (~> 5.0)
     - React-Core
-  - appcenter-crashes (5.0.1):
+  - appcenter-crashes (5.0.2):
     - AppCenter/Crashes (~> 5.0)
     - AppCenterReactNativeShared (~> 5.0)
     - React-Core
-  - AppCenter/Analytics (5.0.4):
+  - AppCenter/Analytics (5.0.5):
     - AppCenter/Core
-  - AppCenter/Core (5.0.4)
-  - AppCenter/Crashes (5.0.4):
+  - AppCenter/Core (5.0.5)
+  - AppCenter/Crashes (5.0.5):
     - AppCenter/Core
-  - AppCenterReactNativeShared (5.0.1):
-    - AppCenter/Core (= 5.0.4)
+  - AppCenterReactNativeShared (5.0.2):
+    - AppCenter/Core (= 5.0.5)
   - boost-for-react-native (1.63.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.62.3)
@@ -311,10 +311,9 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - boost-for-react-native
-  https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private:
+  trunk:
     - AppCenter
+    - boost-for-react-native
 
 EXTERNAL SOURCES:
   appcenter-analytics:
@@ -387,11 +386,11 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AppCenter: 2601576cea4d11562bd004e12e26d5f498bc17e6
-  appcenter-analytics: b3a60e025b8db7013a71053c1ced96bcf7acba75
-  appcenter-core: 53cc7b5d9a2cdd6a484cae8e50977bab91e0780e
-  appcenter-crashes: 9cb825ee8f89715a1b0a7164a71fc8c582b0e796
-  AppCenterReactNativeShared: eef1f752d56331857b50891792c169c65b3fed47
+  AppCenter: 994875ea7941b9e168babb98299f900a94bcef13
+  appcenter-analytics: b90b12a9357d8e3f6174ac761f00c70d95a137ee
+  appcenter-core: 711583753e9b44d3a9c75f8f78baa23804be3e40
+  appcenter-crashes: be716cca49539023ab5778502230098dd4b41d54
+  AppCenterReactNativeShared: e2be13d97a998ef5037a9379999fe446993add9b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   FBLazyVector: a93c5eef764b16789fa7875aac4e09119e806ad4
@@ -424,6 +423,6 @@ SPEC CHECKSUMS:
   RNScreens: 03bf608b92ac0acf323f47d8f5b63a8f829340c8
   Yoga: b5db822228963b87948afa7a5a531088607151dc
 
-PODFILE CHECKSUM: 5523256fea95f994fd212b1f9568454fbebe205a
+PODFILE CHECKSUM: fce875f65c5fee75e277da03124520672ed264e5
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.15.2

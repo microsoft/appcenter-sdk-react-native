@@ -1,0 +1,145 @@
+trigger:
+- master
+- develop
+pr:
+- master
+- develop
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/develop
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+name: $(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+variables:
+- name: EOCompliance-Mac
+  value: true
+- name: XCODE_PATH
+  value: /Applications/Xcode_13.2.1.app/Contents/Developer
+extends:
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  ${{ else }}:
+    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: Azure Pipelines
+      image: macos-latest
+      os: macOS
+    customBuildTags:
+    - ES365AIMigrationTooling-BulkMigrated
+    sdl:
+      sourceAnalysisPool: 1ES-PT-Windows-2022
+      eslint:
+        enableExclusions: true
+        exclusionPatterns: |
+          TestApp/
+          TestApp34/
+          DemoApp/
+        credscan:
+          suppressionsFile: $(Build.SourcesDirectory)/.config/CredScanSuppressions.json
+    stages:
+    - stage: stage
+      jobs:
+      - job: sdkBuildJob
+        displayName: MacOs
+        cancelTimeoutInMinutes: 1
+        templateContext:
+          sdl:
+            codeql:
+              language: javascript
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish Artifact: framework'
+            path: '$(Build.ArtifactStagingDirectory)'
+            artifactName: zip
+        steps:
+        - checkout: self
+          fetchTags: false
+        - task: Bash@3
+          displayName: Install AppCenterReactNativeShared Pods
+          inputs:
+            filePath: AppCenterReactNativeShared/ios/post-clone.sh
+            workingDirectory: AppCenterReactNativeShared/ios
+        - task: Bash@3
+          displayName: Select Xcode $(XCODE_PATH)
+          inputs:
+            targetType: inline
+            script: sudo xcode-select -s '$(XCODE_PATH)'
+        - task: Bash@3
+          displayName: Build xc-framework
+          inputs:
+            targetType: inline
+            script: |
+              export SRCROOT=`pwd`
+              ./build-xcframework.sh
+            workingDirectory: AppCenterReactNativeShared/ios/
+        - task: Bash@3
+          displayName: Zip framework
+          inputs:
+            filePath: AppCenterReactNativeShared/zip-framework.sh
+            workingDirectory: AppCenterReactNativeShared
+        - task: CopyFiles@2
+          displayName: Copy artifact
+          inputs:
+            SourceFolder: $(Build.SourcesDirectory)/AppCenterReactNativeShared/Products/
+            Contents: AppCenter-SDK-ReactNative-iOS-Pod-*.zip
+            TargetFolder: $(Build.ArtifactStagingDirectory)
+      - job: collectVersionInfo
+        displayName: Version Information
+        templateContext:
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish Version Information'
+            targetPath: '$(Build.ArtifactStagingDirectory)/Info'
+            artifactName: Info
+            sbomEnabled: false
+        steps:
+        - task: Bash@3
+          displayName: 'Collect Version and Commit Information'
+          inputs:
+            targetType: 'inline'
+            script: |
+              VERSION=$(grep -E '"version":' appcenter/package.json | awk -F '"' '{print $4}')
+              mkdir -p $(Build.ArtifactStagingDirectory)/Info
+              echo "Version: $VERSION"
+              echo "Commit: $BUILD_SOURCEVERSION"
+              echo $VERSION > $(Build.ArtifactStagingDirectory)/Info/VERSION    
+              echo $BUILD_SOURCEVERSION > $(Build.ArtifactStagingDirectory)/Info/COMMIT
+
+    - stage: APIScan
+      dependsOn: Stage
+      pool:
+        name: 1ES-PT-Windows-2022
+        os: windows
+      variables:
+        "agent.source.skip": true
+      jobs:
+      - job: APIScan
+        steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: Download Build Artifacts for APIScan
+          inputs:
+            artifactName: zip
+            targetPath: '$(Agent.BuildDirectory)/zip'
+        - task: AzureKeyVault@2
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcenter-sdk-managed-identity-clientid'
+            RunAsPreJob: false
+        - task: APIScan@2
+          displayName: 'Run APIScan'
+          inputs:
+            softwareFolder: '$(Agent.BuildDirectory)\zip'
+            softwareName: 'appcenter-sdk-react-native'
+            softwareVersionNum: '$(Build.BuildId)'
+            isLargeApp: false
+            toolVersion: 'Latest'
+            verbosityLevel: verbose
+          condition: and(succeeded(), ne(variables['DisableAPIScan'], 'true'))
+          env:
+            AzureServicesAuthConnectionString: 'runAs=App;AppId=$(appcenter-sdk-managed-identity-clientid)'
