@@ -1,6 +1,6 @@
 # App Center SDK for React Native Change Log
 
-## Version 5.0.1
+## Version 5.0.2
 
 #### Android/iOS
 
