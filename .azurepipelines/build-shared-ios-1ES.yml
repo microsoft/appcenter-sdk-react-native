@@ -94,9 +94,7 @@ extends:
         templateContext:
           sdl:
             codeql:
-              compiled:
-                enabled: false
-                justificationForDisabling: "This is the test job. There are no outputs that will go to production"
+              language: javascript
               cadence: 0
           outputs:
           - output: pipelineArtifact
