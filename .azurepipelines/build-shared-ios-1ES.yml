@@ -92,6 +92,12 @@ extends:
       - job: collectVersionInfo
         displayName: Version Information
         templateContext:
+          sdl:
+            codeql:
+              compiled:
+                enabled: false
+                justificationForDisabling: "This is the test job. There are no outputs that will go to production"
+              cadence: 0
           outputs:
           - output: pipelineArtifact
             displayName: 'Publish Version Information'
