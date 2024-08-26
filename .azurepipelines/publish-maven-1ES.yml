@@ -40,7 +40,6 @@ extends:
           sdl:
             codeql:
               language: javascript, java
-              cadence: 0
           outputs:
           - output: pipelineArtifact
             displayName: 'Publish Artifact: Release'

@@ -51,7 +51,6 @@ extends:
           sdl:
             codeql:
               language: javascript
-              cadence: 0
           outputs:
           - output: pipelineArtifact
             displayName: 'Publish Artifact: framework'
@@ -95,7 +94,6 @@ extends:
           sdl:
             codeql:
               language: javascript
-              cadence: 0
           outputs:
           - output: pipelineArtifact
             displayName: 'Publish Version Information'
