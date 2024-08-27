@@ -91,6 +91,9 @@ extends:
       - job: collectVersionInfo
         displayName: Version Information
         templateContext:
+          sdl:
+            codeql:
+              language: javascript
           outputs:
           - output: pipelineArtifact
             displayName: 'Publish Version Information'
