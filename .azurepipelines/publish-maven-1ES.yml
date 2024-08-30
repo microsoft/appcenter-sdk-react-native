@@ -72,7 +72,8 @@ extends:
     - stage: PublishAzureMaven
       dependsOn: Stage
       pool:
-        name: macos-latest
+        name: Azure Pipelines
+        image: macos-latest
         os: macOS
       variables:
         "agent.source.skip": true
