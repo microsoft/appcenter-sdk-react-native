@@ -69,7 +69,7 @@ extends:
             publishJUnitResults: false
             workingDirectory: './AppCenterReactNativeShared/android'
 
-    - stage: Publish Azure Maven
+    - stage: PublishAzureMaven
       dependsOn: Stage
       pool:
         name: macos-latest
