@@ -77,7 +77,7 @@ extends:
       variables:
         "agent.source.skip": true
       jobs:
-      - job: Upload package to azure artifacts
+      - job: UploadArtifacts
         steps:
         - task: DownloadPipelineArtifact@2
           displayName: Download Build Artifacts for APIScan
