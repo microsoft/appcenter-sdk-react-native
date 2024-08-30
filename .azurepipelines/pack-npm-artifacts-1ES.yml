@@ -55,6 +55,7 @@ extends:
         - checkout: self
           fetchTags: false
         - task: ArchiveFiles@2
+          displayName: 'Archive appcenter folder'
           inputs:
             rootFolderOrFile: '$(Build.SourcesDirectory)/appcenter'  
             includeRootFolder: false  
@@ -62,6 +63,7 @@ extends:
             archiveFile: '$(Build.ArtifactStagingDirectory)/appcenter.tar'  
             replaceExistingArchive: true  
         - task: ArchiveFiles@2
+          displayName: 'Archive appcenter-analytics folder'
           inputs:
             rootFolderOrFile: $(Build.SourcesDirectory)/'appcenter-analytics'  
             includeRootFolder: false 
@@ -69,6 +71,7 @@ extends:
             archiveFile: '$(Build.ArtifactStagingDirectory)/appcenter-analytics.tar'
             replaceExistingArchive: true
         - task: ArchiveFiles@2
+          displayName: 'Archive appcenter-crashes folder'
           inputs:
             rootFolderOrFile: '$(Build.SourcesDirectory)/appcenter-crashes'
             includeRootFolder: false
@@ -76,6 +79,7 @@ extends:
             archiveFile: '$(Build.ArtifactStagingDirectory)/appcenter-crashes.tar'
             replaceExistingArchive: true
         - task: ArchiveFiles@2
+          displayName: 'Archive appcenter-link-scripts folder'
           inputs:
             rootFolderOrFile: '$(Build.SourcesDirectory)/appcenter-link-scripts'
             includeRootFolder: false
