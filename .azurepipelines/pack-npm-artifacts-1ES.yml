@@ -37,7 +37,7 @@ extends:
         credscan:
           suppressionsFile: $(Build.SourcesDirectory)/.config/CredScanSuppressions.json
     stages:
-    - stage: Pack NPM Artifacts
+    - stage: PackNpmArtifacts
       jobs:
       - job: ArchiveNpmFolders
         displayName: Archive NPM Folders
