@@ -69,6 +69,42 @@ extends:
             publishJUnitResults: false
             workingDirectory: './AppCenterReactNativeShared/android'
 
+    - stage: Publish Azure Maven
+      dependsOn: Stage
+      pool:
+        name: macos-latest
+        os: macOS
+      variables:
+        "agent.source.skip": true
+      jobs:
+      - job: Upload package to azure artifacts
+        steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: Download Build Artifacts for APIScan
+          inputs:
+            artifactName: Release
+            targetPath: '$(Agent.BuildDirectory)/Release'
+        - task: Bash@3
+          displayName: Upload files to repository
+          inputs:
+            targetType: 'inline'
+            script: |
+              VERSION=$(grep -E '"version":' appcenter/package.json | awk -F '"' '{print $4}')
+              ARTIFACTS_DIR='$(Agent.BuildDirectory)/Release/appcenter/reactnative/appcenter-react-native/$VERSION'
+              AAR_FILE
+
+              echo "Version: $VERSION"
+              echo "Artifacts dir: $ARTIFACTS_DIR"
+              echo "Commit: $BUILD_SOURCEVERSION"
+              mvn deploy:deploy-file -DgeneratePom=false \
+                  -Durl=$(AZURE_REPO) \
+                  -Dfile=$ARTIFACTS_DIR/appcenter-react-native-$VERSION.aar \
+                  -DgroupId=com.microsoft.appcenter.reactnative \
+                  -DartifactId=appcenter-react-native \
+                  -Dversion=$VERSION-$BUILD_SOURCEVERSION \
+                  -DrepositoryId=AppCenter \
+                  -e
+
     - stage: APIScan
       dependsOn: Stage
       pool:
