@@ -62,15 +62,10 @@ extends:
             archiveType: 'tar'  
             archiveFile: '$(Build.ArtifactStagingDirectory)/appcenter.tar'  
             replaceExistingArchive: true 
-        - task: Bash@3
-          displayName: 'List files in repo folder'
-          inputs:
-            targetType: 'inline'
-            script: 'ls -l $(Build.SourcesDirectory)'
         - task: ArchiveFiles@2
           displayName: 'Archive appcenter-analytics folder'
           inputs:
-            rootFolderOrFile: $(Build.SourcesDirectory)/appcenter-analytics'  
+            rootFolderOrFile: '$(Build.SourcesDirectory)/appcenter-analytics'  
             includeRootFolder: false 
             archiveType: 'tar'
             archiveFile: '$(Build.ArtifactStagingDirectory)/appcenter-analytics.tar'
