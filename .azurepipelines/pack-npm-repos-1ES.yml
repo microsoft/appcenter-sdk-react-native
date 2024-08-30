@@ -37,10 +37,10 @@ extends:
         credscan:
           suppressionsFile: $(Build.SourcesDirectory)/.config/CredScanSuppressions.json
     stages:
-    - stage: stage
+    - stage: Pack NPM Artifacts
       jobs:
-      - job: sdkBuildJob
-        displayName: MacOs
+      - job: ArchiveNpmFolders
+        displayName: Archive NPM Folders
         cancelTimeoutInMinutes: 1
         templateContext:
           sdl:
@@ -97,8 +97,8 @@ extends:
         - task: DownloadPipelineArtifact@2
           displayName: Download Build Artifacts for APIScan
           inputs:
-            artifactName: zip
-            targetPath: '$(Agent.BuildDirectory)/zip'
+            artifactName: sdk
+            targetPath: '$(Agent.BuildDirectory)/sdk'
         - task: AzureKeyVault@2
           inputs:
             azureSubscription: 'AC - Dev Infra & Build Pool'
@@ -108,7 +108,7 @@ extends:
         - task: APIScan@2
           displayName: 'Run APIScan'
           inputs:
-            softwareFolder: '$(Agent.BuildDirectory)\zip'
+            softwareFolder: '$(Agent.BuildDirectory)\sdk'
             softwareName: 'appcenter-sdk-react-native'
             softwareVersionNum: '$(Build.BuildId)'
             isLargeApp: false
