@@ -91,7 +91,7 @@ extends:
             targetType: 'inline'
             script: |
               VERSION=$(basename $(Agent.BuildDirectory)/Release/appcenter/reactnative/appcenter-react-native/*/)
-              ARTIFACTS_DIR='$(Agent.BuildDirectory)/Release/appcenter/reactnative/appcenter-react-native/$VERSION'
+              ARTIFACTS_DIR="$(Agent.BuildDirectory)/Release/appcenter/reactnative/appcenter-react-native/$VERSION"
 
               echo "Version: $VERSION"
               echo "Artifacts dir: $ARTIFACTS_DIR"
