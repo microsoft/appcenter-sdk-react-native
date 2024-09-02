@@ -88,6 +88,12 @@ extends:
             SourceFolder: $(Build.SourcesDirectory)/AppCenterReactNativeShared/Products/
             Contents: AppCenter-SDK-ReactNative-iOS-Pod-*.zip
             TargetFolder: $(Build.ArtifactStagingDirectory)
+        - task: CopyFiles@2
+          displayName: Copy podspec
+          inputs:
+            SourceFolder: $(Build.SourcesDirectory)/AppCenterReactNativeShared/Products/
+            Contents: AppCenterReactNativeShared.podspec
+            TargetFolder: $(Build.ArtifactStagingDirectory)
       - job: collectVersionInfo
         displayName: Version Information
         templateContext:

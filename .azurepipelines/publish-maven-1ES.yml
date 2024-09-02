@@ -1,4 +1,9 @@
-trigger: none
+trigger:
+- master
+- develop
+pr:
+- master
+- develop
 name: $(date:yyyyMMdd)$(rev:.r)
 variables:
 - name: BUILD_DIR
