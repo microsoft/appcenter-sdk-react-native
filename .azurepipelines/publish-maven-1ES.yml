@@ -85,6 +85,10 @@ extends:
           inputs:
             artifactName: Release
             targetPath: '$(Agent.BuildDirectory)/Release'
+        - task: MavenAuthenticate@0
+          displayName: 'Maven Authenticate'
+          inputs:
+            artifactsFeeds: AppCenter
         - task: Bash@3
           displayName: Upload files to repository
           inputs:
