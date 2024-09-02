@@ -1,0 +1,123 @@
+trigger:
+- master
+- develop
+pr:
+- master
+- develop
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/develop
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+name: $(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+extends:
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  ${{ else }}:
+    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: Azure Pipelines
+      image: macos-latest
+      os: macOS
+    customBuildTags:
+    - ES365AIMigrationTooling-BulkMigrated
+    sdl:
+      sourceAnalysisPool: 1ES-PT-Windows-2022
+      eslint:
+        enableExclusions: true
+        exclusionPatterns: |
+          TestApp/
+          TestApp34/
+          DemoApp/
+        credscan:
+          suppressionsFile: $(Build.SourcesDirectory)/.config/CredScanSuppressions.json
+    stages:
+    - stage: PackNpmArtifacts
+      jobs:
+      - job: ArchiveNpmFolders
+        displayName: Archive NPM Folders
+        cancelTimeoutInMinutes: 1
+        templateContext:
+          sdl:
+            codeql:
+              language: javascript
+          outputs:
+          - output: pipelineArtifact
+            displayName: 'Publish Artifact: framework'
+            path: '$(Build.ArtifactStagingDirectory)'
+            artifactName: sdk
+        steps:
+        - checkout: self
+          fetchTags: false
+        - task: ArchiveFiles@2
+          displayName: 'Archive appcenter folder'
+          inputs:
+            rootFolderOrFile: '$(Build.SourcesDirectory)/appcenter'  
+            includeRootFolder: false  
+            archiveType: 'tar'  
+            archiveFile: '$(Build.ArtifactStagingDirectory)/appcenter.tar'  
+            replaceExistingArchive: true 
+        - task: ArchiveFiles@2
+          displayName: 'Archive appcenter-analytics folder'
+          inputs:
+            rootFolderOrFile: '$(Build.SourcesDirectory)/appcenter-analytics'  
+            includeRootFolder: false 
+            archiveType: 'tar'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/appcenter-analytics.tar'
+            replaceExistingArchive: true
+        - task: ArchiveFiles@2
+          displayName: 'Archive appcenter-crashes folder'
+          inputs:
+            rootFolderOrFile: '$(Build.SourcesDirectory)/appcenter-crashes'
+            includeRootFolder: false
+            archiveType: 'tar'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/appcenter-crashes.tar'
+            replaceExistingArchive: true
+        - task: ArchiveFiles@2
+          displayName: 'Archive appcenter-link-scripts folder'
+          inputs:
+            rootFolderOrFile: '$(Build.SourcesDirectory)/appcenter-link-scripts'
+            includeRootFolder: false
+            archiveType: 'tar'
+            archiveFile: '$(Build.ArtifactStagingDirectory)/appcenter-link-scripts.tar'
+            replaceExistingArchive: true
+
+
+    - stage: APIScan
+      dependsOn: PackNpmArtifacts
+      pool:
+        name: 1ES-PT-Windows-2022
+        os: windows
+      variables:
+        "agent.source.skip": true
+      jobs:
+      - job: APIScan
+        steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: Download Build Artifacts for APIScan
+          inputs:
+            artifactName: sdk
+            targetPath: '$(Agent.BuildDirectory)/sdk'
+        - task: AzureKeyVault@2
+          inputs:
+            azureSubscription: 'AC - Dev Infra & Build Pool'
+            KeyVaultName: 'mobile-center-sdk'
+            SecretsFilter: 'appcenter-sdk-managed-identity-clientid'
+            RunAsPreJob: false
+        - task: APIScan@2
+          displayName: 'Run APIScan'
+          inputs:
+            softwareFolder: '$(Agent.BuildDirectory)\sdk'
+            softwareName: 'appcenter-sdk-react-native'
+            softwareVersionNum: '$(Build.BuildId)'
+            isLargeApp: false
+            toolVersion: 'Latest'
+            verbosityLevel: verbose
+          condition: and(succeeded(), ne(variables['DisableAPIScan'], 'true'))
+          env:
+            AzureServicesAuthConnectionString: 'runAs=App;AppId=$(appcenter-sdk-managed-identity-clientid)'
