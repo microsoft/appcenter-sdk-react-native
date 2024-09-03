@@ -107,9 +107,9 @@ extends:
               mvn deploy:deploy-file -DgeneratePom=false \
                   -Durl=$(AZURE_REPO) \
                   -Dfile=$ARTIFACT_FILE_BASE.aar \
-                  -Dfiles=$ARTIFACT_FILE_BASE.aar.asc,$ARTIFACT_FILE_BASE.pom,$ARTIFACT_FILE_BASE.pom.asc,$ARTIFACT_FILE_BASE-sources.jar,$ARTIFACT_FILE_BASE-sources.jar.asc \
-                  -Dtypes=jar,aar,pom \
-                  -Dclassifiers=sources \
+                  -Dfiles=$ARTIFACT_FILE_BASE.pom,$ARTIFACT_FILE_BASE-sources.jar \
+                  -Dtypes=pom,jar \
+                  -Dclassifiers=pom,sources \
                   -DgroupId=com.microsoft.appcenter.reactnative \
                   -DartifactId=$ARTIFACT_ID \
                   -Dversion=$VERSION-${BUILD_SOURCEVERSION:0:7} \
