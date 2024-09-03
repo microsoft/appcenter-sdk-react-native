@@ -96,16 +96,21 @@ extends:
             script: |
               VERSION=$(basename $(Agent.BuildDirectory)/Release/appcenter/reactnative/appcenter-react-native/*/)
               ARTIFACTS_DIR="$(Agent.BuildDirectory)/Release/appcenter/reactnative/appcenter-react-native/$VERSION"
+              ARTIFACT_ID="appcenter-react-native"
+              ARTIFACT_FILE_BASE="$ARTIFACTS_DIR/$ARTIFACT_ID-$VERSION"
 
               echo "Version: $VERSION"
               echo "Artifacts dir: $ARTIFACTS_DIR"
               echo "Commit: $BUILD_SOURCEVERSION"
+              echo "ARTIFACT_FILE_BASE: $ARTIFACT_FILE_BASE"
+
               mvn deploy:deploy-file -DgeneratePom=false \
                   -Durl=$(AZURE_REPO) \
-                  -Dfile=$ARTIFACTS_DIR/appcenter-react-native-$VERSION.aar \
+                  -Dfile=$ARTIFACT_FILE_BASE.aar \
+                  -Dfiles=$ARTIFACT_FILE_BASE.aar.asc, $ARTIFACT_FILE_BASE.pom, $ARTIFACT_FILE_BASE.pom.asc, $ARTIFACT_FILE_BASE-sources.jar, $ARTIFACT_FILE_BASE-sources.jar.asc
                   -DgroupId=com.microsoft.appcenter.reactnative \
-                  -DartifactId=appcenter-react-native \
-                  -Dversion=$VERSION-$BUILD_SOURCEVERSION \
+                  -DartifactId=$ARTIFACT_ID \
+                  -Dversion=$VERSION-${BUILD_SOURCEVERSION:0:7} \
                   -DrepositoryId=AppCenter \
                   -e
 
