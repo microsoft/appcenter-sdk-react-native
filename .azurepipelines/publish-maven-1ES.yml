@@ -70,6 +70,7 @@ extends:
             workingDirectory: './AppCenterReactNativeShared/android'
 
     - stage: PublishAzureMaven
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       dependsOn: Stage
       pool:
         name: Azure Pipelines
@@ -117,6 +118,7 @@ extends:
                   -e
 
     - stage: APIScan
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       dependsOn: Stage
       pool:
         name: 1ES-PT-Windows-2022
