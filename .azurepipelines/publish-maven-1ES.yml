@@ -82,7 +82,7 @@ extends:
       - job: UploadArtifacts
         steps:
         - task: DownloadPipelineArtifact@2
-          displayName: Download Build Artifacts for APIScan
+          displayName: Download Build Artifacts
           inputs:
             artifactName: Release
             targetPath: '$(Agent.BuildDirectory)/Release'
@@ -91,7 +91,7 @@ extends:
           inputs:
             artifactsFeeds: AppCenter
         - task: Bash@3
-          displayName: Upload files to repository
+          displayName: Upload files to Azure Artifacts
           inputs:
             targetType: 'inline'
             script: |
