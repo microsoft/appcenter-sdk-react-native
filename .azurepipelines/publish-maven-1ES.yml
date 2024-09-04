@@ -100,11 +100,6 @@ extends:
               ARTIFACT_ID="appcenter-react-native"
               ARTIFACT_FILE_BASE="$ARTIFACTS_DIR/$ARTIFACT_ID-$VERSION"
 
-              echo "Version: $VERSION"
-              echo "Artifacts dir: $ARTIFACTS_DIR"
-              echo "Commit: $BUILD_SOURCEVERSION"
-              echo "ARTIFACT_FILE_BASE: $ARTIFACT_FILE_BASE"
-
               mvn deploy:deploy-file -DgeneratePom=false \
                   -Durl=$(AZURE_REPO) \
                   -Dfile=$ARTIFACT_FILE_BASE.aar \
