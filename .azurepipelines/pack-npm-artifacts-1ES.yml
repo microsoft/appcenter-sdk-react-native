@@ -15,10 +15,10 @@ resources:
     ref: refs/tags/release
 name: $(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
 extends:
-  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
-    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
-  ${{ else }}:
-    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+  # ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  # ${{ else }}:
+  #   template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
     pool:
       name: Azure Pipelines
@@ -43,9 +43,9 @@ extends:
         displayName: Archive NPM Folders
         cancelTimeoutInMinutes: 1
         templateContext:
-          sdl:
-            codeql:
-              language: javascript
+          # sdl:
+          #   codeql:
+          #     language: javascript
           outputs:
           - output: pipelineArtifact
             displayName: 'Publish Artifact: framework'
