@@ -74,7 +74,51 @@ extends:
             publishJUnitResults: false
             workingDirectory: './AppCenterReactNativeShared/android'
 
+    - stage: PublishAzureMaven
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      dependsOn: Stage
+      pool:
+        name: Azure Pipelines
+        image: macos-latest
+        os: macOS
+      variables:
+        "agent.source.skip": true
+      jobs:
+      - job: UploadArtifacts
+        steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: Download Build Artifacts
+          inputs:
+            artifactName: Release
+            targetPath: '$(Agent.BuildDirectory)/Release'
+        - task: MavenAuthenticate@0
+          displayName: 'Maven Authenticate'
+          inputs:
+            artifactsFeeds: AppCenter
+        - task: Bash@3
+          displayName: Upload files to Azure Artifacts
+          inputs:
+            targetType: 'inline'
+            script: |
+              VERSION=$(basename $(Agent.BuildDirectory)/Release/appcenter/reactnative/appcenter-react-native/*/)
+              ARTIFACTS_DIR="$(Agent.BuildDirectory)/Release/appcenter/reactnative/appcenter-react-native/$VERSION"
+              ARTIFACT_ID="appcenter-react-native"
+              ARTIFACT_FILE_BASE="$ARTIFACTS_DIR/$ARTIFACT_ID-$VERSION"
+
+              mvn deploy:deploy-file -DgeneratePom=false \
+                  -Durl=$(AZURE_REPO) \
+                  -Dfile=$ARTIFACT_FILE_BASE.aar \
+                  -Dfiles=$ARTIFACT_FILE_BASE.pom,$ARTIFACT_FILE_BASE-sources.jar \
+                  -Dtypes=pom,jar \
+                  -Dclassifiers=pom,sources \
+                  -DgroupId=com.microsoft.appcenter.reactnative \
+                  -DartifactId=$ARTIFACT_ID \
+                  -Dversion=$VERSION-${BUILD_SOURCEVERSION:0:7} \
+                  -DrepositoryId=AppCenter \
+                  -e
+
     - stage: APIScan
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       dependsOn: Stage
       pool:
         name: 1ES-PT-Windows-2022

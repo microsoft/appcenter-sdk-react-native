@@ -112,7 +112,7 @@ publishing {
 }
 
 dependencies {
-    api 'com.microsoft.appcenter:appcenter:5.0.4'
+    api 'com.microsoft.appcenter:appcenter:5.0.5'
 }
 
 artifacts {
