@@ -1,0 +1,56 @@
+pr:
+- master
+
+pool:
+  vmImage: macos-latest
+
+variables:
+- name: Codeql.Cadence
+  value: 0
+
+jobs:
+- job:
+  displayName: Build and CodeQL Sasquatch App
+  steps:
+  - checkout: self
+    submodules: recursive
+    
+  - task: CodeQL3000Init@0
+    displayName: CodeQL Initialize
+
+  - task: NodeTool@0
+    displayName: 'Use Node 10.x'
+    inputs:
+      versionSpec: 10.x
+
+  - task: Npm@1
+    displayName: 'npm custom'
+    inputs:
+      command: custom
+      workingDir: DemoApp
+      verbose: false
+      customCommand: 'install -g node-gyp'
+
+  - task: Bash@3
+    displayName: Run Upgrade-appcenter-npm-packages script
+    inputs:
+      filePath: upgrade-appcenter-npm-packages.sh
+      workingDirectory: DemoApp
+
+  - task: Bash@3
+    displayName: Run react-native bundle
+    inputs:
+      targetType: inline
+      script: |
+        cd DemoApp/
+        react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+
+  - task: Gradle@3
+    displayName: Build DemoApp
+    inputs:
+      workingDirectory: DemoApp/android
+      tasks: assembleRelease
+      publishJUnitResults: false
+
+  - task: CodeQL3000Finalize@0
+    displayName: CodeQL Finalize
