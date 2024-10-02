@@ -23,13 +23,13 @@ jobs:
     inputs:
       versionSpec: 10.x
 
-  - task: Npm@1
-    displayName: 'npm custom'
-    inputs:
-      command: custom
-      workingDir: DemoApp
-      verbose: false
-      customCommand: 'install -g node-gyp'
+  # - task: Npm@1
+  #   displayName: 'npm install node-gyp'
+  #   inputs:
+  #     command: custom
+  #     workingDir: DemoApp
+  #     verbose: false
+  #     customCommand: 'install -g node-gyp'
 
   - task: Bash@3
     displayName: Run Upgrade-appcenter-npm-packages script
@@ -43,7 +43,7 @@ jobs:
       targetType: inline
       script: |
         cd DemoApp/
-        react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+        npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
 
   - task: Gradle@3
     displayName: Build DemoApp
