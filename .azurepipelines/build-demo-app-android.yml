@@ -27,6 +27,7 @@ jobs:
     inputs:
       versionSpec: '11'
       jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
     displayName: 'Use Java 11'
 
   - task: Bash@3
