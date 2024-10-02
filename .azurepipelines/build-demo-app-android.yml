@@ -10,11 +10,11 @@ variables:
 
 jobs:
 - job:
-  displayName: Build and CodeQL Sasquatch App
+  displayName: Build and CodeQL DemoApp Android
   steps:
   - checkout: self
     submodules: recursive
-    
+
   - task: CodeQL3000Init@0
     displayName: CodeQL Initialize
 
@@ -34,7 +34,7 @@ jobs:
   - task: Bash@3
     displayName: Run Upgrade-appcenter-npm-packages script
     inputs:
-      filePath: upgrade-appcenter-npm-packages.sh
+      filePath: DemoApp/upgrade-appcenter-npm-packages.sh
       workingDirectory: DemoApp
 
   - task: Bash@3
