@@ -38,6 +38,13 @@ jobs:
       workingDirectory: DemoApp
 
   - task: Bash@3
+    displayName: Install watchman
+    inputs:
+      targetType: inline
+      script: |
+        brew install watchman
+
+  - task: Bash@3
     displayName: Run react-native bundle
     inputs:
       targetType: inline
