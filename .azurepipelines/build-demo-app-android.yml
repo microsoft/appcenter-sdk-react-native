@@ -23,13 +23,10 @@ jobs:
     inputs:
       versionSpec: 10.x
 
-  # - task: Npm@1
-  #   displayName: 'npm install node-gyp'
-  #   inputs:
-  #     command: custom
-  #     workingDir: DemoApp
-  #     verbose: false
-  #     customCommand: 'install -g node-gyp'
+  - task: UseJava@1
+    displayName: 'Use Java 7'
+    inputs:
+      versionSpec: '7'
 
   - task: Bash@3
     displayName: Run Upgrade-appcenter-npm-packages script
