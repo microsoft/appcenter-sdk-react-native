@@ -55,6 +55,7 @@ jobs:
   - task: Gradle@3
     displayName: Build DemoApp
     inputs:
+      gradleWrapperFile: DemoApp/android/gradlew
       workingDirectory: DemoApp/android
       tasks: assembleRelease
       publishJUnitResults: false
