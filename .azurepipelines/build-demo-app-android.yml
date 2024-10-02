@@ -26,7 +26,7 @@ jobs:
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: '11'
-      jdkArchitecture: 'x64'
+      jdkArchitectureOption: 'x64'
     displayName: 'Use Java 11'
 
   - task: Bash@3
