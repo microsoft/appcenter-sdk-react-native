@@ -23,10 +23,11 @@ jobs:
     inputs:
       versionSpec: 10.x
 
-  - task: UseJava@1
-    displayName: 'Use Java 7'
+  - task: JavaToolInstaller@0
     inputs:
-      versionSpec: '7'
+      versionSpec: '11'
+      jdkArchitecture: 'x64'
+    displayName: 'Use Java 11'
 
   - task: Bash@3
     displayName: Run Upgrade-appcenter-npm-packages script
