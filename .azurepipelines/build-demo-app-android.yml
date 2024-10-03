@@ -43,14 +43,6 @@ jobs:
       script: |
         brew install watchman
 
-  - task: Bash@3
-    displayName: Run react-native bundle
-    inputs:
-      targetType: inline
-      script: |
-        cd DemoApp/
-        npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
-
   - task: Gradle@3
     displayName: Build DemoApp
     inputs:
