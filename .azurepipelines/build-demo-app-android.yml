@@ -35,6 +35,12 @@ jobs:
     inputs:
       filePath: DemoApp/upgrade-appcenter-npm-packages.sh
       workingDirectory: DemoApp
+  
+  - task: Bash@3
+  displayName: Run Use-android-manifest-namespaces script
+  inputs:
+    filePath: DemoApp/use-android-manifest-namespaces.sh
+    workingDirectory: DemoApp
 
   - task: Bash@3
     displayName: Install watchman
