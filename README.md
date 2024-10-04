@@ -13,7 +13,13 @@ The App Center SDK uses a modular architecture so you can use any or all of the 
 
 2. **App Center Crashes**: App Center Crashes will automatically generate a crash log every time your app crashes. The log is first written to the device's storage and when the user starts the app again, the crash report will be sent to App Center. Collecting crashes works for both beta and live apps, i.e. those submitted to the App Store. Crash logs contain valuable information for you to help fix the crash.
 
+# Visual Studio App Center CodePush Standalone Version
+
+For teams or organizations looking to self-host CodePush, we now offer the [CodePush Standalone Version](https://github.com/microsoft/code-push-server) which is compatible with this SDK. It allows you to set up and manage CodePush as a self-hosted service, giving you more control over your infrastructure and data. Visit the repository for installation instructions, usage guides, and more.
+
+
 ## 1. Get started
+
 It is super easy to use App Center. Have a look at our [get started documentation](https://docs.microsoft.com/en-us/appcenter/sdk/getting-started/react-native) and onboard your app within minutes. Our [detailed documentation](https://docs.microsoft.com/en-us/appcenter/sdk/) is available as well.
 
 ## 2. Contributing
