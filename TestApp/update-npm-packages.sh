@@ -30,6 +30,19 @@ npx patch-package
 echo "Running jetify to resolve AndroidX compatibility issues..."
 npx jetify
 
+OS_TYPE=$(uname)
+if [[ "$OS_TYPE" == "Darwin" ]]; then
+    # macOS
+    SED_INPLACE=("sed" "-i" "")
+else
+    # Linux and others
+    SED_INPLACE=("sed" "-i")
+fi
+
+echo "Remove versionName and versionCode from build.gradle for AppCenterReactNativeShared"
+"${SED_INPLACE[@]}" "/buildConfigField .*VERSION_NAME/d" "../AppCenterReactNativeShared/android/build.gradle"
+"${SED_INPLACE[@]}" "/from components.release/d" "../AppCenterReactNativeShared/android/build.gradle"
+
 echo "Updating CocoaPods repos..."
 pod repo update
 
