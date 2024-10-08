@@ -10,7 +10,7 @@ variables:
 
 jobs:
 - job:
-  displayName: Build and CodeQL DemoApp Android
+  displayName: Build and CodeQL TestApp Android
   steps:
   - checkout: self
     submodules: recursive
@@ -31,16 +31,16 @@ jobs:
     displayName: 'Use Java 11'
 
   - task: Bash@3
-    displayName: Run Upgrade-appcenter-npm-packages script
+    displayName: Run update-npm-packages script
     inputs:
-      filePath: DemoApp/upgrade-appcenter-npm-packages.sh
-      workingDirectory: DemoApp
+      filePath: TestApp/update-npm-packages.sh
+      workingDirectory: TestApp
   
   - task: Bash@3
-    displayName: Run Use-android-manifest-namespaces script
+    displayName: Run use-android-manifest-namespaces script
     inputs:
-      filePath: DemoApp/use-android-manifest-namespaces.sh
-      workingDirectory: DemoApp
+      filePath: TestApp/use-android-manifest-namespaces.sh
+      workingDirectory: TestApp
 
   - task: Bash@3
     displayName: Install watchman
@@ -50,10 +50,10 @@ jobs:
         brew install watchman
 
   - task: Gradle@3
-    displayName: Build DemoApp
+    displayName: Build TestApp
     inputs:
-      gradleWrapperFile: DemoApp/android/gradlew
-      workingDirectory: DemoApp/android
+      gradleWrapperFile: TestApp/android/gradlew
+      workingDirectory: TestApp/android
       tasks: assembleRelease
       publishJUnitResults: false
 
