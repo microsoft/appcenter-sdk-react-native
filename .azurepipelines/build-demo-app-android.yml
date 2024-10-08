@@ -19,9 +19,9 @@ jobs:
     displayName: CodeQL Initialize
 
   - task: NodeTool@0
-    displayName: 'Use Node 10.x'
+    displayName: 'Use Node 14.x'
     inputs:
-      versionSpec: 10.x
+      versionSpec: 14.x
 
   - task: JavaToolInstaller@0
     inputs:
