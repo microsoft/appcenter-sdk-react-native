@@ -8,6 +8,7 @@
 #include <string.h>
 #include <vector>
 #include "android/log.h"
+#include <cstdlib> 
 
 #ifdef __cplusplus
 extern "C"
