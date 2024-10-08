@@ -129,6 +129,8 @@ android {
         versionName "1.0"
     }
 
+    ndkVersion "16.1.4479499"
+
     splits {
         abi {
             reset()
