@@ -43,10 +43,9 @@ jobs:
       workingDirectory: TestApp
 
   - task: Bash@3
-    displayName: Run remove-unused-ndks script
+    displayName: Run use-ndk-version script
     inputs:
-      filePath: TestApp/remove-unused-ndks.sh
-      arguments: '20.0.5594570'
+      filePath: TestApp/use-ndk-version.sh
       workingDirectory: TestApp
 
   - task: Bash@3
