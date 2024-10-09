@@ -43,6 +43,12 @@ jobs:
       workingDirectory: TestApp
 
   - task: Bash@3
+    displayName: Run remove-unused-ndks script
+    inputs:
+      filePath: TestApp/remove-unused-ndks.sh
+      workingDirectory: TestApp
+
+  - task: Bash@3
     displayName: Install watchman
     inputs:
       targetType: inline
