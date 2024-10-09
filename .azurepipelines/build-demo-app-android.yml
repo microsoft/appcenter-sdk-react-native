@@ -43,9 +43,9 @@ jobs:
       workingDirectory: TestApp
 
   - task: Bash@3
-    displayName: Run use-ndk-version script
+    displayName: Run set-ndk-version script
     inputs:
-      filePath: TestApp/use-ndk-version.sh
+      filePath: TestApp/set-ndk-version.sh
       workingDirectory: TestApp
 
   - task: Bash@3
