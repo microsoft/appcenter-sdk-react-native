@@ -39,6 +39,9 @@ else
     SED_INPLACE=("sed" "-i")
 fi
 
+# Remove versionName and versionCode from build.gradle for AppCenterReactNativeShared
+# to avoid build errors like:
+# > Could not find method namespace() for arguments [com.microsoft.appcenter.reactnative.appcenter] on extension 'android' of type com.android.build.gradle.LibraryExtension.
 echo "Remove versionName and versionCode from build.gradle for AppCenterReactNativeShared"
 "${SED_INPLACE[@]}" "/buildConfigField .*VERSION_NAME/d" "../AppCenterReactNativeShared/android/build.gradle"
 "${SED_INPLACE[@]}" "/from components.release/d" "../AppCenterReactNativeShared/android/build.gradle"
