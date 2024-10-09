@@ -45,7 +45,7 @@ jobs:
   - task: Bash@3
     displayName: Run remove-unused-ndks script
     inputs:
-      filePath: TestApp/remove-unused-ndks.sh
+      filePath: TestApp/remove-unused-ndks.sh 20.0.5594570
       workingDirectory: TestApp
 
   - task: Bash@3
