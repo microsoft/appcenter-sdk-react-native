@@ -8,7 +8,7 @@ PROPERTY_FILE="$ANDROID_HOME/ndk-bundle/source.properties"
 echo "Reading ndk version from source.properties file..."
 VERSION=$(cat $PROPERTY_FILE | sed 's/ //g' | grep "Pkg.Revision" | cut -d'=' -f2)
 echo $VERSION
-GRADLE_FILE="$PROJECT_DIR/android/app/build.gradle"
+GRADLE_FILE="./android/app/build.gradle"
 
 if [ -z $VERSION ]; then
   echo "No NDK found in the default location. Proceeding..."
