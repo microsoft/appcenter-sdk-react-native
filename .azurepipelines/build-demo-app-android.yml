@@ -42,12 +42,12 @@ jobs:
       filePath: TestApp/use-android-manifest-namespaces.sh
       workingDirectory: TestApp
 
-  - task: Bash@3
-    displayName: Run install-ndk-version.sh script
-    inputs:
-      filePath: TestApp/install-ndk-version.sh
-      arguments: "20"
-      workingDirectory: TestApp
+  # - task: Bash@3
+  #   displayName: Run install-ndk-version.sh script
+  #   inputs:
+  #     filePath: TestApp/install-ndk-version.sh
+  #     arguments: "20"
+  #     workingDirectory: TestApp
     
   - task: Bash@3
     displayName: Run set-ndk-version script
