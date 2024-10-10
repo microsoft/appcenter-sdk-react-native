@@ -31,36 +31,30 @@ jobs:
     displayName: 'Use Java 11'
 
   - task: Bash@3
+    displayName: Install watchman
+    inputs:
+      targetType: inline
+      script: |
+        brew install watchman
+
+  - task: Bash@3
     displayName: Run update-npm-packages script
     inputs:
       filePath: TestApp/update-npm-packages.sh
       workingDirectory: TestApp
-  
-  - task: Bash@3
-    displayName: Run use-android-manifest-namespaces script
-    inputs:
-      filePath: TestApp/use-android-manifest-namespaces.sh
-      workingDirectory: TestApp
 
-  # - task: Bash@3
-  #   displayName: Run install-ndk-version.sh script
-  #   inputs:
-  #     filePath: TestApp/install-ndk-version.sh
-  #     arguments: "20"
-  #     workingDirectory: TestApp
+  - task: Bash@3
+    displayName: Run install-ndk-version script
+    inputs:
+      filePath: TestApp/install-ndk-version.sh
+      arguments: "20"
+      workingDirectory: TestApp
     
   - task: Bash@3
     displayName: Run set-ndk-version script
     inputs:
       filePath: TestApp/set-ndk-version.sh
       workingDirectory: TestApp
-
-  - task: Bash@3
-    displayName: Install watchman
-    inputs:
-      targetType: inline
-      script: |
-        brew install watchman
 
   - task: Gradle@3
     displayName: Build TestApp

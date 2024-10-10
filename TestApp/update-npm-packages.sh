@@ -1,4 +1,10 @@
 #!/bin/bash
+
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# Update AppCenter npm packages for the TestApp
+
 set -e
 
 echo 'Removing existing appcenter* packages...'
@@ -46,6 +52,9 @@ echo "Remove versionName and versionCode from build.gradle for AppCenterReactNat
 "${SED_INPLACE[@]}" "/buildConfigField .*VERSION_NAME/d" "../AppCenterReactNativeShared/android/build.gradle"
 "${SED_INPLACE[@]}" "/from components.release/d" "../AppCenterReactNativeShared/android/build.gradle"
 
+# Move android namespaces for the AppCenter modules from build.gradle to AndroidManifest.xml
+bash ./use-android-manifest-namespaces.sh
+
 echo "Updating CocoaPods repos..."
 pod repo update
 
@@ -57,4 +66,4 @@ echo "Install shared framework pods..."
 # (cd ios && pod install --repo-update)
 
 # workaround for macs on arm64 (uncomment when running on arm64 mac)
-# (cd ios && pod install)
+(cd ios && pod install)
