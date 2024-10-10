@@ -39,7 +39,6 @@ else
                 found_version=$(check_ndk_version "$ndk_dir")
                 if [ -n "$found_version" ]; then
                     echo "NDK version: $found_version (Path: $ndk_dir)"
-                    break
                 fi
             fi
         done
