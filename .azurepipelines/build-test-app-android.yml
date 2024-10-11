@@ -37,6 +37,13 @@ jobs:
       script: |
         brew install watchman
 
+  - task: mattlabrum.build-task.custom-build-task.downloadsSecureFile@0
+    displayName: 'Download and move .npmrc'
+    inputs:
+      fileInput: .npmrc
+      targetPath: TestApp
+      targetName: .npmrc
+
   - task: Bash@3
     displayName: Run update-npm-packages script
     inputs:
