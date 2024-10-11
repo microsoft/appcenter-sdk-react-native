@@ -56,8 +56,6 @@ echo "Remove versionName and versionCode from build.gradle for AppCenterReactNat
 bash ./use-android-manifest-namespaces.sh
 
 echo "Updating CocoaPods repos..."
-
-pod repo add AppCenterSDK-Specs-Private https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private
 pod repo update
 
 echo "Install shared framework pods..."
@@ -65,7 +63,7 @@ echo "Install shared framework pods..."
 
 # for testing with not released apple and android sdks, you will need to provide the storage access key
 echo "Running pod install and building shared framework..."
-# (cd ios && pod install --repo-update)
+(cd ios && pod install --repo-update)
 
 # workaround for macs on arm64 (uncomment when running on arm64 mac)
-(cd ios && pod install)
+# (cd ios && pod install)
