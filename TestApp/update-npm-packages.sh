@@ -56,6 +56,8 @@ echo "Remove versionName and versionCode from build.gradle for AppCenterReactNat
 bash ./use-android-manifest-namespaces.sh
 
 echo "Updating CocoaPods repos..."
+
+pod repo add AppCenterSDK-Specs-Private https://msmobilecenter.visualstudio.com/SDK/_git/AppCenterSDK-Specs-Private
 pod repo update
 
 echo "Install shared framework pods..."
