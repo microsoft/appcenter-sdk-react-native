@@ -41,6 +41,7 @@ jobs:
     displayName: Run update-npm-packages script
     inputs:
       filePath: TestApp/update-npm-packages.sh
+      arguments: "android"
       workingDirectory: TestApp
 
   - task: Bash@3
