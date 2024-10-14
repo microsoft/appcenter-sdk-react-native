@@ -37,13 +37,6 @@ jobs:
       script: |
         brew install watchman
 
-  - task: mattlabrum.build-task.custom-build-task.downloadsSecureFile@0
-    displayName: 'Download and move ExportOptions'
-    inputs:
-      fileInput: ExportOptionsRNDemo.plist
-      targetPath: TestApp
-      targetName: ExportOptions.plist
-
   - task: Bash@3
     displayName: Run update-npm-packages script
     inputs:
