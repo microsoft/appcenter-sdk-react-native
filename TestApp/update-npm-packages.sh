@@ -49,12 +49,9 @@ echo "Installing other packages..."
 npm install
 
 if [ "$is_ios" == "true" ]; then
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        ARCHITECTURE=$(uname -m)
-        if [[ "$ARCHITECTURE" == "arm64" ]]; then
-            echo "Workaround for macs on arm64"
-            npm install react-native-fs --save --legacy-peer-deps
-        fi
+    if [[ "$OSTYPE" == "darwin"* && "$(uname -m)" == "arm64" ]]; then
+        echo "Workaround for macs on arm64"
+        npm install react-native-fs --save --legacy-peer-deps
     fi
 
     echo "Updating CocoaPods repos..."
