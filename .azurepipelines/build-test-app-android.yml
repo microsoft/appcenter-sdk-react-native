@@ -31,13 +31,6 @@ jobs:
     displayName: 'Use Java 11'
 
   - task: Bash@3
-    displayName: Install watchman
-    inputs:
-      targetType: inline
-      script: |
-        brew install watchman
-
-  - task: Bash@3
     displayName: Run update-npm-packages script
     inputs:
       filePath: TestApp/update-npm-packages.sh
