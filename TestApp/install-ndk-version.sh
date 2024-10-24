@@ -7,7 +7,7 @@
 
 # Check if the NDK_MAJOR_VERSION argument is provided
 if [ -z "$1" ]; then
-    echo "There is no NDK_MAJOR_VERSION variable provided"
+    echo "NDK version is not provided"
     return 1
 fi
 
@@ -18,7 +18,6 @@ if [ -z "$ANDROID_HOME" ]; then
 fi
 
 NDK_MAJOR_VERSION="$1"
-echo "NDK_MAJOR_VERSION is $NDK_MAJOR_VERSION"
 
 # Download the specified version of the Android NDK
 echo "Download Android NDK version $NDK_MAJOR_VERSION"
