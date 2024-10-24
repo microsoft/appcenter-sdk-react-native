@@ -1,4 +1,30 @@
 #!/bin/bash
+
+# Update AppCenter npm packages for the TestApp
+
+if [ -z "$1" ]; then
+    echo "Running for both Android and iOS"
+    is_android=true
+    is_ios=true
+else 
+    case "$1" in
+        android)
+            echo "Running for Android"
+            is_android=true
+            is_ios=false
+            ;;
+        ios)
+            echo "Running for iOS"
+            is_android=false
+            is_ios=true
+            ;;
+        *)
+            echo "Invalid argument: $1"
+            exit 1
+            ;;
+    esac
+fi
+
 set -e
 
 echo 'Removing existing appcenter* packages...'
@@ -13,32 +39,51 @@ npm pack ../appcenter-link-scripts
 echo "Installing appcenter* packages..."
 npm install appcenter*.tgz
 
-echo "workaround for macs on arm64"
-npm install react-native-fs --save --legacy-peer-deps
-
 echo "Cleanup appcenter*.tgz"
 rm appcenter*.tgz
 
 echo "Installing other packages..."
 npm install
 
-# Issue: https://github.com/react-native-community/cli/issues/1403
-# Fixed in RN 0.65: https://github.com/facebook/react-native/commit/8721ee0a6b10e5bc8a5a95809aaa7b25dd5a6043
-echo "Applying patch to react-native package that fixes build on Xcode 12.5..."
-npx patch-package
+if [ "$is_ios" == "true" ]; then
+    if [[ "$OSTYPE" == "darwin"* && "$(uname -m)" == "arm64" ]]; then
+        echo "Workaround for macs on arm64"
+        npm install react-native-fs --save --legacy-peer-deps
+    fi
 
-echo "Running jetify to resolve AndroidX compatibility issues..."
-npx jetify
+    echo "Install shared framework pods..."
+    (cd ../AppCenterReactNativeShared/ios && pod install --repo-update)
 
-echo "Updating CocoaPods repos..."
-pod repo update
+    echo "Running pod install and building shared framework..."
+    (cd ios && pod install --repo-update)
+fi
 
-echo "Install shared framework pods..."
-(cd ../AppCenterReactNativeShared/ios && pod install)
 
-# for testing with not released apple and android sdks, you will need to provide the storage access key
-echo "Running pod install and building shared framework..."
-(cd ios && pod install --repo-update)
+if [ "$is_android" == "true" ]; then
+    echo "Running jetify to resolve AndroidX compatibility issues..."
+    npx jetify
 
-# workaround for macs on arm64 (uncomment when running on arm64 mac)
-# (cd ios && pod install)
+    OS_TYPE=$(uname)
+    if [[ "$OS_TYPE" == "Darwin" ]]; then
+        # macOS
+        SED_INPLACE=("sed" "-i" "")
+    else
+        # Linux and others
+        SED_INPLACE=("sed" "-i")
+    fi
+
+    # Remove versionName from build.gradle for AppCenterReactNativeShared
+    # to avoid build errors like:
+    # > Cannot get property 'versionName' on extra properties extension as it does not exist
+    echo "Remove versionName from build.gradle for AppCenterReactNativeShared"
+    "${SED_INPLACE[@]}" "/buildConfigField .*VERSION_NAME/d" "../AppCenterReactNativeShared/android/build.gradle"
+
+    # Remove the line "from components.release" to avoid error:
+    # > Could not get unknown property 'release' for SoftwareComponentInternal set of type org.gradle.api.internal.component.DefaultSoftwareComponentContainer.
+    "${SED_INPLACE[@]}" "/from components.release/d" "../AppCenterReactNativeShared/android/build.gradle"
+
+    # Move android namespaces for the AppCenter modules from build.gradle to AndroidManifest.xml
+    # to avoid build errors like:
+    # > Could not find method namespace() for arguments [com.microsoft.appcenter.reactnative.appcenter] on extension 'android' of type com.android.build.gradle.LibraryExtension.
+    bash ./use-android-manifest-namespaces.sh
+fi
