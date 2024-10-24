@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License.
-
 # Update AppCenter npm packages for the TestApp
 
 if [ -z "$1" ]; then
@@ -54,11 +51,8 @@ if [ "$is_ios" == "true" ]; then
         npm install react-native-fs --save --legacy-peer-deps
     fi
 
-    echo "Updating CocoaPods repos..."
-    pod repo update
-
     echo "Install shared framework pods..."
-    (cd ../AppCenterReactNativeShared/ios && pod install)
+    (cd ../AppCenterReactNativeShared/ios && pod install --repo-update)
 
     echo "Running pod install and building shared framework..."
     (cd ios && pod install --repo-update)
@@ -78,13 +72,18 @@ if [ "$is_android" == "true" ]; then
         SED_INPLACE=("sed" "-i")
     fi
 
-    # Remove versionName and versionCode from build.gradle for AppCenterReactNativeShared
+    # Remove versionName from build.gradle for AppCenterReactNativeShared
     # to avoid build errors like:
-    # > Could not find method namespace() for arguments [com.microsoft.appcenter.reactnative.appcenter] on extension 'android' of type com.android.build.gradle.LibraryExtension.
-    echo "Remove versionName and versionCode from build.gradle for AppCenterReactNativeShared"
+    # > Cannot get property 'versionName' on extra properties extension as it does not exist
+    echo "Remove versionName from build.gradle for AppCenterReactNativeShared"
     "${SED_INPLACE[@]}" "/buildConfigField .*VERSION_NAME/d" "../AppCenterReactNativeShared/android/build.gradle"
+
+    # Remove the line "from components.release" to avoid error:
+    # > Could not get unknown property 'release' for SoftwareComponentInternal set of type org.gradle.api.internal.component.DefaultSoftwareComponentContainer.
     "${SED_INPLACE[@]}" "/from components.release/d" "../AppCenterReactNativeShared/android/build.gradle"
 
     # Move android namespaces for the AppCenter modules from build.gradle to AndroidManifest.xml
+    # to avoid build errors like:
+    # > Could not find method namespace() for arguments [com.microsoft.appcenter.reactnative.appcenter] on extension 'android' of type com.android.build.gradle.LibraryExtension.
     bash ./use-android-manifest-namespaces.sh
 fi
