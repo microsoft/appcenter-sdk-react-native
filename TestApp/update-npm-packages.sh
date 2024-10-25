@@ -2,29 +2,6 @@
 
 # Update AppCenter npm packages for the TestApp
 
-if [ -z "$1" ]; then
-    echo "Running for both Android and iOS"
-    is_android=true
-    is_ios=true
-else 
-    case "$1" in
-        android)
-            echo "Running for Android"
-            is_android=true
-            is_ios=false
-            ;;
-        ios)
-            echo "Running for iOS"
-            is_android=false
-            is_ios=true
-            ;;
-        *)
-            echo "Invalid argument: $1"
-            exit 1
-            ;;
-    esac
-fi
-
 set -e
 
 echo 'Removing existing appcenter* packages...'
@@ -45,7 +22,7 @@ rm appcenter*.tgz
 echo "Installing other packages..."
 npm install
 
-if [ "$is_ios" == "true" ]; then
+if [ -z "$1" ] || [ "$1" == "ios" ]; then
     if [[ "$OSTYPE" == "darwin"* && "$(uname -m)" == "arm64" ]]; then
         echo "Workaround for macs on arm64"
         npm install react-native-fs --save --legacy-peer-deps
@@ -59,7 +36,7 @@ if [ "$is_ios" == "true" ]; then
 fi
 
 
-if [ "$is_android" == "true" ]; then
+if [ -z "$1" ] || [ "$1" == "android" ]; then
     echo "Running jetify to resolve AndroidX compatibility issues..."
     npx jetify
 
