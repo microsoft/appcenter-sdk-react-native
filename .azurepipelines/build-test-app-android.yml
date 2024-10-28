@@ -4,10 +4,6 @@ pr:
 pool:
   vmImage: macos-latest
 
-variables:
-- name: Codeql.Cadence
-  value: 0
-
 jobs:
 - job:
   displayName: Build and CodeQL TestApp Android
