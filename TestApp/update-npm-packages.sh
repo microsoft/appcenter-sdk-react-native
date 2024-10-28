@@ -52,8 +52,8 @@ if [ -z "$1" ] || [ "$1" == "android" ]; then
     # Remove versionName from build.gradle for AppCenterReactNativeShared
     # to avoid build errors like:
     # > Cannot get property 'versionName' on extra properties extension as it does not exist
-    echo "Remove versionName from build.gradle for AppCenterReactNativeShared"
-    "${SED_INPLACE[@]}" "/buildConfigField .*VERSION_NAME/d" "../AppCenterReactNativeShared/android/build.gradle"
+    # echo "Remove versionName from build.gradle for AppCenterReactNativeShared"
+    # "${SED_INPLACE[@]}" "/buildConfigField .*VERSION_NAME/d" "../AppCenterReactNativeShared/android/build.gradle"
 
     # Remove the line "from components.release" to avoid error:
     # > Could not get unknown property 'release' for SoftwareComponentInternal set of type org.gradle.api.internal.component.DefaultSoftwareComponentContainer.
