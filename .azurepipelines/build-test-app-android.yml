@@ -14,10 +14,10 @@ jobs:
   - task: CodeQL3000Init@0
     displayName: CodeQL Initialize
 
-  - task: NodeTool@0
-    displayName: 'Use Node 14.x'
-    inputs:
-      versionSpec: 14.x
+  # - task: NodeTool@0
+  #   displayName: 'Use Node 14.x'
+  #   inputs:
+  #     versionSpec: 14.x
 
   - task: JavaToolInstaller@0
     inputs:
