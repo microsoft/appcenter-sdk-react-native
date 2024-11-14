@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { Alert, YellowBox } from 'react-native';
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { Alert, LogBox } from 'react-native';
+import { createStaticNavigation } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Crashes, { UserConfirmation } from 'appcenter-crashes';
 
@@ -12,16 +13,16 @@ import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
-YellowBox.ignoreWarnings(['Remote debugger']);
+// LogBox.ignoreWarnings(['Remote debugger']);
 
 const TabNavigator = createBottomTabNavigator(
   {
-    AppCenter: AppCenterScreen,
-    Analytics: AnalyticsScreen,
-    Transmission: TransmissionScreen,
-    Crashes: CrashesScreen
-  },
-  {
+    screens: {
+      AppCenter: AppCenterScreen,
+      Analytics: AnalyticsScreen,
+      Transmission: TransmissionScreen,
+      Crashes: CrashesScreen
+    },
     tabBarOptions: {
       activeBackgroundColor: 'white',
       inactiveBackgroundColor: 'white',
@@ -29,7 +30,7 @@ const TabNavigator = createBottomTabNavigator(
   }
 );
 
-export default createAppContainer(TabNavigator);
+export default createStaticNavigation(TabNavigator);
 
 Crashes.setListener({
   shouldProcess(report) {

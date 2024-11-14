@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, NativeModules, Platform } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 import AppCenter from 'appcenter';
 import SharedStyles from '../SharedStyles';
