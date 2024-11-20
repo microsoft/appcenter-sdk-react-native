@@ -58,9 +58,11 @@ export default class CrashesScreen extends Component {
     const binaryAttachment = await AttachmentsProvider.getBinaryAttachmentInfo();
     this.setState({ binaryAttachment });
 
-    this.props.navigation.setParams({
-      refreshCrash: this.refreshToggle.bind(this)
+    const unsubscribe = this.props.navigation.addListener('tabPress', (e) => {
+      this.refreshToggle();
     });
+  
+    return unsubscribe;
   }
 
   async refreshToggle() {

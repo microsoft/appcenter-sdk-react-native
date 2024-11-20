@@ -1,9 +1,14 @@
 #import "AppDelegate.h"
 
+#import "TestAppNative.h"
 #import <React/RCTBundleURLProvider.h>
 #import <AppCenterReactNative.h>
 #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes.h>
+
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
+#import <AppCenter/AppCenter.h>
+#import <AppCenterAnalytics/AppCenterAnalytics.h>
 
 @implementation AppDelegate
 
@@ -13,6 +18,22 @@
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
+
+  [MSACAppCenter setLogLevel:MSACLogLevelVerbose];
+
+  id appSecret = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppSecret"];
+  if ([appSecret isKindOfClass:[NSString class]]) {
+    [AppCenterReactNativeShared setAppSecret:appSecret];
+  }
+
+  id startAutomatically = [[NSUserDefaults standardUserDefaults] objectForKey:@"StartAutomatically"];
+  if ([startAutomatically isKindOfClass:[NSNumber class]]) {
+    [AppCenterReactNativeShared setStartAutomatically:[startAutomatically boolValue]];
+  }
+  BOOL sessionAuto = [[NSUserDefaults standardUserDefaults] boolForKey:@"ManualSessionTrackerEnabled"];
+  if (sessionAuto) {
+    [MSACAnalytics enableManualSessionTracker];
+  }
 
   [AppCenterReactNative register];
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];

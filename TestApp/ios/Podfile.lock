@@ -1,12 +1,12 @@
 PODS:
-  - appcenter-analytics (5.0.2):
+  - appcenter-analytics (5.0.3):
     - AppCenter/Analytics (~> 5.0)
     - AppCenterReactNativeShared (~> 5.0)
     - React-Core
-  - appcenter-core (5.0.2):
+  - appcenter-core (5.0.3):
     - AppCenterReactNativeShared (~> 5.0)
     - React-Core
-  - appcenter-crashes (5.0.2):
+  - appcenter-crashes (5.0.3):
     - AppCenter/Crashes (~> 5.0)
     - AppCenterReactNativeShared (~> 5.0)
     - React-Core
@@ -1365,9 +1365,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppCenter: 85c92db0759d2792a65eb61d6842d2e86611a49a
-  appcenter-analytics: b90b12a9357d8e3f6174ac761f00c70d95a137ee
-  appcenter-core: 711583753e9b44d3a9c75f8f78baa23804be3e40
-  appcenter-crashes: be716cca49539023ab5778502230098dd4b41d54
+  appcenter-analytics: fe267a1ab4ea7b5cc1561c84c525aeb693a9c976
+  appcenter-core: 87acf01759579b0b0ffb64e3f4e5ebd893a80351
+  appcenter-crashes: f691ae7ae7970945dc0c97162b51e05ceecc682e
   AppCenterReactNativeShared: 22aea9046e80c449137f4e574ae1f229616e2358
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99

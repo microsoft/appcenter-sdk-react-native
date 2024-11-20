@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { Alert, LogBox } from 'react-native';
-import { createStaticNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Crashes, { UserConfirmation } from 'appcenter-crashes';
@@ -13,24 +13,27 @@ import AnalyticsScreen from './screens/AnalyticsScreen';
 import CrashesScreen from './screens/CrashesScreen';
 import AttachmentsProvider from './AttachmentsProvider';
 
-// LogBox.ignoreWarnings(['Remote debugger']);
+const Tab = createBottomTabNavigator();
 
-const TabNavigator = createBottomTabNavigator(
-  {
-    screens: {
-      AppCenter: AppCenterScreen,
-      Analytics: AnalyticsScreen,
-      Transmission: TransmissionScreen,
-      Crashes: CrashesScreen
-    },
-    tabBarOptions: {
-      activeBackgroundColor: 'white',
-      inactiveBackgroundColor: 'white',
-    },
-  }
-);
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        tabBarOptions={{
+          activeBackgroundColor: 'white',
+          inactiveBackgroundColor: 'white',
+        }}
+      >
+        <Tab.Screen name="AppCenter" component={AppCenterScreen} />
+        <Tab.Screen name="Analytics" component={AnalyticsScreen} />
+        <Tab.Screen name="Transmission" component={TransmissionScreen} />
+        <Tab.Screen name="Crashes" component={CrashesScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
 
-export default createStaticNavigation(TabNavigator);
+export default App;
 
 Crashes.setListener({
   shouldProcess(report) {
