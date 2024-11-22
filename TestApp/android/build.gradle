@@ -18,4 +18,24 @@ buildscript {
     }
 }
 
+allprojects {
+    repositories {
+        // maven {
+        //     credentials {
+        //         username = readFromLocalProperties('AZURE_USERNAME')
+        //         password = readFromLocalProperties('AZURE_PASSWORD')
+        //     }
+        //     url "https://msmobilecenter.pkgs.visualstudio.com/_packaging/AppCenter/maven/v1/"
+        // }
+        mavenLocal()
+        mavenCentral()
+        google()
+        jcenter()
+        // maven {
+        //     // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        //     url "$rootDir/../node_modules/react-native/android"
+        // }
+    }
+}
+
 apply plugin: "com.facebook.react.rootproject"

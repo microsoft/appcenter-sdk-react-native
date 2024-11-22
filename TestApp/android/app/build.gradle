@@ -90,6 +90,11 @@ android {
             keyPassword 'android'
         }
     }
+    externalNativeBuild {
+        cmake {
+            path file('CMakeLists.txt')
+        }
+    }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
