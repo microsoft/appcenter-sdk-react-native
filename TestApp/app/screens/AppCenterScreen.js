@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 import AppCenter from 'appcenter';
 import SharedStyles from '../SharedStyles';
-import DialsTabBarIcon from '../assets/dials.png';
 
 const USER_ID_KEY = 'USER_ID_KEY';
 const DATA_RESIDENCY_KEY = 'DATA_RESIDENCY_KEY';
@@ -52,10 +51,6 @@ const StartupModes = [
 ];
 
 class AppCenterScreen extends Component {
-
-  static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DialsTabBarIcon} />,
-  }
 
   state = {
     appCenterEnabled: false,

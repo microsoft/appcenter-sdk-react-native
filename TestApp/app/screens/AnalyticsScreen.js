@@ -7,12 +7,8 @@ import { Image, View, Text, Switch, SectionList, NativeModules, TouchableOpacity
 import Analytics from 'appcenter-analytics';
 
 import SharedStyles from '../SharedStyles';
-import AnalyticsTabBarIcon from '../assets/analytics.png';
 
 export default class AnalyticsScreen extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={AnalyticsTabBarIcon} />,
-  }
 
   state = {
     analyticsEnabled: false,
