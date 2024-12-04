@@ -22,9 +22,9 @@ jobs:
     displayName: 'Use Java 17'
 
   - task: Bash@3
-    displayName: Run update-npm-packages script
+    displayName: Run upgrade-appcenter-npm-packages script
     inputs:
-      filePath: TestApp/update-npm-packages.sh
+      filePath: TestApp/upgrade-appcenter-npm-packages.sh
       arguments: "android"
       workingDirectory: TestApp
 
