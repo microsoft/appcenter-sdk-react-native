@@ -9,4 +9,4 @@ pod repo update
 
 (cd ios && pod install)
 
-npx react-native link
+# npx react-native link
