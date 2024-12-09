@@ -10,7 +10,7 @@ do
     cd ${directory}
     rm -f package-lock.json
     if [ "$directory" = "TestApp" ]; then
-        ./update-npm-packages.sh
+        ./prepare-local-sdk-integration.sh
     else
         npm install
     fi
