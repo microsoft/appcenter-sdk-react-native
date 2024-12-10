@@ -28,19 +28,6 @@ jobs:
       arguments: "android"
       workingDirectory: TestApp
 
-  # - task: Bash@3
-  #   displayName: Run install-ndk-version script
-  #   inputs:
-  #     filePath: TestApp/install-ndk-version.sh
-  #     arguments: "20"
-  #     workingDirectory: TestApp
-
-  # - task: Bash@3
-  #   displayName: Run set-ndk-version script
-  #   inputs:
-  #     filePath: TestApp/set-ndk-version.sh
-  #     workingDirectory: TestApp
-
   - task: Gradle@3
     displayName: Build TestApp
     inputs:
