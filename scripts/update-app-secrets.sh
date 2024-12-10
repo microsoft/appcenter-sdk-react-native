@@ -8,12 +8,6 @@
 appName="TestApp"
 appPrefix="INT"
 
-# Prepare constants.
-if [ "$1" == "PROD" ]; then
-  appName="DemoApp"
-  appPrefix="PROD"
-fi
-
 # Constants for iOS and Android.
 declare -a platformConstants=(
     "RN_IOS_${appPrefix}"

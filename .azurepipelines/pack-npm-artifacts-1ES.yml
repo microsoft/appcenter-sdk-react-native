@@ -32,8 +32,6 @@ extends:
         enableExclusions: true
         exclusionPatterns: |
           TestApp/
-          TestApp34/
-          DemoApp/
         credscan:
           suppressionsFile: $(Build.SourcesDirectory)/.config/CredScanSuppressions.json
     stages:

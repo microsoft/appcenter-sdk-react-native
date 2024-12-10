@@ -2,21 +2,9 @@
   "tool": "Credential Scanner",
     "suppressions": [
       {
-        "file": "/DemoApp/android/keystores/debug.keystore.properties",
-        "_justification": "CSCAN-GENERAL0060 used only in DemoApp"
-      },
-      {
         "file": "/TestApp/android/keystores/debug.keystore.properties",
-        "_justification": "CSCAN-GENERAL0060 used only in DemoApp"
-      },
-      {
-        "file": "/TestApp34/android/keystores/debug.keystore.properties",
-        "_justification": "CSCAN-GENERAL0060 used only in DemoApp"
-      },
-      {
-        "file": "/TestAppTypescript/android/keystores/debug.keystore.properties",
-        "_justification": "CSCAN-GENERAL0060 used only in DemoApp"
-      }           
+        "_justification": "CSCAN-GENERAL0060 used only in TestApp"
+      }
     ]
 }
   

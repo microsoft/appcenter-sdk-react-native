@@ -2,7 +2,7 @@
 echo "Executing post clone script in `pwd`"
 echo $NPM_RC | base64 --decode > $APPCENTER_SOURCE_DIRECTORY/TestApp/.npmrc
 # Delete everything except TestApp folder
-rm -rf ../appcenter* ../AppCenterReactNativeShared ../TestApp62
+rm -rf ../appcenter* ../AppCenterReactNativeShared
 
 echo 'Create local.properties file if it does not exist'
 touch -a android/local.properties
