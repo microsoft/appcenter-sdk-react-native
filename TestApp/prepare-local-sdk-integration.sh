@@ -1,6 +1,17 @@
 #!/bin/bash
 set -e
 
+echo 'Bundling AppcenterReactNativeShared...'
+# Java 11 version is required for running gradle tasks
+java_version=$(java -version 2>&1 | awk -F[\".] 'NR==1{print $2}')
+if [[ "$java_version" != "11" ]]; then
+  echo "Java 11 is required. Current version: $java_version"
+  exit 1
+fi
+cd ../AppCenterReactNativeShared/android
+./gradlew publishToMavenLocal  
+cd ../../TestApp
+
 echo 'Removing existing appcenter* packages...'
 rm -rf node_modules/appcenter*
 
