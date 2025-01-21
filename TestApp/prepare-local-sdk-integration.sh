@@ -8,9 +8,7 @@ if [[ "$java_version" != "11" ]]; then
   echo "Java 11 is required. Current version: $java_version"
   exit 1
 fi
-cd ../AppCenterReactNativeShared/android
-./gradlew publishToMavenLocal  
-cd ../../TestApp
+cd ../AppCenterReactNativeShared/android && ./gradlew publishToMavenLocal && cd ../../TestApp
 
 echo 'Removing existing appcenter* packages...'
 rm -rf node_modules/appcenter*
