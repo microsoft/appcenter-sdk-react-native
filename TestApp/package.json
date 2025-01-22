@@ -23,7 +23,7 @@
     "react-native-image-picker": "^7.1.2",
     "react-native-modal-selector": "^2.1.2",
     "react-native-safe-area-context": "^4.14.0",
-    "react-native-screens": "^4.0.0"
+    "react-native-screens": "~4.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
