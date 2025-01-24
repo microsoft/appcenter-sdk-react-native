@@ -2,17 +2,11 @@
 # Replace app-secret's and tokens values in test apps. Update TestApp by default.
 
 # Usage:
-# ./scripts/update-app-secrets.sh <INT|PROD>
+# ./scripts/update-app-secrets.sh
 
 # Dynamic constants.
 appName="TestApp"
 appPrefix="INT"
-
-# Prepare constants.
-if [ "$1" == "PROD" ]; then
-  appName="DemoApp"
-  appPrefix="PROD"
-fi
 
 # Constants for iOS and Android.
 declare -a platformConstants=(

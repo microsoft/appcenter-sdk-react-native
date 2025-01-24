@@ -1,9 +1,11 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+/**
+ * @format
+ */
 
-import { AppRegistry } from 'react-native';
+import {AppRegistry} from 'react-native';
+// import App from './App';
 import App from './app/App';
 
-AppRegistry.registerComponent('TestApp', () => App);
+import {name as appName} from './app.json';
 
-export default App;
+AppRegistry.registerComponent(appName, () => App);

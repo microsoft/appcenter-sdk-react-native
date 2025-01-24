@@ -1,44 +1,24 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     ext {
-        buildToolsVersion = "29.0.2"
+        buildToolsVersion = "34.0.0"
         minSdkVersion = 21
-        compileSdkVersion = 29
-        targetSdkVersion = 29
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        ndkVersion = "25.1.8937393"
+        kotlinVersion = "1.8.0"
     }
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:3.5.2')
+        classpath("com.android.tools.build:gradle")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
 }
-
-apply from: '../../AppCenterReactNativeShared/android/publish.gradle'
-
-def readFromLocalProperties(propertyName) {
-    // Load credentials from local.properties file.
-    File localProperties = project.rootProject.file('local.properties')
-    if (localProperties.exists()) {
-        Properties properties = new Properties()
-        properties.load(localProperties.newDataInputStream())
-        return properties.getProperty(propertyName)
-    }
-    return null
-}
-
-def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
 
 allprojects {
-    configurations.all {
-        resolutionStrategy {
-            // Remove this override in 0.66, as a proper fix is included in react-native itself.
-            force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
-        }
-    }
     repositories {
         // maven {
         //     credentials {
@@ -48,38 +28,14 @@ allprojects {
         //     url "https://msmobilecenter.pkgs.visualstudio.com/_packaging/AppCenter/maven/v1/"
         // }
         mavenLocal()
+        mavenCentral()
         google()
         jcenter()
-        mavenCentral()
-        maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url "$rootDir/../node_modules/react-native/android"
-        }
-        maven {
-            // Android JSC is installed from npm
-            url("$rootDir/../node_modules/jsc-android/dist")
-        }
-        maven { url 'https://www.jitpack.io' }
-
-        // force dependency versions on all subprojects
-        configurations.all {
-            resolutionStrategy {
-
-                // use 0.9.0 to fix crash on Android 11: https://github.com/facebook/SoLoader/issues/59
-                force "com.facebook.soloader:soloader:0.9.0"
-            }
-        }
+        // maven {
+        //     // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+        //     url "$rootDir/../node_modules/react-native/android"
+        // }
     }
 }
 
-subprojects {
-    afterEvaluate { project ->
-        if (project.hasProperty("android")) {
-            android {
-                // Force all the submodules to use the specified compileSdkVersion and buildToolsVersion.
-                compileSdkVersion rootProject.ext.compileSdkVersion
-                buildToolsVersion rootProject.ext.buildToolsVersion
-            }
-        }
-    }
-}
+apply plugin: "com.facebook.react.rootproject"

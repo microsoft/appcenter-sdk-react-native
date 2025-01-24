@@ -3,11 +3,10 @@
 
 import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, NativeModules, Platform } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ModalSelector from 'react-native-modal-selector';
 import AppCenter from 'appcenter';
 import SharedStyles from '../SharedStyles';
-import DialsTabBarIcon from '../assets/dials.png';
 
 const USER_ID_KEY = 'USER_ID_KEY';
 const DATA_RESIDENCY_KEY = 'DATA_RESIDENCY_KEY';
@@ -51,19 +50,7 @@ const StartupModes = [
   }
 ];
 
-export default class AppCenterScreen extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={DialsTabBarIcon} />,
-    tabBarOnPress: ({ defaultHandler, navigation }) => {
-      const refreshAppCenterScreen = navigation.getParam('refreshAppCenterScreen');
-
-      // Initial press: the function is not defined yet so nothing to refresh.
-      if (refreshAppCenterScreen) {
-        refreshAppCenterScreen();
-      }
-      defaultHandler();
-    }
-  }
+class AppCenterScreen extends Component {
 
   state = {
     appCenterEnabled: false,
@@ -91,24 +78,25 @@ export default class AppCenterScreen extends Component {
       this.state.userId = userId;
       await AppCenter.setUserId(userId);
     }
-    this.props.navigation.setParams({
-      refreshAppCenterScreen: this.refreshUI.bind(this)
-    });
 
     const dataResidencyRegion = await AsyncStorage.getItem(DATA_RESIDENCY_KEY);
     if (dataResidencyRegion !== null) {
       this.state.dataResidencyRegion = dataResidencyRegion;
       await AppCenter.setDataResidencyRegion(dataResidencyRegion);
     }
-    this.props.navigation.setParams({
-      refreshAppCenterScreen: this.refreshUI.bind(this)
-    });
 
     await AppCenter.setLogLevel(AppCenter.LogLevel.VERBOSE);
+
+    const unsubscribe = this.props.navigation.addListener('tabPress', (e) => {
+      this.refreshUI();
+    });
+  
+    return unsubscribe;
   }
 
   async refreshUI() {
     const networkRequestsAllowed = await AppCenter.isNetworkRequestsAllowed();
+
     this.setState({ networkRequestsAllowed });
 
     const appCenterEnabled = await AppCenter.isEnabled();
@@ -270,3 +258,5 @@ export default class AppCenterScreen extends Component {
     );
   }
 }
+
+export default AppCenterScreen;

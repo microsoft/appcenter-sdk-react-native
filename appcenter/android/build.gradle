@@ -26,7 +26,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'
     api 'com.microsoft.appcenter:appcenter:5.0.5'
-
-    //api project(':AppCenterReactNativeShared')   // For testing with TestApp
+    // For testing with TestApp
+    // api files('../../../../AppCenterReactNativeShared/android/build/outputs/aar/appcenter-react-native-release.aar')
     api 'com.microsoft.appcenter.reactnative:appcenter-react-native:5.0.3'
 }

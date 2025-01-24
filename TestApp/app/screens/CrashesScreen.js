@@ -9,21 +9,8 @@ import Crashes, { ExceptionModel } from 'appcenter-crashes';
 
 import AttachmentsProvider from '../AttachmentsProvider';
 import SharedStyles from '../SharedStyles';
-import CrashesTabBarIcon from '../assets/crashes.png';
 
 export default class CrashesScreen extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={CrashesTabBarIcon} />,
-    tabBarOnPress: ({ defaultHandler, navigation }) => {
-      const refreshCrash = navigation.getParam('refreshCrash');
-
-      // Initial press: the function is not defined yet so nothing to refresh.
-      if (refreshCrash) {
-        refreshCrash();
-      }
-      defaultHandler();
-    }
-  }
 
   state = {
     crashesEnabled: false,
@@ -58,9 +45,11 @@ export default class CrashesScreen extends Component {
     const binaryAttachment = await AttachmentsProvider.getBinaryAttachmentInfo();
     this.setState({ binaryAttachment });
 
-    this.props.navigation.setParams({
-      refreshCrash: this.refreshToggle.bind(this)
+    const unsubscribe = this.props.navigation.addListener('tabPress', (e) => {
+      this.refreshToggle();
     });
+  
+    return unsubscribe;
   }
 
   async refreshToggle() {

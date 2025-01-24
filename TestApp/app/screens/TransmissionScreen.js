@@ -11,16 +11,12 @@ import Analytics from 'appcenter-analytics';
 import PropertiesConfiguratorView from './PropertiesConfiguratorView';
 
 import SharedStyles from '../SharedStyles';
-import TransmissionTabBarIcon from '../assets/fuel.png';
 
 import Constants from '../Constants';
 
 const targetTokens = Constants.targetTokens;
 
 export default class TransmissionScreen extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={TransmissionTabBarIcon} />
-  }
 
   standardProperties = targetTokens.reduce((map, el) => {
     map[el.key] = {

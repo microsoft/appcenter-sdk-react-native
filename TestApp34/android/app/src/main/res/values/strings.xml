@@ -1,5 +1,0 @@
-<resources>
-    <string moduleConfig="true" name="appcenterCrashes_whenToSendCrashes">ASK_JAVASCRIPT</string>
-    <string moduleConfig="true" name="appcenterAnalytics_whenToEnableAnalytics">ALWAYS_SEND</string>
-    <string name="app_name">TestApp34</string>
-</resources>
