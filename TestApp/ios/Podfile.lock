@@ -962,11 +962,11 @@ PODS:
   - React-Mapbuffer (0.73.9):
     - glog
     - React-debug
-  - react-native-image-picker (7.1.2):
+  - react-native-image-picker (7.2.3):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - react-native-safe-area-context (4.14.0):
+  - react-native-safe-area-context (4.14.1):
     - React-Core
   - React-nativeconfig (0.73.9)
   - React-NativeModulesApple (0.73.9):
@@ -1135,17 +1135,19 @@ PODS:
     - React-jsi (= 0.73.9)
     - React-logger (= 0.73.9)
     - React-perflogger (= 0.73.9)
-  - RNCAsyncStorage (2.0.0):
+  - ReactNativeFileAccess (3.1.1):
     - React-Core
-  - RNFS (2.20.0):
+    - ZIPFoundation
+  - RNCAsyncStorage (2.1.0):
     - React-Core
-  - RNScreens (4.0.0):
+  - RNScreens (4.4.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
   - SocketRocket (0.6.1)
   - Yoga (1.14.0)
+  - ZIPFoundation (0.9.19)
 
 DEPENDENCIES:
   - appcenter-analytics (from `../node_modules/appcenter-analytics`)
@@ -1225,8 +1227,8 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReactNativeFileAccess (from `../node_modules/react-native-file-access`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
-  - RNFS (from `../node_modules/react-native-fs`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1247,6 +1249,7 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
+    - ZIPFoundation
 
 EXTERNAL SOURCES:
   appcenter-analytics:
@@ -1354,10 +1357,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReactNativeFileAccess:
+    :path: "../node_modules/react-native-file-access"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
-  RNFS:
-    :path: "../node_modules/react-native-fs"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   Yoga:
@@ -1408,8 +1411,8 @@ SPEC CHECKSUMS:
   React-jsinspector: aee04d04ef553d5e30e52a4de2af958cb060069f
   React-logger: 87a4232dd55485435edfa6803ff0de0b5c9eea1a
   React-Mapbuffer: 6c229dc8f1640457d1f665f0b7d79ab8f604dc8b
-  react-native-image-picker: d3db110a3ded6e48c93aef7e8e51afdde8b16ed0
-  react-native-safe-area-context: 4532f1a0c5d34a46b9324ccaaedcb5582a302b7d
+  react-native-image-picker: 3e4ad7a308e087f49f8aa1443c9ead2e8ce8f060
+  react-native-safe-area-context: 141eca0fd4e4191288dfc8b96a7c7e1c2983447a
   React-nativeconfig: c1729ab95240ec80d47a2bb8354d8f31138e35a7
   React-NativeModulesApple: 115c934a87f3b45fecb0fada08fa70bab3dff65c
   React-perflogger: c93b6a895eca3f9196656bb20ce0e15ad597a4e9
@@ -1430,12 +1433,13 @@ SPEC CHECKSUMS:
   React-runtimescheduler: efb26ad81d94a9b047504bd716b48869bd311649
   React-utils: dab84549e65d6d711937b9c34d9f6d8fb8bd711c
   ReactCommon: 3dc453f427d2f3d7f2c71499d191b456f83c59bd
-  RNCAsyncStorage: d35c79ffba52c1013013e16b1fc295aec2feabb6
-  RNFS: 4ac0f0ea233904cb798630b3c077808c06931688
-  RNScreens: 6225b1182ac2845b78e7446b0573ea2afb703338
+  ReactNativeFileAccess: 863c8952c05c0ea5f592ef3101169baaf66777bd
+  RNCAsyncStorage: cc6479c4acd84cc7004946946c8afe30b018184d
+  RNScreens: dc2e2add1c0ae719fd469cf106a0aa16c02ec9b5
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  Yoga: 6aaa3c45f0fda0c6929f855121622669dabe1aaf
+  Yoga: 57d2ffe418d024d56f8b0047f335c677e4c4d9ac
+  ZIPFoundation: b8c29ea7ae353b309bc810586181fd073cb3312c
 
 PODFILE CHECKSUM: 36123870d60c4a3eb637a6932b6886f03e104d7f
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
