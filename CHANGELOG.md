@@ -1,6 +1,18 @@
 # App Center SDK for React Native Change Log
 
-## Version 5.0.3 (Under development)
+## Version 5.0.3
+
+#### Apple
+
+* **[Improvement]** Update native SDK to version [5.0.6](https://github.com/microsoft/appcenter-sdk-apple/releases/tag/5.0.6)
+* **[Improvement]** Update target iOS and tvOS version to 12.0.
+* **[Improvement]** Update PLCrashReporter.
+* **[Improvement]** Update sqlite to 3.46.1, which fixes CVE-2020-11656.
+
+#### Android
+
+* **[Improvement]** Update native SDK to version [5.0.6](https://github.com/microsoft/appcenter-sdk-android/releases/tag/5.0.6)
+___
 
 ## Version 5.0.2
 
