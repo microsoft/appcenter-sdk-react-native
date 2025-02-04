@@ -20,9 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-project.xcworkspace
-*.jsbundle
-ios/assets/
+ios/.xcode.env.local
 
 # Android/IntelliJ
 #
@@ -31,40 +29,37 @@ build/
 .gradle
 local.properties
 *.iml
-android/app/bin/
-android/app/.externalNativeBuild/
-*.bundle
-android/app/.cxx/
+*.hprof
+.cxx/
+*.keystore
 
 # node.js
 #
 node_modules/
 npm-debug.log
-
-# BUCK
-buck-out/
-\.buckd/
-android/app/libs
-*.keystore
+yarn-error.log
 
 # fastlane
 #
 # It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
 # screenshots whenever they are needed.
 # For more information about the recommended setup visit:
-# https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Gitignore.md
+# https://docs.fastlane.tools/best-practices/source-control/
 
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 
-# Source maps and debug files
-/index.ios.map
-/unused.jsbundle*
-/.vscode/.react
+# Bundle artifact
+*.jsbundle
 
-package-lock.json
+# Ruby / CocoaPods
+/ios/Pods/
+/vendor/bundle/
 
-# With RN 0.60.0 autolinking, we use `pod install` to install CocoaPods dependencies,
-# and don't check in **ios/Pods/** directory.
-ios/Pods/
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
+
+# testing
+/coverage

@@ -3,27 +3,14 @@
 
 import React, { Component } from 'react';
 import { Image, View, Text, TextInput, Switch, SectionList, TouchableOpacity, NativeModules } from 'react-native';
-import ImagePicker from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 import Crashes, { ExceptionModel } from 'appcenter-crashes';
 
 import AttachmentsProvider from '../AttachmentsProvider';
 import SharedStyles from '../SharedStyles';
-import CrashesTabBarIcon from '../assets/crashes.png';
 
 export default class CrashesScreen extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={CrashesTabBarIcon} />,
-    tabBarOnPress: ({ defaultHandler, navigation }) => {
-      const refreshCrash = navigation.getParam('refreshCrash');
-
-      // Initial press: the function is not defined yet so nothing to refresh.
-      if (refreshCrash) {
-        refreshCrash();
-      }
-      defaultHandler();
-    }
-  }
 
   state = {
     crashesEnabled: false,
@@ -58,9 +45,11 @@ export default class CrashesScreen extends Component {
     const binaryAttachment = await AttachmentsProvider.getBinaryAttachmentInfo();
     this.setState({ binaryAttachment });
 
-    this.props.navigation.setParams({
-      refreshCrash: this.refreshToggle.bind(this)
+    const unsubscribe = this.props.navigation.addListener('tabPress', (e) => {
+      this.refreshToggle();
     });
+  
+    return unsubscribe;
   }
 
   async refreshToggle() {
@@ -217,16 +206,21 @@ export default class CrashesScreen extends Component {
   }
 
   showFilePicker = () => {
-    const options = { cancelButtonTitle: 'Delete saved image' };
-    ImagePicker.showImagePicker(options, async (response) => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: true,
+    };
+  
+    launchImageLibrary(options, async (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
         await AttachmentsProvider.deleteBinaryAttachment();
         this.setState({ binaryAttachment: '' });
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.errorMessage);
       } else {
-        await AttachmentsProvider.saveBinaryAttachment(getFileName(response), response.data, getFileType(response), getFileSize(response));
+        const { fileName, base64, type, fileSize } = response.assets[0];
+        await AttachmentsProvider.saveBinaryAttachment(fileName, base64, type, fileSize);
         const binaryAttachmentValue = await AttachmentsProvider.getBinaryAttachmentInfo();
         this.setState({ binaryAttachment: binaryAttachmentValue });
       }

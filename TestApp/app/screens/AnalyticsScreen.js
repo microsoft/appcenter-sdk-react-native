@@ -7,21 +7,8 @@ import { Image, View, Text, Switch, SectionList, NativeModules, TouchableOpacity
 import Analytics from 'appcenter-analytics';
 
 import SharedStyles from '../SharedStyles';
-import AnalyticsTabBarIcon from '../assets/analytics.png';
 
 export default class AnalyticsScreen extends Component {
-  static navigationOptions = {
-    tabBarIcon: () => <Image style={{ width: 24, height: 24 }} source={AnalyticsTabBarIcon} />,
-    tabBarOnPress: ({ defaultHandler, navigation }) => {
-      const refreshAnalytics = navigation.getParam('refreshAnalytics');
-
-      // Initial press: the function is not defined yet so nothing to refresh.
-      if (refreshAnalytics) {
-        refreshAnalytics();
-      }
-      defaultHandler();
-    }
-  }
 
   state = {
     analyticsEnabled: false,
@@ -34,9 +21,12 @@ export default class AnalyticsScreen extends Component {
       this.setState({ isManualSessionEnabled });
     });
     await this.refreshToggle();
-    this.props.navigation.setParams({
-      refreshAnalytics: this.refreshToggle.bind(this)
+
+    const unsubscribe = this.props.navigation.addListener('tabPress', (e) => {
+      this.refreshToggle();
     });
+  
+    return unsubscribe;
   }
 
   async refreshToggle() {

@@ -33,8 +33,6 @@ extends:
         enableExclusions: true
         exclusionPatterns: |
           TestApp/
-          TestApp34/
-          DemoApp/
     stages:
     - stage: stage
       jobs:
@@ -66,6 +64,12 @@ extends:
             filePath: ./scripts/put-maven-secrets-gradle.sh
             arguments: '"$(MAVEN_USER)" "$(MAVEN_KEY)" "$(GDP_SIGNING_KEY_ID)" "$(Agent.TempDirectory)/appcenter-gpg-key.gpg" "$(GDP_KEY_PASSWORD)"'
             failOnStderr: true
+        - task: JavaToolInstaller@0
+          inputs:
+            versionSpec: '11'
+            jdkArchitectureOption: 'x64'
+            jdkSourceOption: 'PreInstalled'
+          displayName: 'Use Java 11'
         - task: Gradle@1
           displayName: Gradle publish to Maven local
           inputs:

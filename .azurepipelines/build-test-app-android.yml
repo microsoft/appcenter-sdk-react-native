@@ -1,0 +1,43 @@
+trigger:
+- master
+- develop
+pr:
+- master
+
+pool:
+  vmImage: macos-latest
+
+jobs:
+- job:
+  displayName: Build and CodeQL TestApp Android
+  steps:
+  - checkout: self
+    submodules: recursive
+
+  - task: CodeQL3000Init@0
+    displayName: CodeQL Initialize
+
+  - task: JavaToolInstaller@0
+    inputs:
+      versionSpec: '17'
+      jdkArchitectureOption: 'x64'
+      jdkSourceOption: 'PreInstalled'
+    displayName: 'Use Java 17'
+
+  - task: Bash@3
+    displayName: Run prepare-npm-sdk-integration script
+    inputs:
+      filePath: TestApp/prepare-npm-sdk-integration.sh
+      arguments: "android"
+      workingDirectory: TestApp
+
+  - task: Gradle@3
+    displayName: Build TestApp
+    inputs:
+      gradleWrapperFile: TestApp/android/gradlew
+      workingDirectory: TestApp/android
+      tasks: assembleRelease
+      publishJUnitResults: false
+
+  - task: CodeQL3000Finalize@0
+    displayName: CodeQL Finalize

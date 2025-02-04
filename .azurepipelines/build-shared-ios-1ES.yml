@@ -18,7 +18,7 @@ variables:
 - name: EOCompliance-Mac
   value: true
 - name: XCODE_PATH
-  value: /Applications/Xcode_13.2.1.app/Contents/Developer
+  value: /Applications/Xcode_14.3.1.app/Contents/Developer
 extends:
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
     template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
@@ -27,7 +27,7 @@ extends:
   parameters:
     pool:
       name: Azure Pipelines
-      image: macos-latest
+      image: macos-13
       os: macOS
     customBuildTags:
     - ES365AIMigrationTooling-BulkMigrated
@@ -37,8 +37,6 @@ extends:
         enableExclusions: true
         exclusionPatterns: |
           TestApp/
-          TestApp34/
-          DemoApp/
         credscan:
           suppressionsFile: $(Build.SourcesDirectory)/.config/CredScanSuppressions.json
     stages:

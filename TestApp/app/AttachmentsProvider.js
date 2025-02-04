@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import AsyncStorage from '@react-native-community/async-storage';
-import RNFS from 'react-native-fs';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ErrorAttachmentLog } from 'appcenter-crashes';
+import { FileSystem, Dirs } from 'react-native-file-access';
 
 const TEXT_ATTACHMENT_KEY = 'TEXT_ATTACHMENT_KEY';
 const BINARY_FILENAME_KEY = 'BINARY_FILENAME_KEY';
@@ -59,15 +59,15 @@ export default class AttachmentsProvider {
   static async saveBinaryAttachment(name, data, type, size) {
     await this.updateItem(BINARY_FILENAME_KEY, name);
     await this.updateItem(BINARY_FILETYPE_KEY, type);
-    await this.updateItem(BINARY_FILESIZE_KEY, size);
+    await this.updateItem(BINARY_FILESIZE_KEY, '' + size);
     await saveFileInDocumentsFolder(data);
   }
 
   static async getBinaryAttachment() {
-    const path = `${RNFS.DocumentDirectoryPath}/${BINARY_ATTACHMENT_STORAGE_FILENAME}`;
+    const path = `${Dirs.DocumentDir}/${BINARY_ATTACHMENT_STORAGE_FILENAME}`;
     let contents = '';
     try {
-      contents = await RNFS.readFile(path, DEFAULT_ENCODING);
+      contents = await FileSystem.readFile(path, DEFAULT_ENCODING);
     } catch (error) {
       console.log(`Error while reading binary attachment file, error: ${error}`);
     }
@@ -98,9 +98,9 @@ export default class AttachmentsProvider {
   }
 
   static async deleteBinaryAttachment() {
-    const path = `${RNFS.DocumentDirectoryPath}/${BINARY_ATTACHMENT_STORAGE_FILENAME}`;
-    if (await RNFS.exists(path)) {
-      await RNFS.unlink(path);
+    const path = `${Dirs.DocumentDir}/${BINARY_ATTACHMENT_STORAGE_FILENAME}`;
+    if (await FileSystem.exists(path)) {
+      await FileSystem.unlink(path);
     }
     await this.updateItem(BINARY_FILENAME_KEY, null);
     await this.updateItem(BINARY_FILETYPE_KEY, null);
@@ -119,8 +119,10 @@ async function getItemFromStorage(key) {
 }
 
 async function saveFileInDocumentsFolder(data) {
-  const path = `${RNFS.DocumentDirectoryPath}/${BINARY_ATTACHMENT_STORAGE_FILENAME}`;
-  RNFS.writeFile(path, data, DEFAULT_ENCODING)
-    .then(() => console.log('Binary attachment saved'))
-    .catch(err => console.error(err.message));
+  const path = `${Dirs.DocumentDir}/${BINARY_ATTACHMENT_STORAGE_FILENAME}`;
+  try {
+    await FileSystem.writeFile(path, data, DEFAULT_ENCODING);
+  } catch (err) {
+    console.error('Cant save binary attachment, ', err.message);
+  }
 }
