@@ -101,7 +101,7 @@ extends:
             publishDirectory: '$(Build.ArtifactStagingDirectory)'
             feedsToUsePublish: 'internal'
             vstsFeedPublish: 'AppCenter'
-            vstsFeedPackagePublish: 'AppCenterReactNativeShared'
+            vstsFeedPackagePublish: 'appcenterreactnativeshared'
             versionOption: 'custom'
             versionPublish: '$(VERSION)'
             packagePublishDescription: 'AppCenter React Native Shared iOS Framework'
