@@ -86,6 +86,18 @@ extends:
             SourceFolder: $(Build.SourcesDirectory)/AppCenterReactNativeShared/Products/
             Contents: AppCenter-SDK-ReactNative-iOS-Pod-*.zip
             TargetFolder: $(Build.ArtifactStagingDirectory)
+        - task: UniversalPackages@0
+          displayName: 'Upload AppCenterReactNativeShared to Azure Artifacts'
+          inputs:
+            command: 'publish'
+            publishDirectory: '$(Build.ArtifactStagingDirectory)'
+            feedsToUsePublish: 'internal'
+            vstsFeedPublish: 'AppCenter'
+            vstsFeedPackagePublish: 'AppCenterReactNativeShared'
+            versionOption: 'custom'
+            versionPublish: '$(grep -E "s.version" AppCenterReactNativeShared/Products/AppCenterReactNativeShared.podspec | awk -F "'" '{print $2}')'
+            packagePublishDescription: 'AppCenter React Native Shared iOS Framework'
+            verbosity: 'Information'
         - task: CopyFiles@2
           displayName: Copy podspec
           inputs:
