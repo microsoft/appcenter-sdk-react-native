@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
 
   s.source            = { :git => "https://github.com/microsoft/appcenter-sdk-react-native.git" }
   s.source_files      = "ios/AppCenterReactNativeCrashes/**/*.{h,m}"
-  s.platform          = :ios, '11.0'
+  s.platform          = :ios, '12.0'
   s.requires_arc      = true
 
   s.vendored_frameworks = 'AppCenterReactNativeShared/AppCenterReactNativeShared.framework'
