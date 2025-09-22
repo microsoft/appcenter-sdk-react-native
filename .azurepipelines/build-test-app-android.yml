@@ -1,43 +1,56 @@
-trigger:
-- master
-- develop
-pr:
-- master
 
-pool:
-  vmImage: macos-latest
 
-jobs:
-- job:
-  displayName: Build and CodeQL TestApp Android
-  steps:
-  - checkout: self
-    submodules: recursive
+resources:
+  repositories:
+    - repository: 1ESPipelineTemplates
+      type: git
+      name: 1ESPipelineTemplates/1ESPipelineTemplates
+      ref: refs/tags/release
 
-  - task: CodeQL3000Init@0
-    displayName: CodeQL Initialize
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: Azure Pipelines
+      image: macos-latest
+      os: macOS
+    customBuildTags:
+      - ES365AIMigrationTooling-BulkMigrated
+    sdl:
+      sourceAnalysisPool: 1ES-PT-Windows-2022
+    stages:
+      - stage:
+        jobs:
+          - job:
+            displayName: Build and CodeQL TestApp Android
+            steps:
+              - checkout: self
+                submodules: recursive
 
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: '17'
-      jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'PreInstalled'
-    displayName: 'Use Java 17'
+              - task: CodeQL3000Init@0
+                displayName: CodeQL Initialize
 
-  - task: Bash@3
-    displayName: Run prepare-npm-sdk-integration script
-    inputs:
-      filePath: TestApp/prepare-npm-sdk-integration.sh
-      arguments: "android"
-      workingDirectory: TestApp
+              - task: JavaToolInstaller@0
+                inputs:
+                  versionSpec: '17'
+                  jdkArchitectureOption: 'x64'
+                  jdkSourceOption: 'PreInstalled'
+                displayName: 'Use Java 17'
 
-  - task: Gradle@3
-    displayName: Build TestApp
-    inputs:
-      gradleWrapperFile: TestApp/android/gradlew
-      workingDirectory: TestApp/android
-      tasks: assembleRelease
-      publishJUnitResults: false
+              - task: Bash@3
+                displayName: Run prepare-npm-sdk-integration script
+                inputs:
+                  filePath: TestApp/prepare-npm-sdk-integration.sh
+                  arguments: "android"
+                  workingDirectory: TestApp
 
-  - task: CodeQL3000Finalize@0
-    displayName: CodeQL Finalize
+              - task: Gradle@3
+                displayName: Build TestApp
+                inputs:
+                  gradleWrapperFile: TestApp/android/gradlew
+                  workingDirectory: TestApp/android
+                  tasks: assembleRelease
+                  publishJUnitResults: false
+
+              - task: CodeQL3000Finalize@0
+                displayName: CodeQL Finalize
