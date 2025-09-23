@@ -1,4 +1,10 @@
-
+schedules:
+  - cron: "0 0 * * 0"
+    displayName: Weekly schedule
+    branches:
+      include:
+        - fix-codeql
+    always: true
 
 resources:
   repositories:
